@@ -19,6 +19,7 @@ create extension if not exists "pg_trgm"; -- for fast text search
 -- One row per auth.users row. Created automatically via trigger.
 create table if not exists public.profiles (
   id                 uuid primary key references auth.users(id) on delete cascade,
+  email              text,
   role               text not null default 'buyer'
                        check (role in ('admin', 'buyer', 'consultant')),
   is_agent           boolean not null default false,
@@ -34,6 +35,9 @@ create table if not exists public.profiles (
 );
 comment on table public.profiles is
   'Extended user profile. Mirrors auth.users; role drives access control.';
+
+create index if not exists profiles_email_idx
+  on public.profiles (lower(email));
 
 -- ---- demos ----
 create table if not exists public.demos (
@@ -157,9 +161,10 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, name, role, approved)
+  insert into public.profiles (id, email, name, role, approved)
   values (
     new.id,
+    new.email,
     coalesce(new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
     coalesce(new.raw_user_meta_data->>'role', 'buyer'),
     -- buyers are auto-approved; consultants need admin approval
@@ -167,7 +172,10 @@ begin
       when coalesce(new.raw_user_meta_data->>'role', 'buyer') = 'buyer' then true
       else false
     end
-  );
+  )
+  on conflict (id) do update
+    set email = excluded.email,
+        name  = excluded.name;
   return new;
 end;
 $$;
