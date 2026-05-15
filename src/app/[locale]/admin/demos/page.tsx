@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import {
+  Edit2, Check, X, Star, StarOff, Eye, TrendingUp,
+  DollarSign, BarChart2, ArrowUpRight, Search, Filter
+} from "lucide-react";
 
 interface DemoRow {
   slug: string;
@@ -12,187 +14,220 @@ interface DemoRow {
   basePrice: number;
   featured: boolean;
   order: number;
+  views: number;
+  requests: number;
+  revenue: number;
 }
 
 const INITIAL_DEMOS: DemoRow[] = [
-  { slug: "shop",       title: "Online Shop",                 category: "ecommerce",  basePrice: 499, featured: false, order: 1 },
-  { slug: "gym",        title: "Gym Management",              category: "fitness",    basePrice: 399, featured: false, order: 2 },
-  { slug: "accounting", title: "Accounting Suite",            category: "business",   basePrice: 599, featured: false, order: 3 },
-  { slug: "china-uni",  title: "Chinese University Agent",    category: "education",  basePrice: 799, featured: true,  order: 4 },
-  { slug: "school",     title: "School System (K-12)",        category: "education",  basePrice: 699, featured: false, order: 5 },
-  { slug: "university", title: "University System",           category: "education",  basePrice: 899, featured: false, order: 6 },
-  { slug: "restaurant", title: "Restaurant POS",              category: "food",       basePrice: 449, featured: false, order: 7 },
-  { slug: "personal",   title: "Personal Info System",        category: "personal",   basePrice: 199, featured: false, order: 8 },
-  { slug: "clinic",     title: "Clinic Appointments",         category: "health",     basePrice: 549, featured: false, order: 9 },
-  { slug: "logistics",  title: "Logistics & Delivery",        category: "logistics",  basePrice: 649, featured: false, order: 10 },
+  { slug: "shop",       title: "Online Shop",              category: "E-commerce",  basePrice: 499, featured: false, order: 1,  views: 578, requests: 22, revenue: 10978 },
+  { slug: "gym",        title: "Gym Management",           category: "Fitness",     basePrice: 399, featured: false, order: 2,  views: 412, requests: 18, revenue: 7182  },
+  { slug: "accounting", title: "Accounting Suite",         category: "Business",    basePrice: 599, featured: false, order: 3,  views: 578, requests: 22, revenue: 13178 },
+  { slug: "china-uni",  title: "China University Agent",   category: "Education",   basePrice: 799, featured: true,  order: 4,  views: 892, requests: 43, revenue: 34357 },
+  { slug: "school",     title: "School System K-12",       category: "Education",   basePrice: 699, featured: false, order: 5,  views: 490, requests: 19, revenue: 13281 },
+  { slug: "university", title: "University Portal",        category: "Education",   basePrice: 899, featured: false, order: 6,  views: 612, requests: 24, revenue: 21576 },
+  { slug: "restaurant", title: "Restaurant POS",           category: "Food & Bev",  basePrice: 449, featured: false, order: 7,  views: 534, requests: 20, revenue: 8980  },
+  { slug: "personal",   title: "Personal CRM",             category: "Personal",    basePrice: 199, featured: false, order: 8,  views: 310, requests: 12, revenue: 2388  },
+  { slug: "clinic",     title: "Clinic System",            category: "Healthcare",  basePrice: 549, featured: false, order: 9,  views: 684, requests: 28, revenue: 15372 },
+  { slug: "logistics",  title: "Logistics Platform",       category: "Logistics",   basePrice: 649, featured: false, order: 10, views: 741, requests: 31, revenue: 20119 },
 ];
 
+const categoryColors: Record<string, string> = {
+  "E-commerce": "bg-orange-500/20 text-orange-400",
+  "Fitness": "bg-green-500/20 text-green-400",
+  "Business": "bg-blue-500/20 text-blue-400",
+  "Education": "bg-violet-500/20 text-violet-400",
+  "Food & Bev": "bg-red-500/20 text-red-400",
+  "Personal": "bg-pink-500/20 text-pink-400",
+  "Healthcare": "bg-teal-500/20 text-teal-400",
+  "Logistics": "bg-slate-400/20 text-slate-400",
+};
+
 export default function AdminDemosPage() {
-  const t = useTranslations();
   const [demos, setDemos] = useState<DemoRow[]>(INITIAL_DEMOS);
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
-  const [editValues, setEditValues] = useState<{ basePrice: number; featured: boolean }>({
-    basePrice: 0,
-    featured: false,
-  });
+  const [editValues, setEditValues] = useState<{ basePrice: number; featured: boolean }>({ basePrice: 0, featured: false });
+  const [search, setSearch] = useState("");
+
+  const filtered = demos.filter(d =>
+    d.title.toLowerCase().includes(search.toLowerCase()) ||
+    d.category.toLowerCase().includes(search.toLowerCase())
+  );
 
   function startEdit(demo: DemoRow) {
     setEditingSlug(demo.slug);
     setEditValues({ basePrice: demo.basePrice, featured: demo.featured });
   }
 
-  function cancelEdit() {
-    setEditingSlug(null);
-  }
+  function cancelEdit() { setEditingSlug(null); }
 
   function saveEdit(slug: string) {
-    setDemos((prev) =>
-      prev.map((d) =>
-        d.slug === slug
-          ? { ...d, basePrice: editValues.basePrice, featured: editValues.featured }
-          : d
-      )
-    );
+    setDemos(prev => prev.map(d => d.slug === slug ? { ...d, ...editValues } : d));
     setEditingSlug(null);
   }
 
   function toggleFeatured(slug: string) {
-    setDemos((prev) =>
-      prev.map((d) => (d.slug === slug ? { ...d, featured: !d.featured } : d))
-    );
+    setDemos(prev => prev.map(d => d.slug === slug ? { ...d, featured: !d.featured } : d));
   }
 
+  const totalRevenue = demos.reduce((s, d) => s + d.revenue, 0);
+  const totalRequests = demos.reduce((s, d) => s + d.requests, 0);
+  const totalViews = demos.reduce((s, d) => s + d.views, 0);
+
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            {t("common.appName")}
-          </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/admin/dashboard" className="text-neutral-500 hover:text-neutral-700">
-              {t("admin.dashboard.title")}
-            </Link>
-            <Link href="/auth/logout" className="text-neutral-500 hover:text-neutral-700">
-              {t("nav.logout")}
-            </Link>
-            <LanguageSwitcher />
-          </div>
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Demo Catalog</h1>
+          <p className="text-slate-400 text-sm mt-1">Manage prices, visibility, and featured status for all demos</p>
         </div>
-      </header>
+      </div>
 
-      <main className="flex-1 mx-auto max-w-6xl w-full px-6 py-10">
-        <h1 className="text-2xl font-bold mb-8">{t("admin.demos.heading")}</h1>
+      {/* Summary stats */}
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, icon: DollarSign, color: "emerald" },
+          { label: "Total Requests", value: totalRequests, icon: TrendingUp, color: "indigo" },
+          { label: "Total Views (7d)", value: totalViews.toLocaleString(), icon: Eye, color: "sky" },
+        ].map(s => (
+          <div key={s.label} className="bg-slate-900 rounded-xl p-4 border border-slate-800 flex items-center gap-4">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+              s.color === "emerald" ? "bg-emerald-500/20 text-emerald-400" :
+              s.color === "indigo" ? "bg-indigo-500/20 text-indigo-400" :
+              "bg-sky-500/20 text-sky-400"
+            }`}>
+              <s.icon size={18} />
+            </div>
+            <div>
+              <div className="text-xl font-bold text-white">{s.value}</div>
+              <div className="text-xs text-slate-500">{s.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-neutral-50 border-b border-neutral-200">
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.order")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.slug")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.title")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.category")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.basePrice")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.featured")}</th>
-                  <th className="text-left px-4 py-3 font-medium text-neutral-500">{t("admin.demos.actions")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {demos.map((demo, idx) => (
-                  <tr
-                    key={demo.slug}
-                    className={`${idx % 2 === 0 ? "bg-white" : "bg-neutral-50/50"} hover:bg-blue-50/30 transition-colors`}
-                  >
-                    <td className="px-4 py-3 text-neutral-400 font-mono text-xs">{demo.order}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-neutral-600">{demo.slug}</td>
-                    <td className="px-4 py-3 font-medium">{demo.title}</td>
-                    <td className="px-4 py-3">
-                      <span className="capitalize text-xs px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600">
-                        {demo.category}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      {editingSlug === demo.slug ? (
+      {/* Search */}
+      <div className="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 w-80">
+        <Search size={15} className="text-slate-500" />
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search demos..."
+          className="bg-transparent text-sm text-white placeholder:text-slate-500 outline-none flex-1"
+        />
+      </div>
+
+      {/* Table */}
+      <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-slate-800">
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">#</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Demo</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Category</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Price</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Views</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Requests</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Revenue</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Featured</th>
+              <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800">
+            {filtered.map((demo) => {
+              const isEditing = editingSlug === demo.slug;
+              return (
+                <tr key={demo.slug} className={`transition-colors ${isEditing ? "bg-slate-800/60" : "hover:bg-slate-800/40"}`}>
+                  <td className="px-5 py-4 text-slate-600 font-mono text-xs">{demo.order}</td>
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <div className="text-sm font-semibold text-white">{demo.title}</div>
+                        <div className="text-xs text-slate-500 font-mono">{demo.slug}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-5 py-4">
+                    <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${categoryColors[demo.category] ?? "bg-slate-700 text-slate-300"}`}>
+                      {demo.category}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4">
+                    {isEditing ? (
+                      <div className="flex items-center gap-1">
+                        <span className="text-slate-400">$</span>
                         <input
                           type="number"
                           value={editValues.basePrice}
-                          onChange={(e) =>
-                            setEditValues((p) => ({ ...p, basePrice: Number(e.target.value) }))
-                          }
-                          className="w-24 rounded border border-neutral-300 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          onChange={e => setEditValues(p => ({ ...p, basePrice: Number(e.target.value) }))}
+                          className="w-24 bg-slate-700 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm text-white outline-none focus:border-indigo-500"
                         />
-                      ) : (
-                        <span className="font-medium">${demo.basePrice}</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      {editingSlug === demo.slug ? (
+                      </div>
+                    ) : (
+                      <span className="text-sm font-bold text-white">${demo.basePrice}</span>
+                    )}
+                  </td>
+                  <td className="px-5 py-4 text-sm text-slate-300">{demo.views.toLocaleString()}</td>
+                  <td className="px-5 py-4 text-sm text-slate-300">{demo.requests}</td>
+                  <td className="px-5 py-4 text-sm font-semibold text-emerald-400">${demo.revenue.toLocaleString()}</td>
+                  <td className="px-5 py-4">
+                    {isEditing ? (
+                      <button
+                        onClick={() => setEditValues(p => ({ ...p, featured: !p.featured }))}
+                        className={`w-11 h-6 rounded-full transition-colors ${editValues.featured ? "bg-indigo-600" : "bg-slate-700"}`}
+                      >
+                        <span className={`block w-4 h-4 rounded-full bg-white transition-transform mx-auto ${editValues.featured ? "translate-x-2.5" : "-translate-x-2"}`} />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => toggleFeatured(demo.slug)}
+                        className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${demo.featured ? "text-amber-400" : "text-slate-600 hover:text-slate-400"}`}
+                      >
+                        {demo.featured ? <Star size={14} fill="currentColor" /> : <StarOff size={14} />}
+                        {demo.featured ? "Featured" : "Off"}
+                      </button>
+                    )}
+                  </td>
+                  <td className="px-5 py-4">
+                    {isEditing ? (
+                      <div className="flex gap-2">
                         <button
-                          onClick={() =>
-                            setEditValues((p) => ({ ...p, featured: !p.featured }))
-                          }
-                          className={`w-10 h-6 rounded-full border-2 transition-colors ${
-                            editValues.featured
-                              ? "bg-blue-600 border-blue-600"
-                              : "bg-neutral-200 border-neutral-300"
-                          }`}
+                          onClick={() => saveEdit(demo.slug)}
+                          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 transition-colors"
                         >
-                          <span
-                            className={`block w-4 h-4 rounded-full bg-white mx-auto transition-transform ${
-                              editValues.featured ? "translate-x-2" : "-translate-x-1"
-                            }`}
-                          />
+                          <Check size={12} /> Save
                         </button>
-                      ) : (
                         <button
-                          onClick={() => toggleFeatured(demo.slug)}
-                          className={`w-10 h-6 rounded-full border-2 transition-colors ${
-                            demo.featured
-                              ? "bg-blue-600 border-blue-600"
-                              : "bg-neutral-200 border-neutral-300"
-                          }`}
+                          onClick={cancelEdit}
+                          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:bg-slate-800 transition-colors"
                         >
-                          <span
-                            className={`block w-4 h-4 rounded-full bg-white mx-auto transition-transform ${
-                              demo.featured ? "translate-x-2" : "-translate-x-1"
-                            }`}
-                          />
+                          <X size={12} /> Cancel
                         </button>
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      {editingSlug === demo.slug ? (
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => saveEdit(demo.slug)}
-                            className="text-xs px-3 py-1 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
-                          >
-                            {t("admin.demos.save")}
-                          </button>
-                          <button
-                            onClick={cancelEdit}
-                            className="text-xs px-3 py-1 rounded-lg border border-neutral-300 text-neutral-600 hover:bg-neutral-100 transition-colors"
-                          >
-                            {t("admin.demos.cancel")}
-                          </button>
-                        </div>
-                      ) : (
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
                         <button
                           onClick={() => startEdit(demo)}
-                          className="text-xs px-3 py-1 rounded-lg border border-neutral-300 text-neutral-600 hover:bg-neutral-100 transition-colors"
+                          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:border-indigo-500 hover:text-indigo-400 transition-colors"
                         >
-                          {t("admin.demos.edit")}
+                          <Edit2 size={12} /> Edit
                         </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </main>
+                        <Link
+                          href={`/demos/${demo.slug}` as "/"}
+                          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:border-sky-500 hover:text-sky-400 transition-colors"
+                        >
+                          <Eye size={12} /> View
+                        </Link>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

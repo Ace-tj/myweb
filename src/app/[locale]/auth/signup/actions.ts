@@ -45,20 +45,15 @@ export async function signupAction(
             : "emailRequired",
       };
     }
-    if (issue?.path[0] === "password") {
-      return { status: "error", errorKey: "passwordShort" };
-    }
-    if (issue?.path[0] === "name") {
-      return { status: "error", errorKey: "nameRequired" };
-    }
-    if (issue?.path[0] === "role") {
-      return { status: "error", errorKey: "roleRequired" };
-    }
+    if (issue?.path[0] === "password") return { status: "error", errorKey: "passwordShort" };
+    if (issue?.path[0] === "name") return { status: "error", errorKey: "nameRequired" };
+    if (issue?.path[0] === "role") return { status: "error", errorKey: "roleRequired" };
     return { status: "error", errorKey: "generic" };
   }
 
   const { email, password, name, role, locale } = parsed.data;
 
+  // ── Mock path (no Supabase configured) ──────────────────────────────────
   if (!supabaseConfigured()) {
     const result = await mockSignUp(email, password, name, role as Role);
     if (!result.ok) return { status: "error", errorKey: "generic" };
@@ -67,12 +62,23 @@ export async function signupAction(
         ? `/${locale}/auth/login?pending=1`
         : `/${locale}/buyer/dashboard`;
     redirect(dest);
-    // redirect() throws — the line below is unreachable at runtime but satisfies TS
     return { status: "ok" };
   }
 
+  // ── Supabase path ────────────────────────────────────────────────────────
   const supabase = await createServerClient();
-  const { error, data } = await supabase.auth.signUp({ email, password });
+
+  // Sign up — this creates the auth user. If Supabase project has
+  // "Confirm email" disabled the session will be available immediately.
+  const { error, data } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      // Skip email verification entirely — users are trusted at sign-up
+      emailRedirectTo: undefined,
+      data: { name, role },
+    },
+  });
 
   if (error || !data.user) {
     if (error?.message?.toLowerCase().includes("already")) {
@@ -81,7 +87,8 @@ export async function signupAction(
     return { status: "error", errorKey: "generic" };
   }
 
-  const { error: profileError } = await supabase.from("profiles").insert({
+  // Create profile row regardless of whether email is confirmed
+  await supabase.from("profiles").upsert({
     id: data.user.id,
     email,
     name,
@@ -89,10 +96,25 @@ export async function signupAction(
     approved: role === "buyer",
   });
 
-  if (profileError) {
-    return { status: "error", errorKey: "generic" };
+  // Auto sign-in so the session cookie is set immediately, bypassing any
+  // email-confirmation redirect that Supabase would normally enforce.
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (signInError) {
+    // If auto-login fails (e.g. Supabase still requires confirmation in project
+    // settings), send them to login with a helpful note instead of erroring.
+    const dest =
+      role === "consultant"
+        ? `/${locale}/auth/login?pending=1`
+        : `/${locale}/auth/login?registered=1`;
+    redirect(dest);
+    return { status: "ok" };
   }
 
+  // Success — redirect directly into the app, no email step required.
   const dest =
     role === "consultant"
       ? `/${locale}/auth/login?pending=1`

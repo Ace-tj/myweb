@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -18,7 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "myweb — Ready-made websites and apps",
-  description: "A store of ready websites and apps. Browse demos, request your customization, and launch.",
+  description:
+    "Browse 10 fully-functional demo platforms, request your customization, and launch.",
 };
 
 export function generateStaticParams() {
@@ -33,18 +35,19 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-white text-neutral-900">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body className="min-h-full flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+        <ThemeProvider>
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

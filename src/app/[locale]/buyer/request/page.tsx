@@ -2,9 +2,11 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { Zap, ArrowRight, CheckCircle2 } from "lucide-react";
 
 const DEMO_LABELS: Record<string, string> = {
   shop: "Online Shop",
@@ -12,28 +14,29 @@ const DEMO_LABELS: Record<string, string> = {
   accounting: "Accounting Suite",
   "china-uni": "Chinese University Agent",
   school: "School System (K-12)",
-  university: "University System",
+  university: "University Portal",
   restaurant: "Restaurant POS",
-  personal: "Personal Info System",
-  clinic: "Clinic Appointments",
-  logistics: "Logistics & Delivery",
+  personal: "Personal CRM",
+  clinic: "Clinic System",
+  logistics: "Logistics Platform",
 };
 
 const DEMO_COLORS: Record<string, string> = {
-  shop: "bg-orange-100 text-orange-800",
-  gym: "bg-red-100 text-red-800",
-  accounting: "bg-blue-100 text-blue-800",
-  "china-uni": "bg-yellow-100 text-yellow-800",
-  school: "bg-green-100 text-green-800",
-  university: "bg-purple-100 text-purple-800",
-  restaurant: "bg-amber-100 text-amber-800",
-  personal: "bg-slate-100 text-slate-800",
-  clinic: "bg-teal-100 text-teal-800",
-  logistics: "bg-yellow-100 text-yellow-800",
+  shop: "bg-orange-500/15 text-orange-500 border border-orange-500/20",
+  gym: "bg-green-500/15 text-green-500 border border-green-500/20",
+  accounting: "bg-blue-500/15 text-blue-500 border border-blue-500/20",
+  "china-uni": "bg-amber-500/15 text-amber-500 border border-amber-500/20",
+  school: "bg-sky-500/15 text-sky-500 border border-sky-500/20",
+  university: "bg-purple-500/15 text-purple-500 border border-purple-500/20",
+  restaurant: "bg-red-500/15 text-red-500 border border-red-500/20",
+  personal: "bg-indigo-500/15 text-indigo-500 border border-indigo-500/20",
+  clinic: "bg-teal-500/15 text-teal-500 border border-teal-500/20",
+  logistics: "bg-slate-400/20 text-slate-500 border border-slate-400/20",
 };
 
+const INPUT_CLASS = "w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
+
 function RequestForm() {
-  const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,16 +54,13 @@ function RequestForm() {
     notes: "",
   });
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-
     const project = {
       id: `proj-${Date.now()}`,
       demoSlug,
@@ -68,177 +68,175 @@ function RequestForm() {
       status: "pending",
       createdAt: new Date().toISOString(),
     };
-
     const existing = JSON.parse(localStorage.getItem("myweb_projects") ?? "[]");
-    localStorage.setItem(
-      "myweb_projects",
-      JSON.stringify([...existing, project])
-    );
-
+    localStorage.setItem("myweb_projects", JSON.stringify([...existing, project]));
     setSuccess(true);
     setSubmitting(false);
-
     setTimeout(() => {
       router.push(`/${locale}/buyer/dashboard` as "/");
     }, 2000);
   }
 
   const demoLabel = DEMO_LABELS[demoSlug] ?? demoSlug;
-  const demoColor =
-    DEMO_COLORS[demoSlug] ?? "bg-neutral-100 text-neutral-700";
+  const demoColor = DEMO_COLORS[demoSlug] ?? "bg-indigo-500/15 text-indigo-500 border border-indigo-500/20";
+
+  const inputStyle = {
+    background: "rgb(var(--bg))",
+    borderColor: "rgb(var(--border))",
+    color: "rgb(var(--text))",
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200">
-        <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            {t("common.appName")}
+    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
+      {/* Header */}
+      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
+        <div className="mx-auto max-w-4xl px-6 py-3.5 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <Zap size={14} className="text-white" fill="white" />
+            </div>
+            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
           </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/buyer/dashboard" className="text-neutral-500 hover:text-neutral-700">
-              {t("nav.dashboard")}
-            </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/buyer/dashboard" className="text-sm font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Dashboard</Link>
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </div>
       </header>
 
       <main className="flex-1 mx-auto max-w-2xl w-full px-6 py-12">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {t("buyer.request.heading")}
-        </h1>
-
-        {demoSlug && (
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-sm text-neutral-500">
-              {t("buyer.request.selectedDemo")}:
-            </span>
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${demoColor}`}
-            >
-              {demoLabel}
-            </span>
-          </div>
-        )}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Submit a Project Brief</h1>
+          {demoSlug && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>Selected demo:</span>
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${demoColor}`}>
+                {demoLabel}
+              </span>
+            </div>
+          )}
+        </div>
 
         {success ? (
-          <div className="mt-8 rounded-2xl bg-green-50 border border-green-200 p-8 text-center">
-            <p className="text-green-800 font-medium text-lg">
-              {t("buyer.request.success")}
-            </p>
+          <div className="rounded-2xl border p-10 text-center" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
+            <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={28} className="text-emerald-500" />
+            </div>
+            <h2 className="text-lg font-bold mb-2" style={{ color: "rgb(var(--text))" }}>Brief submitted!</h2>
+            <p className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>Redirecting you to the dashboard…</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                {t("buyer.request.businessName")}
-              </label>
-              <input
-                name="businessName"
-                value={form.businessName}
-                onChange={handleChange}
-                required
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-                placeholder="Acme Corp"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                {t("buyer.request.description")}
-              </label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                required
-                rows={4}
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none"
-                placeholder="Describe what you need…"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                {t("buyer.request.colorPref")}
-              </label>
-              <input
-                name="colorPref"
-                value={form.colorPref}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-                placeholder="Blue and white, modern look…"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-2xl border p-8" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Business name */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
-                  {t("buyer.request.pagesNeeded")}
-                </label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Business / Project Name</label>
                 <input
-                  type="number"
-                  name="pagesNeeded"
-                  value={form.pagesNeeded}
+                  name="businessName"
+                  value={form.businessName}
                   onChange={handleChange}
-                  min={1}
-                  className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-                  placeholder="5"
+                  required
+                  className={INPUT_CLASS}
+                  style={inputStyle}
+                  placeholder="Acme Corp"
                 />
               </div>
+
+              {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">
-                  {t("buyer.request.budget")}
-                </label>
-                <input
-                  type="number"
-                  name="budget"
-                  value={form.budget}
+                <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>What do you need built?</label>
+                <textarea
+                  name="description"
+                  value={form.description}
                   onChange={handleChange}
-                  min={0}
-                  className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-                  placeholder="1000"
+                  required
+                  rows={4}
+                  className={INPUT_CLASS + " resize-none"}
+                  style={inputStyle}
+                  placeholder="Describe what you need, key features, users, etc."
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                {t("buyer.request.deadline")}
-              </label>
-              <input
-                type="date"
-                name="deadline"
-                value={form.deadline}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-              />
-            </div>
+              {/* Color preference */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Color &amp; Style Preference</label>
+                <input
+                  name="colorPref"
+                  value={form.colorPref}
+                  onChange={handleChange}
+                  className={INPUT_CLASS}
+                  style={inputStyle}
+                  placeholder="e.g. Blue and white, professional look"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                {t("buyer.request.notes")}
-              </label>
-              <textarea
-                name="notes"
-                value={form.notes}
-                onChange={handleChange}
-                rows={3}
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none"
-                placeholder="Any other details…"
-              />
-            </div>
+              {/* Pages + Budget */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Number of Pages</label>
+                  <input
+                    type="number"
+                    name="pagesNeeded"
+                    value={form.pagesNeeded}
+                    onChange={handleChange}
+                    min={1}
+                    className={INPUT_CLASS}
+                    style={inputStyle}
+                    placeholder="5"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Budget (USD)</label>
+                  <input
+                    type="number"
+                    name="budget"
+                    value={form.budget}
+                    onChange={handleChange}
+                    min={0}
+                    className={INPUT_CLASS}
+                    style={inputStyle}
+                    placeholder="1000"
+                  />
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full rounded-lg bg-neutral-900 text-white px-6 py-3 text-sm font-medium hover:bg-neutral-700 transition-colors disabled:opacity-60"
-            >
-              {submitting
-                ? t("buyer.request.submitting")
-                : t("buyer.request.submit")}
-            </button>
-          </form>
+              {/* Deadline */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Deadline</label>
+                <input
+                  type="date"
+                  name="deadline"
+                  value={form.deadline}
+                  onChange={handleChange}
+                  className={INPUT_CLASS}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: "rgb(var(--text))" }}>Additional Notes</label>
+                <textarea
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
+                  rows={3}
+                  className={INPUT_CLASS + " resize-none"}
+                  style={inputStyle}
+                  placeholder="Anything else we should know…"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submitting ? "Submitting…" : <><span>Submit Brief</span><ArrowRight size={15} /></>}
+              </button>
+            </form>
+          </div>
         )}
       </main>
     </div>

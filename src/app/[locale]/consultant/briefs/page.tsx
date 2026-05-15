@@ -1,7 +1,8 @@
-import { setRequestLocale, getTranslations } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { StatusBadge } from "@/components/shared/StatusBadge";
+import { Zap, Briefcase, ArrowRight, DollarSign, Calendar } from "lucide-react";
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
@@ -15,6 +16,7 @@ interface Brief {
   budget: number;
   deadline: string;
   description: string;
+  category: string;
 }
 
 const MOCK_BRIEFS: Brief[] = [
@@ -25,17 +27,18 @@ const MOCK_BRIEFS: Brief[] = [
     businessName: "Green Basket Market",
     budget: 1500,
     deadline: "2026-07-01",
-    description: "Online store for organic products with cart and checkout.",
+    description: "Online store for organic products with cart, checkout, and order tracking.",
+    category: "E-commerce",
   },
   {
     id: "proj-102",
     demoSlug: "clinic",
-    demoLabel: "Clinic Appointments",
+    demoLabel: "Clinic System",
     businessName: "CityMed Clinic",
     budget: 2000,
     deadline: "2026-08-15",
-    description:
-      "Appointment booking system for a 5-doctor private clinic with patient portal.",
+    description: "Appointment booking system for a 5-doctor private clinic with patient portal.",
+    category: "Healthcare",
   },
   {
     id: "proj-103",
@@ -44,10 +47,27 @@ const MOCK_BRIEFS: Brief[] = [
     businessName: "Spice Garden",
     budget: 900,
     deadline: "2026-06-20",
-    description:
-      "POS system for a mid-size restaurant with table management and kitchen tickets.",
+    description: "POS system for a mid-size restaurant with table management and kitchen tickets.",
+    category: "Food & Bev",
+  },
+  {
+    id: "proj-104",
+    demoSlug: "logistics",
+    demoLabel: "Logistics Platform",
+    businessName: "FastTrack Delivery",
+    budget: 1800,
+    deadline: "2026-07-30",
+    description: "Fleet tracking and shipment management system for 8-truck regional delivery company.",
+    category: "Logistics",
   },
 ];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  "E-commerce": "bg-orange-500/15 text-orange-500",
+  "Healthcare": "bg-teal-500/15 text-teal-500",
+  "Food & Bev": "bg-red-500/15 text-red-500",
+  "Logistics": "bg-slate-400/20 text-slate-500",
+};
 
 export default async function ConsultantBriefsPage({
   params,
@@ -56,65 +76,76 @@ export default async function ConsultantBriefsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations();
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            {t("common.appName")}
+    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
+      {/* Header */}
+      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
+        <div className="mx-auto max-w-6xl px-6 py-3.5 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <Zap size={14} className="text-white" fill="white" />
+            </div>
+            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
           </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/consultant/dashboard" className="text-neutral-500 hover:text-neutral-700">
-              {t("nav.dashboard")}
-            </Link>
-            <Link href="/auth/logout" className="text-neutral-500 hover:text-neutral-700">
-              {t("nav.logout")}
-            </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <Link href="/consultant/briefs" className="font-semibold text-indigo-600">Browse Briefs</Link>
+            <Link href="/consultant/dashboard" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Dashboard</Link>
+            <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
+            <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>
+          </nav>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </div>
       </header>
 
       <main className="flex-1 mx-auto max-w-5xl w-full px-6 py-10">
-        <h1 className="text-2xl font-bold tracking-tight mb-8">
-          {t("consultant.briefs.heading")}
-        </h1>
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Open Project Briefs</h1>
+          <p className="text-sm mt-1" style={{ color: "rgb(var(--text-muted))" }}>Browse buyer requests and claim projects you&apos;d like to work on</p>
+        </div>
 
         {MOCK_BRIEFS.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-neutral-200 bg-white px-8 py-16 text-center">
-            <p className="text-neutral-500 text-sm">{t("consultant.briefs.empty")}</p>
+          <div className="rounded-2xl border-2 border-dashed p-16 text-center" style={{ borderColor: "rgb(var(--border))" }}>
+            <p className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>No open briefs at the moment. Check back soon.</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {MOCK_BRIEFS.map((brief) => (
+            {MOCK_BRIEFS.map(brief => (
               <div
                 key={brief.id}
-                className="bg-white rounded-2xl border border-neutral-200 p-6 flex flex-col sm:flex-row sm:items-center gap-4"
+                className="rounded-2xl border p-6 flex flex-col sm:flex-row sm:items-center gap-5 transition-all hover:border-indigo-500/30 hover:shadow-sm"
+                style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
               >
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="font-semibold text-lg">{brief.businessName}</h2>
-                    <StatusBadge status="pending" label={brief.demoLabel} />
-                  </div>
-                  <p className="text-sm text-neutral-500 line-clamp-2">{brief.description}</p>
-                  <div className="flex gap-4 text-sm text-neutral-600">
-                    <span>
-                      <span className="text-neutral-400">{t("consultant.briefs.budget")}: </span>
-                      <span className="font-medium">${brief.budget}</span>
+                <div className="w-11 h-11 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-500 flex-shrink-0">
+                  <Briefcase size={19} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <h2 className="font-semibold text-sm" style={{ color: "rgb(var(--text))" }}>{brief.businessName}</h2>
+                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${CATEGORY_COLORS[brief.category] ?? "bg-indigo-500/15 text-indigo-500"}`}>
+                      {brief.demoLabel}
                     </span>
-                    <span>
-                      <span className="text-neutral-400">{t("consultant.briefs.deadline")}: </span>
-                      <span className="font-medium">{brief.deadline}</span>
+                  </div>
+                  <p className="text-sm line-clamp-2 mb-3" style={{ color: "rgb(var(--text-muted))" }}>{brief.description}</p>
+                  <div className="flex items-center gap-4 text-xs" style={{ color: "rgb(var(--text-subtle))" }}>
+                    <span className="flex items-center gap-1">
+                      <DollarSign size={12} />
+                      <span className="font-semibold text-emerald-500">${brief.budget.toLocaleString()}</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar size={12} />
+                      Due {brief.deadline}
                     </span>
                   </div>
                 </div>
                 <Link
                   href={`/consultant/projects/${brief.id}` as "/"}
-                  className="shrink-0 rounded-lg bg-neutral-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-700 transition-colors text-center"
+                  className="flex-shrink-0 flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
                 >
-                  {t("consultant.briefs.viewBrief")}
+                  View Brief <ArrowRight size={14} />
                 </Link>
               </div>
             ))}
