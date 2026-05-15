@@ -9,7 +9,7 @@ import {
   IconMapPin, IconClock, IconAlertCircle, IconHeartbeat,
   IconDroplet, IconTemperature, IconLungs, IconBrain,
   IconBone, IconEye, IconEar, IconDental, IconVirus,
-  IconUserMd, IconClipboardList, IconChartBar,
+  IconUserHeart, IconClipboardList, IconChartBar,
   IconPrinter, IconDownload, IconSend, IconShield,
   IconActivity, IconHistory, IconNotes, IconVaccine,
   IconFileText, IconBandage, IconMicroscope
@@ -106,7 +106,7 @@ function Sidebar({ page, setPage }: { page: string; setPage: (p: string) => void
     { id: "dashboard", icon: <IconHome size={18} />, label: "Dashboard" },
     { id: "appointments", icon: <IconCalendar size={18} />, label: "Appointments" },
     { id: "patients", icon: <IconUsers size={18} />, label: "Patients" },
-    { id: "doctors", icon: <IconUserMd size={18} />, label: "Doctors" },
+    { id: "doctors", icon: <IconUserHeart size={18} />, label: "Doctors" },
     { id: "prescriptions", icon: <IconPill size={18} />, label: "Prescriptions" },
     { id: "billing", icon: <IconCurrencyDollar size={18} />, label: "Billing" },
     { id: "patient-portal", icon: <IconShield size={18} />, label: "Patient Portal" },
@@ -462,7 +462,7 @@ function PatientDetail({ patient, setPage }: { patient: typeof PATIENTS[0]; setP
               { icon: <IconPhone size={14} />, value: patient.phone },
               { icon: <IconMail size={14} />, value: patient.email },
               { icon: <IconMapPin size={14} />, value: patient.address },
-              { icon: <IconUserMd size={14} />, value: `Primary: ${patient.doctor}` },
+              { icon: <IconUserHeart size={14} />, value: `Primary: ${patient.doctor}` },
               { icon: <IconCalendar size={14} />, value: `Last visit: ${patient.lastVisit}` },
               { icon: <IconCalendar size={14} />, value: `Next appt: ${patient.nextAppt}` },
             ].map(({ icon, value }) => (

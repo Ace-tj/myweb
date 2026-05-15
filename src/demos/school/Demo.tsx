@@ -11,7 +11,7 @@ import {
   IconChevronRight, IconChevronLeft, IconFilter,
   IconDownload, IconPrinter, IconSend, IconArrowLeft,
   IconGenderMale, IconGenderFemale, IconMedal,
-  IconBookOpen, IconBuildingCommunity, IconFileText,
+  IconBuildingCommunity, IconFileText,
   IconHeartHandshake, IconTargetArrow, IconAward
 } from "@tabler/icons-react";
 
