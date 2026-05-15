@@ -109,7 +109,7 @@ export default async function DemoSlugPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  await getTranslations();
+  const t = await getTranslations();
 
   const demo = DEMOS.find((d) => d.slug === slug);
   if (!demo) notFound();
@@ -120,6 +120,9 @@ export default async function DemoSlugPage({
     restaurant: UtensilsCrossed, personal: User, clinic: Stethoscope, logistics: Truck,
   };
   const LucideIcon = ICON_MAP[slug] ?? Monitor;
+  const title = t(demo.titleKey as Parameters<typeof t>[0]);
+  const description = t(demo.descriptionKey as Parameters<typeof t>[0]);
+  const categoryLabel = t(`demosPage.categories.${demo.category}` as Parameters<typeof t>[0]);
 
   return (
     <div className="min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
@@ -128,13 +131,13 @@ export default async function DemoSlugPage({
       <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between gap-4">
           <Link href="/demos" className="flex items-center gap-2 text-sm text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] transition-colors">
-            <ArrowLeft size={14} /> Back to Demos
+            <ArrowLeft size={14} /> {t("demoDetail.backToDemos")}
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
             <Link href="/auth/signup" className="text-sm font-semibold px-4 py-2 rounded-lg bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))] transition-colors">
-              Get Started
+              {t("demoDetail.getStarted")}
             </Link>
           </div>
         </div>
@@ -149,26 +152,27 @@ export default async function DemoSlugPage({
         <div className="relative mx-auto max-w-7xl px-6 py-20 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-widest mb-6 border border-white/20">
-              {demo.category}
+              {categoryLabel}
             </div>
             <h1 className="text-5xl font-extrabold tracking-tight mb-4">
-              {demo.icon} {demo.slug.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")} System
+              {demo.icon} {title}
             </h1>
             <p className="text-white/80 text-lg max-w-xl mb-8 leading-relaxed">
-              A fully functional {demo.category} platform with {demo.pages.length} complete pages, real data, and interactive features.
+              {t("demoDetail.heroDesc", { category: categoryLabel, count: demo.pages.length })}
             </p>
+            <p className="text-white/70 text-sm max-w-xl mb-8 leading-relaxed">{description}</p>
             <div className="flex flex-wrap gap-3">
               <Link
-                href={`/demos/${slug}/preview`}
+                href={`/demos/${slug}/preview` as "/"}
                 className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-neutral-900 font-bold hover:scale-105 transition-transform shadow-xl"
               >
-                <ExternalLink size={16} /> Open Live Preview
+                <ExternalLink size={16} /> {t("demoDetail.openLivePreview")}
               </Link>
               <Link
-                href={`/auth/signup?demo=${slug}`}
+                href={`/auth/signup?demo=${slug}` as "/"}
                 className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 font-semibold hover:bg-white/30 transition-colors"
               >
-                I want this <ArrowRight size={15} />
+                {t("demoDetail.iWantThis")} <ArrowRight size={15} />
               </Link>
             </div>
           </div>
@@ -184,7 +188,7 @@ export default async function DemoSlugPage({
 
           {/* All Pages */}
           <div>
-            <h2 className="text-2xl font-extrabold mb-5">All Pages Included</h2>
+            <h2 className="text-2xl font-extrabold mb-5">{t("demoDetail.allPages")}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {demo.pages.map((page, i) => (
                 <div key={i} className="flex items-center gap-3 p-3.5 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))]">
@@ -199,7 +203,7 @@ export default async function DemoSlugPage({
 
           {/* Features */}
           <div>
-            <h2 className="text-2xl font-extrabold mb-5">Key Features</h2>
+            <h2 className="text-2xl font-extrabold mb-5">{t("demoDetail.keyFeatures")}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               {demo.features.map((f, i) => (
                 <div key={i} className="flex items-start gap-2.5 p-3.5 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))]">
@@ -212,12 +216,12 @@ export default async function DemoSlugPage({
 
           {/* Compatibility */}
           <div>
-            <h2 className="text-2xl font-extrabold mb-5">Compatibility</h2>
+            <h2 className="text-2xl font-extrabold mb-5">{t("demoDetail.compatibility")}</h2>
             <div className="flex gap-4">
               {[
-                { icon: Monitor, label: "Desktop" },
-                { icon: Smartphone, label: "Mobile" },
-                { icon: Globe2, label: "All Browsers" },
+                { icon: Monitor, label: t("demoDetail.desktop") },
+                { icon: Smartphone, label: t("demoDetail.mobile") },
+                { icon: Globe2, label: t("demoDetail.browsers") },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex-1 p-4 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] flex flex-col items-center gap-2 text-center">
                   <Icon size={20} className="text-[rgb(var(--accent))]" />
@@ -232,40 +236,40 @@ export default async function DemoSlugPage({
         {/* Right: Price card */}
         <div className="lg:sticky lg:top-24 h-fit">
           <div className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6 shadow-xl">
-            <div className="text-xs text-[rgb(var(--text-subtle))] uppercase tracking-widest mb-1">Starting from</div>
+            <div className="text-xs text-[rgb(var(--text-subtle))] uppercase tracking-widest mb-1">{t("demoDetail.startingFrom")}</div>
             <div className="text-5xl font-extrabold mb-1">${demo.basePriceUsd}</div>
-            <div className="text-sm text-[rgb(var(--text-muted))] mb-6">One-time payment · Source code included</div>
+            <div className="text-sm text-[rgb(var(--text-muted))] mb-6">{t("demoDetail.oneTime")}</div>
 
             <div className="flex flex-col gap-2.5 mb-6">
-              {["Source code ownership", "3 language support", "6 months of support", "Supabase backend included", "Consultant assigned"].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm">
+              {(["code", "lang", "support", "backend", "consultant"] as const).map((key) => (
+                <div key={key} className="flex items-center gap-2 text-sm">
                   <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
-                  {item}
+                  {t(`demoDetail.features.${key}` as Parameters<typeof t>[0])}
                 </div>
               ))}
             </div>
 
             <Link
-              href={`/demos/${slug}/preview`}
+              href={`/demos/${slug}/preview` as "/"}
               className="block w-full text-center py-3 rounded-xl border border-[rgb(var(--border))] font-semibold text-sm hover:bg-[rgb(var(--bg-hover))] transition-colors mb-3"
             >
               <ExternalLink size={14} className="inline mr-1.5" />
-              Open Live Demo
+              {t("demoDetail.openLiveDemo")}
             </Link>
             <Link
-              href={`/auth/signup?demo=${slug}`}
+              href={`/auth/signup?demo=${slug}` as "/"}
               className="block w-full text-center py-3 rounded-xl bg-[rgb(var(--accent))] text-white font-bold hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25"
             >
-              I want this →
+              {t("demoDetail.iWantThis")} →
             </Link>
 
             {/* Tech stack */}
             <div className="mt-6 pt-5 border-t border-[rgb(var(--border))]">
-              <div className="text-xs font-bold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-3">Tech Stack</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-3">{t("demoDetail.techStack")}</div>
               <div className="flex flex-wrap gap-1.5">
-                {demo.tech.map((t) => (
-                  <span key={t} className="px-2 py-0.5 rounded-md bg-[rgb(var(--bg-hover))] text-[rgb(var(--text-muted))] text-xs font-medium border border-[rgb(var(--border))]">
-                    {t}
+                {demo.tech.map((tech) => (
+                  <span key={tech} className="px-2 py-0.5 rounded-md bg-[rgb(var(--bg-hover))] text-[rgb(var(--text-muted))] text-xs font-medium border border-[rgb(var(--border))]">
+                    {tech}
                   </span>
                 ))}
               </div>

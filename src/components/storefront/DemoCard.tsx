@@ -69,7 +69,7 @@ export function DemoCard({
       {featured && (
         <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-[rgb(var(--accent))] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg">
           <Sparkles size={9} />
-          Featured
+          {t("demosPage.featured")}
         </div>
       )}
 
@@ -87,10 +87,10 @@ export function DemoCard({
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
           <Link
-            href={`/demos/${slug}/preview`}
+            href={`/demos/${slug}/preview` as "/"}
             className="flex items-center gap-1.5 bg-white text-neutral-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform"
           >
-            <Eye size={12} /> Live Preview
+            <Eye size={12} /> {t("demosPage.livePreview")}
           </Link>
         </div>
       </div>
@@ -99,10 +99,10 @@ export function DemoCard({
         {/* Category & price */}
         <div className="flex items-center justify-between mb-2">
           <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full ${badgeClass}`}>
-            {category}
+            {t(`demosPage.categories.${category}` as Parameters<typeof t>[0])}
           </span>
           <span className="text-xs text-[rgb(var(--text-subtle))]">
-            from <span className="text-base font-extrabold text-[rgb(var(--text))]">${basePriceUsd}</span>
+            {t("demosPage.from")} <span className="text-base font-extrabold text-[rgb(var(--text))]">${basePriceUsd}</span>
           </span>
         </div>
 
@@ -128,16 +128,16 @@ export function DemoCard({
         {/* Actions */}
         <div className="flex gap-2">
           <Link
-            href={`/demos/${slug}/preview`}
+            href={`/demos/${slug}/preview` as "/"}
             className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-[rgb(var(--border))] px-3 py-2 text-xs font-semibold text-[rgb(var(--text-muted))] hover:bg-[rgb(var(--bg-hover))] hover:text-[rgb(var(--text))] transition-colors"
           >
-            <Eye size={12} /> Preview
+            <Eye size={12} /> {t("demosPage.preview")}
           </Link>
           <Link
-            href={`/auth/signup?demo=${slug}`}
+            href={`/auth/signup?demo=${slug}` as "/"}
             className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[rgb(var(--accent))] text-white px-3 py-2 text-xs font-semibold hover:bg-[rgb(var(--accent-hover))] transition-colors shadow-md shadow-[rgb(var(--accent))]/20"
           >
-            I want this <ArrowRight size={11} />
+            {t("demosPage.wantThis")} <ArrowRight size={11} />
           </Link>
         </div>
       </div>
