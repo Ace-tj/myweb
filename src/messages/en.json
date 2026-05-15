@@ -1,0 +1,248 @@
+{
+  "common": {
+    "appName": "myweb",
+    "tagline": "Ready-made websites and apps. Pick. Customize. Launch.",
+    "browseDemos": "Browse demos",
+    "howItWorks": "How it works",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "forgotPassword": "Forgot password?",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "send": "Send",
+    "search": "Search"
+  },
+  "nav": {
+    "home": "Home",
+    "demos": "Demos",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "logout": "Sign out",
+    "adminPanel": "Admin Panel"
+  },
+  "landing": {
+    "heroHeadline": "A store of ready websites and apps.",
+    "heroSub": "Browse 10 working demos. Click the one you like. We build it for you.",
+    "ctaPrimary": "Browse demos",
+    "ctaSecondary": "Talk to a consultant",
+    "steps": {
+      "browse": "Browse",
+      "browseDesc": "Explore 10 fully working demo systems.",
+      "request": "Request",
+      "requestDesc": "Tell us what you need with a short brief.",
+      "chat": "Chat",
+      "chatDesc": "Work with your consultant in real time.",
+      "receive": "Receive",
+      "receiveDesc": "Get the finished build, customized for you."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your myweb account",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Create one",
+      "demoBanner": "Auth backend not connected yet. UI runs in offline preview mode.",
+      "errors": {
+        "invalid": "Email or password is incorrect.",
+        "notApproved": "Your consultant account is awaiting admin approval.",
+        "generic": "Something went wrong. Please try again.",
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "passwordRequired": "Password is required.",
+        "passwordShort": "Password must be at least 8 characters."
+      }
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Choose your account type to get started",
+      "roleBuyer": "I want to buy a website or app",
+      "roleBuyerDesc": "Browse demos and order a custom build.",
+      "roleConsultant": "I want to build for clients",
+      "roleConsultantDesc": "Receive briefs, send quotes, deliver work.",
+      "nameLabel": "Full name",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "consultantNote": "Consultant accounts require admin approval before you can log in.",
+      "success": "Account created. Check your email to confirm.",
+      "errors": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "emailTaken": "An account with this email already exists.",
+        "passwordShort": "Password must be at least 8 characters.",
+        "nameRequired": "Full name is required.",
+        "roleRequired": "Please select a role.",
+        "generic": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "buyer": {
+    "dashboard": {
+      "welcome": "Welcome, {name}!",
+      "myProjects": "My Projects",
+      "emptyProjects": "No projects yet. Browse our demos to get started.",
+      "browseDemos": "Browse Demos"
+    },
+    "request": {
+      "heading": "Request a custom build",
+      "selectedDemo": "Selected demo",
+      "businessName": "Business name",
+      "description": "Describe your project",
+      "colorPref": "Color preferences",
+      "pagesNeeded": "Number of pages",
+      "budget": "Budget (USD)",
+      "deadline": "Desired deadline",
+      "notes": "Additional notes",
+      "submit": "Submit brief",
+      "submitting": "Submitting…",
+      "success": "Brief submitted! A consultant will contact you soon."
+    },
+    "project": {
+      "brief": "Your Brief",
+      "status": "Status",
+      "milestones": "Milestones",
+      "acceptQuote": "Accept Quote",
+      "rejectQuote": "Reject Quote",
+      "quoteAmount": "Quote Amount",
+      "quoteScope": "Scope of Work",
+      "noMilestones": "No milestones yet."
+    }
+  },
+  "consultant": {
+    "dashboard": {
+      "openBriefs": "Open Briefs",
+      "emptyBriefs": "No new briefs assigned yet.",
+      "activeProjects": "Active Projects",
+      "emptyActive": "No active projects."
+    },
+    "briefs": {
+      "heading": "Open Briefs",
+      "empty": "No open briefs available",
+      "viewBrief": "View brief",
+      "budget": "Budget",
+      "deadline": "Deadline"
+    },
+    "project": {
+      "buyerBrief": "Buyer's Brief",
+      "quoteStatus": "Quote Status"
+    },
+    "quote": {
+      "heading": "Send a quote",
+      "amount": "Quote amount (USD)",
+      "scope": "Scope of work",
+      "send": "Send quote",
+      "sent": "Quote sent"
+    },
+    "milestones": {
+      "heading": "Milestones",
+      "addTitle": "Milestone title",
+      "addAmount": "Amount (USD)",
+      "addDue": "Due date",
+      "add": "Add milestone",
+      "markDone": "Mark done",
+      "done": "Done"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Panel",
+      "users": "Users",
+      "projects": "Projects",
+      "demos": "Demos",
+      "manageUsers": "Manage Users",
+      "manageDemos": "Manage Demos",
+      "viewProjects": "View Projects"
+    },
+    "users": {
+      "heading": "User Management",
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "approved": "Approved",
+      "joined": "Joined",
+      "actions": "Actions",
+      "approve": "Approve",
+      "ban": "Ban",
+      "yes": "Yes",
+      "no": "No",
+      "banned": "Banned",
+      "searchPlaceholder": "Search by name or email…"
+    },
+    "demos": {
+      "heading": "Demo Management",
+      "slug": "Slug",
+      "title": "Title",
+      "category": "Category",
+      "basePrice": "Base Price",
+      "featured": "Featured",
+      "order": "Order",
+      "actions": "Actions",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "projects": {
+      "heading": "All Projects",
+      "id": "Project ID",
+      "buyer": "Buyer",
+      "consultant": "Consultant",
+      "demoType": "Demo Type",
+      "status": "Status",
+      "created": "Created",
+      "unassigned": "Unassigned"
+    }
+  },
+  "chat": {
+    "placeholder": "Type a message…",
+    "send": "Send",
+    "attachImage": "Attach image",
+    "reply": "Reply",
+    "reactions": "React",
+    "search": "Search messages…",
+    "typing": "{name} is typing…",
+    "readReceipt": "Read"
+  },
+  "status": {
+    "pending": "Pending Quote",
+    "quote_received": "Quote Received",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "pending_short": "Pending",
+    "active": "Active"
+  },
+  "demosPage": {
+    "heading": "Browse Our Ready-Made Systems",
+    "subheading": "Pick a system, tell us what you need, and we build it for you.",
+    "filterAll": "All",
+    "preview": "Preview",
+    "wantThis": "I want this",
+    "from": "From",
+    "backToDemos": "Back to demos"
+  },
+  "demos": {
+    "shop":        { "title": "Online Shop",            "description": "Modern e-commerce storefront with cart, checkout, and order tracking." },
+    "gym":         { "title": "Gym Management",         "description": "Member roster, class scheduling, attendance, and billing in one tool." },
+    "accounting":  { "title": "Accounting Suite",       "description": "Invoices, expenses, clients, P&L reports, and tax summaries." },
+    "china_uni":   { "title": "Chinese University Agent", "description": "Agents post universities; students apply with documents end-to-end." },
+    "school":      { "title": "School System (K-12)",   "description": "Classes, gradebook, attendance, and parent communication." },
+    "university":  { "title": "University System",      "description": "Course catalog, enrollment, transcripts, and faculty tools." },
+    "restaurant":  { "title": "Restaurant POS",         "description": "Menu, tables, kitchen tickets, online ordering, and sales reports." },
+    "pim":         { "title": "Personal Info System",   "description": "Contacts, notes, tasks, and a personal document vault." },
+    "clinic":      { "title": "Clinic Appointments",    "description": "Patient records, appointments, prescriptions, and patient portal." },
+    "logistics":   { "title": "Logistics & Delivery",   "description": "Order intake, driver assignment, route maps, and package tracking." }
+  }
+}
