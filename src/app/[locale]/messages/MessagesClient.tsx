@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Link } from "@/i18n/navigation";
 import {
   Send, Smile, Image as ImageIcon, Search, Headphones,
-  Check, CheckCheck, ArrowLeft, MessageSquare, AlertCircle, Zap,
+  Check, CheckCheck, ArrowLeft, MessageSquare, AlertCircle,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
@@ -299,26 +299,44 @@ export function MessagesClient({ initialState, reason, session }: Props) {
   );
 }
 
-function Header({ dashPath, session }: { dashPath: string; session: { name: string; role: Role } }) {
+function Header({
+  dashPath,
+  session,
+}: {
+  dashPath: string;
+  session: { name: string; role: Role };
+}) {
   return (
-    <header className="border-b sticky top-0 z-20 backdrop-blur-sm flex-shrink-0" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-      <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href={dashPath as "/"} className="flex items-center gap-2 text-sm font-medium hover:text-indigo-500 transition-colors" style={{ color: "rgb(var(--text-muted))" }}>
-            <ArrowLeft size={14} /> Back
+    <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md flex-shrink-0">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          {/* Back — always visible, real button shape so it's obviously clickable */}
+          <Link
+            href={dashPath as "/"}
+            aria-label="Back to dashboard"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-lg text-sm font-medium text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--bg-hover))] active:scale-95 transition-all border border-transparent hover:border-[rgb(var(--border))]"
+          >
+            <ArrowLeft size={16} aria-hidden />
+            <span>Back</span>
           </Link>
-          <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
-            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>Messages</span>
+          <div className="h-5 w-px bg-[rgb(var(--border))]" />
+          <Link
+            href="/"
+            className="flex items-center font-extrabold text-lg tracking-tight shrink-0"
+            aria-label="myweb home"
+          >
+            <span className="gradient-text">myweb</span>
           </Link>
+          <span className="hidden md:inline text-sm text-[rgb(var(--text-muted))] font-medium border-l border-[rgb(var(--border))] pl-3 truncate">
+            Messages
+          </span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm hidden sm:inline" style={{ color: "rgb(var(--text-muted))" }}>{session.name}</span>
-          <ThemeToggle />
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="hidden sm:inline text-sm text-[rgb(var(--text-muted))] truncate max-w-[140px]">
+            {session.name}
+          </span>
           <LanguageSwitcher />
+          <ThemeToggle />
         </div>
       </div>
     </header>
