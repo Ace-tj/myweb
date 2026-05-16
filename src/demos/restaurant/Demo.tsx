@@ -8,6 +8,11 @@ import {
   Trash, Bell, Warning, CurrencyDollar, TrendUp,
   Coffee, Pizza, ForkKnife, Cookie, Wine, Leaf
 } from "@phosphor-icons/react";
+import photosData from "@/data/photos.json";
+
+const FOOD_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.restaurant_food;
+const photoForFood = (id: number) =>
+  FOOD_PHOTOS[(id - 1) % FOOD_PHOTOS.length]?.thumb ?? "";
 
 // ─── palette ────────────────────────────────────────────────────────────────
 const C = {
@@ -252,8 +257,8 @@ function MenuManagement() {
           const margin = Math.round(((item.price - item.cost) / item.price) * 100);
           return (
             <div key={item.id} style={{ background: C.card, borderRadius: 14, padding: 18, border: `1px solid ${C.border}`, display: "flex", gap: 14 }}>
-              <div style={{ width: 56, height: 56, borderRadius: 12, background: C.terralight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontSize: 24 }}>{item.category === "Starters" ? "🥗" : item.category === "Mains" ? "🍽️" : item.category === "Pasta" ? "🍝" : item.category === "Desserts" ? "🍮" : "🍷"}</span>
+              <div style={{ width: 56, height: 56, borderRadius: 12, background: C.terralight, overflow: "hidden", flexShrink: 0 }}>
+                <img src={photoForFood(item.id)} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
@@ -659,8 +664,8 @@ function OnlineMenu() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }}>
         {filtered.map(item => (
           <div key={item.id} style={{ background: C.card, borderRadius: 14, padding: 18, border: `1px solid ${C.border}`, display: "flex", gap: 14 }}>
-            <div style={{ width: 64, height: 64, borderRadius: 12, background: C.terralight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, flexShrink: 0 }}>
-              {item.category === "Starters" ? "🥗" : item.category === "Mains" ? "🍽️" : item.category === "Pasta" ? "🍝" : item.category === "Desserts" ? "🍮" : "🍷"}
+            <div style={{ width: 64, height: 64, borderRadius: 12, background: C.terralight, overflow: "hidden", flexShrink: 0 }}>
+              <img src={photoForFood(item.id)} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>

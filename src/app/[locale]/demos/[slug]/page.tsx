@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
@@ -9,6 +10,7 @@ import {
   School, UtensilsCrossed, User, Stethoscope, Truck,
   Monitor, Smartphone, Globe2,
 } from "lucide-react";
+import { DEMO_PHOTO_CATEGORY, photoForSlug } from "@/lib/photos";
 
 interface DemoMeta {
   slug: string;
@@ -123,6 +125,8 @@ export default async function DemoSlugPage({
   const title = t(demo.titleKey as Parameters<typeof t>[0]);
   const description = t(demo.descriptionKey as Parameters<typeof t>[0]);
   const categoryLabel = t(`demosPage.categories.${demo.category}` as Parameters<typeof t>[0]);
+  const photoCategory = DEMO_PHOTO_CATEGORY[slug];
+  const heroPhoto = photoCategory ? photoForSlug(photoCategory, slug) : null;
 
   return (
     <div className="min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
@@ -143,8 +147,19 @@ export default async function DemoSlugPage({
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero with themed photo */}
       <section className={`relative overflow-hidden bg-gradient-to-br ${demo.gradient} text-white`}>
+        {heroPhoto && (
+          <Image
+            src={heroPhoto.src}
+            alt={heroPhoto.alt || title}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        )}
+        <div className={`absolute inset-0 bg-gradient-to-br ${demo.gradient} ${heroPhoto ? "opacity-80" : ""}`} />
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-black/10 blur-3xl" />
@@ -154,13 +169,13 @@ export default async function DemoSlugPage({
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-widest mb-6 border border-white/20">
               {categoryLabel}
             </div>
-            <h1 className="text-5xl font-extrabold tracking-tight mb-4">
+            <h1 className="text-5xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
               {demo.icon} {title}
             </h1>
-            <p className="text-white/80 text-lg max-w-xl mb-8 leading-relaxed">
+            <p className="text-white/90 text-lg max-w-xl mb-4 leading-relaxed drop-shadow">
               {t("demoDetail.heroDesc", { category: categoryLabel, count: demo.pages.length })}
             </p>
-            <p className="text-white/70 text-sm max-w-xl mb-8 leading-relaxed">{description}</p>
+            <p className="text-white/80 text-sm max-w-xl mb-8 leading-relaxed">{description}</p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href={`/demos/${slug}/preview` as "/"}

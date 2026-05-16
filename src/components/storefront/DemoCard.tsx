@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   ShoppingBag, Dumbbell, Calculator, GraduationCap, School,
   UtensilsCrossed, User, Stethoscope, Truck, Eye, ArrowRight, Sparkles,
 } from "lucide-react";
+import { DEMO_PHOTO_CATEGORY, photoForSlug } from "@/lib/photos";
 
 export interface DemoCardProps {
   slug: string;
@@ -56,6 +58,8 @@ export function DemoCard({
   const meta = DEMO_META[slug] ?? { icon: ShoppingBag, gradient: "from-neutral-400 to-neutral-600", tags: [] };
   const Icon = meta.icon;
   const badgeClass = CATEGORY_BADGE[category] ?? "bg-neutral-100 text-neutral-600";
+  const photoCategory = DEMO_PHOTO_CATEGORY[slug];
+  const photo = photoCategory ? photoForSlug(photoCategory, slug) : null;
 
   return (
     <div
@@ -73,19 +77,29 @@ export function DemoCard({
         </div>
       )}
 
-      {/* Visual header */}
-      <div className={`relative h-40 bg-gradient-to-br ${meta.gradient} flex items-center justify-center overflow-hidden`}>
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-2 left-2 w-16 h-16 rounded-full bg-white/30" />
-          <div className="absolute bottom-2 right-2 w-24 h-24 rounded-full bg-white/20" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-white/10" />
+      {/* Visual header — real themed photo with gradient overlay */}
+      <div className={`relative h-44 bg-gradient-to-br ${meta.gradient} overflow-hidden`}>
+        {photo && (
+          <Image
+            src={photo.src}
+            alt={photo.alt || slug}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        )}
+        {/* Color tint overlay (matches gradient theme) */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${meta.gradient} mix-blend-multiply opacity-40`} />
+        {/* Bottom shadow for icon visibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+        {/* Floating icon badge */}
+        <div className="absolute bottom-3 left-3 w-11 h-11 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
+          <Icon size={20} className="text-neutral-800" />
         </div>
-        <div className="relative w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl border border-white/30">
-          <Icon size={28} className="text-white" />
-        </div>
+
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
           <Link
             href={`/demos/${slug}/preview` as "/"}
             className="flex items-center gap-1.5 bg-white text-neutral-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform"

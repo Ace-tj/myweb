@@ -5,6 +5,13 @@ import {
   Package, Truck, CheckCircle, ArrowLeft, Plus, Minus, Trash2,
   Grid3X3, List, ShoppingBag, BarChart2, Tag, Users, TrendingUp,
 } from "lucide-react";
+import photosData from "@/data/photos.json";
+
+const PRODUCT_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.shop_products;
+const photoForProduct = (id: number) =>
+  PRODUCT_PHOTOS[(id - 1) % PRODUCT_PHOTOS.length]?.src ?? "";
+const thumbForProduct = (id: number) =>
+  PRODUCT_PHOTOS[(id - 1) % PRODUCT_PHOTOS.length]?.thumb ?? "";
 
 const PRODUCTS = [
   { id: 1, name: "Premium Leather Jacket", price: 189, originalPrice: 249, category: "Clothing", rating: 4.8, reviews: 214, badge: "Sale", inStock: true, colors: ["Black", "Brown"], emoji: "🧥" },
@@ -136,8 +143,8 @@ export default function ShopDemo() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {PRODUCTS.slice(0, 4).map((p) => (
             <div key={p.id} className="bg-white rounded-2xl border border-orange-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all group">
-              <div className="relative h-36 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
-                <span className="text-5xl">{p.emoji}</span>
+              <div className="relative h-36 bg-gradient-to-br from-orange-50 to-red-50 overflow-hidden">
+                <img src={photoForProduct(p.id)} alt={p.name} className="absolute inset-0 w-full h-full object-cover" />
                 {p.badge && <span className={`absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${p.badge === "Sale" ? "bg-red-500 text-white" : p.badge === "New" ? "bg-blue-500 text-white" : "bg-amber-500 text-white"}`}>{p.badge}</span>}
                 <button onClick={() => toggleWish(p.id)} className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow">
                   <Heart size={12} className={wishlist.includes(p.id) ? "fill-red-500 text-red-500" : "text-neutral-400"} />
@@ -189,8 +196,8 @@ export default function ShopDemo() {
         <div className={viewMode === "grid" ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" : "flex flex-col gap-3"}>
           {filtered.map((p) => viewMode === "grid" ? (
             <div key={p.id} className="bg-white rounded-2xl border border-orange-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all group">
-              <div className="relative h-40 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
-                <span className="text-6xl">{p.emoji}</span>
+              <div className="relative h-40 bg-gradient-to-br from-orange-50 to-red-50 overflow-hidden">
+                <img src={photoForProduct(p.id)} alt={p.name} className="absolute inset-0 w-full h-full object-cover" />
                 {p.badge && <span className={`absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${p.badge === "Sale" ? "bg-red-500 text-white" : p.badge === "New" ? "bg-blue-500 text-white" : "bg-amber-500 text-white"}`}>{p.badge}</span>}
                 {!p.inStock && <div className="absolute inset-0 bg-white/70 flex items-center justify-center"><span className="text-xs font-bold text-neutral-500 bg-white px-2 py-1 rounded-full border">Out of Stock</span></div>}
               </div>
@@ -206,7 +213,9 @@ export default function ShopDemo() {
             </div>
           ) : (
             <div key={p.id} className="bg-white rounded-xl border border-orange-100 p-4 flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-orange-50 rounded-xl flex items-center justify-center text-3xl shrink-0">{p.emoji}</div>
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-orange-50">
+                <img src={thumbForProduct(p.id)} alt={p.name} className="w-full h-full object-cover" />
+              </div>
               <div className="flex-1 min-w-0"><div className="font-bold text-sm">{p.name}</div><div className="text-xs text-neutral-400">{p.category}</div></div>
               <div className="text-right"><div className="text-base font-extrabold text-orange-600">${p.price}</div><button onClick={() => { setSelectedProduct(p); setPage("detail"); setSelectedColor(p.colors[0]); setQty(1); }} className="mt-1 text-xs bg-orange-500 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-orange-600 transition-colors">View</button></div>
             </div>
@@ -223,7 +232,9 @@ export default function ShopDemo() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <button onClick={() => setPage("products")} className="flex items-center gap-1.5 text-sm text-neutral-500 hover:text-orange-600 mb-6 transition-colors"><ArrowLeft size={14} /> Back</button>
         <div className="grid md:grid-cols-2 gap-10">
-          <div className="bg-white rounded-3xl border border-orange-100 h-80 flex items-center justify-center shadow-lg"><span className="text-9xl">{selectedProduct.emoji}</span></div>
+          <div className="bg-white rounded-3xl border border-orange-100 h-80 overflow-hidden shadow-lg relative">
+            <img src={photoForProduct(selectedProduct.id)} alt={selectedProduct.name} className="absolute inset-0 w-full h-full object-cover" />
+          </div>
           <div>
             <div className="text-xs font-semibold text-orange-500 uppercase tracking-widest mb-2">{selectedProduct.category}</div>
             <h1 className="text-3xl font-extrabold mb-3">{selectedProduct.name}</h1>
@@ -258,10 +269,12 @@ export default function ShopDemo() {
           <h2 className="text-xl font-extrabold mb-4">You Might Also Like</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {PRODUCTS.filter((p) => p.id !== selectedProduct.id).slice(0,4).map((p) => (
-              <div key={p.id} onClick={() => { setSelectedProduct(p); setSelectedColor(p.colors[0]); setQty(1); }} className="bg-white rounded-2xl border border-orange-100 p-3 cursor-pointer hover:shadow-md transition-shadow text-center">
-                <div className="text-4xl mb-2">{p.emoji}</div>
-                <div className="text-xs font-semibold truncate">{p.name}</div>
-                <div className="text-orange-600 font-bold text-sm mt-1">${p.price}</div>
+              <div key={p.id} onClick={() => { setSelectedProduct(p); setSelectedColor(p.colors[0]); setQty(1); }} className="bg-white rounded-2xl border border-orange-100 overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+                <div className="h-24 bg-orange-50 overflow-hidden"><img src={thumbForProduct(p.id)} alt={p.name} className="w-full h-full object-cover" /></div>
+                <div className="p-3 text-center">
+                  <div className="text-xs font-semibold truncate">{p.name}</div>
+                  <div className="text-orange-600 font-bold text-sm mt-1">${p.price}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -283,7 +296,7 @@ export default function ShopDemo() {
             <div className="lg:col-span-2 flex flex-col gap-3">
               {cart.map((item) => (
                 <div key={`${item.product.id}-${item.color}`} className="bg-white rounded-2xl border border-orange-100 p-4 flex items-center gap-4">
-                  <div className="w-16 h-16 bg-orange-50 rounded-xl flex items-center justify-center text-3xl shrink-0">{item.product.emoji}</div>
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-orange-50"><img src={thumbForProduct(item.product.id)} alt={item.product.name} className="w-full h-full object-cover" /></div>
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-sm">{item.product.name}</div>
                     <div className="text-xs text-neutral-400">{item.color}</div>
@@ -346,7 +359,7 @@ export default function ShopDemo() {
           </div>
           <div className="bg-white rounded-2xl border border-orange-100 p-5 h-fit shadow-lg">
             <h3 className="font-extrabold text-lg mb-4">Order ({cart.length} items)</h3>
-            {cart.map((item) => (<div key={item.product.id} className="flex items-center gap-2 mb-2"><span className="text-xl">{item.product.emoji}</span><span className="text-xs flex-1 truncate">{item.product.name}</span><span className="text-xs font-bold">${item.product.price * item.qty}</span></div>))}
+            {cart.map((item) => (<div key={item.product.id} className="flex items-center gap-2 mb-2"><div className="w-7 h-7 rounded overflow-hidden bg-orange-50 shrink-0"><img src={thumbForProduct(item.product.id)} alt={item.product.name} className="w-full h-full object-cover" /></div><span className="text-xs flex-1 truncate">{item.product.name}</span><span className="text-xs font-bold">${item.product.price * item.qty}</span></div>))}
             <div className="border-t pt-3 mt-3 flex justify-between font-extrabold"><span>Total</span><span className="text-orange-600">${(cartTotal + (cartTotal >= 75 ? 0 : 9.99) + cartTotal * 0.08).toFixed(2)}</span></div>
             <button onClick={() => { setCart([]); setPage("confirmed"); }} className="mt-4 w-full py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-colors">Place Order ✓</button>
           </div>
@@ -441,7 +454,7 @@ export default function ShopDemo() {
           <div className="bg-white rounded-2xl border">
             <div className="flex items-center justify-between p-4 border-b"><h3 className="font-bold">Products</h3><button className="text-xs bg-orange-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-orange-600 transition-colors">+ Add Product</button></div>
             <table className="w-full text-sm"><thead><tr className="text-left text-neutral-400 text-xs border-b"><th className="p-3">Product</th><th className="p-3">Category</th><th className="p-3">Price</th><th className="p-3">Stock</th><th className="p-3">Rating</th><th className="p-3">Actions</th></tr></thead>
-            <tbody>{PRODUCTS.map((p) => (<tr key={p.id} className="border-b last:border-0 hover:bg-neutral-50"><td className="p-3 flex items-center gap-2"><span className="text-xl">{p.emoji}</span><span className="font-medium text-sm">{p.name}</span></td><td className="p-3 text-neutral-500">{p.category}</td><td className="p-3 font-bold">${p.price}</td><td className="p-3"><span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.inStock ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>{p.inStock ? "In Stock" : "Out"}</span></td><td className="p-3">{p.rating}★</td><td className="p-3"><button className="text-xs text-blue-600 hover:underline mr-2">Edit</button><button className="text-xs text-red-500 hover:underline">Delete</button></td></tr>))}</tbody></table>
+            <tbody>{PRODUCTS.map((p) => (<tr key={p.id} className="border-b last:border-0 hover:bg-neutral-50"><td className="p-3 flex items-center gap-2"><div className="w-8 h-8 rounded-md overflow-hidden bg-orange-50 shrink-0"><img src={thumbForProduct(p.id)} alt={p.name} className="w-full h-full object-cover" /></div><span className="font-medium text-sm">{p.name}</span></td><td className="p-3 text-neutral-500">{p.category}</td><td className="p-3 font-bold">${p.price}</td><td className="p-3"><span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.inStock ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>{p.inStock ? "In Stock" : "Out"}</span></td><td className="p-3">{p.rating}★</td><td className="p-3"><button className="text-xs text-blue-600 hover:underline mr-2">Edit</button><button className="text-xs text-red-500 hover:underline">Delete</button></td></tr>))}</tbody></table>
           </div>
         )}
         {adminTab === "orders" && (

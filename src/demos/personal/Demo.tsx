@@ -70,8 +70,21 @@ const DOCUMENTS = [
   { id: 6, name: "Product Roadmap 2026.pdf", type: "pdf", size: "2.1 MB", modified: "Apr 22", contact: "" },
 ];
 
+// ─── photo lookup ───────────────────────────────────────────────────────────
+import photosData from "@/data/photos.json";
+const CONTACT_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.personal_contacts;
+const photoForContact = (id: number) =>
+  CONTACT_PHOTOS[(id - 1) % CONTACT_PHOTOS.length]?.thumb ?? "";
+
 // ─── helpers ─────────────────────────────────────────────────────────────────
-function Avatar({ initials, size = 36, color = C.accent }: { initials: string; size?: number; color?: string }) {
+function Avatar({ initials, size = 36, color = C.accent, photo }: { initials: string; size?: number; color?: string; photo?: string }) {
+  if (photo) {
+    return (
+      <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: `2px solid ${color}66`, position: "relative" }}>
+        <img src={photo} alt={initials} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      </div>
+    );
+  }
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", background: color + "18", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: `2px solid ${color}33` }}>
       <span style={{ fontSize: size * 0.35, fontWeight: 800, color }}>{initials}</span>
@@ -135,7 +148,7 @@ function Sidebar({ page, setPage }: { page: string; setPage: (p: string) => void
         {starred.map(c => (
           <div key={c.id} onClick={() => setPage("contact-detail")}
             style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 6px", borderRadius: 8, cursor: "pointer", marginBottom: 2 }}>
-            <Avatar initials={c.avatar} size={24} color={statusColors[c.status]} />
+            <Avatar initials={c.avatar} size={24} color={statusColors[c.status]} photo={photoForContact(c.id)} />
             <span style={{ fontSize: 12, color: C.text, fontWeight: 500, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.name}</span>
           </div>
         ))}
@@ -232,7 +245,7 @@ function Dashboard({ setPage }: { setPage: (p: string) => void }) {
           {CONTACTS.filter(c => c.status !== "cold").slice(0, 5).map(c => (
             <div key={c.id} onClick={() => setPage("contact-detail")}
               style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: C.bg, borderRadius: 12, cursor: "pointer", border: `1px solid ${C.border}` }}>
-              <Avatar initials={c.avatar} size={32} color={statusColors[c.status]} />
+              <Avatar initials={c.avatar} size={32} color={statusColors[c.status]} photo={photoForContact(c.id)} />
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{c.name}</div>
                 <div style={{ fontSize: 11, color: C.muted }}>{c.lastContact}</div>
@@ -298,7 +311,7 @@ function ContactsList({ setPage, setSelectedContact }: { setPage: (p: string) =>
           {filtered.map((c, i) => (
             <div key={c.id} onClick={() => { setSelectedContact(c); setPage("contact-detail"); }}
               style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px", borderTop: i > 0 ? `1px solid ${C.border}` : "none", cursor: "pointer", background: i % 2 === 0 ? "#fff" : "#fafafa" }}>
-              <Avatar initials={c.avatar} size={40} color={statusColors[c.status]} />
+              <Avatar initials={c.avatar} size={40} color={statusColors[c.status]} photo={photoForContact(c.id)} />
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{c.name}</span>
@@ -324,7 +337,7 @@ function ContactsList({ setPage, setSelectedContact }: { setPage: (p: string) =>
             <div key={c.id} onClick={() => { setSelectedContact(c); setPage("contact-detail"); }}
               style={{ background: C.card, borderRadius: 14, padding: 20, border: `1px solid ${C.border}`, cursor: "pointer" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-                <Avatar initials={c.avatar} size={44} color={statusColors[c.status]} />
+                <Avatar initials={c.avatar} size={44} color={statusColors[c.status]} photo={photoForContact(c.id)} />
                 <div style={{ display: "flex", gap: 6 }}>
                   {c.starred && <Star size={14} fill={C.warning} color={C.warning} />}
                   <Badge color={statusColors[c.status]}>{statusLabels[c.status]}</Badge>
@@ -357,7 +370,7 @@ function ContactDetail({ contact, setPage }: { contact: typeof CONTACTS[0]; setP
       {/* Hero */}
       <div style={{ background: `linear-gradient(135deg, ${statusColors[contact.status]}15, ${C.accent}10)`, borderRadius: 20, padding: 28, border: `1px solid ${C.border}`, marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <Avatar initials={contact.avatar} size={72} color={statusColors[contact.status]} />
+          <Avatar initials={contact.avatar} size={72} color={statusColors[contact.status]} photo={photoForContact(contact.id)} />
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
               <h1 style={{ fontSize: 24, fontWeight: 800, color: C.text }}>{contact.name}</h1>
@@ -662,7 +675,7 @@ function SearchPage({ setPage, setSelectedContact }: { setPage: (p: string) => v
           {results.map(c => (
             <div key={c.id} onClick={() => { setSelectedContact(c); setPage("contact-detail"); }}
               style={{ background: C.card, borderRadius: 14, padding: 18, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-              <Avatar initials={c.avatar} size={44} color={statusColors[c.status]} />
+              <Avatar initials={c.avatar} size={44} color={statusColors[c.status]} photo={photoForContact(c.id)} />
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{c.name}</div>
                 <div style={{ fontSize: 13, color: C.muted }}>{c.role} · {c.company}</div>

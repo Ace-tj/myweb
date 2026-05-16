@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
@@ -8,6 +9,7 @@ import {
   ArrowRight, CheckCircle2, Star, Globe2, Shield, Headphones,
   BarChart3, Layers, Smartphone,
 } from "lucide-react";
+import { getPhoto, photoForSlug, DEMO_PHOTO_CATEGORY } from "@/lib/photos";
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
@@ -50,9 +52,9 @@ const FEATURES = [
 ] as const;
 
 const TESTIMONIALS = [
-  { name: "Sardor Karimov", role: "Restaurant Owner, Dushanbe", body: "We launched our restaurant POS in 12 days. The consultant understood exactly what we needed.", rating: 5 },
-  { name: "Nilufar Rashidova", role: "School Principal, Khujand", body: "BrightAcademy demo matched our school perfectly. Customization was seamless.", rating: 5 },
-  { name: "Timur Yuldashev", role: "Logistics Manager, Tashkent", body: "The logistics platform with live map tracking completely transformed our operations.", rating: 5 },
+  { name: "Sardor Karimov", role: "Restaurant Owner, Dushanbe", body: "We launched our restaurant POS in 12 days. The consultant understood exactly what we needed.", rating: 5, photoCategory: "testimonial_restaurant" as const },
+  { name: "Nilufar Rashidova", role: "School Principal, Khujand", body: "BrightAcademy demo matched our school perfectly. Customization was seamless.", rating: 5, photoCategory: "testimonial_school" as const },
+  { name: "Timur Yuldashev", role: "Logistics Manager, Tashkent", body: "The logistics platform with live map tracking completely transformed our operations.", rating: 5, photoCategory: "testimonial_logistics" as const },
 ];
 
 export default async function LandingPage({
@@ -219,10 +221,24 @@ export default async function LandingPage({
             <div className="grid md:grid-cols-3 gap-5">
               {DEMOS.slice(0, 3).map((d) => {
                 const Icon = d.icon;
+                const photoCat = DEMO_PHOTO_CATEGORY[d.slug];
+                const photo = photoCat ? photoForSlug(photoCat, d.slug) : null;
                 return (
                   <div key={d.slug} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all group">
-                    <div className={`h-36 bg-gradient-to-br ${d.color} flex items-center justify-center`}>
-                      <Icon size={52} className="text-white/80" />
+                    <div className={`relative h-44 bg-gradient-to-br ${d.color} overflow-hidden`}>
+                      {photo && (
+                        <Image
+                          src={photo.src}
+                          alt={photo.alt || d.slug}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      )}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${d.color} mix-blend-multiply opacity-30`} />
+                      <div className="absolute bottom-3 left-3 w-12 h-12 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
+                        <Icon size={22} className="text-neutral-800" />
+                      </div>
                     </div>
                     <div className="p-5">
                       <div className="flex items-start justify-between mb-3">
@@ -334,20 +350,36 @@ export default async function LandingPage({
               <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.testimonialsHeading")}</h2>
             </div>
             <div className="grid md:grid-cols-3 gap-5">
-              {TESTIMONIALS.map((tm) => (
-                <div key={tm.name} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
-                  <div className="flex gap-0.5 mb-4">
-                    {Array.from({ length: tm.rating }).map((_, i) => (
-                      <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
-                    ))}
+              {TESTIMONIALS.map((tm) => {
+                const photo = getPhoto(tm.photoCategory, 0);
+                return (
+                  <div key={tm.name} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
+                    <div className="flex gap-0.5 mb-4">
+                      {Array.from({ length: tm.rating }).map((_, i) => (
+                        <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed mb-5">&ldquo;{tm.body}&rdquo;</p>
+                    <div className="flex items-center gap-3">
+                      {photo && (
+                        <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-[rgb(var(--accent))]/30 flex-shrink-0">
+                          <Image
+                            src={photo.thumb}
+                            alt={tm.name}
+                            fill
+                            sizes="44px"
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <div className="font-semibold text-sm">{tm.name}</div>
+                        <div className="text-xs text-[rgb(var(--text-subtle))]">{tm.role}</div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed mb-4">&ldquo;{tm.body}&rdquo;</p>
-                  <div>
-                    <div className="font-semibold text-sm">{tm.name}</div>
-                    <div className="text-xs text-[rgb(var(--text-subtle))]">{tm.role}</div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

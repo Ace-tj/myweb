@@ -5,6 +5,17 @@ import {
   IconUserCheck, IconClock, IconStar, IconPlus, IconSearch, IconEdit,
   IconTrash, IconCheck, IconX, IconQrcode, IconBolt,
 } from "@tabler/icons-react";
+import photosData from "@/data/photos.json";
+
+const MEMBER_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.gym_fitness;
+const AVATAR_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.avatars;
+const photoForMember = (id: number) => AVATAR_PHOTOS[(id - 1) % AVATAR_PHOTOS.length]?.thumb ?? "";
+const photoForTrainer = (name: string) => {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
+  return AVATAR_PHOTOS[Math.abs(h) % AVATAR_PHOTOS.length]?.thumb ?? "";
+};
+const photoForGymHero = (idx: number) => MEMBER_PHOTOS[idx % MEMBER_PHOTOS.length]?.src ?? "";
 
 type Page = "dashboard" | "members" | "member-detail" | "schedule" | "trainers" | "billing" | "checkin";
 
@@ -191,7 +202,7 @@ export default function GymDemo() {
       <div className="flex flex-col gap-3">
         {filteredMembers.map((m) => (
           <div key={m.id} className="bg-neutral-800 border border-neutral-700 rounded-2xl p-4 flex items-center gap-4 hover:border-green-500/30 transition-colors cursor-pointer" onClick={() => { setSelectedMember(m); setPage("member-detail"); }}>
-            <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center text-2xl shrink-0">{m.emoji}</div>
+            <div className="w-12 h-12 rounded-xl bg-neutral-700 overflow-hidden shrink-0"><img src={photoForMember(m.id)} alt={m.name} className="w-full h-full object-cover" /></div>
             <div className="flex-1 min-w-0">
               <div className="font-bold text-white">{m.name}</div>
               <div className="text-xs text-neutral-400">{m.plan} · Expires {m.expires}</div>
@@ -212,7 +223,7 @@ export default function GymDemo() {
       <button onClick={() => setPage("members")} className="flex items-center gap-1.5 text-sm text-neutral-400 hover:text-green-400 mb-5 transition-colors">← Back to Members</button>
       <div className="grid lg:grid-cols-3 gap-5">
         <div className="bg-neutral-800 border border-neutral-700 rounded-2xl p-5 text-center">
-          <div className="text-5xl mb-3">{selectedMember.emoji}</div>
+          <div className="w-20 h-20 rounded-full overflow-hidden mb-3 mx-auto border-2 border-emerald-400"><img src={photoForMember(selectedMember.id)} alt={selectedMember.name} className="w-full h-full object-cover" /></div>
           <h2 className="text-xl font-extrabold text-white">{selectedMember.name}</h2>
           <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${STATUS_STYLE[selectedMember.status]} mt-2 inline-block`}>{selectedMember.status}</span>
           <div className="mt-4 flex flex-col gap-2 text-left">
@@ -286,7 +297,7 @@ export default function GymDemo() {
           <div key={tr.name} className="bg-neutral-800 border border-neutral-700 rounded-2xl p-5">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-xl bg-neutral-700 flex items-center justify-center text-3xl">{tr.emoji}</div>
+                <div className="w-14 h-14 rounded-xl bg-neutral-700 overflow-hidden"><img src={photoForTrainer(tr.name)} alt={tr.name} className="w-full h-full object-cover" /></div>
                 <div>
                   <div className="font-bold text-white text-lg">{tr.name}</div>
                   <div className="text-xs text-neutral-400">{tr.specialty}</div>

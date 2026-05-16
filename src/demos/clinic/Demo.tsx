@@ -84,8 +84,27 @@ const VITALS_HISTORY = [
   { date: "Feb 2", bp: "140/88", pulse: 82, temp: "98.7", spo2: 97, weight: "170 lbs" },
 ];
 
+// ─── photo lookup ───────────────────────────────────────────────────────────
+import photosData from "@/data/photos.json";
+const DOCTOR_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.clinic_doctors;
+const PATIENT_PHOTOS = (photosData as { categories: Record<string, { src: string; thumb: string }[]> }).categories.clinic_patients;
+const photoForDoctor = (id: number) =>
+  DOCTOR_PHOTOS[(id - 1) % DOCTOR_PHOTOS.length]?.thumb ?? "";
+const photoForPatient = (id: string) => {
+  // Derive index from id string ("PT-001" → 1)
+  const n = parseInt(id.replace(/[^0-9]/g, ""), 10) || 0;
+  return PATIENT_PHOTOS[n % PATIENT_PHOTOS.length]?.thumb ?? "";
+};
+
 // ─── helpers ─────────────────────────────────────────────────────────────────
-function Avatar({ initials, size = 36, color = C.teal }: { initials: string; size?: number; color?: string }) {
+function Avatar({ initials, size = 36, color = C.teal, photo }: { initials: string; size?: number; color?: string; photo?: string }) {
+  if (photo) {
+    return (
+      <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: `2px solid ${color}66`, position: "relative" }}>
+        <img src={photo} alt={initials} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      </div>
+    );
+  }
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", background: color + "22", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: `2px solid ${color}44` }}>
       <span style={{ fontSize: size * 0.35, fontWeight: 800, color }}>{initials}</span>
@@ -380,7 +399,7 @@ function Patients({ setPage, setSelectedPatient }: { setPage: (p: string) => voi
                 style={{ borderTop: `1px solid ${C.border}`, cursor: "pointer", background: i % 2 === 0 ? "#fff" : "#fafafa" }}>
                 <td style={{ padding: "14px 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Avatar initials={p.avatar} size={34} color={p.status === "critical" ? C.danger : C.teal} />
+                    <Avatar initials={p.avatar} size={34} color={p.status === "critical" ? C.danger : C.teal} photo={photoForPatient(p.id)} />
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{p.name}</div>
                       <div style={{ fontSize: 11, color: C.muted }}>{p.email}</div>
@@ -425,7 +444,7 @@ function PatientDetail({ patient, setPage }: { patient: typeof PATIENTS[0]; setP
       {/* Hero */}
       <div style={{ background: `linear-gradient(135deg, ${C.teal}18, ${C.blue}10)`, borderRadius: 20, padding: 28, border: `1px solid ${C.border}`, marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <Avatar initials={patient.avatar} size={72} color={patient.status === "critical" ? C.danger : C.teal} />
+          <Avatar initials={patient.avatar} size={72} color={patient.status === "critical" ? C.danger : C.teal} photo={photoForPatient(patient.id)} />
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
               <h1 style={{ fontSize: 22, fontWeight: 800, color: C.text }}>{patient.name}</h1>
@@ -623,7 +642,7 @@ function Doctors() {
         {DOCTORS.map(d => (
           <div key={d.id} style={{ background: C.card, borderRadius: 16, padding: 24, border: `1px solid ${C.border}` }}>
             <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 16 }}>
-              <Avatar initials={d.name.split(" ").slice(-1)[0].substring(0, 2).toUpperCase()} size={52} color={d.available ? C.teal : C.muted} />
+              <Avatar initials={d.name.split(" ").slice(-1)[0].substring(0, 2).toUpperCase()} size={52} color={d.available ? C.teal : C.muted} photo={photoForDoctor(d.id)} />
               <div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{d.name}</div>
                 <div style={{ fontSize: 13, color: C.muted }}>{d.specialty}</div>
@@ -772,7 +791,7 @@ function PatientPortal() {
       </div>
       <div style={{ flex: 1, padding: 28, overflowY: "auto" }}>
         <div style={{ background: C.card, borderRadius: 14, padding: 18, border: `1px solid ${C.border}`, marginBottom: 20, display: "flex", alignItems: "center", gap: 16 }}>
-          <Avatar initials={patient.avatar} size={48} color={C.teal} />
+          <Avatar initials={patient.avatar} size={48} color={C.teal} photo={photoForPatient(patient.id)} />
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{patient.name}</div>
             <div style={{ fontSize: 13, color: C.muted }}>Patient ID: {patient.id} · DOB: {patient.dob}</div>
