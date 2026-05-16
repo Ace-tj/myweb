@@ -25,14 +25,13 @@ function hasSessionCookies(req: NextRequest): boolean {
 }
 
 export default async function middleware(req: NextRequest) {
-  // 1. Let next-intl handle locale routing — may rewrite or redirect.
-  const response = intlMiddleware(req);
+  // ── Step 1: Refresh Supabase session and rebuild response from fresh request.
+  // This is the canonical pattern from Supabase's Next.js SSR docs. The key
+  // detail is that `setAll` mutates BOTH the request (so downstream code in
+  // this same request sees the fresh cookies) AND rebuilds the response
+  // (so the page render is bound to the updated request state).
+  let supabaseResponse: NextResponse = NextResponse.next({ request: req });
 
-  // 2. Refresh Supabase session on every request. This is THE critical piece:
-  // without it, access tokens expire silently and the user appears logged out
-  // on the next navigation. The setAll callback mutates BOTH the request
-  // (so downstream code in this same request sees fresh cookies) AND the
-  // response (so the browser receives the refreshed cookies).
   if (supabaseConfigured()) {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -43,20 +42,32 @@ export default async function middleware(req: NextRequest) {
             return req.cookies.getAll();
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              req.cookies.set(name, value);
-              response.cookies.set(name, value, options);
-            });
+            cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
+            supabaseResponse = NextResponse.next({ request: req });
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options),
+            );
           },
         },
       },
     );
-    // This call triggers token refresh + setAll if a refresh occurs.
     await supabase.auth.getUser();
   }
 
-  // 3. Lightweight UI-level auth gate on protected route prefixes.
-  // The page itself does the authoritative check via getCurrentSession().
+  // ── Step 2: Let next-intl handle locale routing on the (possibly updated) request.
+  const intlResponse = intlMiddleware(req);
+
+  // If intl produced a redirect or rewrite distinct from our supabaseResponse,
+  // copy the refreshed Supabase cookies onto it so they aren't lost.
+  let response: NextResponse = intlResponse;
+  if (intlResponse !== supabaseResponse) {
+    supabaseResponse.cookies.getAll().forEach((c) => {
+      intlResponse.cookies.set(c.name, c.value);
+    });
+  }
+
+  // ── Step 3: Auth gate for protected route prefixes (UI-level guard;
+  // pages still do the authoritative check via getCurrentSession()).
   const { pathname } = req.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
   const locale = segments[0] ?? "en";
@@ -70,8 +81,7 @@ export default async function middleware(req: NextRequest) {
     const loginUrl = new URL(`/${locale}/auth/login`, req.url);
     loginUrl.searchParams.set("from", pathname);
     const redirect = NextResponse.redirect(loginUrl);
-    // Carry over any cookies the Supabase refresh set, so the redirect
-    // doesn't lose them.
+    // Carry refreshed cookies through the redirect.
     response.cookies.getAll().forEach((c) => {
       redirect.cookies.set(c.name, c.value);
     });
