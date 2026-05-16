@@ -1,215 +1,235 @@
-"use client";
-
-import { useState, use } from "react";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { redirect, notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { ChatPanel } from "@/components/chat/ChatPanel";
-import { Zap, CheckCircle2, Circle, ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { getCurrentSession } from "@/lib/auth";
+import { getProjectById } from "@/lib/projects";
+import { ProjectActions } from "./ProjectActions";
+import { ArrowLeft, CheckCircle2, AlertCircle } from "lucide-react";
 
-const MOCK_PROJECT = {
-  id: "proj-001",
-  demoSlug: "shop",
-  businessName: "Acme Online Store",
-  description: "We need a modern e-commerce store selling handmade goods. Must support multiple categories and mobile-friendly checkout.",
-  colorPref: "Warm orange and white",
-  pagesNeeded: "8",
-  budget: "1500",
-  deadline: "2026-07-01",
-  notes: "We want to launch before the summer season.",
-  status: "quote_received",
-  quote: {
-    amount: 1200,
-    scope: "Full e-commerce build: product catalog, cart, checkout, order history, admin panel.",
-    status: "pending_acceptance",
-  },
-  milestones: [
-    { id: "m1", title: "UI Design", amount: 300, dueDate: "2026-05-15", done: true },
-    { id: "m2", title: "Frontend Build", amount: 500, dueDate: "2026-06-01", done: false },
-    { id: "m3", title: "Backend & Deployment", amount: 400, dueDate: "2026-06-20", done: false },
-  ],
+export const dynamic = "force-dynamic";
+
+const STATUS_STYLE: Record<string, string> = {
+  new: "bg-slate-500/15 text-slate-600 dark:text-slate-300 border-slate-500/20",
+  assigned: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  quoted: "bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/20",
+  in_progress: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  review: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+  delivered: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  cancelled: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20",
+};
+const STATUS_LABEL: Record<string, string> = {
+  new: "New",
+  assigned: "Assigned",
+  quoted: "Quote received",
+  in_progress: "In progress",
+  review: "In review",
+  delivered: "Delivered",
+  cancelled: "Cancelled",
 };
 
-const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
-  pending: { label: "Pending", cls: "bg-amber-500/15 text-amber-500 border border-amber-500/20" },
-  quote_received: { label: "Quote Received", cls: "bg-indigo-500/15 text-indigo-500 border border-indigo-500/20" },
-  in_progress: { label: "In Progress", cls: "bg-blue-500/15 text-blue-500 border border-blue-500/20" },
-  completed: { label: "Completed", cls: "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" },
-  cancelled: { label: "Cancelled", cls: "bg-red-500/15 text-red-500 border border-red-500/20" },
-};
-
-export default function BuyerProjectDetailPage({
+export default async function BuyerProjectDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; id: string }>;
 }) {
-  const { id } = use(params);
-  const project = { ...MOCK_PROJECT, id };
+  const { locale, id } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations();
 
-  const [status, setStatus] = useState(project.status);
-  const [quoteAction, setQuoteAction] = useState<"accepted" | "rejected" | null>(null);
+  const session = await getCurrentSession();
+  if (!session) redirect(`/${locale}/auth/login`);
 
-  function handleAccept() { setStatus("in_progress"); setQuoteAction("accepted"); }
-  function handleReject() { setStatus("pending"); setQuoteAction("rejected"); }
+  const result = await getProjectById(id);
+  if (!result.ok) {
+    if (result.reason === "not_found") notFound();
+    if (result.reason === "forbidden")
+      redirect(`/${locale}/buyer/dashboard`);
+    if (result.reason === "anon") redirect(`/${locale}/auth/login`);
+    // db_off or generic error — show inline message below
+  }
 
-  const cardStyle = {
-    background: "rgb(var(--bg-card))",
-    borderColor: "rgb(var(--border))",
-  };
-
-  const statusCfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.pending;
-  const completedMilestones = project.milestones.filter(m => m.done).length;
-  const totalMilestones = project.milestones.length;
-  const progress = Math.round((completedMilestones / totalMilestones) * 100);
+  const project = result.ok ? result.project : null;
+  const statusStyle = project
+    ? (STATUS_STYLE[project.status] ?? STATUS_STYLE.new)
+    : "";
+  const statusLabel = project
+    ? (STATUS_LABEL[project.status] ?? project.status)
+    : "";
+  const showQuoteActions =
+    project &&
+    project.status === "quoted" &&
+    project.quoteAmount != null &&
+    project.buyerId === session.id;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
-      {/* Header */}
-      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-        <div className="mx-auto max-w-5xl px-6 py-3.5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
-            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
+    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+      <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+          <Link
+            href="/buyer/dashboard"
+            className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm font-medium text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--bg-hover))] transition-colors"
+          >
+            <ArrowLeft size={16} aria-hidden /> <span>Back</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/buyer/dashboard" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Dashboard</Link>
-            <Link href="/demos" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Browse Demos</Link>
-            <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
-            <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <Link
+            href="/"
+            className="flex items-center font-extrabold text-xl tracking-tight"
+            aria-label="myweb home"
+          >
+            <span className="gradient-text">myweb</span>
+          </Link>
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto max-w-5xl w-full px-6 py-10 space-y-6">
-        {/* Title + status */}
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>{project.businessName}</h1>
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusCfg.cls}`}>{statusCfg.label}</span>
-        </div>
-
-        {/* Progress bar (show when in_progress) */}
-        {status === "in_progress" && (
-          <div className="rounded-2xl border p-5" style={cardStyle}>
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold" style={{ color: "rgb(var(--text))" }}>Project Progress</p>
-              <p className="text-sm font-bold text-indigo-500">{progress}%</p>
-            </div>
-            <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgb(var(--border))" }}>
-              <div className="h-full rounded-full bg-indigo-500 transition-all" style={{ width: `${progress}%` }} />
-            </div>
-            <p className="text-xs mt-2" style={{ color: "rgb(var(--text-muted))" }}>{completedMilestones} of {totalMilestones} milestones done</p>
+      <main className="flex-1 mx-auto max-w-5xl w-full px-4 sm:px-6 py-8 sm:py-12 space-y-6">
+        {!project && (
+          <div className="rounded-2xl border border-red-300/40 bg-red-50 dark:bg-red-950/30 dark:border-red-800/30 px-6 py-8 text-center">
+            <AlertCircle
+              size={28}
+              className="mx-auto mb-3 text-red-500"
+              aria-hidden
+            />
+            <h1 className="text-lg font-bold mb-2">Project unavailable</h1>
+            <p className="text-sm text-[rgb(var(--text-muted))]">
+              {result.ok
+                ? "Loading…"
+                : result.reason === "db_off"
+                  ? "The backend is not configured. Sign in / submit a brief in production."
+                  : result.message || "Something went wrong."}
+            </p>
           </div>
         )}
 
-        {/* Brief */}
-        <section className="rounded-2xl border p-6" style={cardStyle}>
-          <h2 className="text-base font-bold mb-4" style={{ color: "rgb(var(--text))" }}>Project Brief</h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            {[
-              { label: "Business Name", value: project.businessName },
-              { label: "Budget", value: `$${project.budget}` },
-              { label: "Deadline", value: project.deadline },
-              { label: "Color Preference", value: project.colorPref },
-            ].map(f => (
-              <div key={f.label}>
-                <dt className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "rgb(var(--text-subtle))" }}>{f.label}</dt>
-                <dd className="font-medium" style={{ color: "rgb(var(--text))" }}>{f.value}</dd>
+        {project && (
+          <>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                  {project.brief.businessName || "Untitled project"}
+                </h1>
+                <p className="text-sm text-[rgb(var(--text-muted))] mt-1">
+                  Created {new Date(project.createdAt).toLocaleDateString()}
+                  {project.brief.demoSlug && (
+                    <>
+                      {" · "}
+                      <span className="capitalize">
+                        {project.brief.demoSlug.replace(/-/g, " ")}
+                      </span>
+                    </>
+                  )}
+                </p>
               </div>
-            ))}
-            <div className="sm:col-span-2">
-              <dt className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "rgb(var(--text-subtle))" }}>Description</dt>
-              <dd className="leading-relaxed" style={{ color: "rgb(var(--text))" }}>{project.description}</dd>
+              <span
+                className={`self-start text-xs font-semibold px-3 py-1 rounded-full border ${statusStyle}`}
+              >
+                {statusLabel}
+              </span>
             </div>
-            {project.notes && (
-              <div className="sm:col-span-2">
-                <dt className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "rgb(var(--text-subtle))" }}>Notes</dt>
-                <dd style={{ color: "rgb(var(--text-muted))" }}>{project.notes}</dd>
-              </div>
-            )}
-          </dl>
-        </section>
 
-        {/* Quote */}
-        {project.quote && (
-          <section className="rounded-2xl border p-6" style={cardStyle}>
-            <h2 className="text-base font-bold mb-4" style={{ color: "rgb(var(--text))" }}>Consultant Quote</h2>
-            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-              <div className="flex-1 space-y-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "rgb(var(--text-subtle))" }}>Amount</p>
-                  <p className="text-2xl font-bold text-emerald-500">${project.quote.amount}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "rgb(var(--text-subtle))" }}>Scope</p>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgb(var(--text))" }}>{project.quote.scope}</p>
-                </div>
-              </div>
-              {status === "quote_received" && !quoteAction && (
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleAccept}
-                    className="flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
-                  >
-                    <ThumbsUp size={14} /> Accept
-                  </button>
-                  <button
-                    onClick={handleReject}
-                    className="flex items-center gap-1.5 rounded-xl border border-red-500/40 text-red-500 hover:bg-red-500/10 font-semibold px-4 py-2.5 text-sm transition-colors"
-                  >
-                    <ThumbsDown size={14} /> Decline
-                  </button>
-                </div>
-              )}
-              {quoteAction && (
-                <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${quoteAction === "accepted" ? "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" : "bg-red-500/15 text-red-500 border-red-500/20"}`}>
-                  {quoteAction === "accepted" ? "Accepted" : "Declined"}
-                </span>
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* Milestones */}
-        <section className="rounded-2xl border p-6" style={cardStyle}>
-          <h2 className="text-base font-bold mb-4" style={{ color: "rgb(var(--text))" }}>Milestones</h2>
-          <ul className="divide-y" style={{ borderColor: "rgb(var(--border))" }}>
-            {project.milestones.map(m => (
-              <li key={m.id} className="py-3.5 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  {m.done
-                    ? <CheckCircle2 size={18} className="text-emerald-500 flex-shrink-0" />
-                    : <Circle size={18} className="flex-shrink-0" style={{ color: "rgb(var(--border))" }} />
-                  }
-                  <div>
-                    <p className={`text-sm font-medium ${m.done ? "line-through" : ""}`} style={{ color: m.done ? "rgb(var(--text-subtle))" : "rgb(var(--text))" }}>
-                      {m.title}
-                    </p>
-                    <p className="text-xs" style={{ color: "rgb(var(--text-subtle))" }}>Due {m.dueDate}</p>
+            {/* Brief */}
+            <section className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
+              <h2 className="text-base font-bold mb-4">
+                {t("buyer.project.brief")}
+              </h2>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
+                {[
+                  {
+                    label: t("buyer.request.businessName"),
+                    value: project.brief.businessName,
+                  },
+                  {
+                    label: t("buyer.request.budget"),
+                    value: project.brief.budget
+                      ? `$${project.brief.budget}`
+                      : "—",
+                  },
+                  {
+                    label: t("buyer.request.deadline"),
+                    value: project.brief.deadline || "—",
+                  },
+                  {
+                    label: t("buyer.request.pagesNeeded"),
+                    value: project.brief.pagesNeeded
+                      ? String(project.brief.pagesNeeded)
+                      : "—",
+                  },
+                  {
+                    label: t("buyer.request.colorPref"),
+                    value: project.brief.colorPref || "—",
+                  },
+                ].map((f) => (
+                  <div key={f.label}>
+                    <dt className="text-[11px] font-semibold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-1">
+                      {f.label}
+                    </dt>
+                    <dd className="font-medium tabular-nums">{f.value}</dd>
                   </div>
+                ))}
+                <div className="sm:col-span-2">
+                  <dt className="text-[11px] font-semibold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-1">
+                    {t("buyer.request.description")}
+                  </dt>
+                  <dd className="leading-relaxed">
+                    {project.brief.description}
+                  </dd>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold" style={{ color: "rgb(var(--text))" }}>${m.amount}</span>
-                  {m.done && <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500">Done</span>}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
+                {project.brief.notes && (
+                  <div className="sm:col-span-2">
+                    <dt className="text-[11px] font-semibold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-1">
+                      {t("buyer.request.notes")}
+                    </dt>
+                    <dd className="text-[rgb(var(--text-muted))] leading-relaxed">
+                      {project.brief.notes}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </section>
 
-        {/* Chat */}
-        <section className="rounded-2xl border overflow-hidden" style={cardStyle}>
-          <ChatPanel
-            projectId={project.id}
-            currentUserId="buyer-001"
-            currentUserName="You (Buyer)"
-          />
-        </section>
+            {/* Quote */}
+            {project.quoteAmount != null && (
+              <section className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
+                <h2 className="text-base font-bold mb-4">
+                  {t("buyer.project.acceptQuote").replace("Accept ", "")}
+                </h2>
+                <div className="flex flex-col sm:flex-row sm:items-end gap-5">
+                  <div className="flex-1">
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-1">
+                      {t("buyer.project.quoteAmount")}
+                    </p>
+                    <p className="text-3xl font-extrabold text-emerald-500 tabular-nums">
+                      ${project.quoteAmount}
+                    </p>
+                  </div>
+                  {showQuoteActions && (
+                    <ProjectActions projectId={project.id} />
+                  )}
+                  {project.status === "in_progress" && (
+                    <span className="self-start text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 inline-flex items-center gap-1.5">
+                      <CheckCircle2 size={12} aria-hidden /> Accepted
+                    </span>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* Empty state for milestones until that schema is wired */}
+            <section className="rounded-2xl border border-dashed border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))] p-8 text-center">
+              <p className="text-sm font-medium text-[rgb(var(--text-muted))]">
+                {t("buyer.project.noMilestones")}
+              </p>
+              <p className="text-xs text-[rgb(var(--text-subtle))] mt-1">
+                Milestones will appear here once your consultant breaks down the work.
+              </p>
+            </section>
+          </>
+        )}
       </main>
     </div>
   );

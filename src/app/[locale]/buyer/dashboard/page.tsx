@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { getCurrentSession } from "@/lib/auth";
+import { listMyProjectsAsBuyer } from "@/lib/projects";
 import {
   ArrowRight,
   Sparkles,
@@ -16,6 +17,25 @@ import {
   Zap,
   MessageSquare,
 } from "lucide-react";
+
+const STATUS_STYLE: Record<string, string> = {
+  new: "bg-slate-500/15 text-slate-600 dark:text-slate-300 border-slate-500/20",
+  assigned: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  quoted: "bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/20",
+  in_progress: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  review: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+  delivered: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  cancelled: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20",
+};
+const STATUS_LABEL: Record<string, string> = {
+  new: "New",
+  assigned: "Assigned",
+  quoted: "Quote received",
+  in_progress: "In progress",
+  review: "In review",
+  delivered: "Delivered",
+  cancelled: "Cancelled",
+};
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
@@ -49,10 +69,7 @@ export default async function BuyerDashboardPage({
     redirect(`/${locale}/consultant/dashboard`);
   }
 
-  // No projects table yet — the dashboard treats every buyer as a fresh signup
-  // and shows the empty-state onboarding. Wire this to real data when the
-  // /buyer/request flow persists briefs.
-  const projects: never[] = [];
+  const projects = await listMyProjectsAsBuyer();
   const firstName = session.name.split(" ")[0];
 
   return (
@@ -149,7 +166,53 @@ export default async function BuyerDashboardPage({
                 </div>
               </div>
             </div>
-          ) : null}
+          ) : (
+            <ul className="space-y-3">
+              {projects.map((p) => (
+                <li key={p.id}>
+                  <Link
+                    href={`/buyer/projects/${p.id}` as "/"}
+                    className="flex items-center gap-4 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-4 sm:p-5 transition-all hover:border-[rgb(var(--accent))]/40 hover:shadow-sm"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-[rgb(var(--accent-subtle))] text-[rgb(var(--accent))] flex items-center justify-center flex-shrink-0">
+                      <Sparkles size={18} aria-hidden />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm sm:text-base truncate">
+                        {p.brief.businessName || "Untitled project"}
+                      </p>
+                      <p className="text-xs text-[rgb(var(--text-muted))] mt-0.5 truncate">
+                        {p.brief.demoSlug && (
+                          <span className="capitalize">
+                            {p.brief.demoSlug.replace(/-/g, " ")}
+                          </span>
+                        )}
+                        {p.brief.demoSlug && " · "}
+                        {new Date(p.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span
+                        className={`text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border ${STATUS_STYLE[p.status] ?? STATUS_STYLE.new}`}
+                      >
+                        {STATUS_LABEL[p.status] ?? p.status}
+                      </span>
+                      {p.quoteAmount != null && (
+                        <span className="hidden sm:inline text-sm font-bold tabular-nums">
+                          ${p.quoteAmount}
+                        </span>
+                      )}
+                      <ArrowRight
+                        size={14}
+                        className="text-[rgb(var(--text-subtle))]"
+                        aria-hidden
+                      />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {/* Popular demos */}
