@@ -204,9 +204,28 @@
   "buyer": {
     "dashboard": {
       "welcome": "Welcome, {name}!",
-      "myProjects": "My Projects",
+      "subtitle": "Let's get your first system live.",
+      "welcomeBadge": "Just signed up",
+      "myProjects": "Your projects",
       "emptyProjects": "No projects yet. Browse our demos to get started.",
-      "browseDemos": "Browse Demos"
+      "emptyTitle": "No projects yet",
+      "emptyDesc": "Pick a demo to start, or tell us what you need and we'll match a consultant.",
+      "browseDemos": "Browse demos",
+      "browseAllDemos": "Browse all 10 demos",
+      "requestCustom": "Describe what I need",
+      "popularSystems": "Popular systems",
+      "popularSystemsDesc": "The most-requested setups by other buyers",
+      "viewAll": "View all",
+      "howItWorks": "How this works",
+      "messages": "Messages",
+      "steps": {
+        "stepPickTitle": "Pick a demo",
+        "stepPickDesc": "Browse 10 production-ready systems and find your match.",
+        "stepCustomizeTitle": "Customize with a consultant",
+        "stepCustomizeDesc": "Tell us what you need; we match a builder who delivers.",
+        "stepLaunchTitle": "Launch in days",
+        "stepLaunchDesc": "Your live system, ready to use — not months from now."
+      }
     },
     "request": {
       "heading": "Request a custom build",

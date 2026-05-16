@@ -167,16 +167,16 @@ export default async function DemoSlugPage({
         </div>
         <div className="relative mx-auto max-w-7xl px-6 py-20 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold uppercase tracking-widest mb-6 border border-white/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm text-xs font-bold uppercase tracking-widest mb-6 border border-white/30 text-white">
               {categoryLabel}
             </div>
             <h1 className="text-5xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
               {demo.icon} {title}
             </h1>
-            <p className="text-white/90 text-lg max-w-xl mb-4 leading-relaxed drop-shadow">
+            <p className="text-white/95 text-lg max-w-xl mb-4 leading-relaxed drop-shadow">
               {t("demoDetail.heroDesc", { category: categoryLabel, count: demo.pages.length })}
             </p>
-            <p className="text-white/80 text-sm max-w-xl mb-8 leading-relaxed">{description}</p>
+            <p className="text-white/85 text-sm max-w-xl mb-8 leading-relaxed drop-shadow">{description}</p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href={`/demos/${slug}/preview` as "/"}
@@ -186,14 +186,14 @@ export default async function DemoSlugPage({
               </Link>
               <Link
                 href={`/auth/signup?demo=${slug}` as "/"}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 font-semibold hover:bg-white/30 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-black/40 backdrop-blur-sm border border-white/40 text-white font-semibold hover:bg-black/55 transition-colors shadow-lg"
               >
                 {t("demoDetail.iWantThis")} <ArrowRight size={15} />
               </Link>
             </div>
           </div>
-          <div className="w-40 h-40 rounded-3xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl shrink-0">
-            <LucideIcon size={64} className="text-white" />
+          <div className="w-40 h-40 rounded-3xl bg-black/30 backdrop-blur-sm border border-white/40 flex items-center justify-center shadow-2xl shrink-0">
+            <LucideIcon size={64} className="text-white drop-shadow-lg" />
           </div>
         </div>
       </section>

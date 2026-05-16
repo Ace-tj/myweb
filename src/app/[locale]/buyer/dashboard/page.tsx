@@ -1,51 +1,38 @@
-import { setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
-import { getCurrentSession } from "@/lib/auth";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { Zap, ShoppingBag, ArrowRight, Plus, MessageSquare } from "lucide-react";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { getCurrentSession } from "@/lib/auth";
+import {
+  ArrowRight,
+  Sparkles,
+  ShoppingBag,
+  UtensilsCrossed,
+  Stethoscope,
+  Dumbbell,
+  Globe2,
+  Layers,
+  Zap,
+  MessageSquare,
+} from "lucide-react";
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
 }
 
-const MOCK_PROJECTS = [
-  {
-    id: "proj-001",
-    demoType: "Online Shop",
-    businessName: "Acme Online Store",
-    status: "in_progress" as const,
-    budget: "$1,200",
-    createdAt: "2026-04-20",
-    consultant: "Elena Petrova",
-  },
-  {
-    id: "proj-002",
-    demoType: "Clinic System",
-    businessName: "Sunrise Clinic",
-    status: "pending" as const,
-    budget: "$549",
-    createdAt: "2026-05-10",
-    consultant: null,
-  },
-  {
-    id: "proj-003",
-    demoType: "Restaurant POS",
-    businessName: "La Bella Cucina",
-    status: "completed" as const,
-    budget: "$449",
-    createdAt: "2026-03-15",
-    consultant: "Ahmad Rahimi",
-  },
-];
+const FEATURED_DEMOS = [
+  { slug: "shop",       Icon: ShoppingBag,    gradient: "from-orange-500 to-red-500",    titleKey: "demos.shop.title",       price: 499 },
+  { slug: "restaurant", Icon: UtensilsCrossed, gradient: "from-amber-500 to-orange-600", titleKey: "demos.restaurant.title", price: 449 },
+  { slug: "clinic",     Icon: Stethoscope,    gradient: "from-teal-400 to-cyan-600",     titleKey: "demos.clinic.title",     price: 549 },
+  { slug: "gym",        Icon: Dumbbell,       gradient: "from-emerald-400 to-green-600", titleKey: "demos.gym.title",        price: 399 },
+] as const;
 
-const STATUS_CONFIG = {
-  pending: { label: "Pending", cls: "bg-amber-500/15 text-amber-500 border border-amber-500/20" },
-  in_progress: { label: "In Progress", cls: "bg-blue-500/15 text-blue-500 border border-blue-500/20" },
-  completed: { label: "Completed", cls: "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" },
-  cancelled: { label: "Cancelled", cls: "bg-red-500/15 text-red-500 border border-red-500/20" },
-};
+const STEPS = [
+  { Icon: Globe2, titleKey: "stepPickTitle",      descKey: "stepPickDesc" },
+  { Icon: Layers, titleKey: "stepCustomizeTitle", descKey: "stepCustomizeDesc" },
+  { Icon: Zap,    titleKey: "stepLaunchTitle",    descKey: "stepLaunchDesc" },
+] as const;
 
 export default async function BuyerDashboardPage({
   params,
@@ -54,116 +41,197 @@ export default async function BuyerDashboardPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   const session = await getCurrentSession();
   if (!session) redirect(`/${locale}/auth/login`);
+  if (session.role !== "buyer" && session.role !== "admin") {
+    redirect(`/${locale}/consultant/dashboard`);
+  }
 
-  const active = MOCK_PROJECTS.filter(p => p.status === "in_progress").length;
-  const completed = MOCK_PROJECTS.filter(p => p.status === "completed").length;
+  // No projects table yet — the dashboard treats every buyer as a fresh signup
+  // and shows the empty-state onboarding. Wire this to real data when the
+  // /buyer/request flow persists briefs.
+  const projects: never[] = [];
   const firstName = session.name.split(" ")[0];
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
-      {/* Header */}
-      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-        <div className="mx-auto max-w-6xl px-6 py-3.5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
-            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
+    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+      <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center font-extrabold text-xl tracking-tight" aria-label="myweb home">
+            <span className="gradient-text">myweb</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/demos" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Browse Demos</Link>
-            <Link href="/buyer/dashboard" className="font-semibold text-indigo-600">Dashboard</Link>
-            <Link href={"/messages" as "/"} className="font-medium transition-colors hover:text-indigo-500 flex items-center gap-1" style={{ color: "rgb(var(--text-muted))" }}>
-              <MessageSquare size={13} /> Messages
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[rgb(var(--text-muted))]">
+            <Link href="/demos" className="hover:text-[rgb(var(--text))] transition-colors">
+              {t("nav.demos")}
             </Link>
-            <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
-            <span className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>{session.name}</span>
-            <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>
+            <Link href="/buyer/dashboard" className="text-[rgb(var(--accent))] font-semibold" aria-current="page">
+              {t("nav.dashboard")}
+            </Link>
+            <Link href={"/messages" as "/"} className="hover:text-[rgb(var(--text))] transition-colors inline-flex items-center gap-1.5">
+              <MessageSquare size={13} aria-hidden /> {t("buyer.dashboard.messages")}
+            </Link>
           </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline text-sm text-[rgb(var(--text-muted))] mr-1">{session.name}</span>
+            <Link href="/auth/logout" className="hidden sm:inline text-sm text-[rgb(var(--text-subtle))] hover:text-red-500 transition-colors px-2">
+              {t("common.signOut")}
+            </Link>
             <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto max-w-6xl w-full px-6 py-10 space-y-8">
+      <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 py-8 sm:py-12 space-y-12">
         {/* Welcome */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Welcome back, {firstName}</h1>
-            <p className="text-sm mt-1" style={{ color: "rgb(var(--text-muted))" }}>Here&apos;s an overview of your projects</p>
+        <section className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div className="min-w-0">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgb(var(--accent-subtle))] text-[rgb(var(--accent))] text-xs font-semibold mb-3">
+              <Sparkles size={12} aria-hidden /> {t("buyer.dashboard.welcomeBadge")}
+            </span>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              {t("buyer.dashboard.welcome", { name: firstName })}
+            </h1>
+            <p className="text-[rgb(var(--text-muted))] mt-2 text-base sm:text-lg">
+              {t("buyer.dashboard.subtitle")}
+            </p>
           </div>
-          <Link
-            href="/demos"
-            className="flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
-          >
-            <Plus size={15} /> New Project
-          </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          {[
-            { label: "Total Projects", value: MOCK_PROJECTS.length, color: "text-indigo-500" },
-            { label: "In Progress", value: active, color: "text-blue-500" },
-            { label: "Completed", value: completed, color: "text-emerald-500" },
-          ].map(s => (
-            <div key={s.label} className="rounded-2xl border p-5" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-              <div className={`text-3xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-sm mt-1" style={{ color: "rgb(var(--text-muted))" }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+            <Link
+              href="/demos"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25 hover:scale-[1.02]"
+            >
+              {t("buyer.dashboard.browseDemos")} <ArrowRight size={14} aria-hidden />
+            </Link>
+            <Link
+              href={"/buyer/request" as "/"}
+              className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] font-semibold text-sm hover:bg-[rgb(var(--bg-hover))] transition-colors"
+            >
+              {t("buyer.dashboard.requestCustom")}
+            </Link>
+          </div>
+        </section>
 
         {/* Projects */}
-        <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: "rgb(var(--text))" }}>My Projects</h2>
-          <div className="space-y-3">
-            {MOCK_PROJECTS.map(p => {
-              const cfg = STATUS_CONFIG[p.status];
-              return (
-                <Link
-                  key={p.id}
-                  href={`/buyer/projects/${p.id}` as "/"}
-                  className="flex items-center gap-4 rounded-2xl border p-5 transition-all hover:border-indigo-500/30 hover:shadow-sm"
-                  style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 flex-shrink-0">
-                    <ShoppingBag size={18} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm" style={{ color: "rgb(var(--text))" }}>{p.businessName}</p>
-                    <p className="text-xs mt-0.5" style={{ color: "rgb(var(--text-muted))" }}>
-                      {p.demoType} · Created {p.createdAt}
-                      {p.consultant && <> · <span className="text-indigo-500 font-medium">{p.consultant}</span></>}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cfg.cls}`}>{cfg.label}</span>
-                    <span className="text-sm font-bold" style={{ color: "rgb(var(--text))" }}>{p.budget}</span>
-                    <ArrowRight size={14} style={{ color: "rgb(var(--text-subtle))" }} />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+        <section>
+          <h2 className="text-xl font-bold mb-4">{t("buyer.dashboard.myProjects")}</h2>
 
-        {/* Browse CTA */}
-        <div className="rounded-2xl border-2 border-dashed p-8 text-center" style={{ borderColor: "rgb(var(--border))" }}>
-          <p className="font-semibold mb-1" style={{ color: "rgb(var(--text))" }}>Need another system?</p>
-          <p className="text-sm mb-4" style={{ color: "rgb(var(--text-muted))" }}>Browse our demo catalog to find the right solution for your business</p>
+          {projects.length === 0 ? (
+            <div className="relative overflow-hidden rounded-3xl border-2 border-dashed border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))] px-6 py-14 sm:py-16 text-center">
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[480px] h-[200px] rounded-full bg-[rgb(var(--accent))]/10 blur-3xl" />
+              </div>
+              <div className="relative">
+                <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-[rgb(var(--accent-subtle))] flex items-center justify-center">
+                  <Sparkles size={24} className="text-[rgb(var(--accent))]" aria-hidden />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">
+                  {t("buyer.dashboard.emptyTitle")}
+                </h3>
+                <p className="text-[rgb(var(--text-muted))] max-w-md mx-auto mb-6 leading-relaxed">
+                  {t("buyer.dashboard.emptyDesc")}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link
+                    href="/demos"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25 hover:scale-[1.02]"
+                  >
+                    {t("buyer.dashboard.browseAllDemos")} <ArrowRight size={14} aria-hidden />
+                  </Link>
+                  <Link
+                    href={"/buyer/request" as "/"}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] font-semibold text-sm hover:bg-[rgb(var(--bg-hover))] transition-colors"
+                  >
+                    {t("buyer.dashboard.requestCustom")}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </section>
+
+        {/* Popular demos */}
+        <section>
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <h2 className="text-xl font-bold">{t("buyer.dashboard.popularSystems")}</h2>
+              <p className="text-sm text-[rgb(var(--text-muted))] mt-1">
+                {t("buyer.dashboard.popularSystemsDesc")}
+              </p>
+            </div>
+            <Link
+              href="/demos"
+              className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[rgb(var(--accent))] hover:underline shrink-0"
+            >
+              {t("buyer.dashboard.viewAll")} <ArrowRight size={13} aria-hidden />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {FEATURED_DEMOS.map((d) => (
+              <Link
+                key={d.slug}
+                href={`/demos/${d.slug}` as "/"}
+                className="group rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] overflow-hidden hover:shadow-xl hover:-translate-y-1 hover:border-[rgb(var(--accent))]/40 transition-all"
+              >
+                <div className={`relative h-28 sm:h-32 bg-gradient-to-br ${d.gradient}`}>
+                  <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-md">
+                    <d.Icon size={18} className="text-neutral-800" aria-hidden />
+                  </div>
+                </div>
+                <div className="p-3 sm:p-4">
+                  <h3 className="font-bold text-sm leading-tight">
+                    {t(d.titleKey as Parameters<typeof t>[0])}
+                  </h3>
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-xs text-[rgb(var(--text-subtle))]">
+                      {t("demosPage.from")}{" "}
+                      <span className="font-bold text-[rgb(var(--text))]">${d.price}</span>
+                    </span>
+                    <ArrowRight
+                      size={13}
+                      className="text-[rgb(var(--text-subtle))] group-hover:text-[rgb(var(--accent))] group-hover:translate-x-1 transition-all"
+                      aria-hidden
+                    />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
           <Link
             href="/demos"
-            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-5 py-2.5 text-sm transition-colors"
+            className="sm:hidden mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[rgb(var(--accent))]"
           >
-            Browse Demos <ArrowRight size={14} />
+            {t("buyer.dashboard.viewAll")} <ArrowRight size={13} aria-hidden />
           </Link>
-        </div>
+        </section>
+
+        {/* How it works */}
+        <section>
+          <h2 className="text-xl font-bold mb-5">{t("buyer.dashboard.howItWorks")}</h2>
+          <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+            {STEPS.map((step, i) => (
+              <div
+                key={step.titleKey}
+                className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-5"
+              >
+                <div className="text-xs font-bold text-[rgb(var(--accent))] mb-3">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-[rgb(var(--accent-subtle))] flex items-center justify-center mb-3">
+                  <step.Icon size={18} className="text-[rgb(var(--accent))]" aria-hidden />
+                </div>
+                <h3 className="font-bold mb-1">
+                  {t(`buyer.dashboard.steps.${step.titleKey}` as Parameters<typeof t>[0])}
+                </h3>
+                <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed">
+                  {t(`buyer.dashboard.steps.${step.descKey}` as Parameters<typeof t>[0])}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
