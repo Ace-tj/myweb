@@ -5,6 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
+import { ConsultantFab } from "@/components/consultant/ConsultantFab";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -46,7 +47,10 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
         <ThemeProvider>
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            {children}
+            <ConsultantFab />
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>

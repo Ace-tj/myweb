@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { PublicHeaderNav } from "@/components/shared/PublicHeaderNav";
+import { getCurrentSession } from "@/lib/auth";
 import {
   ArrowLeft, ExternalLink, ArrowRight, CheckCircle2,
   ShoppingBag, Dumbbell, Calculator, GraduationCap,
@@ -112,6 +114,7 @@ export default async function DemoSlugPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const session = await getCurrentSession();
 
   const demo = DEMOS.find((d) => d.slug === slug);
   if (!demo) notFound();
@@ -140,9 +143,7 @@ export default async function DemoSlugPage({
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <Link href="/auth/signup" className="text-sm font-semibold px-4 py-2 rounded-lg bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))] transition-colors">
-              {t("demoDetail.getStarted")}
-            </Link>
+            <PublicHeaderNav session={session ? { name: session.name, role: session.role } : null} />
           </div>
         </div>
       </header>

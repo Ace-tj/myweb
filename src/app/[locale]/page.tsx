@@ -3,6 +3,8 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { PublicHeaderNav } from "@/components/shared/PublicHeaderNav";
+import { getCurrentSession } from "@/lib/auth";
 import {
   Zap, ShoppingBag, Dumbbell, Calculator, GraduationCap,
   School, UtensilsCrossed, User, Stethoscope, Truck,
@@ -65,6 +67,7 @@ export default async function LandingPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const session = await getCurrentSession();
 
   const PRICING = [
     { id: "basic",      price: "$199",                                 features: ["f1","f2","f3","f4"],         highlight: false },
@@ -89,12 +92,7 @@ export default async function LandingPage({
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <Link href="/auth/login" className="hidden sm:inline-flex text-sm font-medium px-3 py-2 rounded-lg hover:bg-[rgb(var(--bg-hover))] transition-colors">
-              {t("landing.signIn")}
-            </Link>
-            <Link href="/auth/signup" className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-lg bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))] transition-colors shadow-lg shadow-[rgb(var(--accent))]/20">
-              {t("landing.getStarted")} <ArrowRight size={14} />
-            </Link>
+            <PublicHeaderNav session={session ? { name: session.name, role: session.role } : null} />
           </div>
         </div>
       </header>
