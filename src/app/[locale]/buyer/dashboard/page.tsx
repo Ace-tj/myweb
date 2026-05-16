@@ -4,7 +4,7 @@ import { getCurrentSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { Zap, ShoppingBag, ArrowRight, Plus } from "lucide-react";
+import { Zap, ShoppingBag, ArrowRight, Plus, MessageSquare } from "lucide-react";
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
@@ -76,6 +76,9 @@ export default async function BuyerDashboardPage({
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <Link href="/demos" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Browse Demos</Link>
             <Link href="/buyer/dashboard" className="font-semibold text-indigo-600">Dashboard</Link>
+            <Link href={"/messages" as "/"} className="font-medium transition-colors hover:text-indigo-500 flex items-center gap-1" style={{ color: "rgb(var(--text-muted))" }}>
+              <MessageSquare size={13} /> Messages
+            </Link>
             <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
             <span className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>{session.name}</span>
             <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>

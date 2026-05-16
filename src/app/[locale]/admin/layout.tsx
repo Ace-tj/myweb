@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import {
   LayoutDashboard, Users, BarChart2, FolderKanban,
   Settings, LogOut, ChevronRight, Bell, Zap,
-  ShieldCheck, TrendingUp
+  ShieldCheck, TrendingUp, MessageSquare,
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -13,6 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { href: "/admin/dashboard", icon: <LayoutDashboard size={17} />, label: "Dashboard" },
+    { href: "/admin/support", icon: <MessageSquare size={17} />, label: "Support" },
     { href: "/admin/demos", icon: <BarChart2 size={17} />, label: "Demo Catalog" },
     { href: "/admin/users", icon: <Users size={17} />, label: "Users" },
     { href: "/admin/projects", icon: <FolderKanban size={17} />, label: "Projects" },
