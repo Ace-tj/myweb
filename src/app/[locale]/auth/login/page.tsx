@@ -1,10 +1,8 @@
-import { LoginPageClient } from "./LoginPageClient";
+import { LoginForm } from "./LoginForm";
 
-// Auth pages read query params (?from, ?pending, ?registered) and must never
-// be cached. Opt out of static prerendering — the client wrapper handles all
-// state and the page is server-rendered fresh on every request.
+// Reads ?pending=1 / ?registered=1 from the URL — never cache.
 export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
-  return <LoginPageClient />;
+  return <LoginForm />;
 }

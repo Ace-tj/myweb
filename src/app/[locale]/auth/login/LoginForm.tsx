@@ -1,12 +1,11 @@
 "use client";
 
-import { Suspense, useActionState, useState } from "react";
+import { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { AuthAside } from "@/components/auth/AuthAside";
 import { loginAction, type LoginState } from "./actions";
 import {
   Eye,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 
 const initialState: LoginState = { status: "idle" };
+
 type LoginErrorKey =
   | "invalid"
   | "notApproved"
@@ -27,50 +27,22 @@ type LoginErrorKey =
   | "passwordRequired"
   | "passwordShort";
 
-export function LoginPageClient() {
-  return (
-    <Suspense fallback={<AuthShellSkeleton />}>
-      <LoginContent />
-    </Suspense>
-  );
-}
-
-function AuthShellSkeleton() {
-  return (
-    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))]">
-      <header className="border-b border-[rgb(var(--border))] h-[57px]" />
-      <main className="flex-1 grid md:grid-cols-2">
-        <section className="flex items-center justify-center px-6 py-12">
-          <div className="w-full max-w-md space-y-5">
-            <div className="h-8 w-2/3 rounded-md shimmer" />
-            <div className="h-4 w-1/2 rounded-md shimmer" />
-            <div className="h-11 w-full rounded-xl shimmer" />
-            <div className="h-11 w-full rounded-xl shimmer" />
-            <div className="h-11 w-full rounded-xl shimmer" />
-          </div>
-        </section>
-        <aside className="hidden md:block bg-[rgb(var(--bg-subtle))]" />
-      </main>
-    </div>
-  );
-}
-
-function LoginContent() {
+export function LoginForm() {
   const locale = useLocale();
   const t = useTranslations("auth");
   const params = useSearchParams();
-  const fromParam = params.get("from") ?? "";
   const pending = params.get("pending") === "1";
   const registered = params.get("registered") === "1";
-  const hasFromBanner = Boolean(fromParam) && !pending && !registered;
 
   const [showPassword, setShowPassword] = useState(false);
-  const [state, formAction, isPending] = useActionState(loginAction, initialState);
+  const [state, formAction, isPending] = useActionState(
+    loginAction,
+    initialState,
+  );
 
   const errorKey =
     state.status === "error" ? (state.errorKey as LoginErrorKey) : null;
   const errorMessage = errorKey ? t(`login.errors.${errorKey}`) : null;
-
   const emailInvalid =
     errorKey === "emailRequired" || errorKey === "emailInvalid";
   const passwordInvalid =
@@ -78,7 +50,6 @@ function LoginContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
-      {/* Header */}
       <header className="sticky top-0 z-50 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
           <Link
@@ -95,18 +66,16 @@ function LoginContent() {
         </div>
       </header>
 
-      <main className="flex-1 grid md:grid-cols-2">
-        {/* LEFT — form column */}
-        <section className="flex items-center justify-center px-6 py-12">
-          <div className="w-full max-w-md animate-fade-up">
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">
-                {t("login.title")}
-              </h1>
-              <p className="text-[rgb(var(--text-muted))]">{t("login.subtitle")}</p>
-            </div>
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          <div className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-7 sm:p-8 shadow-sm">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+              {t("login.title")}
+            </h1>
+            <p className="text-sm text-[rgb(var(--text-muted))] mb-6">
+              {t("login.subtitle")}
+            </p>
 
-            {/* Banners */}
             {pending && (
               <div
                 role="status"
@@ -121,30 +90,23 @@ function LoginContent() {
                 role="status"
                 className="mb-5 rounded-xl border border-emerald-300/40 bg-emerald-50 dark:bg-emerald-950/30 dark:border-emerald-700/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-200 flex items-start gap-2"
               >
-                <CheckCircle2 size={16} className="mt-0.5 shrink-0" aria-hidden />
+                <CheckCircle2
+                  size={16}
+                  className="mt-0.5 shrink-0"
+                  aria-hidden
+                />
                 <span>{t("login.notices.registered")}</span>
-              </div>
-            )}
-            {hasFromBanner && (
-              <div
-                role="status"
-                className="mb-5 rounded-xl border border-[rgb(var(--accent))]/30 bg-[rgb(var(--accent-subtle))] px-4 py-3 text-sm text-[rgb(var(--accent-hover))] dark:text-[rgb(var(--accent))] flex items-start gap-2"
-              >
-                <Info size={16} className="mt-0.5 shrink-0" aria-hidden />
-                <span>{t("login.notices.from")}</span>
               </div>
             )}
 
             <form
               action={formAction}
               aria-busy={isPending}
-              className="space-y-5"
+              className="space-y-4"
               noValidate
             >
               <input type="hidden" name="locale" value={locale} />
-              <input type="hidden" name="from" value={fromParam} />
 
-              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -168,7 +130,6 @@ function LoginContent() {
                 />
               </div>
 
-              {/* Password */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="password" className="block text-sm font-medium">
@@ -205,21 +166,24 @@ function LoginContent() {
                         : t("shared.showPassword")
                     }
                     aria-pressed={showPassword}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] transition-colors p-1 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[rgb(var(--accent))]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] transition-colors p-1 rounded-md"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
               </div>
 
-              {/* Error */}
               {errorMessage && (
                 <div
                   role="alert"
                   aria-live="polite"
                   className="rounded-xl border border-red-300/40 bg-red-50 dark:bg-red-950/30 dark:border-red-800/30 px-4 py-3 text-sm text-red-700 dark:text-red-300 flex items-start gap-2"
                 >
-                  <AlertCircle size={16} className="mt-0.5 shrink-0" aria-hidden />
+                  <AlertCircle
+                    size={16}
+                    className="mt-0.5 shrink-0"
+                    aria-hidden
+                  />
                   <span>{errorMessage}</span>
                 </div>
               )}
@@ -227,10 +191,10 @@ function LoginContent() {
               <button
                 type="submit"
                 disabled={isPending}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold py-3 text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold py-3 text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isPending ? (
-                  <>{t("login.submitting")}</>
+                  t("login.submitting")
                 ) : (
                   <>
                     {t("login.submit")} <ArrowRight size={15} aria-hidden />
@@ -248,14 +212,12 @@ function LoginContent() {
                 {t("login.signUpLink")}
               </Link>
             </p>
-
-            <p className="mt-8 text-center text-xs text-[rgb(var(--text-subtle))]">
-              {t("shared.trustNote")}
-            </p>
           </div>
-        </section>
 
-        <AuthAside />
+          <p className="mt-6 text-center text-xs text-[rgb(var(--text-subtle))]">
+            {t("shared.trustNote")}
+          </p>
+        </div>
       </main>
     </div>
   );

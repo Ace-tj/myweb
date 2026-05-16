@@ -11,32 +11,12 @@ const signupSchema = z.object({
   name: z.string().min(1),
   role: z.enum(["buyer", "consultant"]),
   locale: z.string().min(2).max(5),
-  demo: z.string().optional(),
 });
 
 export type SignupState =
   | { status: "idle" }
   | { status: "error"; errorKey: string }
   | { status: "ok" };
-
-function postSignupDestination(
-  locale: string,
-  role: Role,
-  demo: string | undefined,
-  variant: "ok" | "pending" | "registered",
-): string {
-  // Consultants always land on login awaiting approval.
-  if (variant === "pending" || role === "consultant") {
-    return `/${locale}/auth/login?pending=1`;
-  }
-  if (variant === "registered") {
-    const qs = demo ? `&demo=${encodeURIComponent(demo)}` : "";
-    return `/${locale}/auth/login?registered=1${qs}`;
-  }
-  // Auto-signed-in buyers go straight to dashboard.
-  const qs = demo ? `?demo=${encodeURIComponent(demo)}` : "";
-  return `/${locale}/buyer/dashboard${qs}`;
-}
 
 export async function signupAction(
   _prev: SignupState,
@@ -48,7 +28,6 @@ export async function signupAction(
     name: formData.get("name"),
     role: formData.get("role"),
     locale: formData.get("locale"),
-    demo: formData.get("demo") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -74,18 +53,22 @@ export async function signupAction(
     return { status: "error", errorKey: "generic" };
   }
 
-  const { email, password, name, role, locale, demo } = parsed.data;
+  const { email, password, name, role, locale } = parsed.data;
+  const isConsultant = role === "consultant";
 
-  // ── Mock path (no Supabase configured) ─────────────────────────────────
+  // ── Mock fallback (no Supabase env) ──────────────────────────────────
   if (!supabaseConfigured()) {
     const result = await mockSignUp(email, password, name, role as Role);
     if (!result.ok) return { status: "error", errorKey: "generic" };
-    redirect(postSignupDestination(locale, role as Role, demo, "ok"));
+    redirect(
+      isConsultant
+        ? `/${locale}/auth/login?pending=1`
+        : `/${locale}/buyer/dashboard`,
+    );
   }
 
-  // ── Supabase path ──────────────────────────────────────────────────────
+  // ── Supabase ─────────────────────────────────────────────────────────
   const supabase = await createServerClient();
-
   const { error, data } = await supabase.auth.signUp({
     email,
     password,
@@ -102,7 +85,7 @@ export async function signupAction(
     return { status: "error", errorKey: "generic" };
   }
 
-  // Create / upsert profile row (schema requires NOT NULL phone — pass empty).
+  // Create profile row (NOT NULL phone — pass empty).
   await supabase.from("profiles").upsert({
     id: data.user.id,
     email,
@@ -111,15 +94,21 @@ export async function signupAction(
     phone: "",
   });
 
-  // Auto sign-in so we can set the session cookie without an email-confirm step.
+  // Auto sign-in for buyers so they land directly in the dashboard. Consultants
+  // skip auto-sign-in: they bounce to /auth/login?pending=1 because they need
+  // admin approval before they can use their account.
+  if (isConsultant) {
+    redirect(`/${locale}/auth/login?pending=1`);
+  }
+
   const { error: signInError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (signInError) {
-    redirect(postSignupDestination(locale, role as Role, demo, "registered"));
+    redirect(`/${locale}/auth/login?registered=1`);
   }
 
-  redirect(postSignupDestination(locale, role as Role, demo, "ok"));
+  redirect(`/${locale}/buyer/dashboard`);
 }
