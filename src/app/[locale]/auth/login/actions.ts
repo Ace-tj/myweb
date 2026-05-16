@@ -68,14 +68,9 @@ export async function loginAction(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, approved")
+    .select("role")
     .eq("id", data.user.id)
-    .single();
-
-  if (profile?.role === "consultant" && !profile.approved) {
-    await supabase.auth.signOut();
-    return { status: "error", errorKey: "notApproved" };
-  }
+    .maybeSingle();
 
   redirect(
     `/${locale}${redirectPathForRole((profile?.role as "buyer" | "consultant" | "admin") ?? "buyer")}`,

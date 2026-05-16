@@ -105,19 +105,21 @@ export async function getCurrentSession(): Promise<MockSession | null> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
+  // The profiles table is shared with another app and uses `full_name`
+  // (not `name`), has no `approved`/`is_agent` columns, and enforces
+  // NOT NULL on `phone`. We adapt to that schema.
   let { data: profile } = await supabase
     .from("profiles")
-    .select("id, name, role, is_agent")
+    .select("id, full_name, role")
     .eq("id", user.id)
     .maybeSingle();
 
-  // Self-heal: if the auth user exists but profiles row is missing (e.g.
-  // the signup trigger silently failed or DB was provisioned after the
-  // user signed up), create the row now using auth metadata.
+  // Self-heal: create the row if missing.
   if (!profile) {
     const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
     const fallbackName =
       (typeof meta.name === "string" && meta.name) ||
+      (typeof meta.full_name === "string" && meta.full_name) ||
       user.email?.split("@")[0] ||
       "User";
     const fallbackRole =
@@ -131,13 +133,13 @@ export async function getCurrentSession(): Promise<MockSession | null> {
         {
           id: user.id,
           email: user.email,
-          name: fallbackName,
+          full_name: fallbackName,
           role: fallbackRole,
-          approved: fallbackRole === "buyer",
+          phone: "",
         },
         { onConflict: "id" },
       )
-      .select("id, name, role, is_agent")
+      .select("id, full_name, role")
       .maybeSingle();
 
     if (created) profile = created;
@@ -148,9 +150,8 @@ export async function getCurrentSession(): Promise<MockSession | null> {
   return {
     id: profile.id,
     email: user.email ?? "",
-    name: profile.name,
+    name: profile.full_name ?? user.email?.split("@")[0] ?? "User",
     role: profile.role as Role,
-    isAgent: profile.is_agent ?? undefined,
   };
 }
 

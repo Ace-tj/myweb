@@ -199,7 +199,7 @@ async function runChecks(): Promise<Check[]> {
   if (userId) {
     const { data: profile, error: pErr } = await supabase
       .from("profiles")
-      .select("id, name, role, approved, email")
+      .select("id, full_name, role, email")
       .eq("id", userId)
       .maybeSingle();
 
@@ -223,13 +223,13 @@ async function runChecks(): Promise<Check[]> {
           {
             id: userId,
             email: userEmail,
-            name: userEmail?.split("@")[0] ?? "User",
+            full_name: userEmail?.split("@")[0] ?? "User",
             role: "buyer",
-            approved: true,
+            phone: "",
           },
           { onConflict: "id" },
         )
-        .select("id, name, role")
+        .select("id, full_name, role")
         .maybeSingle();
 
       checks.push({
@@ -245,7 +245,7 @@ async function runChecks(): Promise<Check[]> {
       checks.push({
         name: "Profile row for current user",
         status: "ok",
-        detail: `name=${profile.name} role=${profile.role} approved=${profile.approved} email=${profile.email ?? "(null)"}`,
+        detail: `full_name=${profile.full_name} role=${profile.role} email=${profile.email ?? "(null)"}`,
       });
     }
   }

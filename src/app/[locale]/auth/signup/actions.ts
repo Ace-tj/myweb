@@ -87,13 +87,14 @@ export async function signupAction(
     return { status: "error", errorKey: "generic" };
   }
 
-  // Create profile row regardless of whether email is confirmed
+  // Create profile row. Use `full_name`/`phone` to match the existing
+  // shared-database schema (NOT NULL phone constraint).
   await supabase.from("profiles").upsert({
     id: data.user.id,
     email,
-    name,
+    full_name: name,
     role,
-    approved: role === "buyer",
+    phone: "",
   });
 
   // Auto sign-in so the session cookie is set immediately, bypassing any
