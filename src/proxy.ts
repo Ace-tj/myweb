@@ -19,8 +19,14 @@ function hasSessionCookies(req: NextRequest): boolean {
   if (!supabaseConfigured()) {
     return Boolean(req.cookies.get("myweb_mock_session")?.value);
   }
+  // Supabase splits the auth cookie into chunked parts when the JWT is
+  // large: `sb-<ref>-auth-token.0`, `sb-<ref>-auth-token.1`, etc.
+  // The original `endsWith("-auth-token")` predicate missed all chunked
+  // cookies, so the middleware redirected every authenticated user
+  // straight back to login. Match anything starting with "sb-" and
+  // containing "auth-token" instead.
   return [...req.cookies.getAll()].some(
-    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token"),
+    (c) => c.name.startsWith("sb-") && c.name.includes("auth-token"),
   );
 }
 
