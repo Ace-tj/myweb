@@ -65,10 +65,14 @@ export default async function middleware(req: NextRequest) {
 
   // If intl produced a redirect or rewrite distinct from our supabaseResponse,
   // copy the refreshed Supabase cookies onto it so they aren't lost.
+  // IMPORTANT: pass the full ResponseCookie object — passing just (name, value)
+  // drops `path`, `httpOnly`, `sameSite`, `maxAge`, `secure`, etc., which makes
+  // the browser scope the cookie to the current URL only. The cookie then fails
+  // to send on the next navigation and the user gets bounced back to login.
   let response: NextResponse = intlResponse;
   if (intlResponse !== supabaseResponse) {
     supabaseResponse.cookies.getAll().forEach((c) => {
-      intlResponse.cookies.set(c.name, c.value);
+      intlResponse.cookies.set(c);
     });
   }
 
@@ -87,9 +91,9 @@ export default async function middleware(req: NextRequest) {
     const loginUrl = new URL(`/${locale}/auth/login`, req.url);
     loginUrl.searchParams.set("from", pathname);
     const redirect = NextResponse.redirect(loginUrl);
-    // Carry refreshed cookies through the redirect.
+    // Carry refreshed cookies through the redirect — full object, not (name, value).
     response.cookies.getAll().forEach((c) => {
-      redirect.cookies.set(c.name, c.value);
+      redirect.cookies.set(c);
     });
     return redirect;
   }
