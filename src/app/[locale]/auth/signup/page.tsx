@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { Suspense, useActionState, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -47,6 +47,35 @@ function calcStrength(pwd: string): { score: 0 | 1 | 2 | 3 | 4; label: StrengthL
 const initialState: SignupState = { status: "idle" };
 
 export default function SignupPage() {
+  return (
+    <Suspense fallback={<AuthShellSkeleton />}>
+      <SignupContent />
+    </Suspense>
+  );
+}
+
+function AuthShellSkeleton() {
+  return (
+    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))]">
+      <header className="border-b border-[rgb(var(--border))] h-[57px]" />
+      <main className="flex-1 grid md:grid-cols-2">
+        <section className="flex items-center justify-center px-6 py-12">
+          <div className="w-full max-w-md space-y-5">
+            <div className="h-8 w-2/3 rounded-md shimmer" />
+            <div className="h-4 w-1/2 rounded-md shimmer" />
+            <div className="h-20 w-full rounded-xl shimmer" />
+            <div className="h-11 w-full rounded-xl shimmer" />
+            <div className="h-11 w-full rounded-xl shimmer" />
+            <div className="h-11 w-full rounded-xl shimmer" />
+          </div>
+        </section>
+        <aside className="hidden md:block bg-[rgb(var(--bg-subtle))]" />
+      </main>
+    </div>
+  );
+}
+
+function SignupContent() {
   const locale = useLocale();
   const t = useTranslations("auth");
   const params = useSearchParams();
