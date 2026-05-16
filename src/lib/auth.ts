@@ -105,11 +105,43 @@ export async function getCurrentSession(): Promise<MockSession | null> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from("profiles")
     .select("id, name, role, is_agent")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
+
+  // Self-heal: if the auth user exists but profiles row is missing (e.g.
+  // the signup trigger silently failed or DB was provisioned after the
+  // user signed up), create the row now using auth metadata.
+  if (!profile) {
+    const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+    const fallbackName =
+      (typeof meta.name === "string" && meta.name) ||
+      user.email?.split("@")[0] ||
+      "User";
+    const fallbackRole =
+      (typeof meta.role === "string" && (meta.role === "consultant" || meta.role === "admin")
+        ? meta.role
+        : "buyer") as Role;
+
+    const { data: created } = await supabase
+      .from("profiles")
+      .upsert(
+        {
+          id: user.id,
+          email: user.email,
+          name: fallbackName,
+          role: fallbackRole,
+          approved: fallbackRole === "buyer",
+        },
+        { onConflict: "id" },
+      )
+      .select("id, name, role, is_agent")
+      .maybeSingle();
+
+    if (created) profile = created;
+  }
 
   if (!profile) return null;
 

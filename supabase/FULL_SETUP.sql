@@ -382,6 +382,11 @@ create policy "profiles: user updates own"
   on public.profiles for update
   using (auth.uid() = id);
 
+drop policy if exists "profiles: user inserts own" on public.profiles;
+create policy "profiles: user inserts own"
+  on public.profiles for insert
+  with check (auth.uid() = id);
+
 drop policy if exists "profiles: admin full access" on public.profiles;
 create policy "profiles: admin full access"
   on public.profiles for all

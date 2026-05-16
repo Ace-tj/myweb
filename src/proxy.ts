@@ -1,39 +1,62 @@
 import createMiddleware from "next-intl/middleware";
+import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
-import { supabaseConfigured } from "./lib/auth";
 
 const intlMiddleware = createMiddleware(routing);
 
 const PROTECTED_PREFIXES = ["/buyer", "/consultant", "/admin"];
 
-const ROLE_PREFIXES: Record<string, string[]> = {
-  buyer: ["/buyer"],
-  consultant: ["/consultant"],
-  admin: ["/buyer", "/consultant", "/admin"],
-};
+function supabaseConfigured() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("YOUR_PROJECT_REF"),
+  );
+}
 
-async function getSessionFromRequest(req: NextRequest) {
+function hasSessionCookies(req: NextRequest): boolean {
   if (!supabaseConfigured()) {
-    const raw = req.cookies.get("myweb_mock_session")?.value;
-    if (!raw) return null;
-    try {
-      return JSON.parse(raw) as { role: string; name: string };
-    } catch {
-      return null;
-    }
+    return Boolean(req.cookies.get("myweb_mock_session")?.value);
   }
-
-  const sbCookie = [...req.cookies.getAll()].find(
+  return [...req.cookies.getAll()].some(
     (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token"),
   );
-  if (!sbCookie) return null;
-  return { role: "unknown", name: "" };
 }
 
 export default async function middleware(req: NextRequest) {
-  const intlResponse = intlMiddleware(req);
+  // 1. Let next-intl handle locale routing — may rewrite or redirect.
+  const response = intlMiddleware(req);
 
+  // 2. Refresh Supabase session on every request. This is THE critical piece:
+  // without it, access tokens expire silently and the user appears logged out
+  // on the next navigation. The setAll callback mutates BOTH the request
+  // (so downstream code in this same request sees fresh cookies) AND the
+  // response (so the browser receives the refreshed cookies).
+  if (supabaseConfigured()) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return req.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              req.cookies.set(name, value);
+              response.cookies.set(name, value, options);
+            });
+          },
+        },
+      },
+    );
+    // This call triggers token refresh + setAll if a refresh occurs.
+    await supabase.auth.getUser();
+  }
+
+  // 3. Lightweight UI-level auth gate on protected route prefixes.
+  // The page itself does the authoritative check via getCurrentSession().
   const { pathname } = req.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
   const locale = segments[0] ?? "en";
@@ -43,33 +66,19 @@ export default async function middleware(req: NextRequest) {
     pathWithoutLocale.startsWith(prefix),
   );
 
-  if (!needsAuth) {
-    return intlResponse;
-  }
-
-  const session = await getSessionFromRequest(req);
-
-  if (!session) {
+  if (needsAuth && !hasSessionCookies(req)) {
     const loginUrl = new URL(`/${locale}/auth/login`, req.url);
     loginUrl.searchParams.set("from", pathname);
-    return NextResponse.redirect(loginUrl);
+    const redirect = NextResponse.redirect(loginUrl);
+    // Carry over any cookies the Supabase refresh set, so the redirect
+    // doesn't lose them.
+    response.cookies.getAll().forEach((c) => {
+      redirect.cookies.set(c.name, c.value);
+    });
+    return redirect;
   }
 
-  if (session.role !== "unknown") {
-    const allowed = ROLE_PREFIXES[session.role] ?? [];
-    const hasAccess = allowed.some((prefix) =>
-      pathWithoutLocale.startsWith(prefix),
-    );
-
-    if (!hasAccess) {
-      let ownDash = `/${locale}/buyer/dashboard`;
-      if (session.role === "consultant") ownDash = `/${locale}/consultant/dashboard`;
-      if (session.role === "admin") ownDash = `/${locale}/admin/dashboard`;
-      return NextResponse.redirect(new URL(ownDash, req.url));
-    }
-  }
-
-  return intlResponse;
+  return response;
 }
 
 export const config = {

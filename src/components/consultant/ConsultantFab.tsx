@@ -193,7 +193,7 @@ export function ConsultantFab() {
         className={`fixed z-50 transition-all duration-300 ease-out
           ${open ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0 pointer-events-none"}
           inset-0 md:inset-auto md:bottom-6 md:right-6
-          md:w-[400px] md:h-[min(600px,calc(100vh-3rem))]
+          md:w-[380px] md:h-[min(480px,calc(100dvh-6rem))]
           md:rounded-2xl
           border md:shadow-2xl flex flex-col overflow-hidden`}
         style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
