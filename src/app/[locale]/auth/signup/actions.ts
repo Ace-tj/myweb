@@ -2,11 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import {
-  mockSignUp,
-  supabaseConfigured,
-  type Role,
-} from "@/lib/auth";
+import { mockSignUp, supabaseConfigured, type Role } from "@/lib/auth";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 
 const signupSchema = z.object({
@@ -15,12 +11,32 @@ const signupSchema = z.object({
   name: z.string().min(1),
   role: z.enum(["buyer", "consultant"]),
   locale: z.string().min(2).max(5),
+  demo: z.string().optional(),
 });
 
 export type SignupState =
   | { status: "idle" }
   | { status: "error"; errorKey: string }
   | { status: "ok" };
+
+function postSignupDestination(
+  locale: string,
+  role: Role,
+  demo: string | undefined,
+  variant: "ok" | "pending" | "registered",
+): string {
+  // Consultants always land on login awaiting approval.
+  if (variant === "pending" || role === "consultant") {
+    return `/${locale}/auth/login?pending=1`;
+  }
+  if (variant === "registered") {
+    const qs = demo ? `&demo=${encodeURIComponent(demo)}` : "";
+    return `/${locale}/auth/login?registered=1${qs}`;
+  }
+  // Auto-signed-in buyers go straight to dashboard.
+  const qs = demo ? `?demo=${encodeURIComponent(demo)}` : "";
+  return `/${locale}/buyer/dashboard${qs}`;
+}
 
 export async function signupAction(
   _prev: SignupState,
@@ -32,6 +48,7 @@ export async function signupAction(
     name: formData.get("name"),
     role: formData.get("role"),
     locale: formData.get("locale"),
+    demo: formData.get("demo") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -45,36 +62,34 @@ export async function signupAction(
             : "emailRequired",
       };
     }
-    if (issue?.path[0] === "password") return { status: "error", errorKey: "passwordShort" };
-    if (issue?.path[0] === "name") return { status: "error", errorKey: "nameRequired" };
-    if (issue?.path[0] === "role") return { status: "error", errorKey: "roleRequired" };
+    if (issue?.path[0] === "password") {
+      return { status: "error", errorKey: "passwordShort" };
+    }
+    if (issue?.path[0] === "name") {
+      return { status: "error", errorKey: "nameRequired" };
+    }
+    if (issue?.path[0] === "role") {
+      return { status: "error", errorKey: "roleRequired" };
+    }
     return { status: "error", errorKey: "generic" };
   }
 
-  const { email, password, name, role, locale } = parsed.data;
+  const { email, password, name, role, locale, demo } = parsed.data;
 
-  // ── Mock path (no Supabase configured) ──────────────────────────────────
+  // ── Mock path (no Supabase configured) ─────────────────────────────────
   if (!supabaseConfigured()) {
     const result = await mockSignUp(email, password, name, role as Role);
     if (!result.ok) return { status: "error", errorKey: "generic" };
-    const dest =
-      role === "consultant"
-        ? `/${locale}/auth/login?pending=1`
-        : `/${locale}/buyer/dashboard`;
-    redirect(dest);
-    return { status: "ok" };
+    redirect(postSignupDestination(locale, role as Role, demo, "ok"));
   }
 
-  // ── Supabase path ────────────────────────────────────────────────────────
+  // ── Supabase path ──────────────────────────────────────────────────────
   const supabase = await createServerClient();
 
-  // Sign up — this creates the auth user. If Supabase project has
-  // "Confirm email" disabled the session will be available immediately.
   const { error, data } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      // Skip email verification entirely — users are trusted at sign-up
       emailRedirectTo: undefined,
       data: { name, role },
     },
@@ -87,8 +102,7 @@ export async function signupAction(
     return { status: "error", errorKey: "generic" };
   }
 
-  // Create profile row. Use `full_name`/`phone` to match the existing
-  // shared-database schema (NOT NULL phone constraint).
+  // Create / upsert profile row (schema requires NOT NULL phone — pass empty).
   await supabase.from("profiles").upsert({
     id: data.user.id,
     email,
@@ -97,29 +111,15 @@ export async function signupAction(
     phone: "",
   });
 
-  // Auto sign-in so the session cookie is set immediately, bypassing any
-  // email-confirmation redirect that Supabase would normally enforce.
+  // Auto sign-in so we can set the session cookie without an email-confirm step.
   const { error: signInError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (signInError) {
-    // If auto-login fails (e.g. Supabase still requires confirmation in project
-    // settings), send them to login with a helpful note instead of erroring.
-    const dest =
-      role === "consultant"
-        ? `/${locale}/auth/login?pending=1`
-        : `/${locale}/auth/login?registered=1`;
-    redirect(dest);
-    return { status: "ok" };
+    redirect(postSignupDestination(locale, role as Role, demo, "registered"));
   }
 
-  // Success — redirect directly into the app, no email step required.
-  const dest =
-    role === "consultant"
-      ? `/${locale}/auth/login?pending=1`
-      : `/${locale}/buyer/dashboard`;
-  redirect(dest);
-  return { status: "ok" };
+  redirect(postSignupDestination(locale, role as Role, demo, "ok"));
 }

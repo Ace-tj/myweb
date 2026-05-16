@@ -121,6 +121,26 @@
     "footerRights": "All rights reserved."
   },
   "auth": {
+    "shared": {
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "fullNamePlaceholder": "Your full name",
+      "trustNote": "No spam · No credit card · Your data stays private"
+    },
+    "aside": {
+      "badge": "Live",
+      "tagline": "Pick a demo.",
+      "taglineAccent": "Ship the system.",
+      "desc": "10 production-ready demos. Customized by a real consultant. Live in days, not months.",
+      "stat1Label": "demos",
+      "stat2Label": "languages",
+      "stat3Label": "businesses",
+      "testimonialQuote": "We launched our restaurant POS in 12 days. The consultant understood exactly what we needed.",
+      "testimonialName": "Sardor Karimov",
+      "testimonialRole": "Restaurant Owner, Dushanbe"
+    },
     "login": {
       "title": "Welcome back",
       "subtitle": "Sign in to your myweb account",
@@ -128,7 +148,13 @@
       "submitting": "Signing in…",
       "noAccount": "Don't have an account?",
       "signUpLink": "Create one",
+      "forgotPassword": "Forgot password?",
       "demoBanner": "Auth backend not connected yet. UI runs in offline preview mode.",
+      "notices": {
+        "pending": "Your consultant account is awaiting admin approval.",
+        "registered": "Account created. Sign in to continue.",
+        "from": "Please sign in to continue to the page you were viewing."
+      },
       "errors": {
         "invalid": "Email or password is incorrect.",
         "notApproved": "Your consultant account is awaiting admin approval.",
@@ -142,11 +168,22 @@
     "signup": {
       "title": "Create your account",
       "subtitle": "Choose your account type to get started",
+      "iWantTo": "I want to",
       "roleBuyer": "I want to buy a website or app",
       "roleBuyerDesc": "Browse demos and order a custom build.",
       "roleConsultant": "I want to build for clients",
       "roleConsultantDesc": "Receive briefs, send quotes, deliver work.",
       "nameLabel": "Full name",
+      "passwordHint": "8+ characters with a number",
+      "passwordStrength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "notices": {
+        "demoHint": "You're signing up to request the {demo} demo."
+      },
       "submit": "Create account",
       "submitting": "Creating account…",
       "haveAccount": "Already have an account?",

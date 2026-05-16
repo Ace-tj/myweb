@@ -6,6 +6,7 @@ import {
   mockSignIn,
   redirectPathForRole,
   supabaseConfigured,
+  type Role,
 } from "@/lib/auth";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 
@@ -13,12 +14,24 @@ const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   locale: z.string().min(2).max(5),
+  from: z.string().optional(),
 });
 
 export type LoginState =
   | { status: "idle" }
   | { status: "error"; errorKey: string }
   | { status: "ok" };
+
+/** Validate a `from` redirect target — only same-origin, locale-scoped, non-auth paths. */
+function safeRedirect(from: string | undefined, locale: string): string | null {
+  if (!from) return null;
+  if (!from.startsWith(`/${locale}/`)) return null;
+  if (from.startsWith("//")) return null;
+  if (from.includes("://")) return null;
+  if (from.includes("\\")) return null;
+  if (from.startsWith(`/${locale}/auth/`)) return null;
+  return from;
+}
 
 export async function loginAction(
   _prev: LoginState,
@@ -28,6 +41,7 @@ export async function loginAction(
     email: formData.get("email"),
     password: formData.get("password"),
     locale: formData.get("locale"),
+    from: formData.get("from") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -35,27 +49,31 @@ export async function loginAction(
     if (issue?.path[0] === "email") {
       return {
         status: "error",
-        errorKey: issue.code === "invalid_format" ? "emailInvalid" : "emailRequired",
+        errorKey:
+          issue.code === "invalid_format" ? "emailInvalid" : "emailRequired",
       };
     }
     if (issue?.path[0] === "password") {
       return {
         status: "error",
-        errorKey: issue.code === "too_small" ? "passwordShort" : "passwordRequired",
+        errorKey:
+          issue.code === "too_small" ? "passwordShort" : "passwordRequired",
       };
     }
     return { status: "error", errorKey: "generic" };
   }
 
-  const { email, password, locale } = parsed.data;
+  const { email, password, locale, from } = parsed.data;
+  const safeFrom = safeRedirect(from, locale);
 
+  // ── Mock path (no Supabase configured) ─────────────────────────────────
   if (!supabaseConfigured()) {
     const result = await mockSignIn(email, password);
     if (!result.ok) return { status: "error", errorKey: "invalid" };
-    redirect(`/${locale}${redirectPathForRole(result.session.role)}`);
-    return { status: "ok" };
+    redirect(safeFrom ?? `/${locale}${redirectPathForRole(result.session.role)}`);
   }
 
+  // ── Supabase path ──────────────────────────────────────────────────────
   const supabase = await createServerClient();
   const { error, data } = await supabase.auth.signInWithPassword({
     email,
@@ -72,9 +90,6 @@ export async function loginAction(
     .eq("id", data.user.id)
     .maybeSingle();
 
-  redirect(
-    `/${locale}${redirectPathForRole((profile?.role as "buyer" | "consultant" | "admin") ?? "buyer")}`,
-  );
-  // redirect() throws — the line below is unreachable at runtime but satisfies TS
-  return { status: "ok" };
+  const role: Role = (profile?.role as Role) ?? "buyer";
+  redirect(safeFrom ?? `/${locale}${redirectPathForRole(role)}`);
 }
