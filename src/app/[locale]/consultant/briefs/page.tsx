@@ -1,75 +1,15 @@
 import { setRequestLocale } from "next-intl/server";
+import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { Zap, Briefcase, ArrowRight, DollarSign, Calendar } from "lucide-react";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { getCurrentSession } from "@/lib/auth";
+import { listOpenBriefs } from "@/lib/projects";
+import { ArrowLeft, ArrowRight, Inbox } from "lucide-react";
 
-export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
-}
+export const dynamic = "force-dynamic";
 
-interface Brief {
-  id: string;
-  demoSlug: string;
-  demoLabel: string;
-  businessName: string;
-  budget: number;
-  deadline: string;
-  description: string;
-  category: string;
-}
-
-const MOCK_BRIEFS: Brief[] = [
-  {
-    id: "proj-101",
-    demoSlug: "shop",
-    demoLabel: "Online Shop",
-    businessName: "Green Basket Market",
-    budget: 1500,
-    deadline: "2026-07-01",
-    description: "Online store for organic products with cart, checkout, and order tracking.",
-    category: "E-commerce",
-  },
-  {
-    id: "proj-102",
-    demoSlug: "clinic",
-    demoLabel: "Clinic System",
-    businessName: "CityMed Clinic",
-    budget: 2000,
-    deadline: "2026-08-15",
-    description: "Appointment booking system for a 5-doctor private clinic with patient portal.",
-    category: "Healthcare",
-  },
-  {
-    id: "proj-103",
-    demoSlug: "restaurant",
-    demoLabel: "Restaurant POS",
-    businessName: "Spice Garden",
-    budget: 900,
-    deadline: "2026-06-20",
-    description: "POS system for a mid-size restaurant with table management and kitchen tickets.",
-    category: "Food & Bev",
-  },
-  {
-    id: "proj-104",
-    demoSlug: "logistics",
-    demoLabel: "Logistics Platform",
-    businessName: "FastTrack Delivery",
-    budget: 1800,
-    deadline: "2026-07-30",
-    description: "Fleet tracking and shipment management system for 8-truck regional delivery company.",
-    category: "Logistics",
-  },
-];
-
-const CATEGORY_COLORS: Record<string, string> = {
-  "E-commerce": "bg-orange-500/15 text-orange-500",
-  "Healthcare": "bg-teal-500/15 text-teal-500",
-  "Food & Bev": "bg-red-500/15 text-red-500",
-  "Logistics": "bg-slate-400/20 text-slate-500",
-};
-
-export default async function ConsultantBriefsPage({
+export default async function OpenBriefsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -77,79 +17,127 @@ export default async function ConsultantBriefsPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const session = await getCurrentSession();
+  if (!session) redirect(`/${locale}/auth/login`);
+  if (session.role !== "consultant" && session.role !== "admin") {
+    redirect(`/${locale}/buyer/dashboard`);
+  }
+
+  const briefs = await listOpenBriefs();
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
-      {/* Header */}
-      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-        <div className="mx-auto max-w-6xl px-6 py-3.5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
-            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
+    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+      <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+          <Link
+            href="/consultant/dashboard"
+            className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm font-medium text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--bg-hover))] transition-colors"
+          >
+            <ArrowLeft size={16} aria-hidden /> <span>Back</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/consultant/briefs" className="font-semibold text-indigo-600">Browse Briefs</Link>
-            <Link href="/consultant/dashboard" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Dashboard</Link>
-            <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
-            <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <Link
+            href="/"
+            className="flex items-center font-extrabold text-xl tracking-tight"
+            aria-label="myweb home"
+          >
+            <span className="gradient-text">myweb</span>
+          </Link>
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto max-w-5xl w-full px-6 py-10">
+      <main className="flex-1 mx-auto max-w-5xl w-full px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Open Project Briefs</h1>
-          <p className="text-sm mt-1" style={{ color: "rgb(var(--text-muted))" }}>Browse buyer requests and claim projects you&apos;d like to work on</p>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-2">
+            Open briefs
+          </h1>
+          <p className="text-[rgb(var(--text-muted))]">
+            Briefs from buyers waiting for a consultant to claim and quote.
+          </p>
         </div>
 
-        {MOCK_BRIEFS.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed p-16 text-center" style={{ borderColor: "rgb(var(--border))" }}>
-            <p className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>No open briefs at the moment. Check back soon.</p>
+        {briefs.length === 0 ? (
+          <div className="rounded-3xl border-2 border-dashed border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))] px-6 py-16 text-center">
+            <Inbox
+              size={32}
+              className="mx-auto mb-4 text-[rgb(var(--text-muted))]"
+              aria-hidden
+            />
+            <h2 className="text-lg font-bold mb-1">No open briefs right now</h2>
+            <p className="text-sm text-[rgb(var(--text-muted))] max-w-md mx-auto">
+              When a buyer submits a new brief it appears here for any
+              consultant to claim. Check back later.
+            </p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {MOCK_BRIEFS.map(brief => (
-              <div
-                key={brief.id}
-                className="rounded-2xl border p-6 flex flex-col sm:flex-row sm:items-center gap-5 transition-all hover:border-indigo-500/30 hover:shadow-sm"
-                style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
-              >
-                <div className="w-11 h-11 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-500 flex-shrink-0">
-                  <Briefcase size={19} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h2 className="font-semibold text-sm" style={{ color: "rgb(var(--text))" }}>{brief.businessName}</h2>
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${CATEGORY_COLORS[brief.category] ?? "bg-indigo-500/15 text-indigo-500"}`}>
-                      {brief.demoLabel}
-                    </span>
-                  </div>
-                  <p className="text-sm line-clamp-2 mb-3" style={{ color: "rgb(var(--text-muted))" }}>{brief.description}</p>
-                  <div className="flex items-center gap-4 text-xs" style={{ color: "rgb(var(--text-subtle))" }}>
-                    <span className="flex items-center gap-1">
-                      <DollarSign size={12} />
-                      <span className="font-semibold text-emerald-500">${brief.budget.toLocaleString()}</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar size={12} />
-                      Due {brief.deadline}
-                    </span>
-                  </div>
-                </div>
+          <ul className="space-y-3">
+            {briefs.map((p) => (
+              <li key={p.id}>
                 <Link
-                  href={`/consultant/projects/${brief.id}` as "/"}
-                  className="flex-shrink-0 flex items-center gap-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
+                  href={`/consultant/projects/${p.id}` as "/"}
+                  className="block rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-5 sm:p-6 transition-all hover:border-[rgb(var(--accent))]/40 hover:shadow-sm"
                 >
-                  View Brief <ArrowRight size={14} />
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold text-base sm:text-lg truncate">
+                        {p.brief.businessName || "Untitled brief"}
+                      </p>
+                      <p className="text-xs text-[rgb(var(--text-muted))] mt-1">
+                        Submitted {new Date(p.createdAt).toLocaleDateString()}
+                        {p.brief.demoSlug && (
+                          <>
+                            {" · "}
+                            <span className="capitalize">
+                              {p.brief.demoSlug.replace(/-/g, " ")}
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <ArrowRight
+                      size={16}
+                      className="text-[rgb(var(--text-subtle))] flex-shrink-0 mt-1"
+                      aria-hidden
+                    />
+                  </div>
+
+                  <p className="text-sm text-[rgb(var(--text-muted))] line-clamp-3 leading-relaxed mb-4">
+                    {p.brief.description || "No description provided."}
+                  </p>
+
+                  <div className="flex flex-wrap gap-4 text-xs text-[rgb(var(--text-subtle))]">
+                    {p.brief.budget != null && (
+                      <span>
+                        <span className="font-semibold">Budget:</span>{" "}
+                        <span className="text-[rgb(var(--text))] tabular-nums">
+                          ${p.brief.budget}
+                        </span>
+                      </span>
+                    )}
+                    {p.brief.deadline && (
+                      <span>
+                        <span className="font-semibold">Deadline:</span>{" "}
+                        <span className="text-[rgb(var(--text))]">
+                          {p.brief.deadline}
+                        </span>
+                      </span>
+                    )}
+                    {p.brief.pagesNeeded != null && (
+                      <span>
+                        <span className="font-semibold">Pages:</span>{" "}
+                        <span className="text-[rgb(var(--text))] tabular-nums">
+                          {p.brief.pagesNeeded}
+                        </span>
+                      </span>
+                    )}
+                  </div>
                 </Link>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </main>
     </div>

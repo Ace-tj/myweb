@@ -183,6 +183,42 @@ export async function getProjectById(
   return { ok: true, project };
 }
 
+/**
+ * Get a project for consultant view. Consultants may view:
+ *   - any unassigned brief (so they can decide whether to claim it)
+ *   - any project they're assigned to
+ * Admins can view everything.
+ */
+export async function getProjectForConsultant(
+  projectId: string,
+): Promise<ProjectByIdResult> {
+  const session = await getCurrentSession();
+  if (!session) return { ok: false, reason: "anon" };
+  if (session.role !== "consultant" && session.role !== "admin") {
+    return { ok: false, reason: "forbidden" };
+  }
+  if (!supabaseConfigured()) return { ok: false, reason: "db_off" };
+
+  const supabase = await createServerClient();
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", projectId)
+    .maybeSingle();
+
+  if (error) return { ok: false, reason: "error", message: error.message };
+  if (!data) return { ok: false, reason: "not_found" };
+
+  const project = rowToProject(data);
+  const isAdmin = session.role === "admin";
+  const isMine = project.consultantId === session.id;
+  const isOpen = project.consultantId === null;
+  if (!isAdmin && !isMine && !isOpen) {
+    return { ok: false, reason: "forbidden" };
+  }
+  return { ok: true, project };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // WRITE
 // ─────────────────────────────────────────────────────────────────────────────
@@ -238,6 +274,102 @@ export async function acceptQuote(
   if (error) return { ok: false, reason: "error", message: error.message };
 
   revalidatePath(`/buyer/projects/${projectId}`);
+  return { ok: true };
+}
+
+/** Consultant claims an unassigned brief. Race-safe via `.is("consultant_id", null)`. */
+export async function claimBrief(projectId: string): Promise<ProjectResult> {
+  const session = await getCurrentSession();
+  if (!session) return { ok: false, reason: "anon" };
+  if (session.role !== "consultant") return { ok: false, reason: "forbidden" };
+  if (!supabaseConfigured()) return { ok: false, reason: "db_off" };
+
+  const supabase = await createServerClient();
+  const { data, error } = await supabase
+    .from("projects")
+    .update({ consultant_id: session.id, status: "assigned" })
+    .eq("id", projectId)
+    .is("consultant_id", null)
+    .select("id")
+    .maybeSingle();
+
+  if (error) return { ok: false, reason: "error", message: error.message };
+  if (!data) {
+    return {
+      ok: false,
+      reason: "not_found",
+      message: "Brief was already claimed or doesn't exist.",
+    };
+  }
+
+  revalidatePath(`/consultant/projects/${projectId}`);
+  revalidatePath("/consultant/dashboard");
+  revalidatePath("/consultant/briefs");
+  return { ok: true };
+}
+
+/** Consultant sends a quote — sets quote_amount and status='quoted'. */
+export async function sendQuote(
+  projectId: string,
+  amount: number,
+): Promise<ProjectResult> {
+  const session = await getCurrentSession();
+  if (!session) return { ok: false, reason: "anon" };
+  if (session.role !== "consultant") return { ok: false, reason: "forbidden" };
+  if (!supabaseConfigured()) return { ok: false, reason: "db_off" };
+  if (!Number.isFinite(amount) || amount <= 0) {
+    return {
+      ok: false,
+      reason: "error",
+      message: "Quote amount must be a positive number.",
+    };
+  }
+
+  const supabase = await createServerClient();
+  const { data, error } = await supabase
+    .from("projects")
+    .update({ quote_amount: amount, status: "quoted" })
+    .eq("id", projectId)
+    .eq("consultant_id", session.id)
+    .select("id")
+    .maybeSingle();
+
+  if (error) return { ok: false, reason: "error", message: error.message };
+  if (!data) {
+    return {
+      ok: false,
+      reason: "forbidden",
+      message: "You're not assigned to this project.",
+    };
+  }
+
+  revalidatePath(`/consultant/projects/${projectId}`);
+  revalidatePath(`/buyer/projects/${projectId}`);
+  revalidatePath("/consultant/dashboard");
+  return { ok: true };
+}
+
+/** Consultant releases a brief back to the open pool. */
+export async function releaseBrief(
+  projectId: string,
+): Promise<ProjectResult> {
+  const session = await getCurrentSession();
+  if (!session) return { ok: false, reason: "anon" };
+  if (session.role !== "consultant") return { ok: false, reason: "forbidden" };
+  if (!supabaseConfigured()) return { ok: false, reason: "db_off" };
+
+  const supabase = await createServerClient();
+  const { error } = await supabase
+    .from("projects")
+    .update({ consultant_id: null, status: "new", quote_amount: null })
+    .eq("id", projectId)
+    .eq("consultant_id", session.id);
+
+  if (error) return { ok: false, reason: "error", message: error.message };
+
+  revalidatePath(`/consultant/projects/${projectId}`);
+  revalidatePath("/consultant/dashboard");
+  revalidatePath("/consultant/briefs");
   return { ok: true };
 }
 

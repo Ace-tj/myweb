@@ -1,62 +1,35 @@
-import { setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
-import { getCurrentSession } from "@/lib/auth";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { Zap, Briefcase, ArrowRight, DollarSign, Star, Clock, MessageSquare } from "lucide-react";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { getCurrentSession } from "@/lib/auth";
+import {
+  listMyProjectsAsConsultant,
+  listOpenBriefs,
+} from "@/lib/projects";
+import { ArrowRight, Briefcase, Inbox, MessageSquare } from "lucide-react";
 
-export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
-}
+export const dynamic = "force-dynamic";
 
-const MOCK_BRIEFS = [
-  {
-    id: "proj-002",
-    buyerName: "Priya Nair",
-    demoType: "Clinic System",
-    budget: "$549",
-    createdAt: "2026-05-10",
-    desc: "Appointment booking and patient records for a small 3-doctor clinic.",
-  },
-  {
-    id: "proj-006",
-    buyerName: "Horizon University",
-    demoType: "University Portal",
-    budget: "$899",
-    createdAt: "2026-05-14",
-    desc: "Course enrollment, transcript, and student billing for 3,000 students.",
-  },
-  {
-    id: "proj-007",
-    buyerName: "GreenFit Studio",
-    demoType: "Gym Management",
-    budget: "$399",
-    createdAt: "2026-05-15",
-    desc: "Membership management and class scheduling for yoga & fitness studio.",
-  },
-];
-
-const ACTIVE_PROJECTS = [
-  {
-    id: "proj-001",
-    buyerName: "Acme Online Store",
-    demoType: "Online Shop",
-    budget: "$1,200",
-    milestone: "Frontend Build",
-    milestoneDeadline: "2026-06-01",
-    progress: 45,
-  },
-  {
-    id: "proj-004",
-    buyerName: "Sunrise Academy",
-    demoType: "School System K-12",
-    budget: "$699",
-    milestone: "Student Module",
-    milestoneDeadline: "2026-06-15",
-    progress: 70,
-  },
-];
+const STATUS_STYLE: Record<string, string> = {
+  new: "bg-slate-500/15 text-slate-600 dark:text-slate-300 border-slate-500/20",
+  assigned: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  quoted: "bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/20",
+  in_progress: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  review: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+  delivered: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  cancelled: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20",
+};
+const STATUS_LABEL: Record<string, string> = {
+  new: "New",
+  assigned: "Assigned",
+  quoted: "Quoted",
+  in_progress: "In progress",
+  review: "In review",
+  delivered: "Delivered",
+  cancelled: "Cancelled",
+};
 
 export default async function ConsultantDashboardPage({
   params,
@@ -65,142 +38,237 @@ export default async function ConsultantDashboardPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   const session = await getCurrentSession();
   if (!session) redirect(`/${locale}/auth/login`);
+  if (session.role !== "consultant" && session.role !== "admin") {
+    redirect(`/${locale}/buyer/dashboard`);
+  }
 
+  const [mine, open] = await Promise.all([
+    listMyProjectsAsConsultant(),
+    listOpenBriefs(),
+  ]);
   const firstName = session.name.split(" ")[0];
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "rgb(var(--bg))" }}>
-      {/* Header */}
-      <header className="border-b sticky top-0 z-20 backdrop-blur-sm" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-        <div className="mx-auto max-w-6xl px-6 py-3.5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
-            <span className="text-base font-bold" style={{ color: "rgb(var(--text))" }}>MyWeb</span>
+    <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+      <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between gap-4">
+          <Link
+            href="/"
+            className="flex items-center font-extrabold text-xl tracking-tight"
+            aria-label="myweb home"
+          >
+            <span className="gradient-text">myweb</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/consultant/briefs" className="font-medium transition-colors hover:text-indigo-500" style={{ color: "rgb(var(--text-muted))" }}>Browse Briefs</Link>
-            <Link href="/consultant/dashboard" className="font-semibold text-indigo-600">Dashboard</Link>
-            <Link href={"/messages" as "/"} className="font-medium transition-colors hover:text-indigo-500 flex items-center gap-1" style={{ color: "rgb(var(--text-muted))" }}>
-              <MessageSquare size={13} /> Messages
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[rgb(var(--text-muted))]">
+            <Link
+              href="/consultant/dashboard"
+              className="text-[rgb(var(--accent))] font-semibold"
+              aria-current="page"
+            >
+              {t("nav.dashboard")}
             </Link>
-            <div className="h-4 w-px" style={{ background: "rgb(var(--border))" }} />
-            <span className="text-sm" style={{ color: "rgb(var(--text-muted))" }}>{session.name}</span>
-            <Link href="/auth/logout" className="text-sm transition-colors hover:text-red-500" style={{ color: "rgb(var(--text-subtle))" }}>Logout</Link>
+            <Link
+              href={"/consultant/briefs" as "/"}
+              className="hover:text-[rgb(var(--text))] transition-colors"
+            >
+              Open briefs
+            </Link>
+            <Link
+              href={"/messages" as "/"}
+              className="hover:text-[rgb(var(--text))] transition-colors inline-flex items-center gap-1.5"
+            >
+              <MessageSquare size={13} aria-hidden /> Messages
+            </Link>
           </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline text-sm text-[rgb(var(--text-muted))] mr-1">
+              {session.name}
+            </span>
+            <Link
+              href="/auth/logout"
+              className="hidden sm:inline text-sm text-[rgb(var(--text-subtle))] hover:text-red-500 transition-colors px-2"
+            >
+              {t("common.signOut")}
+            </Link>
             <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 mx-auto max-w-6xl w-full px-6 py-10 space-y-8">
-        {/* Welcome */}
-        <div>
-          <h1 className="text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Welcome back, {firstName}</h1>
-          <p className="text-sm mt-1" style={{ color: "rgb(var(--text-muted))" }}>Here&apos;s your consultant overview</p>
-        </div>
+      <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+        <section>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Welcome back, {firstName}
+          </h1>
+          <p className="text-[rgb(var(--text-muted))] mt-2">
+            {mine.length === 0
+              ? "Pick up an open brief below to start your first project."
+              : `${mine.length} active project${mine.length === 1 ? "" : "s"}.`}
+          </p>
+        </section>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          {[
-            { label: "Total Earned", value: "$3,248", icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-            { label: "Active Projects", value: ACTIVE_PROJECTS.length, icon: Briefcase, color: "text-blue-500", bg: "bg-blue-500/10" },
-            { label: "Avg. Rating", value: "4.9", icon: Star, color: "text-amber-500", bg: "bg-amber-500/10" },
-          ].map(s => (
-            <div key={s.label} className="rounded-2xl border p-5 flex items-center gap-4" style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}>
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${s.bg} ${s.color}`}>
-                <s.icon size={20} />
-              </div>
-              <div>
-                <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-                <div className="text-xs mt-0.5" style={{ color: "rgb(var(--text-muted))" }}>{s.label}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <section className="grid grid-cols-3 gap-3 sm:gap-4">
+          <Stat label="Active projects" value={mine.length} Icon={Briefcase} />
+          <Stat label="Open briefs" value={open.length} Icon={Inbox} />
+          <Stat
+            label="Quotes sent"
+            value={mine.filter((p) => p.quoteAmount != null).length}
+          />
+        </section>
 
-        {/* Open Briefs */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold" style={{ color: "rgb(var(--text))" }}>Open Briefs</h2>
-            <Link href="/consultant/briefs" className="text-sm font-medium text-indigo-500 hover:underline flex items-center gap-1">
-              See all <ArrowRight size={13} />
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {MOCK_BRIEFS.map(b => (
-              <div
-                key={b.id}
-                className="rounded-2xl border p-5 flex items-center gap-4"
-                style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
-              >
-                <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-500 flex-shrink-0">
-                  <Briefcase size={17} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <p className="font-semibold text-sm" style={{ color: "rgb(var(--text))" }}>{b.buyerName}</p>
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-500">{b.demoType}</span>
-                  </div>
-                  <p className="text-xs truncate" style={{ color: "rgb(var(--text-muted))" }}>{b.desc}</p>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-sm font-bold text-emerald-500">{b.budget}</span>
-                  <Link
-                    href={`/consultant/projects/${b.id}` as "/"}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
-                  >
-                    View Brief
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Active Projects */}
-        <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: "rgb(var(--text))" }}>Active Projects</h2>
-          <div className="space-y-3">
-            {ACTIVE_PROJECTS.map(p => (
+        <section>
+          <h2 className="text-xl font-bold mb-4">Your active projects</h2>
+          {mine.length === 0 ? (
+            <div className="rounded-3xl border-2 border-dashed border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))] px-6 py-12 text-center">
+              <Briefcase
+                size={28}
+                className="mx-auto mb-3 text-[rgb(var(--text-muted))]"
+                aria-hidden
+              />
+              <p className="text-sm text-[rgb(var(--text-muted))] mb-4">
+                You haven&apos;t claimed any briefs yet.
+              </p>
               <Link
-                key={p.id}
-                href={`/consultant/projects/${p.id}` as "/"}
-                className="flex items-center gap-4 rounded-2xl border p-5 transition-all hover:border-indigo-500/30 hover:shadow-sm"
-                style={{ background: "rgb(var(--bg-card))", borderColor: "rgb(var(--border))" }}
+                href={"/consultant/briefs" as "/"}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25"
               >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <p className="font-semibold text-sm" style={{ color: "rgb(var(--text))" }}>{p.buyerName}</p>
-                    <span className="text-xs" style={{ color: "rgb(var(--text-muted))" }}>·</span>
-                    <p className="text-xs" style={{ color: "rgb(var(--text-muted))" }}>{p.demoType}</p>
-                  </div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Clock size={11} style={{ color: "rgb(var(--text-subtle))" }} />
-                    <p className="text-xs" style={{ color: "rgb(var(--text-muted))" }}>Current: <span className="font-medium" style={{ color: "rgb(var(--text))" }}>{p.milestone}</span> · Due {p.milestoneDeadline}</p>
-                  </div>
-                  <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: "rgb(var(--border))" }}>
-                    <div className="h-full rounded-full bg-indigo-500 transition-all" style={{ width: `${p.progress}%` }} />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <div className="text-right">
-                    <p className="text-sm font-bold" style={{ color: "rgb(var(--text))" }}>{p.budget}</p>
-                    <p className="text-xs" style={{ color: "rgb(var(--text-muted))" }}>{p.progress}% done</p>
-                  </div>
-                  <ArrowRight size={14} style={{ color: "rgb(var(--text-subtle))" }} />
-                </div>
+                Browse open briefs <ArrowRight size={14} aria-hidden />
               </Link>
-            ))}
-          </div>
-        </div>
+            </div>
+          ) : (
+            <ul className="space-y-3">
+              {mine.map((p) => (
+                <li key={p.id}>
+                  <Link
+                    href={`/consultant/projects/${p.id}` as "/"}
+                    className="flex items-center gap-4 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-4 sm:p-5 transition-all hover:border-[rgb(var(--accent))]/40 hover:shadow-sm"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-[rgb(var(--accent-subtle))] text-[rgb(var(--accent))] flex items-center justify-center flex-shrink-0">
+                      <Briefcase size={18} aria-hidden />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm sm:text-base truncate">
+                        {p.brief.businessName || "Untitled project"}
+                      </p>
+                      <p className="text-xs text-[rgb(var(--text-muted))] mt-0.5 truncate">
+                        {p.brief.demoSlug && (
+                          <span className="capitalize">
+                            {p.brief.demoSlug.replace(/-/g, " ")}
+                          </span>
+                        )}
+                        {p.brief.demoSlug && " · "}
+                        Updated {new Date(p.updatedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span
+                        className={`text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border ${STATUS_STYLE[p.status] ?? STATUS_STYLE.assigned}`}
+                      >
+                        {STATUS_LABEL[p.status] ?? p.status}
+                      </span>
+                      {p.quoteAmount != null && (
+                        <span className="hidden sm:inline text-sm font-bold tabular-nums">
+                          ${p.quoteAmount}
+                        </span>
+                      )}
+                      <ArrowRight
+                        size={14}
+                        className="text-[rgb(var(--text-subtle))]"
+                        aria-hidden
+                      />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {open.length > 0 && (
+          <section>
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold">Open briefs</h2>
+                <p className="text-sm text-[rgb(var(--text-muted))] mt-1">
+                  Briefs waiting for a consultant to claim
+                </p>
+              </div>
+              <Link
+                href={"/consultant/briefs" as "/"}
+                className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[rgb(var(--accent))] hover:underline shrink-0"
+              >
+                View all ({open.length}) <ArrowRight size={13} aria-hidden />
+              </Link>
+            </div>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {open.slice(0, 4).map((p) => (
+                <li key={p.id}>
+                  <Link
+                    href={`/consultant/projects/${p.id}` as "/"}
+                    className="block rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-4 transition-all hover:border-[rgb(var(--accent))]/40 hover:shadow-sm"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <p className="font-semibold text-sm truncate">
+                        {p.brief.businessName || "Untitled project"}
+                      </p>
+                      {p.brief.budget != null && (
+                        <span className="text-xs font-bold tabular-nums shrink-0">
+                          ${p.brief.budget}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-[rgb(var(--text-muted))] line-clamp-2 leading-relaxed">
+                      {p.brief.description || "No description provided."}
+                    </p>
+                    <p className="text-[11px] text-[rgb(var(--text-subtle))] mt-2">
+                      {new Date(p.createdAt).toLocaleDateString()}
+                      {p.brief.demoSlug && (
+                        <>
+                          {" · "}
+                          <span className="capitalize">
+                            {p.brief.demoSlug.replace(/-/g, " ")}
+                          </span>
+                        </>
+                      )}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  Icon,
+}: {
+  label: string;
+  value: number;
+  Icon?: typeof Briefcase;
+}) {
+  return (
+    <div className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-4 sm:p-5">
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-[rgb(var(--text-muted))]">
+          {label}
+        </span>
+        {Icon && (
+          <Icon size={14} className="text-[rgb(var(--text-subtle))]" aria-hidden />
+        )}
+      </div>
+      <p className="text-2xl sm:text-3xl font-extrabold mt-2 tabular-nums">
+        {value}
+      </p>
     </div>
   );
 }
