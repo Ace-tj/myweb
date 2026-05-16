@@ -23,7 +23,7 @@ const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 interface Props {
   initialState: { thread: SupportThread; messages: SupportMessage[] } | null;
   reason: string | null;
-  session: { name: string; role: Role };
+  session: { name: string; role: Role } | null;
 }
 
 const POLL_MS = 4000;
@@ -131,7 +131,56 @@ export function MessagesClient({ initialState, reason, session }: Props) {
     e.target.value = "";
   }
 
-  const dashPath = session.role === "consultant" ? "/consultant/dashboard" : "/buyer/dashboard";
+  const dashPath = !session
+    ? "/"
+    : session.role === "consultant"
+      ? "/consultant/dashboard"
+      : "/buyer/dashboard";
+
+  // Anonymous-visitor state — friendly "sign in to chat" instead of redirecting.
+  if (!session) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+        <Header dashPath="/" session={null} />
+        <main className="flex-1 flex items-center justify-center px-6 py-12">
+          <div className="text-center max-w-md animate-fade-up">
+            <div className="mx-auto mb-5 w-16 h-16 rounded-2xl bg-[rgb(var(--accent-subtle))] flex items-center justify-center">
+              <Headphones size={26} className="text-[rgb(var(--accent))]" aria-hidden />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+              Chat with support
+            </h1>
+            <p className="text-[rgb(var(--text-muted))] mb-7 leading-relaxed">
+              Sign in or create a free account to message our team. We reply within minutes during working hours.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/auth/login"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold text-sm hover:bg-[rgb(var(--accent-hover))] transition-all shadow-lg shadow-[rgb(var(--accent))]/25 hover:scale-[1.02]"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] font-semibold text-sm hover:bg-[rgb(var(--bg-hover))] transition-colors"
+              >
+                Create account
+              </Link>
+            </div>
+            <p className="mt-7 text-xs text-[rgb(var(--text-subtle))]">
+              Or email us directly:{" "}
+              <a
+                href="mailto:hello@myweb.app"
+                className="text-[rgb(var(--accent))] hover:underline font-medium"
+              >
+                hello@myweb.app
+              </a>
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   // Group messages by date
   const grouped: { date: string; msgs: SupportMessage[] }[] = [];
@@ -304,7 +353,7 @@ function Header({
   session,
 }: {
   dashPath: string;
-  session: { name: string; role: Role };
+  session: { name: string; role: Role } | null;
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md flex-shrink-0">
@@ -332,9 +381,11 @@ function Header({
           </span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="hidden sm:inline text-sm text-[rgb(var(--text-muted))] truncate max-w-[140px]">
-            {session.name}
-          </span>
+          {session && (
+            <span className="hidden sm:inline text-sm text-[rgb(var(--text-muted))] truncate max-w-[140px]">
+              {session.name}
+            </span>
+          )}
           <LanguageSwitcher />
           <ThemeToggle />
         </div>
