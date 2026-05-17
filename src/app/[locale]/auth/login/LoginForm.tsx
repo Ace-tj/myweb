@@ -1,12 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { loginAction, type LoginState } from "./actions";
 import {
   Eye,
   EyeOff,
@@ -15,8 +14,6 @@ import {
   CheckCircle2,
   Info,
 } from "lucide-react";
-
-const initialState: LoginState = { status: "idle" };
 
 type LoginErrorKey =
   | "invalid"
@@ -29,21 +26,36 @@ type LoginErrorKey =
   | "passwordRequired"
   | "passwordShort";
 
+const VALID_ERROR_KEYS = new Set<LoginErrorKey>([
+  "invalid",
+  "emailNotConfirmed",
+  "banned",
+  "notApproved",
+  "generic",
+  "emailRequired",
+  "emailInvalid",
+  "passwordRequired",
+  "passwordShort",
+]);
+
 export function LoginForm() {
   const locale = useLocale();
   const t = useTranslations("auth");
   const params = useSearchParams();
   const pending = params.get("pending") === "1";
   const registered = params.get("registered") === "1";
+  const errorParam = params.get("error");
 
   const [showPassword, setShowPassword] = useState(false);
-  const [state, formAction, isPending] = useActionState(
-    loginAction,
-    initialState,
-  );
+  const [isPending, setIsPending] = useState(false);
 
-  const errorKey =
-    state.status === "error" ? (state.errorKey as LoginErrorKey) : null;
+  // Errors come back as ?error=... query params from the /api/auth/login
+  // route handler (the form posts there directly so cookies survive the
+  // redirect). Validate the value against the known set before showing.
+  const errorKey: LoginErrorKey | null =
+    errorParam && VALID_ERROR_KEYS.has(errorParam as LoginErrorKey)
+      ? (errorParam as LoginErrorKey)
+      : null;
   const errorMessage = errorKey ? t(`login.errors.${errorKey}`) : null;
   const emailInvalid =
     errorKey === "emailRequired" || errorKey === "emailInvalid";
@@ -102,8 +114,10 @@ export function LoginForm() {
             )}
 
             <form
-              action={formAction}
+              action="/api/auth/login"
+              method="post"
               aria-busy={isPending}
+              onSubmit={() => setIsPending(true)}
               className="space-y-4"
               noValidate
             >

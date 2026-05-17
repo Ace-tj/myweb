@@ -1,14 +1,12 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { signupAction, type SignupState } from "./actions";
 import { Eye, EyeOff, ArrowRight, AlertCircle, Info } from "lucide-react";
-
-const initialState: SignupState = { status: "idle" };
 
 type SignupErrorKey =
   | "emailRequired"
@@ -19,19 +17,30 @@ type SignupErrorKey =
   | "roleRequired"
   | "generic";
 
+const VALID_SIGNUP_ERROR_KEYS = new Set<SignupErrorKey>([
+  "emailRequired",
+  "emailInvalid",
+  "emailTaken",
+  "passwordShort",
+  "nameRequired",
+  "roleRequired",
+  "generic",
+]);
+
 export function SignupForm() {
   const locale = useLocale();
   const t = useTranslations("auth");
+  const params = useSearchParams();
+  const errorParam = params.get("error");
 
-  const [role, setRole] = useState<"buyer" | "consultant">("buyer");
+  const [role, setSelectedRole] = useState<"buyer" | "consultant">("buyer");
   const [showPassword, setShowPassword] = useState(false);
-  const [state, formAction, isPending] = useActionState(
-    signupAction,
-    initialState,
-  );
+  const [isPending, setIsPending] = useState(false);
 
-  const errorKey =
-    state.status === "error" ? (state.errorKey as SignupErrorKey) : null;
+  const errorKey: SignupErrorKey | null =
+    errorParam && VALID_SIGNUP_ERROR_KEYS.has(errorParam as SignupErrorKey)
+      ? (errorParam as SignupErrorKey)
+      : null;
   const errorMessage = errorKey ? t(`signup.errors.${errorKey}`) : null;
   const nameInvalid = errorKey === "nameRequired";
   const emailInvalid =
@@ -69,8 +78,10 @@ export function SignupForm() {
             </p>
 
             <form
-              action={formAction}
+              action="/api/auth/signup"
+              method="post"
               aria-busy={isPending}
+              onSubmit={() => setIsPending(true)}
               className="space-y-4"
               noValidate
             >
@@ -89,7 +100,7 @@ export function SignupForm() {
                       <button
                         key={opt}
                         type="button"
-                        onClick={() => setRole(opt)}
+                        onClick={() => setSelectedRole(opt)}
                         aria-pressed={isActive}
                         className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
                           isActive
