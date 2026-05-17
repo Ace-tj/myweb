@@ -5,7 +5,11 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
-import { ConsultantFab } from "@/components/consultant/ConsultantFab";
+// ConsultantFab temporarily removed — it ran getMyThread() on every page
+// mount as a server action, and that round-trip was suspected of clearing
+// the Supabase auth cookie between page navigations. Re-enable once auth
+// is stable.
+// import { ConsultantFab } from "@/components/consultant/ConsultantFab";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -49,7 +53,6 @@ export default async function LocaleLayout({
         <ThemeProvider>
           <NextIntlClientProvider>
             {children}
-            <ConsultantFab />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
