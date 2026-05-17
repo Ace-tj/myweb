@@ -46,7 +46,25 @@ export default async function MessagesPage({
         : "user=null";
       const cookieNames = sbCookies.map((c) => c.name).join(", ");
       const errMsg = error ? `${error.name}: ${error.message}` : "(no error)";
-      diagnostic = `DEBUG | cookies(${sbCookies.length}): ${cookieNames} | getUser ${userInfo} | err: ${errMsg}`;
+
+      const authCookie = sbCookies.find((c) => c.name.includes("auth-token"));
+      const raw = authCookie?.value ?? "";
+      const valuePreview = `len=${raw.length} startsWith="${raw.slice(0, 12)}" endsWith="${raw.slice(-6)}"`;
+      let shape = "unknown";
+      if (raw.startsWith("base64-")) {
+        shape = "base64-prefixed";
+      } else if (raw.startsWith("[")) {
+        shape = "array-json";
+      } else if (raw.startsWith("{")) {
+        shape = "object-json";
+      } else if (raw.startsWith("eyJ")) {
+        shape = "bare-jwt (no wrapper)";
+      } else if (raw === "") {
+        shape = "EMPTY";
+      } else {
+        shape = `other (first char: ${JSON.stringify(raw[0] ?? "")})`;
+      }
+      diagnostic = `DEBUG | cookies(${sbCookies.length}): ${cookieNames} | getUser ${userInfo} | err: ${errMsg} | value: ${valuePreview} shape=${shape}`;
     }
   }
 
