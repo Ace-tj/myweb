@@ -63,10 +63,13 @@ export async function POST(req: NextRequest) {
         },
         setAll(cookiesToSet) {
           for (const { name, value, options } of cookiesToSet) {
+            // Spread options FIRST, then force path/sameSite — so Supabase
+            // can't accidentally write a path-scoped cookie that fails to
+            // match later navigations.
             response.cookies.set(name, value, {
+              ...options,
               path: "/",
               sameSite: "lax",
-              ...options,
             });
           }
         },

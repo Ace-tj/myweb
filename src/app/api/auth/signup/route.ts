@@ -58,9 +58,9 @@ export async function POST(req: NextRequest) {
         setAll(cookiesToSet) {
           for (const { name, value, options } of cookiesToSet) {
             response.cookies.set(name, value, {
+              ...options,
               path: "/",
               sameSite: "lax",
-              ...options,
             });
           }
         },
