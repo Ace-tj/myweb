@@ -1,6 +1,25 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+// IMPORTANT: setAll is a no-op on purpose.
+//
+// This client is used by Server Components and page-level reads only.
+// Server Components cannot write cookies; if we try, Next.js may STILL queue
+// the attempted write into the response (even when cookieStore.set throws),
+// which has previously caused the Supabase auth cookie to be reset with a
+// narrower path or empty value — destroying the session between page loads.
+//
+// All cookie writes for auth go through Route Handlers:
+//   /api/auth/login   — writes session cookies after signInWithPassword
+//   /api/auth/signup  — writes session cookies after signUp + auto-signin
+//   /api/auth/logout  — would clear cookies via response.cookies on signOut
+//
+// If Supabase ssr wants to refresh the session here, that refresh is observed
+// (getUser still returns the new user info from the refresh response) but the
+// new tokens are NOT persisted. The next sign-in or explicit refresh will
+// re-establish them. For the short-lived access tokens (1h default) this is
+// usually fine in practice.
+
 export async function createClient() {
   const cookieStore = await cookies();
   return createServerClient(
@@ -11,32 +30,8 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
-          // In Server Components, cookieStore.set throws — that's expected,
-          // and the proxy/middleware writes refreshed cookies on the next
-          // request. In Server Actions and Route Handlers, set MUST succeed,
-          // otherwise sign-in cannot persist. We swallow the Server Component
-          // error specifically by its message so anything else surfaces.
-          for (const { name, value, options } of cookiesToSet) {
-            try {
-              cookieStore.set(name, value, {
-                path: "/",
-                sameSite: "lax",
-                ...options,
-              });
-            } catch (err) {
-              const msg = err instanceof Error ? err.message : String(err);
-              // Next.js throws this exact message when calling .set() from a
-              // Server Component context. Anything else is a real bug we want
-              // to see in the Vercel logs.
-              if (!msg.includes("Cookies can only be modified")) {
-                console.error(
-                  `[supabase/server] failed to set cookie ${name}:`,
-                  msg,
-                );
-              }
-            }
-          }
+        setAll() {
+          // intentional no-op — see header comment
         },
       },
     },
