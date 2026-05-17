@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 import { getMyThread } from "@/lib/support";
 import { MessagesClient } from "./MessagesClient";
 
@@ -26,16 +27,27 @@ export default async function MessagesPage({
   // Admin gets routed to the multi-thread support inbox instead.
   if (session?.role === "admin") redirect(`/${locale}/admin/support`);
 
-  // Detect the "cookies say signed-in but session lookup returned null"
-  // failure mode so we can render a clear diagnostic instead of silently
-  // showing the anonymous panel.
-  let sessionBrokenButCookiesPresent = false;
+  // Deep diagnostic: if getCurrentSession came back null but the request
+  // looks signed-in (has an sb-*-auth-token cookie), capture exactly why
+  // auth.getUser() failed so we can see it in the UI.
+  let diagnostic: string | null = null;
   if (!session) {
     const cookieStore = await cookies();
-    const hasSbCookie = cookieStore
+    const sbCookies = cookieStore
       .getAll()
-      .some((c) => c.name.startsWith("sb-") && c.name.includes("auth-token"));
-    if (hasSbCookie) sessionBrokenButCookiesPresent = true;
+      .filter((c) => c.name.startsWith("sb-"));
+    const hasAuthCookie = sbCookies.some((c) => c.name.includes("auth-token"));
+
+    if (hasAuthCookie) {
+      const supabase = await createServerClient();
+      const { data, error } = await supabase.auth.getUser();
+      const userInfo = data?.user
+        ? `user=${data.user.id.slice(0, 8)}…`
+        : "user=null";
+      const cookieNames = sbCookies.map((c) => c.name).join(", ");
+      const errMsg = error ? `${error.name}: ${error.message}` : "(no error)";
+      diagnostic = `DEBUG | cookies(${sbCookies.length}): ${cookieNames} | getUser ${userInfo} | err: ${errMsg}`;
+    }
   }
 
   // For everyone else (signed in OR anonymous) we render the chat page —
@@ -50,11 +62,7 @@ export default async function MessagesPage({
       initialState={result.ok ? { thread: result.thread, messages: result.messages } : null}
       reason={result.ok ? null : result.reason}
       session={session ? { name: session.name, role: session.role } : null}
-      diagnostic={
-        sessionBrokenButCookiesPresent
-          ? "We see your auth cookie but couldn't load your session. Try refreshing this page; if that doesn't help, sign out and back in."
-          : null
-      }
+      diagnostic={diagnostic}
     />
   );
 }
