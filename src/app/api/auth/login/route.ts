@@ -1,15 +1,14 @@
-// Login as a Route Handler (not a Server Action).
+// Login as a Route Handler — final version.
 //
-// Why: in this app's Next.js 16 + Vercel deployment, cookies written via
-// next/headers `cookieStore.set()` inside a Server Action were not making
-// it back to the browser, so signInWithPassword had no observable effect.
-// Route Handlers let us construct our own NextResponse and call
-// `response.cookies.set()` directly, which the Vercel runtime always
-// propagates as Set-Cookie headers.
+// IMPORTANT: do NOT use NextResponse.redirect() for this flow. In this
+// Next.js 16 + Vercel deployment, cookies set on a NextResponse.redirect()
+// response don't always serialize into Set-Cookie headers. Instead we
+// build a plain NextResponse with status 303 and Location header, attach
+// cookies after sign-in, and let the browser follow.
 //
-// The form posts here as multipart/form-data; we respond with a 303 redirect
-// to the role-appropriate dashboard (or back to /auth/login with ?error= on
-// failure). All Supabase auth cookies are written on the redirect response.
+// The cookie-check endpoint at /api/cookie-check proved that
+// `new NextResponse(...)` + `response.cookies.set()` works on this
+// deployment — that's the pattern we use here.
 
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
@@ -29,10 +28,16 @@ function dashboardPath(role: Role): string {
   }
 }
 
+function buildRedirect(req: NextRequest, path: string) {
+  const target = new URL(path, req.url);
+  return new NextResponse(null, {
+    status: 303,
+    headers: { Location: target.toString() },
+  });
+}
+
 function errorRedirect(req: NextRequest, locale: string, key: string) {
-  const url = new URL(`/${locale}/auth/login`, req.url);
-  url.searchParams.set("error", key);
-  return NextResponse.redirect(url, 303);
+  return buildRedirect(req, `/${locale}/auth/login?error=${encodeURIComponent(key)}`);
 }
 
 export async function POST(req: NextRequest) {
@@ -48,10 +53,14 @@ export async function POST(req: NextRequest) {
     return errorRedirect(req, locale, "passwordShort");
   }
 
-  // Build the redirect response first so we can write cookies directly onto it.
-  // We don't yet know the redirect target — initialize to a placeholder and
-  // overwrite the Location header later.
-  const response = NextResponse.redirect(new URL(`/${locale}`, req.url), 303);
+  // Collect cookies Supabase wants to set during signInWithPassword so we
+  // can attach them to the final response (built AFTER auth completes).
+  type CookieToSet = {
+    name: string;
+    value: string;
+    options: Record<string, unknown> | undefined;
+  };
+  const cookieJar: CookieToSet[] = [];
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -62,15 +71,12 @@ export async function POST(req: NextRequest) {
           return req.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            // Spread options FIRST, then force path/sameSite — so Supabase
-            // can't accidentally write a path-scoped cookie that fails to
-            // match later navigations.
-            response.cookies.set(name, value, {
-              ...options,
-              path: "/",
-              sameSite: "lax",
-            });
+          // Replace older entries for the same name so we keep only the
+          // most recent value (e.g. if a refresh fires partway through).
+          for (const c of cookiesToSet) {
+            const idx = cookieJar.findIndex((j) => j.name === c.name);
+            if (idx >= 0) cookieJar.splice(idx, 1);
+            cookieJar.push(c as CookieToSet);
           }
         },
       },
@@ -97,10 +103,27 @@ export async function POST(req: NextRequest) {
     .maybeSingle();
 
   const role = ((profile?.role as Role) ?? "buyer") as Role;
+  const response = buildRedirect(req, `/${locale}${dashboardPath(role)}`);
 
-  // Overwrite the Location header on the cookie-bearing response so the
-  // browser follows to the right dashboard, taking the auth cookies with it.
-  const target = new URL(`/${locale}${dashboardPath(role)}`, req.url);
-  response.headers.set("Location", target.toString());
+  // Attach every cookie Supabase wanted to write. Force path/sameSite
+  // last so they always win, regardless of what Supabase passed.
+  for (const { name, value, options } of cookieJar) {
+    response.cookies.set(name, value, {
+      ...(options ?? {}),
+      path: "/",
+      sameSite: "lax",
+    });
+  }
+
+  // Sentinel cookie — verifies the response object itself carries cookies.
+  // If THIS appears in the browser after login but no sb-* cookies do, the
+  // issue is Supabase setAll. If neither appears, it's the redirect itself.
+  response.cookies.set("myweb-login-ran", `ok-${Date.now()}`, {
+    path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 5,
+    httpOnly: false,
+  });
+
   return response;
 }
