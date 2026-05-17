@@ -127,16 +127,17 @@ export default async function middleware(req: NextRequest) {
             intlResponse.cookies
               .getAll()
               .forEach((c) => rebuilt.cookies.set(c));
-            // 2d. Write the refreshed Supabase cookies WITH FULL OPTIONS so
-            //     the browser stores them with the right path/sameSite/etc.
-            //     Force `path: "/"` and `sameSite: "lax"` as defaults — without
-            //     them the browser scopes cookies to the current request path
-            //     and the user appears logged out on the next navigation.
+            // 2d. Write the refreshed Supabase cookies. CRITICAL: spread
+            //     `options` FIRST, then force path/sameSite LAST so they
+            //     always win. Earlier the order was reversed and a refresh
+            //     could scope the cookie to the current request path (e.g.
+            //     /en/buyer/dashboard) — after which navigating to /messages
+            //     dropped the cookie entirely.
             cookiesToSet.forEach(({ name, value, options }) =>
               rebuilt.cookies.set(name, value, {
+                ...options,
                 path: "/",
                 sameSite: "lax",
-                ...options,
               }),
             );
             supabaseResponse = rebuilt;
