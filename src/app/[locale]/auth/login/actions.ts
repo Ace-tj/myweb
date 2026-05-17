@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   mockSignIn,
@@ -84,5 +85,13 @@ export async function loginAction(
     .maybeSingle();
 
   const role: Role = (profile?.role as Role) ?? "buyer";
+
+  // CANONICAL Supabase pattern (https://supabase.com/docs/guides/auth/server-side/nextjs):
+  // revalidate the layout so the next render sees the freshly-set auth cookie.
+  // Without this, Next.js may serve a cached layout that still thinks the
+  // user is anonymous, which then causes pages downstream to redirect back
+  // to login.
+  revalidatePath("/", "layout");
+
   redirect(`/${locale}${redirectPathForRole(role)}`);
 }

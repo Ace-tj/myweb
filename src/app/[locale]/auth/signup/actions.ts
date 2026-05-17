@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { mockSignUp, supabaseConfigured, type Role } from "@/lib/auth";
 import { createClient as createServerClient } from "@/lib/supabase/server";
@@ -109,6 +110,9 @@ export async function signupAction(
   if (signInError) {
     redirect(`/${locale}/auth/login?registered=1`);
   }
+
+  // Revalidate layout so the buyer dashboard sees the freshly-set auth cookie.
+  revalidatePath("/", "layout");
 
   redirect(`/${locale}/buyer/dashboard`);
 }
