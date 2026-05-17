@@ -20,6 +20,8 @@ const initialState: LoginState = { status: "idle" };
 
 type LoginErrorKey =
   | "invalid"
+  | "emailNotConfirmed"
+  | "banned"
   | "notApproved"
   | "generic"
   | "emailRequired"

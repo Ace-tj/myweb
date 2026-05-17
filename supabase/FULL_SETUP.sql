@@ -23,7 +23,11 @@ create table if not exists public.profiles (
   role               text not null default 'buyer'
                        check (role in ('admin', 'buyer', 'consultant')),
   is_agent           boolean not null default false,
+  -- `name` is the legacy column shared with another app; `full_name` is what
+  -- this app reads/writes. A BEFORE trigger keeps them in sync (see below).
   name               text not null default '',
+  full_name          text not null default '',
+  phone              text not null default '',
   avatar_url         text,
   bio                text,
   preferred_language text not null default 'en'
@@ -33,6 +37,27 @@ create table if not exists public.profiles (
   created_at         timestamptz not null default now(),
   updated_at         timestamptz not null default now()
 );
+
+-- Keep `name` and `full_name` in lockstep regardless of which one a writer fills.
+create or replace function public.profiles_sync_name()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.full_name is null or new.full_name = '' then
+    new.full_name := coalesce(new.name, '');
+  end if;
+  if new.name is null or new.name = '' then
+    new.name := coalesce(new.full_name, '');
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_sync_name_trigger on public.profiles;
+create trigger profiles_sync_name_trigger
+  before insert or update on public.profiles
+  for each row execute procedure public.profiles_sync_name();
 comment on table public.profiles is
   'Extended user profile. Mirrors auth.users; role drives access control.';
 
@@ -181,28 +206,45 @@ create index if not exists support_messages_thread_idx
 -- SECTION 3: TRIGGERS & FUNCTIONS
 -- ============================================================
 
--- 3a. Auto-create profile when a new user signs up
+-- 3a. Auto-create profile when a new user signs up.
+-- IMPORTANT: wrapped in EXCEPTION so a profile-side failure never
+-- rolls back the auth.users insert (signup must always succeed at the
+-- auth layer; the app self-heals the profile on next request).
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
 security definer set search_path = public
 as $$
+declare
+  v_name text;
+  v_role text;
 begin
-  insert into public.profiles (id, email, name, role, approved)
-  values (
-    new.id,
-    new.email,
-    coalesce(new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
-    coalesce(new.raw_user_meta_data->>'role', 'buyer'),
-    -- buyers are auto-approved; consultants need admin approval
-    case
-      when coalesce(new.raw_user_meta_data->>'role', 'buyer') = 'buyer' then true
-      else false
-    end
-  )
-  on conflict (id) do update
-    set email = excluded.email,
-        name  = excluded.name;
+  begin
+    v_name := coalesce(
+      new.raw_user_meta_data->>'name',
+      new.raw_user_meta_data->>'full_name',
+      split_part(new.email, '@', 1)
+    );
+    v_role := coalesce(new.raw_user_meta_data->>'role', 'buyer');
+
+    insert into public.profiles (id, email, name, full_name, role, phone, approved)
+    values (
+      new.id,
+      new.email,
+      v_name,
+      v_name,
+      v_role,
+      '',
+      -- buyers are auto-approved; consultants need admin approval
+      case when v_role = 'buyer' then true else false end
+    )
+    on conflict (id) do update
+      set email     = excluded.email,
+          full_name = coalesce(public.profiles.full_name, excluded.full_name),
+          name      = coalesce(nullif(public.profiles.name, ''), excluded.name);
+  exception when others then
+    raise log 'handle_new_user: profile insert failed for %: %', new.id, sqlerrm;
+  end;
   return new;
 end;
 $$;
@@ -281,7 +323,7 @@ begin
     from public.projects
    where id = new.project_id;
 
-  select name into v_sender_name
+  select full_name into v_sender_name
     from public.profiles
    where id = new.sender_id;
 

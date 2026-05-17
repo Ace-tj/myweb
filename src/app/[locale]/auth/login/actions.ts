@@ -67,6 +67,13 @@ export async function loginAction(
   });
 
   if (error || !data.user) {
+    const msg = error?.message?.toLowerCase() ?? "";
+    if (msg.includes("email") && msg.includes("confirm")) {
+      return { status: "error", errorKey: "emailNotConfirmed" };
+    }
+    if (msg.includes("banned") || msg.includes("disabled")) {
+      return { status: "error", errorKey: "banned" };
+    }
     return { status: "error", errorKey: "invalid" };
   }
 

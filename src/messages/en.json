@@ -157,6 +157,8 @@
       },
       "errors": {
         "invalid": "Email or password is incorrect.",
+        "emailNotConfirmed": "Your email isn't confirmed yet. Open the user in Supabase Dashboard and set \"Confirmed at\", or have the user click the confirmation link.",
+        "banned": "This account is disabled. Contact an administrator.",
         "notApproved": "Your consultant account is awaiting admin approval.",
         "generic": "Something went wrong. Please try again.",
         "emailRequired": "Email is required.",
