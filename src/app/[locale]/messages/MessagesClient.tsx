@@ -24,6 +24,7 @@ interface Props {
   initialState: { thread: SupportThread; messages: SupportMessage[] } | null;
   reason: string | null;
   session: { name: string; role: Role } | null;
+  diagnostic?: string | null;
 }
 
 const POLL_MS = 4000;
@@ -42,7 +43,7 @@ function formatDateHeader(ts: string): string {
   return d.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric" });
 }
 
-export function MessagesClient({ initialState, reason, session }: Props) {
+export function MessagesClient({ initialState, reason, session, diagnostic }: Props) {
   const [messages, setMessages] = useState<SupportMessage[]>(initialState?.messages ?? []);
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
@@ -150,9 +151,18 @@ export function MessagesClient({ initialState, reason, session }: Props) {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
               Chat with support
             </h1>
-            <p className="text-[rgb(var(--text-muted))] mb-7 leading-relaxed">
-              Sign in or create a free account to message our team. We reply within minutes during working hours.
-            </p>
+            {diagnostic ? (
+              <p
+                role="status"
+                className="rounded-xl border border-amber-300/40 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-700/30 px-4 py-3 text-sm text-amber-900 dark:text-amber-200 mb-5 text-left"
+              >
+                {diagnostic}
+              </p>
+            ) : (
+              <p className="text-[rgb(var(--text-muted))] mb-7 leading-relaxed">
+                Sign in or create a free account to message our team. We reply within minutes during working hours.
+              </p>
+            )}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/auth/login"
