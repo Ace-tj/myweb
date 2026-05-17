@@ -112,8 +112,21 @@ export default async function middleware(req: NextRequest) {
           },
           setAll(cookiesToSet) {
             // 2a. Mutate request cookies so downstream Server Components
-            //     (running on this same request) read the refreshed values.
-            cookiesToSet.forEach(({ name, value }) =>
+            //     read the refreshed values — BUT ignore empty-value
+            //     "clear-the-session" calls. Supabase ssr fires setAll with
+            //     empty values when getUser() can't validate the session;
+            //     that legitimately happens on every page load if the
+            //     access_token is near expiry and the refresh hits a race.
+            //     We don't want a transient validation hiccup to silently
+            //     log the user out, so we drop empties here. Real sign-outs
+            //     go through an explicit /api/auth/logout route.
+            const nonEmpty = cookiesToSet.filter((c) => c.value !== "");
+            if (nonEmpty.length === 0) {
+              // Nothing meaningful to write; leave supabaseResponse as is
+              // (still the intlResponse object).
+              return;
+            }
+            nonEmpty.forEach(({ name, value }) =>
               req.cookies.set(name, value),
             );
             // 2b. Rebuild the response from the now-updated request.
@@ -127,13 +140,9 @@ export default async function middleware(req: NextRequest) {
             intlResponse.cookies
               .getAll()
               .forEach((c) => rebuilt.cookies.set(c));
-            // 2d. Write the refreshed Supabase cookies. CRITICAL: spread
-            //     `options` FIRST, then force path/sameSite LAST so they
-            //     always win. Earlier the order was reversed and a refresh
-            //     could scope the cookie to the current request path (e.g.
-            //     /en/buyer/dashboard) — after which navigating to /messages
-            //     dropped the cookie entirely.
-            cookiesToSet.forEach(({ name, value, options }) =>
+            // 2d. Write the refreshed Supabase cookies. Spread `options`
+            //     FIRST, then force path/sameSite LAST so they always win.
+            nonEmpty.forEach(({ name, value, options }) =>
               rebuilt.cookies.set(name, value, {
                 ...options,
                 path: "/",
