@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mockSignOut, supabaseConfigured } from "@/lib/auth";
-import { createClient as createServerClient } from "@/lib/supabase/server";
+import { mockSignOut, supabaseConfigured, SESSION_COOKIE } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ locale: string }> },
 ) {
   const { locale } = await params;
@@ -11,9 +11,22 @@ export async function GET(
   if (!supabaseConfigured()) {
     await mockSignOut();
   } else {
-    const supabase = await createServerClient();
-    await supabase.auth.signOut();
+    const sessionId = req.cookies.get(SESSION_COOKIE)?.value;
+    if (sessionId) {
+      try {
+        const admin = createAdminClient();
+        await admin.from("user_sessions").delete().eq("id", sessionId);
+      } catch {
+        // ignore — we'll clear the cookie regardless
+      }
+    }
   }
 
-  return NextResponse.redirect(new URL(`/${locale}`, _req.url));
+  const response = NextResponse.redirect(new URL(`/${locale}`, req.url));
+  response.cookies.set(SESSION_COOKIE, "", {
+    path: "/",
+    maxAge: 0,
+    expires: new Date(0),
+  });
+  return response;
 }

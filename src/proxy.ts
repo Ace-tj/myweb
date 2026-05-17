@@ -18,6 +18,10 @@ function hasSessionCookies(req: NextRequest): boolean {
   if (!supabaseConfigured()) {
     return Boolean(req.cookies.get("myweb_mock_session")?.value);
   }
+  // New session model: our own mw_session cookie. Fall back to the legacy
+  // @supabase/ssr sb-*-auth-token name so users mid-transition don't get
+  // booted from already-authenticated tabs.
+  if (req.cookies.get("mw_session")?.value) return true;
   return req.cookies
     .getAll()
     .some((c) => c.name.startsWith("sb-") && c.name.includes("auth-token"));

@@ -1,8 +1,8 @@
-// Signup Route Handler — final version. Same pattern as /api/auth/login:
-// avoid NextResponse.redirect(), collect cookies during auth, attach them
-// to a manual 303 response after.
+// Signup Route Handler — self-managed session, same pattern as login.
 
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { SESSION_COOKIE } from "@/lib/auth";
 import { NextResponse, type NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,10 @@ function buildRedirect(req: NextRequest, path: string) {
 }
 
 function errorRedirect(req: NextRequest, locale: string, key: string) {
-  return buildRedirect(req, `/${locale}/auth/signup?error=${encodeURIComponent(key)}`);
+  return buildRedirect(
+    req,
+    `/${locale}/auth/signup?error=${encodeURIComponent(key)}`,
+  );
 }
 
 export async function POST(req: NextRequest) {
@@ -27,37 +30,19 @@ export async function POST(req: NextRequest) {
   const role = String(formData.get("role") ?? "buyer");
   const locale = String(formData.get("locale") ?? "en");
 
-  if (!email || !email.includes("@")) return errorRedirect(req, locale, "emailInvalid");
+  if (!email || !email.includes("@"))
+    return errorRedirect(req, locale, "emailInvalid");
   if (password.length < 8) return errorRedirect(req, locale, "passwordShort");
   if (!name) return errorRedirect(req, locale, "nameRequired");
-  if (role !== "buyer" && role !== "consultant") return errorRedirect(req, locale, "roleRequired");
+  if (role !== "buyer" && role !== "consultant")
+    return errorRedirect(req, locale, "roleRequired");
 
   const isConsultant = role === "consultant";
 
-  type CookieToSet = {
-    name: string;
-    value: string;
-    options: Record<string, unknown> | undefined;
-  };
-  const cookieJar: CookieToSet[] = [];
-
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return req.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          for (const c of cookiesToSet) {
-            const idx = cookieJar.findIndex((j) => j.name === c.name);
-            if (idx >= 0) cookieJar.splice(idx, 1);
-            cookieJar.push(c as CookieToSet);
-          }
-        },
-      },
-    },
+    { auth: { autoRefreshToken: false, persistSession: false } },
   );
 
   const { error, data } = await supabase.auth.signUp({
@@ -67,13 +52,21 @@ export async function POST(req: NextRequest) {
   });
 
   if (error || !data.user) {
-    if (error?.message?.toLowerCase().includes("already")) {
+    if (error?.message?.toLowerCase().includes("already"))
       return errorRedirect(req, locale, "emailTaken");
-    }
     return errorRedirect(req, locale, "generic");
   }
 
-  await supabase.from("profiles").upsert({
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return errorRedirect(req, locale, "generic");
+  }
+
+  // Best-effort profile upsert (the DB trigger should already have created
+  // a row; this is the safety net).
+  await admin.from("profiles").upsert({
     id: data.user.id,
     email,
     full_name: name,
@@ -81,29 +74,31 @@ export async function POST(req: NextRequest) {
     phone: "",
   });
 
-  // For consultants we don't auto-sign-in (admin must approve first).
+  // Consultants need admin approval before signing in.
   if (isConsultant) {
     return buildRedirect(req, `/${locale}/auth/login?pending=1`);
   }
 
-  // Auto sign-in buyers so they land directly on the dashboard.
-  const { error: signInError } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  const targetPath = signInError
-    ? `/${locale}/auth/login?registered=1`
-    : `/${locale}/buyer/dashboard`;
-  const response = buildRedirect(req, targetPath);
-
-  for (const { name, value, options } of cookieJar) {
-    response.cookies.set(name, value, {
-      ...(options ?? {}),
-      path: "/",
-      sameSite: "lax",
-    });
+  // Create a session row.
+  const { data: sess, error: sErr } = await admin
+    .from("user_sessions")
+    .insert({
+      user_id: data.user.id,
+      user_agent: req.headers.get("user-agent") ?? null,
+    })
+    .select("id")
+    .single();
+  if (sErr || !sess) {
+    return buildRedirect(req, `/${locale}/auth/login?registered=1`);
   }
 
+  const response = buildRedirect(req, `/${locale}/buyer/dashboard`);
+  response.cookies.set(SESSION_COOKIE, sess.id, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+    maxAge: 60 * 60 * 24 * 7,
+  });
   return response;
 }

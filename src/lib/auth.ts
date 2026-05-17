@@ -1,10 +1,13 @@
-// Auth abstraction with a mock fallback.
-// When Supabase env vars are missing, we use a cookie-based mock so the UI
-// can be developed and previewed end-to-end. Once .env.local is set, the
-// real Supabase client takes over automatically.
+// Auth abstraction.
+//
+// Session storage is now self-managed: each successful sign-in writes a row
+// to public.user_sessions and returns the row's UUID in a `mw_session`
+// cookie. Server-side, we look the session up via the service-role client
+// (bypassing @supabase/ssr cookie handling entirely, which was unreliable
+// on this Next.js 16 + Vercel deployment).
 
 import { cookies } from "next/headers";
-import { createClient as createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type Role = "buyer" | "consultant" | "admin";
 
@@ -17,6 +20,7 @@ export type MockSession = {
 };
 
 const MOCK_COOKIE = "myweb_mock_session";
+export const SESSION_COOKIE = "mw_session";
 
 export function supabaseConfigured(): boolean {
   return Boolean(
@@ -32,12 +36,11 @@ export async function mockSignIn(
   email: string,
   _password: string,
 ): Promise<{ ok: true; session: MockSession } | { ok: false; error: string }> {
-  // Pretend any email works. Derive role from email prefix for convenience:
-  //   admin@... → admin    consultant@... → consultant    anything else → buyer
   const prefix = email.split("@")[0]?.toLowerCase() ?? "";
   let role: Role = "buyer";
   if (prefix.startsWith("admin")) role = "admin";
-  else if (prefix.startsWith("consultant") || prefix.startsWith("agent")) role = "consultant";
+  else if (prefix.startsWith("consultant") || prefix.startsWith("agent"))
+    role = "consultant";
 
   const session: MockSession = {
     id: `mock-${Buffer.from(email).toString("base64").slice(0, 12)}`,
@@ -101,56 +104,81 @@ export async function getMockSession(): Promise<MockSession | null> {
 export async function getCurrentSession(): Promise<MockSession | null> {
   if (!supabaseConfigured()) return getMockSession();
 
-  const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get(SESSION_COOKIE)?.value;
+  if (!sessionId) return null;
 
-  // The profiles table is shared with another app and uses `full_name`
-  // (not `name`), has no `approved`/`is_agent` columns, and enforces
-  // NOT NULL on `phone`. We adapt to that schema.
-  let { data: profile } = await supabase
-    .from("profiles")
-    .select("id, full_name, role")
-    .eq("id", user.id)
+  // Look the session up via service-role. Bypasses RLS and any
+  // @supabase/ssr cookie handling.
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return null;
+  }
+
+  const { data: row, error } = await admin
+    .from("user_sessions")
+    .select("user_id, expires_at")
+    .eq("id", sessionId)
     .maybeSingle();
 
-  // Self-heal: create the row if missing.
+  if (error || !row) return null;
+  if (new Date(row.expires_at).getTime() < Date.now()) return null;
+
+  // Fetch user details. Schema fields documented in lib/auth previously.
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("id, full_name, role, email")
+    .eq("id", row.user_id)
+    .maybeSingle();
+
+  // Self-heal: if profile is missing for an existing auth.users row,
+  // create one with sane defaults.
   if (!profile) {
-    const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+    const { data: authUser } = await admin.auth.admin.getUserById(row.user_id);
+    const email = authUser?.user?.email ?? "";
+    const meta =
+      (authUser?.user?.user_metadata as Record<string, unknown>) ?? {};
     const fallbackName =
       (typeof meta.name === "string" && meta.name) ||
       (typeof meta.full_name === "string" && meta.full_name) ||
-      user.email?.split("@")[0] ||
+      email.split("@")[0] ||
       "User";
-    const fallbackRole =
-      (typeof meta.role === "string" && (meta.role === "consultant" || meta.role === "admin")
-        ? meta.role
-        : "buyer") as Role;
+    const fallbackRole: Role =
+      typeof meta.role === "string" &&
+      (meta.role === "consultant" || meta.role === "admin")
+        ? (meta.role as Role)
+        : "buyer";
 
-    const { data: created } = await supabase
+    const { data: created } = await admin
       .from("profiles")
       .upsert(
         {
-          id: user.id,
-          email: user.email,
+          id: row.user_id,
+          email,
           full_name: fallbackName,
           role: fallbackRole,
           phone: "",
         },
         { onConflict: "id" },
       )
-      .select("id, full_name, role")
+      .select("id, full_name, role, email")
       .maybeSingle();
 
-    if (created) profile = created;
+    if (!created) return null;
+    return {
+      id: created.id,
+      email: created.email ?? email,
+      name: (created.full_name as string) || fallbackName,
+      role: (created.role as Role) ?? fallbackRole,
+    };
   }
-
-  if (!profile) return null;
 
   return {
     id: profile.id,
-    email: user.email ?? "",
-    name: profile.full_name ?? user.email?.split("@")[0] ?? "User",
+    email: (profile.email as string) ?? "",
+    name: (profile.full_name as string) ?? "User",
     role: profile.role as Role,
   };
 }
