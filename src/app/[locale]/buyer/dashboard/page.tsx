@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
@@ -5,6 +6,9 @@ import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { getCurrentSession } from "@/lib/auth";
 import { listMyProjectsAsBuyer } from "@/lib/projects";
+
+// Never cache. This page must always reflect the per-request auth state.
+export const dynamic = "force-dynamic";
 import {
   ArrowRight,
   Sparkles,
@@ -64,6 +68,17 @@ export default async function BuyerDashboardPage({
   const t = await getTranslations();
 
   const session = await getCurrentSession();
+
+  // DIAGNOSTIC — snapshot exactly which cookies the request actually carried.
+  const cookieStore = await cookies();
+  const cookieDump = cookieStore
+    .getAll()
+    .map((c) => c.name)
+    .join(", ");
+  const sessionDump = session
+    ? `name=${session.name} role=${session.role}`
+    : "null";
+
   if (!session) redirect(`/${locale}/auth/login`);
   if (session.role !== "buyer" && session.role !== "admin") {
     redirect(`/${locale}/consultant/dashboard`);
@@ -74,6 +89,19 @@ export default async function BuyerDashboardPage({
 
   return (
     <div className="min-h-screen flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
+      <div
+        style={{
+          background: "#0b1020",
+          color: "#fbbf24",
+          fontFamily: "ui-monospace, Menlo, monospace",
+          fontSize: 11,
+          padding: "6px 12px",
+          borderBottom: "1px solid #334155",
+          wordBreak: "break-all",
+        }}
+      >
+        DASHBOARD-DEBUG | session: {sessionDump} | cookies: {cookieDump || "(none)"}
+      </div>
       <header className="sticky top-0 z-40 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center font-extrabold text-xl tracking-tight" aria-label="myweb home">
