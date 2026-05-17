@@ -48,6 +48,23 @@ function hasSessionCookies(req: NextRequest): boolean {
  * `supabaseResponse` as the SAME object intl produced, mutated in place by
  * Supabase's `setAll`. Return that object unchanged at the end.
  */
+// Project ref extracted from NEXT_PUBLIC_SUPABASE_URL. Auth cookies named
+// `sb-<ref>-auth-token...` for any OTHER ref are stale (from a previous
+// deployment that pointed at a different project) and must be deleted so
+// they can't confuse Supabase's session lookup.
+function currentProjectRef(): string | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const m = url.match(/^https?:\/\/([^.]+)\.supabase\.co/i);
+  return m?.[1] ?? null;
+}
+
+function isStaleSupabaseCookie(name: string, currentRef: string | null): boolean {
+  if (!currentRef) return false;
+  if (!name.startsWith("sb-")) return false;
+  if (!name.includes("auth-token")) return false;
+  return !name.includes(currentRef);
+}
+
 export default async function middleware(req: NextRequest) {
   // 1) Let next-intl decide the URL shape.
   const intlResponse = intlMiddleware(req);
@@ -56,6 +73,26 @@ export default async function middleware(req: NextRequest) {
   // no point refreshing Supabase on a request the browser is about to abandon.
   if (intlResponse.headers.get("location")) {
     return intlResponse;
+  }
+
+  // 1b) Purge stale Supabase auth cookies from previous-project deployments.
+  // These have an empty value and a project ref that doesn't match the
+  // currently configured one — they cause "Auth session missing!" on every
+  // page even after a fresh sign-in.
+  const ref = currentProjectRef();
+  const staleNames = req.cookies
+    .getAll()
+    .filter((c) => isStaleSupabaseCookie(c.name, ref))
+    .map((c) => c.name);
+  if (staleNames.length > 0) {
+    for (const name of staleNames) req.cookies.delete(name);
+    for (const name of staleNames) {
+      intlResponse.cookies.set(name, "", {
+        path: "/",
+        maxAge: 0,
+        expires: new Date(0),
+      });
+    }
   }
 
   // 2) Supabase session refresh. supabaseResponse starts as intl's response so
