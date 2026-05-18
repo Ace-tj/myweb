@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { CalculatorIcon, DocumentTextIcon, ArrowDownRightIcon, ArrowUpRightIcon, ArrowDownTrayIcon } from "@heroicons/react/20/solid";
+import {
+  CalculatorIcon,
+  DocumentTextIcon,
+  ArrowDownRightIcon,
+  ArrowUpRightIcon,
+  ArrowDownTrayIcon,
+  CurrencyDollarIcon,
+  ChartPieIcon,
+  ArrowTrendingUpIcon,
+} from "@heroicons/react/20/solid";
 
 const C = {
   bg: "#f7f8fb",
@@ -19,31 +28,85 @@ const C = {
 const STATUS_C: Record<string, { bg: string; fg: string }> = {
   Paid: { bg: "#dcfce7", fg: "#166534" },
   Sent: { bg: "#dbeafe", fg: "#1e40af" },
+  Pending: { bg: "#fef3c7", fg: "#92400e" },
   Overdue: { bg: "#fee2e2", fg: "#991b1b" },
   Draft: { bg: "#f1f5f9", fg: "#475569" },
 };
 
+const CATEGORY_C: Record<string, string> = {
+  rent: "#1e3a8a",
+  payroll: "#7c3aed",
+  software: "#0891b2",
+  utilities: "#b45309",
+  marketing: "#be185d",
+};
+
+type Tab = "ledger" | "invoices" | "expenses" | "reports";
+
 export function AccountingDemo() {
   const t = useTranslations("demoPreview.accounting");
-  const [tab, setTab] = useState<"ledger" | "invoices" | "reports">("invoices");
+  const [tab, setTab] = useState<Tab>("ledger");
 
   const INVOICES = [
     { n: "INV-1042", client: t("clients.helios"), amount: 12400, status: "Paid", due: t("dates.apr18") },
-    { n: "INV-1043", client: t("clients.parkEight"), amount: 4800, status: "Sent", due: t("dates.may02") },
+    { n: "INV-1043", client: t("clients.parkEight"), amount: 4800, status: "Pending", due: t("dates.may02") },
     { n: "INV-1044", client: t("clients.northbound"), amount: 18900, status: "Overdue", due: t("dates.apr10") },
     { n: "INV-1045", client: t("clients.ridgeSons"), amount: 2150, status: "Draft", due: "—" },
     { n: "INV-1046", client: t("clients.lumen"), amount: 7600, status: "Paid", due: t("dates.apr22") },
+    { n: "INV-1047", client: t("clients.atlasGrove"), amount: 9320, status: "Pending", due: t("dates.may08") },
+    { n: "INV-1048", client: t("clients.brightOak"), amount: 15400, status: "Paid", due: t("dates.may01") },
+    { n: "INV-1049", client: t("clients.cobalt"), amount: 3680, status: "Overdue", due: t("dates.apr14") },
+    { n: "INV-1050", client: t("clients.delmarCo"), amount: 22100, status: "Pending", due: t("dates.may12") },
+    { n: "INV-1051", client: t("clients.echoLabs"), amount: 5240, status: "Paid", due: t("dates.may05") },
   ];
+
+  const EXPENSES = [
+    { cat: "rent", desc: t("expenses.items.officeRent"), amount: 8500, date: t("dates.may01") },
+    { cat: "rent", desc: t("expenses.items.warehouseLease"), amount: 4200, date: t("dates.may01") },
+    { cat: "payroll", desc: t("expenses.items.payrollMay1"), amount: 18600, date: t("dates.may01") },
+    { cat: "payroll", desc: t("expenses.items.payrollMay15"), amount: 18600, date: t("dates.may15") },
+    { cat: "payroll", desc: t("expenses.items.contractor"), amount: 4500, date: t("dates.may10") },
+    { cat: "software", desc: t("expenses.items.aws"), amount: 1240, date: t("dates.may16") },
+    { cat: "software", desc: t("expenses.items.figma"), amount: 180, date: t("dates.may03") },
+    { cat: "software", desc: t("expenses.items.salesforce"), amount: 920, date: t("dates.may07") },
+    { cat: "utilities", desc: t("expenses.items.electricity"), amount: 740, date: t("dates.may06") },
+    { cat: "utilities", desc: t("expenses.items.internet"), amount: 320, date: t("dates.may06") },
+    { cat: "marketing", desc: t("expenses.items.adsGoogle"), amount: 2400, date: t("dates.may09") },
+    { cat: "marketing", desc: t("expenses.items.adsLinkedin"), amount: 1100, date: t("dates.may11") },
+  ];
+
+  const CATEGORIES: Array<keyof typeof CATEGORY_C> = ["rent", "payroll", "software", "utilities", "marketing"];
+  const categoryLabel = (k: string) => t(`expenses.categories.${k}`);
+  const categoryTotal = (k: string) => EXPENSES.filter((e) => e.cat === k).reduce((s, e) => s + e.amount, 0);
+  const expensesTotal = EXPENSES.reduce((s, e) => s + e.amount, 0);
+
+  const TREND = [
+    { m: t("reports.months.dec"), rev: 142, exp: 76 },
+    { m: t("reports.months.jan"), rev: 132, exp: 78 },
+    { m: t("reports.months.feb"), rev: 148, exp: 82 },
+    { m: t("reports.months.mar"), rev: 156, exp: 84 },
+    { m: t("reports.months.apr"), rev: 172, exp: 88 },
+    { m: t("reports.months.may"), rev: 184, exp: 91 },
+  ];
+  const trendMax = Math.max(...TREND.flatMap((d) => [d.rev, d.exp]));
 
   const statusLabel = (s: string) => {
     switch (s) {
       case "Paid": return t("status.paid");
       case "Sent": return t("status.sent");
+      case "Pending": return t("status.pending");
       case "Overdue": return t("status.overdue");
       case "Draft": return t("status.draft");
       default: return s;
     }
   };
+
+  const TABS: Array<{ id: Tab; label: string; Icon: typeof CalculatorIcon }> = [
+    { id: "ledger", label: t("nav.ledger"), Icon: CalculatorIcon },
+    { id: "invoices", label: t("nav.invoices"), Icon: DocumentTextIcon },
+    { id: "expenses", label: t("nav.expenses"), Icon: CurrencyDollarIcon },
+    { id: "reports", label: t("nav.reports"), Icon: ChartPieIcon },
+  ];
 
   return (
     <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "Inter, ui-sans-serif" }}>
@@ -67,27 +130,28 @@ export function AccountingDemo() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          {[
-            { id: "ledger", label: t("nav.ledger") },
-            { id: "invoices", label: t("nav.invoices") },
-            { id: "reports", label: t("nav.reports") },
-          ].map((tn) => {
+          {TABS.map((tn) => {
             const active = tab === tn.id;
+            const Icon = tn.Icon;
             return (
               <button
                 key={tn.id}
-                onClick={() => setTab(tn.id as typeof tab)}
+                onClick={() => setTab(tn.id)}
                 style={{
                   background: active ? C.navy : "transparent",
                   color: active ? "white" : C.muted,
                   border: "none",
-                  padding: "8px 16px",
+                  padding: "8px 14px",
                   borderRadius: 8,
                   fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
                 }}
               >
+                <Icon style={{ width: 14, height: 14 }} />
                 {tn.label}
               </button>
             );
@@ -122,6 +186,26 @@ export function AccountingDemo() {
             </div>
           ))}
         </div>
+
+        {tab === "ledger" && (
+          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>{t("ledger.title")}</h2>
+            {[
+              { date: t("ledger.dates.may17"), desc: t("ledger.tx.heliosWire"), deb: "", cre: 12400 },
+              { date: t("ledger.dates.may17"), desc: t("ledger.tx.stripePayout"), deb: "", cre: 8420 },
+              { date: t("ledger.dates.may16"), desc: t("ledger.tx.awsInvoice"), deb: 1240, cre: "" },
+              { date: t("ledger.dates.may16"), desc: t("ledger.tx.payroll"), deb: 18600, cre: "" },
+              { date: t("ledger.dates.may15"), desc: t("ledger.tx.lumenAch"), deb: "", cre: 7600 },
+            ].map((tx, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "80px 1fr 120px 120px", padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14 }}>
+                <span style={{ color: C.muted }}>{tx.date}</span>
+                <span>{tx.desc}</span>
+                <span style={{ textAlign: "right", color: C.red, fontWeight: 600 }}>{tx.deb ? `-$${tx.deb.toLocaleString()}` : "—"}</span>
+                <span style={{ textAlign: "right", color: C.green, fontWeight: 600 }}>{tx.cre ? `+$${tx.cre.toLocaleString()}` : "—"}</span>
+              </div>
+            ))}
+          </section>
+        )}
 
         {tab === "invoices" && (
           <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14 }}>
@@ -173,41 +257,90 @@ export function AccountingDemo() {
           </section>
         )}
 
-        {tab === "ledger" && (
-          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>{t("ledger.title")}</h2>
-            {[
-              { date: t("ledger.dates.may17"), desc: t("ledger.tx.heliosWire"), deb: "", cre: 12400 },
-              { date: t("ledger.dates.may17"), desc: t("ledger.tx.stripePayout"), deb: "", cre: 8420 },
-              { date: t("ledger.dates.may16"), desc: t("ledger.tx.awsInvoice"), deb: 1240, cre: "" },
-              { date: t("ledger.dates.may16"), desc: t("ledger.tx.payroll"), deb: 18600, cre: "" },
-              { date: t("ledger.dates.may15"), desc: t("ledger.tx.lumenAch"), deb: "", cre: 7600 },
-            ].map((tx, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "80px 1fr 120px 120px", padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14 }}>
-                <span style={{ color: C.muted }}>{tx.date}</span>
-                <span>{tx.desc}</span>
-                <span style={{ textAlign: "right", color: C.red, fontWeight: 600 }}>{tx.deb ? `-$${tx.deb.toLocaleString()}` : "—"}</span>
-                <span style={{ textAlign: "right", color: C.green, fontWeight: 600 }}>{tx.cre ? `+$${tx.cre.toLocaleString()}` : "—"}</span>
+        {tab === "expenses" && (
+          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14 }}>
+            <header style={{ padding: "18px 22px", borderBottom: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <h2 style={{ fontSize: 16, fontWeight: 700 }}>{t("expenses.title")}</h2>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{t("expenses.subtitle")}</div>
               </div>
-            ))}
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>{t("expenses.total")}</div>
+                <div style={{ fontSize: 20, fontWeight: 700 }}>${expensesTotal.toLocaleString()}</div>
+              </div>
+            </header>
+            <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 18 }}>
+              {CATEGORIES.map((cat) => {
+                const items = EXPENSES.filter((e) => e.cat === cat);
+                const total = categoryTotal(cat);
+                return (
+                  <div key={cat}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: 2, background: CATEGORY_C[cat] }} />
+                        <span style={{ fontWeight: 700, fontSize: 13 }}>{categoryLabel(cat)}</span>
+                        <span style={{ fontSize: 11, color: C.muted }}>· {items.length}</span>
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: 13 }}>${total.toLocaleString()}</div>
+                    </div>
+                    <div style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+                      {items.map((e, i) => (
+                        <div
+                          key={i}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "80px 1fr 120px",
+                            padding: "10px 14px",
+                            borderTop: i === 0 ? "none" : `1px solid ${C.border}`,
+                            fontSize: 13,
+                            background: C.paper,
+                          }}
+                        >
+                          <span style={{ color: C.muted }}>{e.date}</span>
+                          <span>{e.desc}</span>
+                          <span style={{ textAlign: "right", fontWeight: 600 }}>${e.amount.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </section>
         )}
 
         {tab === "reports" && (
           <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18 }}>{t("reports.title")}</h2>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 18, height: 220, padding: "0 16px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700 }}>{t("reports.title")}</h2>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: C.green, fontWeight: 600 }}>
+                <ArrowTrendingUpIcon style={{ width: 14, height: 14 }} />
+                {t("reports.trendUp")}
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 22 }}>
               {[
-                { m: t("reports.months.jan"), rev: 132, exp: 78 },
-                { m: t("reports.months.feb"), rev: 148, exp: 82 },
-                { m: t("reports.months.mar"), rev: 156, exp: 84 },
-                { m: t("reports.months.apr"), rev: 172, exp: 88 },
-                { m: t("reports.months.may"), rev: 184, exp: 91 },
-              ].map((d) => (
+                { label: t("reports.pnl.revenue"), v: 932400, color: C.navy },
+                { label: t("reports.pnl.cost"), v: 498200, color: C.gold },
+                { label: t("reports.pnl.profit"), v: 434200, color: C.green },
+              ].map((p) => (
+                <div key={p.label} style={{ border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+                  <div style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>{p.label}</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, marginTop: 6, color: p.color }}>${p.v.toLocaleString()}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ fontSize: 12, color: C.muted, marginBottom: 8, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              {t("reports.sixMonthTrend")}
+            </div>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 18, height: 220, padding: "0 16px" }}>
+              {TREND.map((d) => (
                 <div key={d.m} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <div style={{ width: "100%", display: "flex", gap: 4, alignItems: "flex-end", height: "100%" }}>
-                    <div style={{ flex: 1, background: C.navy, borderRadius: "4px 4px 0 0", height: `${d.rev}%` }} />
-                    <div style={{ flex: 1, background: C.gold, borderRadius: "4px 4px 0 0", height: `${d.exp}%` }} />
+                    <div style={{ flex: 1, background: C.navy, borderRadius: "4px 4px 0 0", height: `${(d.rev / trendMax) * 100}%` }} />
+                    <div style={{ flex: 1, background: C.gold, borderRadius: "4px 4px 0 0", height: `${(d.exp / trendMax) * 100}%` }} />
                   </div>
                   <span style={{ fontSize: 11, color: C.muted, marginTop: 6 }}>{d.m}</span>
                 </div>

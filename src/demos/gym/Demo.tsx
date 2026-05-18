@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { IconBarbell, IconFlame, IconCalendar, IconUsers, IconTrendingUp, IconBolt } from "@tabler/icons-react";
+import {
+  IconBarbell,
+  IconUsers,
+  IconCalendar,
+  IconUser,
+  IconLogin,
+} from "@tabler/icons-react";
 
 const C = {
   bg: "#0a0a0a",
@@ -14,176 +20,139 @@ const C = {
   border: "#262626",
 };
 
+type TabId = "members" | "classes" | "trainers" | "checkin";
+
 export function GymDemo() {
   const t = useTranslations("demoPreview.gym");
-  const [tab, setTab] = useState<"today" | "members" | "kpi">("today");
+  const [tab, setTab] = useState<TabId>("members");
+
+  const MEMBERS = [
+    { n: t("members.list.tatiana"), plan: t("members.plans.proAnnual"), days: 312, status: t("members.status.active") },
+    { n: t("members.list.marcus"), plan: t("members.plans.liteMonthly"), days: 28, status: t("members.status.active") },
+    { n: t("members.list.anya"), plan: t("members.plans.proQuarterly"), days: 90, status: t("members.status.pending") },
+    { n: t("members.list.daler"), plan: t("members.plans.dropIn"), days: 1, status: t("members.status.new") },
+    { n: t("members.list.maya"), plan: t("members.plans.proAnnual"), days: 184, status: t("members.status.active") },
+    { n: t("members.list.sergei"), plan: t("members.plans.liteMonthly"), days: 9, status: t("members.status.expiring") },
+  ];
 
   const CLASSES = [
-    { time: "06:00", name: t("classes.hiitBurner"), coach: t("coaches.alex"), spots: 4, max: 16, intensity: 4 },
-    { time: "07:30", name: t("classes.powerHour"), coach: t("coaches.mira"), spots: 12, max: 14, intensity: 5 },
-    { time: "12:00", name: t("classes.lunchMobility"), coach: t("coaches.sam"), spots: 2, max: 10, intensity: 1 },
-    { time: "17:30", name: t("classes.strengthLab"), coach: t("coaches.mira"), spots: 8, max: 12, intensity: 4 },
-    { time: "18:30", name: t("classes.boxingFoundations"), coach: t("coaches.jordan"), spots: 6, max: 14, intensity: 3 },
-    { time: "19:30", name: t("classes.coolDownYoga"), coach: t("coaches.alex"), spots: 10, max: 16, intensity: 1 },
+    { name: t("classes.list.0.name"), day: t("classes.days.mon"), time: "07:00", coach: t("coaches.sara"), booked: 18, max: 20 },
+    { name: t("classes.list.1.name"), day: t("classes.days.mon"), time: "18:30", coach: t("coaches.mira"), booked: 12, max: 14 },
+    { name: t("classes.list.2.name"), day: t("classes.days.tue"), time: "06:30", coach: t("coaches.alex"), booked: 14, max: 16 },
+    { name: t("classes.list.3.name"), day: t("classes.days.tue"), time: "19:00", coach: t("coaches.jordan"), booked: 9, max: 14 },
+    { name: t("classes.list.4.name"), day: t("classes.days.wed"), time: "12:00", coach: t("coaches.sam"), booked: 6, max: 10 },
+    { name: t("classes.list.5.name"), day: t("classes.days.wed"), time: "18:00", coach: t("coaches.mira"), booked: 12, max: 12 },
+    { name: t("classes.list.6.name"), day: t("classes.days.thu"), time: "07:00", coach: t("coaches.sara"), booked: 16, max: 20 },
+    { name: t("classes.list.7.name"), day: t("classes.days.thu"), time: "19:30", coach: t("coaches.alex"), booked: 8, max: 16 },
+    { name: t("classes.list.8.name"), day: t("classes.days.fri"), time: "06:30", coach: t("coaches.jordan"), booked: 11, max: 14 },
+    { name: t("classes.list.9.name"), day: t("classes.days.fri"), time: "18:30", coach: t("coaches.mira"), booked: 13, max: 14 },
+    { name: t("classes.list.10.name"), day: t("classes.days.sat"), time: "09:00", coach: t("coaches.sam"), booked: 15, max: 18 },
+    { name: t("classes.list.11.name"), day: t("classes.days.sat"), time: "11:00", coach: t("coaches.sara"), booked: 17, max: 20 },
+  ];
+
+  const TRAINERS = [
+    { name: t("trainers.list.0.name"), specialty: t("trainers.list.0.specialty"), sessions: 22, color: "#a3e635" },
+    { name: t("trainers.list.1.name"), specialty: t("trainers.list.1.specialty"), sessions: 18, color: "#fbbf24" },
+    { name: t("trainers.list.2.name"), specialty: t("trainers.list.2.specialty"), sessions: 25, color: "#60a5fa" },
+    { name: t("trainers.list.3.name"), specialty: t("trainers.list.3.specialty"), sessions: 14, color: "#f472b6" },
+    { name: t("trainers.list.4.name"), specialty: t("trainers.list.4.specialty"), sessions: 20, color: "#34d399" },
+    { name: t("trainers.list.5.name"), specialty: t("trainers.list.5.specialty"), sessions: 16, color: "#c084fc" },
+  ];
+
+  const CHECKINS = [
+    { name: t("checkin.feed.0.name"), at: "10:42", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.1.name"), at: "10:38", type: t("checkin.types.class") },
+    { name: t("checkin.feed.2.name"), at: "10:31", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.3.name"), at: "10:24", type: t("checkin.types.pt") },
+    { name: t("checkin.feed.4.name"), at: "10:18", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.5.name"), at: "10:11", type: t("checkin.types.class") },
+    { name: t("checkin.feed.6.name"), at: "10:03", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.7.name"), at: "09:57", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.8.name"), at: "09:50", type: t("checkin.types.pt") },
+    { name: t("checkin.feed.9.name"), at: "09:42", type: t("checkin.types.gym") },
+    { name: t("checkin.feed.10.name"), at: "09:35", type: t("checkin.types.class") },
+    { name: t("checkin.feed.11.name"), at: "09:28", type: t("checkin.types.gym") },
+  ];
+
+  const initials = (name: string) =>
+    name
+      .split(" ")
+      .map((p) => p[0])
+      .slice(0, 2)
+      .join("");
+
+  const TABS: { id: TabId; label: string; Icon: typeof IconUsers }[] = [
+    { id: "members", label: t("nav.members"), Icon: IconUsers },
+    { id: "classes", label: t("nav.classes"), Icon: IconCalendar },
+    { id: "trainers", label: t("nav.trainers"), Icon: IconUser },
+    { id: "checkin", label: t("nav.checkin"), Icon: IconLogin },
   ];
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "Inter, ui-sans-serif" }}>
-      <header
+    <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "Inter, ui-sans-serif", display: "flex" }}>
+      <aside
         style={{
-          padding: "20px 32px",
-          borderBottom: `1px solid ${C.border}`,
+          width: 220,
+          borderRight: `1px solid ${C.border}`,
+          padding: "24px 16px",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: "column",
+          gap: 24,
+          background: C.surface,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "0 4px" }}>
           <div style={{ width: 38, height: 38, background: C.neon, color: C.bg, display: "grid", placeItems: "center", borderRadius: 10 }}>
             <IconBarbell style={{ width: 20, height: 20 }} stroke={2} />
           </div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: 18, letterSpacing: -0.5 }}>{t("brand")}</div>
-            <div style={{ fontSize: 11, color: C.muted, letterSpacing: 2, textTransform: "uppercase" }}>
+            <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: -0.5 }}>{t("brand")}</div>
+            <div style={{ fontSize: 10, color: C.muted, letterSpacing: 2, textTransform: "uppercase" }}>
               {t("tagline")}
             </div>
           </div>
         </div>
-        <nav style={{ display: "flex", gap: 4 }}>
-          {[
-            { id: "today", label: t("nav.today") },
-            { id: "members", label: t("nav.members") },
-            { id: "kpi", label: t("nav.kpis") },
-          ].map((tab2) => {
-            const active = tab === tab2.id;
+
+        <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {TABS.map((tabItem) => {
+            const active = tab === tabItem.id;
+            const Icon = tabItem.Icon;
             return (
               <button
-                key={tab2.id}
-                onClick={() => setTab(tab2.id as typeof tab)}
+                key={tabItem.id}
+                onClick={() => setTab(tabItem.id)}
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
                   background: active ? C.neon : "transparent",
                   color: active ? C.bg : C.ink,
                   border: "none",
-                  padding: "8px 18px",
+                  padding: "10px 14px",
                   borderRadius: 8,
                   fontWeight: 700,
                   fontSize: 12,
                   textTransform: "uppercase",
                   letterSpacing: 1,
                   cursor: "pointer",
+                  textAlign: "left",
                 }}
               >
-                {tab2.label}
+                <Icon style={{ width: 16, height: 16 }} stroke={2} />
+                {tabItem.label}
               </button>
             );
           })}
         </nav>
-      </header>
+      </aside>
 
-      <main style={{ padding: 32, maxWidth: 1400, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 32 }}>
-          {[
-            { Icon: IconUsers, label: t("stats.activeMembers.label"), v: "412", sub: t("stats.activeMembers.sub") },
-            { Icon: IconCalendar, label: t("stats.bookingsToday.label"), v: "186", sub: t("stats.bookingsToday.sub") },
-            { Icon: IconFlame, label: t("stats.checkInsLive.label"), v: "67", sub: t("stats.checkInsLive.sub") },
-            { Icon: IconTrendingUp, label: t("stats.revenueMtd.label"), v: "$24,180", sub: t("stats.revenueMtd.sub") },
-          ].map((s) => (
-            <div key={s.label} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18 }}>
-              <s.Icon style={{ width: 18, height: 18, color: C.neon }} stroke={2} />
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 8, textTransform: "uppercase", letterSpacing: 1 }}>{s.label}</div>
-              <div style={{ fontSize: 26, fontWeight: 800, marginTop: 4 }}>{s.v}</div>
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>{s.sub}</div>
-            </div>
-          ))}
-        </div>
-
-        {tab === "today" && (
-          <section>
-            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16, letterSpacing: -0.5 }}>
-              {t("today.heading")}
-            </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {CLASSES.map((c) => {
-                const full = c.spots === 0;
-                const pct = ((c.max - c.spots) / c.max) * 100;
-                return (
-                  <article
-                    key={c.time}
-                    style={{
-                      background: C.surface,
-                      border: `1px solid ${C.border}`,
-                      borderRadius: 14,
-                      padding: "16px 20px",
-                      display: "grid",
-                      gridTemplateColumns: "80px 1.5fr 1fr 200px 100px",
-                      alignItems: "center",
-                      gap: 16,
-                    }}
-                  >
-                    <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: -1 }}>{c.time}</div>
-                    <div>
-                      <div style={{ fontSize: 16, fontWeight: 700 }}>{c.name}</div>
-                      <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{t("today.coachPrefix")} {c.coach}</div>
-                    </div>
-                    <div style={{ display: "flex", gap: 3 }}>
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <IconBolt
-                          key={i}
-                          stroke={2}
-                          style={{
-                            width: 14,
-                            height: 14,
-                            color: i < c.intensity ? C.neon : "#333",
-                            fill: i < c.intensity ? C.neon : "transparent",
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: C.muted, marginBottom: 4 }}>
-                        <span>{c.max - c.spots}/{c.max} {t("today.booked")}</span>
-                        <span>{c.spots} {t("today.left")}</span>
-                      </div>
-                      <div style={{ height: 6, background: C.card, borderRadius: 999 }}>
-                        <div style={{ width: `${pct}%`, height: "100%", background: C.neon, borderRadius: 999 }} />
-                      </div>
-                    </div>
-                    <button
-                      disabled={full}
-                      style={{
-                        padding: "10px 14px",
-                        background: full ? C.card : C.neon,
-                        color: full ? C.muted : C.bg,
-                        border: "none",
-                        borderRadius: 8,
-                        fontWeight: 700,
-                        fontSize: 12,
-                        textTransform: "uppercase",
-                        letterSpacing: 1,
-                        cursor: full ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      {full ? t("today.full") : t("today.book")}
-                    </button>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
+      <main style={{ flex: 1, padding: 32, maxWidth: 1400, margin: "0 auto" }}>
         {tab === "members" && (
           <section>
-            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>{t("members.heading")}</h2>
+            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, letterSpacing: -0.5 }}>{t("members.heading")}</h2>
+            <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>{t("members.subheading")}</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
-              {[
-                { n: t("members.list.tatiana"), plan: t("members.plans.proAnnual"), days: 312, status: t("members.status.active") },
-                { n: t("members.list.marcus"), plan: t("members.plans.liteMonthly"), days: 28, status: t("members.status.active") },
-                { n: t("members.list.anya"), plan: t("members.plans.proQuarterly"), days: 90, status: t("members.status.pending") },
-                { n: t("members.list.daler"), plan: t("members.plans.dropIn"), days: 1, status: t("members.status.new") },
-                { n: t("members.list.maya"), plan: t("members.plans.proAnnual"), days: 184, status: t("members.status.active") },
-                { n: t("members.list.sergei"), plan: t("members.plans.liteMonthly"), days: 9, status: t("members.status.expiring") },
-              ].map((m) => (
+              {MEMBERS.map((m) => (
                 <div key={m.n} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <div
@@ -206,7 +175,9 @@ export function GymDemo() {
                     </div>
                   </div>
                   <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", fontSize: 11, color: C.muted }}>
-                    <span>{t("members.dayPrefix")} {m.days}</span>
+                    <span>
+                      {t("members.dayPrefix")} {m.days}
+                    </span>
                     <span style={{ color: m.status === t("members.status.expiring") ? "#f87171" : C.neon }}>{m.status}</span>
                   </div>
                 </div>
@@ -215,26 +186,251 @@ export function GymDemo() {
           </section>
         )}
 
-        {tab === "kpi" && (
+        {tab === "classes" && (
           <section>
-            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>{t("kpi.heading")}</h2>
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 24 }}>
-              <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 200 }}>
-                {[34, 52, 41, 67, 73, 58, 81, 95, 78, 88, 102, 96, 110, 124].map((h, i) => (
+            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, letterSpacing: -0.5 }}>{t("classes.title")}</h2>
+            <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>{t("classes.subtitle")}</p>
+            <div
+              style={{
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+                borderRadius: 14,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "120px 1fr 1fr 1fr 140px",
+                  padding: "12px 20px",
+                  background: C.card,
+                  fontSize: 11,
+                  color: C.muted,
+                  textTransform: "uppercase",
+                  letterSpacing: 1,
+                  fontWeight: 700,
+                  borderBottom: `1px solid ${C.border}`,
+                }}
+              >
+                <span>{t("classes.col.when")}</span>
+                <span>{t("classes.col.class")}</span>
+                <span>{t("classes.col.instructor")}</span>
+                <span>{t("classes.col.capacity")}</span>
+                <span style={{ textAlign: "right" }}>{t("classes.col.fill")}</span>
+              </div>
+              {CLASSES.map((cl, i) => {
+                const pct = (cl.booked / cl.max) * 100;
+                const full = cl.booked >= cl.max;
+                return (
                   <div
                     key={i}
                     style={{
-                      flex: 1,
-                      background: i === 13 ? C.neon : `${C.neon}50`,
-                      borderRadius: "4px 4px 0 0",
-                      height: `${h}%`,
+                      display: "grid",
+                      gridTemplateColumns: "120px 1fr 1fr 1fr 140px",
+                      padding: "14px 20px",
+                      borderBottom: i === CLASSES.length - 1 ? "none" : `1px solid ${C.border}`,
+                      alignItems: "center",
+                      fontSize: 13,
                     }}
-                  />
-                ))}
+                  >
+                    <span style={{ fontWeight: 700 }}>
+                      {cl.day} · {cl.time}
+                    </span>
+                    <span style={{ fontWeight: 600 }}>{cl.name}</span>
+                    <span style={{ color: C.muted }}>{cl.coach}</span>
+                    <span style={{ color: full ? "#f87171" : C.ink }}>
+                      {cl.booked}/{cl.max}
+                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
+                      <div style={{ width: 80, height: 6, background: C.card, borderRadius: 999, overflow: "hidden" }}>
+                        <div style={{ width: `${pct}%`, height: "100%", background: full ? "#f87171" : C.neon }} />
+                      </div>
+                      <span style={{ fontSize: 11, color: C.muted, width: 30, textAlign: "right" }}>{Math.round(pct)}%</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {tab === "trainers" && (
+          <section>
+            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, letterSpacing: -0.5 }}>{t("trainers.title")}</h2>
+            <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>{t("trainers.subtitle")}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
+              {TRAINERS.map((tr) => (
+                <div
+                  key={tr.name}
+                  style={{
+                    background: C.surface,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: 14,
+                    padding: 20,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 14,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                    <div
+                      style={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: 999,
+                        background: tr.color,
+                        color: C.bg,
+                        display: "grid",
+                        placeItems: "center",
+                        fontWeight: 800,
+                        fontSize: 18,
+                      }}
+                    >
+                      {initials(tr.name)}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: 16 }}>{tr.name}</div>
+                      <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{tr.specialty}</div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "10px 12px",
+                      background: C.card,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <IconCalendar style={{ width: 14, height: 14, color: C.neon }} stroke={2} />
+                      <span style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 1 }}>
+                        {t("trainers.sessionsThisWeek")}
+                      </span>
+                    </div>
+                    <span style={{ fontWeight: 800, fontSize: 18 }}>{tr.sessions}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {tab === "checkin" && (
+          <section>
+            <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, letterSpacing: -0.5 }}>{t("checkin.title")}</h2>
+            <p style={{ fontSize: 13, color: C.muted, marginBottom: 20 }}>{t("checkin.subtitle")}</p>
+
+            <div
+              style={{
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+                borderRadius: 16,
+                padding: 32,
+                marginBottom: 20,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
+                  {t("checkin.currentlyInside")}
+                </div>
+                <div style={{ fontSize: 72, fontWeight: 900, color: C.neon, letterSpacing: -3, lineHeight: 1 }}>67</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 8 }}>{t("checkin.peakToday")}</div>
               </div>
-              <div style={{ marginTop: 12, fontSize: 12, color: C.muted, textAlign: "center" }}>
-                {t("kpi.caption")}
+              <div
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 999,
+                  background: C.bg,
+                  border: `4px solid ${C.neon}`,
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <IconLogin style={{ width: 56, height: 56, color: C.neon }} stroke={2} />
               </div>
+            </div>
+
+            <div
+              style={{
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+                borderRadius: 14,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  padding: "12px 20px",
+                  background: C.card,
+                  borderBottom: `1px solid ${C.border}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>
+                  {t("checkin.liveFeed")}
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: C.neon }}>
+                  <span style={{ width: 6, height: 6, borderRadius: 999, background: C.neon }} />
+                  {t("checkin.live")}
+                </span>
+              </div>
+              {CHECKINS.map((entry, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "80px 1fr auto auto",
+                    alignItems: "center",
+                    gap: 16,
+                    padding: "12px 20px",
+                    borderBottom: i === CHECKINS.length - 1 ? "none" : `1px solid ${C.border}`,
+                  }}
+                >
+                  <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 13, color: C.neon, fontWeight: 700 }}>
+                    {entry.at}
+                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: 999,
+                        background: C.card,
+                        border: `1px solid ${C.border}`,
+                        display: "grid",
+                        placeItems: "center",
+                        fontSize: 10,
+                        fontWeight: 800,
+                      }}
+                    >
+                      {initials(entry.name)}
+                    </div>
+                    <span style={{ fontSize: 13, fontWeight: 600 }}>{entry.name}</span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: C.muted,
+                      textTransform: "uppercase",
+                      letterSpacing: 1,
+                      padding: "4px 10px",
+                      background: C.card,
+                      borderRadius: 999,
+                    }}
+                  >
+                    {entry.type}
+                  </span>
+                  <IconLogin style={{ width: 14, height: 14, color: C.neon }} stroke={2} />
+                </div>
+              ))}
             </div>
           </section>
         )}

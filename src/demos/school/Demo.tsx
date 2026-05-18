@@ -2,7 +2,20 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Backpack, CheckCircle, WarningCircle, Star, Bus, ChatText } from "@phosphor-icons/react";
+import {
+  Backpack,
+  CheckCircle,
+  WarningCircle,
+  Star,
+  Bus,
+  ChatText,
+  CalendarBlank,
+  BookOpen,
+  MapPin,
+  Clock,
+  Users,
+  Path,
+} from "@phosphor-icons/react";
 
 const C = {
   bg: "#eff8ff",
@@ -12,23 +25,36 @@ const C = {
   primary: "#0284c7",
   yellow: "#facc15",
   green: "#16a34a",
+  red: "#dc2626",
   border: "#cbe1f1",
 };
 
+type TabId = "attendance" | "schedule" | "homework" | "grades" | "bus";
+
 export function SchoolDemo() {
   const t = useTranslations("demoPreview.school");
-  const [tab, setTab] = useState<"home" | "homework" | "grades">("home");
+  const [tab, setTab] = useState<TabId>("attendance");
 
-  const tabs = [
-    { id: "home", label: t("tabs.home") },
-    { id: "homework", label: t("tabs.homework") },
-    { id: "grades", label: t("tabs.grades") },
+  const tabs: { id: TabId; label: string; Icon: typeof Backpack }[] = [
+    { id: "attendance", label: t("tabs.attendance"), Icon: Backpack },
+    { id: "schedule", label: t("tabs.schedule"), Icon: CalendarBlank },
+    { id: "homework", label: t("tabs.homework"), Icon: BookOpen },
+    { id: "grades", label: t("tabs.grades"), Icon: Star },
+    { id: "bus", label: t("tabs.bus"), Icon: Bus },
   ];
 
   const stats = [
     { Icon: CheckCircle, label: t("stats.attendance"), v: t("stats.attendanceValue"), c: C.green },
     { Icon: Star, label: t("stats.stars"), v: t("stats.starsValue"), c: C.yellow },
     { Icon: WarningCircle, label: t("stats.overdue"), v: t("stats.overdueValue"), c: C.green },
+  ];
+
+  const attendanceLog = [
+    { date: t("attendance.days.mon"), status: t("attendance.statusPresent"), checkIn: "08:12", checkOut: "15:05", present: true },
+    { date: t("attendance.days.tue"), status: t("attendance.statusPresent"), checkIn: "08:08", checkOut: "15:02", present: true },
+    { date: t("attendance.days.wed"), status: t("attendance.statusLate"), checkIn: "08:34", checkOut: "15:04", present: true },
+    { date: t("attendance.days.thu"), status: t("attendance.statusPresent"), checkIn: "08:10", checkOut: "15:00", present: true },
+    { date: t("attendance.days.fri"), status: t("attendance.statusPresent"), checkIn: "08:06", checkOut: "—", present: true },
   ];
 
   const schedule = [
@@ -56,6 +82,39 @@ export function SchoolDemo() {
     { sub: t("grades.subjects.music"), grade: "A", trend: "→" },
   ];
 
+  const buses = [
+    {
+      id: "07",
+      route: t("bus.routes.r7"),
+      stop: t("bus.stops.maple"),
+      eta: t("bus.etas.fiveMin"),
+      onboard: 24,
+      capacity: 40,
+      status: t("bus.statusInbound"),
+      color: C.primary,
+    },
+    {
+      id: "12",
+      route: t("bus.routes.r12"),
+      stop: t("bus.stops.cedar"),
+      eta: t("bus.etas.twelveMin"),
+      onboard: 31,
+      capacity: 40,
+      status: t("bus.statusInbound"),
+      color: C.yellow,
+    },
+    {
+      id: "03",
+      route: t("bus.routes.r3"),
+      stop: t("bus.stops.school"),
+      eta: t("bus.etas.arrived"),
+      onboard: 18,
+      capacity: 40,
+      status: t("bus.statusArrived"),
+      color: C.green,
+    },
+  ];
+
   return (
     <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "ui-sans-serif, system-ui" }}>
       <header style={{ background: C.primary, color: "white", padding: "16px 28px" }}>
@@ -75,11 +134,11 @@ export function SchoolDemo() {
         </div>
       </header>
 
-      <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", gap: 6, marginTop: 12 }}>
+      <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
         {tabs.map((tabItem) => (
           <button
             key={tabItem.id}
-            onClick={() => setTab(tabItem.id as typeof tab)}
+            onClick={() => setTab(tabItem.id)}
             style={{
               background: tab === tabItem.id ? C.paper : "transparent",
               color: tab === tabItem.id ? C.ink : C.muted,
@@ -89,20 +148,22 @@ export function SchoolDemo() {
               fontSize: 13,
               fontWeight: 600,
               cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
             }}
           >
+            <tabItem.Icon size={16} weight="duotone" />
             {tabItem.label}
           </button>
         ))}
       </nav>
 
       <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px 28px" }}>
-        {tab === "home" && (
+        {tab === "attendance" && (
           <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
-            <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>{t("home.greeting")}</h1>
-            <p style={{ color: C.muted, marginBottom: 22 }}>
-              {t("home.subGreeting")}
-            </p>
+            <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>{t("attendance.greeting")}</h1>
+            <p style={{ color: C.muted, marginBottom: 22 }}>{t("attendance.subGreeting")}</p>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
               {stats.map((s) => (
@@ -114,7 +175,46 @@ export function SchoolDemo() {
               ))}
             </div>
 
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>{t("schedule.title")}</h2>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>{t("attendance.weekTitle")}</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
+              {attendanceLog.map((row) => (
+                <div
+                  key={row.date}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    padding: 12,
+                    background: C.bg,
+                    borderRadius: 10,
+                  }}
+                >
+                  <div style={{ width: 64, fontWeight: 700, color: C.primary }}>{row.date}</div>
+                  <div style={{ flex: 1, fontSize: 14 }}>
+                    <div style={{ fontWeight: 600 }}>{row.status}</div>
+                    <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
+                      {t("attendance.in")} {row.checkIn} · {t("attendance.out")} {row.checkOut}
+                    </div>
+                  </div>
+                  <CheckCircle size={18} weight="duotone" style={{ color: C.green }} />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ padding: 16, background: C.yellow, borderRadius: 12, display: "flex", alignItems: "center", gap: 12 }}>
+              <ChatText size={22} weight="duotone" style={{ color: C.primary }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700 }}>{t("note.title")}</div>
+                <div style={{ fontSize: 13, color: C.ink }}>{t("note.body")}</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === "schedule" && (
+          <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
+            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>{t("schedule.title")}</h1>
+            <p style={{ color: C.muted, marginBottom: 22 }}>{t("schedule.sub")}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {schedule.map((row, i) => (
                 <div
@@ -123,27 +223,26 @@ export function SchoolDemo() {
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
-                    padding: 12,
+                    padding: 14,
                     background: C.bg,
                     borderRadius: 10,
-                    opacity: row.done ? 0.5 : 1,
+                    opacity: row.done ? 0.55 : 1,
                   }}
                 >
-                  <div style={{ width: 56, fontWeight: 700, color: C.primary }}>{row.time}</div>
+                  <div style={{ width: 60, fontWeight: 700, color: C.primary, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    <Clock size={14} weight="duotone" />
+                    {row.time}
+                  </div>
                   <div style={{ flex: 1, fontSize: 14, textDecoration: row.done ? "line-through" : "none" }}>{row.c}</div>
-                  {row.done && <CheckCircle size={16} weight="duotone" style={{ color: C.green }} />}
+                  {row.done ? (
+                    <CheckCircle size={16} weight="duotone" style={{ color: C.green }} />
+                  ) : (
+                    <span style={{ fontSize: 11, color: C.primary, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>
+                      {t("schedule.upcoming")}
+                    </span>
+                  )}
                 </div>
               ))}
-            </div>
-
-            <div style={{ marginTop: 24, padding: 16, background: C.yellow, borderRadius: 12, display: "flex", alignItems: "center", gap: 12 }}>
-              <ChatText size={22} weight="duotone" style={{ color: C.primary }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700 }}>{t("note.title")}</div>
-                <div style={{ fontSize: 13, color: C.ink }}>
-                  {t("note.body")}
-                </div>
-              </div>
             </div>
           </div>
         )}
@@ -190,11 +289,113 @@ export function SchoolDemo() {
                   <div style={{ fontSize: 40, fontWeight: 800, color: C.primary, fontFamily: "Georgia, serif", marginTop: 4 }}>
                     {g.grade}
                   </div>
-                  <div style={{ fontSize: 13, color: g.trend === "↑" ? C.green : g.trend === "↓" ? "#dc2626" : C.muted, marginTop: 4 }}>
+                  <div style={{ fontSize: 13, color: g.trend === "↑" ? C.green : g.trend === "↓" ? C.red : C.muted, marginTop: 4 }}>
                     {g.trend} {t("grades.vsLastTerm")}
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {tab === "bus" && (
+          <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
+            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>{t("bus.title")}</h1>
+            <p style={{ color: C.muted, marginBottom: 22 }}>{t("bus.sub")}</p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {buses.map((b) => {
+                const pct = Math.round((b.onboard / b.capacity) * 100);
+                return (
+                  <article
+                    key={b.id}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "60px 1fr auto",
+                      gap: 16,
+                      alignItems: "center",
+                      background: C.bg,
+                      padding: 18,
+                      borderRadius: 14,
+                      border: `1px solid ${C.border}`,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 60,
+                        height: 60,
+                        background: b.color,
+                        color: "white",
+                        borderRadius: 14,
+                        display: "grid",
+                        placeItems: "center",
+                      }}
+                    >
+                      <Bus size={28} weight="duotone" />
+                    </div>
+
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                        <span style={{ fontWeight: 800, fontSize: 16 }}>
+                          {t("bus.busPrefix")} {b.id}
+                        </span>
+                        <span style={{ fontSize: 12, color: C.muted, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                          <Path size={12} weight="duotone" />
+                          {b.route}
+                        </span>
+                      </div>
+                      <div style={{ display: "flex", gap: 18, fontSize: 13, color: C.ink, flexWrap: "wrap" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <MapPin size={14} weight="duotone" style={{ color: C.primary }} />
+                          <span style={{ color: C.muted }}>{t("bus.currentStop")}:</span>
+                          <span style={{ fontWeight: 600 }}>{b.stop}</span>
+                        </span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <Clock size={14} weight="duotone" style={{ color: C.primary }} />
+                          <span style={{ color: C.muted }}>{t("bus.eta")}:</span>
+                          <span style={{ fontWeight: 600 }}>{b.eta}</span>
+                        </span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <Users size={14} weight="duotone" style={{ color: C.primary }} />
+                          <span style={{ color: C.muted }}>{t("bus.onboard")}:</span>
+                          <span style={{ fontWeight: 600 }}>
+                            {b.onboard}/{b.capacity}
+                          </span>
+                        </span>
+                      </div>
+                      <div style={{ marginTop: 10, height: 6, background: C.border, borderRadius: 999, overflow: "hidden" }}>
+                        <div style={{ width: `${pct}%`, height: "100%", background: b.color }} />
+                      </div>
+                    </div>
+
+                    <div style={{ textAlign: "right" }}>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 10px",
+                          background: b.status === t("bus.statusArrived") ? C.green : C.primary,
+                          color: "white",
+                          borderRadius: 9999,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: 0.6,
+                        }}
+                      >
+                        {b.status}
+                      </span>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            <div style={{ marginTop: 20, padding: 16, background: C.yellow, borderRadius: 12, display: "flex", alignItems: "center", gap: 12 }}>
+              <ChatText size={22} weight="duotone" style={{ color: C.primary }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700 }}>{t("bus.alertTitle")}</div>
+                <div style={{ fontSize: 13, color: C.ink }}>{t("bus.alertBody")}</div>
+              </div>
             </div>
           </div>
         )}

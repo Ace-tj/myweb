@@ -9,32 +9,46 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-surface/50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 py-16 lg:grid-cols-5 lg:py-20">
+    <footer className="relative border-t border-border bg-bg">
+      {/* Top spec bar */}
+      <div className="border-b border-border">
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 font-mono text-[10px] uppercase tracking-widest text-muted sm:px-6 lg:px-8">
+          <span>v0.1.0 / build live</span>
+          <span className="hidden sm:inline">Dushanbe · GMT+5</span>
+          <span className="text-primary">● online</span>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-14 py-20 lg:grid-cols-5 lg:py-28">
           <div className="lg:col-span-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-display text-2xl font-semibold tracking-tight"
+              className="inline-flex items-center gap-2.5 font-display text-lg font-bold uppercase tracking-tight"
             >
-              <span aria-hidden className="size-2 rounded-full bg-primary" />
+              <span
+                aria-hidden
+                className="grid size-7 place-items-center rounded-sm bg-primary text-primary-fg"
+              >
+                <span className="block size-2.5 rounded-[1px] bg-primary-fg" />
+              </span>
               {tBrand("name")}
             </Link>
-            <p className="mt-4 max-w-sm text-pretty text-muted">{t("tagline")}</p>
+            <p className="mt-5 max-w-sm text-pretty text-muted">{t("tagline")}</p>
 
-            <form className="mt-8 max-w-sm">
-              <label className="editorial-eyebrow block mb-2">{t("newsletter")}</label>
+            <form className="mt-10 max-w-sm">
+              <label className="spec-line block mb-2">{t("newsletter")}</label>
               <div className="flex gap-2">
                 <input
                   type="email"
                   required
                   placeholder={t("newsletterPlaceholder")}
                   aria-label={t("newsletter")}
-                  className="min-w-0 flex-1 rounded-full border border-border bg-bg px-4 py-2.5 text-sm text-fg placeholder:text-subtle transition focus:border-primary focus:outline-none"
+                  className="min-w-0 flex-1 rounded-sm border border-border-strong bg-bg px-4 py-2.5 font-mono text-xs text-fg placeholder:text-subtle transition focus:border-primary focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="rounded-full bg-fg px-4 py-2.5 text-sm font-medium text-bg transition hover:bg-fg/85"
+                  className="rounded-sm bg-primary px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-widest text-primary-fg transition hover:bg-primary-hover"
                 >
                   {t("newsletterCta")}
                 </button>
@@ -43,20 +57,20 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="editorial-eyebrow">{t("product")}</div>
-            <ul className="mt-4 space-y-3 text-sm">
+            <div className="spec-line">{t("product")}</div>
+            <ul className="mt-5 space-y-3 text-sm">
               <li>
-                <Link href="/demos" className="text-muted transition hover:text-fg">
+                <Link href="/demos" className="text-muted transition hover:text-primary">
                   {tNav("demos")}
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-muted transition hover:text-fg">
+                <Link href="/pricing" className="text-muted transition hover:text-primary">
                   {tNav("pricing")}
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-muted transition hover:text-fg">
+                <Link href="/services" className="text-muted transition hover:text-primary">
                   {tNav("services")}
                 </Link>
               </li>
@@ -64,15 +78,15 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="editorial-eyebrow">{t("company")}</div>
-            <ul className="mt-4 space-y-3 text-sm">
+            <div className="spec-line">{t("company")}</div>
+            <ul className="mt-5 space-y-3 text-sm">
               <li>
-                <Link href="/about" className="text-muted transition hover:text-fg">
+                <Link href="/about" className="text-muted transition hover:text-primary">
                   {tNav("about")}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-muted transition hover:text-fg">
+                <Link href="/contact" className="text-muted transition hover:text-primary">
                   {tNav("contact")}
                 </Link>
               </li>
@@ -80,25 +94,25 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="editorial-eyebrow">{t("social")}</div>
-            <ul className="mt-4 flex items-center gap-3 text-muted">
+            <div className="spec-line">{t("social")}</div>
+            <ul className="mt-5 flex items-center gap-2 text-muted">
               <li>
-                <a href="#" aria-label={t("socialAria.code")} className="grid size-9 place-items-center rounded-full border border-border transition hover:border-primary hover:text-primary">
+                <a href="#" aria-label={t("socialAria.code")} className="grid size-9 place-items-center rounded-sm border border-border-strong transition hover:border-primary hover:text-primary">
                   <Link2 className="size-4" />
                 </a>
               </li>
               <li>
-                <a href="#" aria-label={t("socialAria.updates")} className="grid size-9 place-items-center rounded-full border border-border transition hover:border-primary hover:text-primary">
+                <a href="#" aria-label={t("socialAria.updates")} className="grid size-9 place-items-center rounded-sm border border-border-strong transition hover:border-primary hover:text-primary">
                   <Send className="size-4" />
                 </a>
               </li>
               <li>
-                <a href="#" aria-label={t("socialAria.network")} className="grid size-9 place-items-center rounded-full border border-border transition hover:border-primary hover:text-primary">
+                <a href="#" aria-label={t("socialAria.network")} className="grid size-9 place-items-center rounded-sm border border-border-strong transition hover:border-primary hover:text-primary">
                   <MessageSquare className="size-4" />
                 </a>
               </li>
               <li>
-                <a href="mailto:hello@pixelforge.dev" aria-label={t("socialAria.email")} className="grid size-9 place-items-center rounded-full border border-border transition hover:border-primary hover:text-primary">
+                <a href="mailto:hello@pixelforge.dev" aria-label={t("socialAria.email")} className="grid size-9 place-items-center rounded-sm border border-border-strong transition hover:border-primary hover:text-primary">
                   <Mail className="size-4" />
                 </a>
               </li>
@@ -106,10 +120,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border py-6">
-          <div className="flex flex-col items-start justify-between gap-3 text-xs text-muted sm:flex-row sm:items-center">
+        {/* Massive wordmark */}
+        <div className="-mx-2 border-t border-border py-12">
+          <div className="select-none font-display text-[18vw] font-black uppercase leading-none tracking-tighter text-fg/[0.04]">
+            {tBrand("name")}
+          </div>
+        </div>
+
+        <div className="border-t border-border py-5">
+          <div className="flex flex-col items-start justify-between gap-2 font-mono text-[11px] uppercase tracking-widest text-muted sm:flex-row sm:items-center">
             <p>
-              © {year} {tBrand("name")}. {t("rights")}
+              © {year} {tBrand("name")} · {t("rights")}
             </p>
             <div className="flex gap-5">
               <Link href="/legal/privacy" className="transition hover:text-fg">

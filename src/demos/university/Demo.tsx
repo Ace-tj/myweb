@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { GraduationCap, BookmarkBook, Calendar, Group, Medal } from "iconoir-react";
+import { GraduationCap, BookmarkBook, Calendar, Group, Medal, Page } from "iconoir-react";
 
 const C = {
   bg: "#fafaf7",
@@ -14,15 +14,67 @@ const C = {
   border: "#e8dccd",
 };
 
+type TabId = "dashboard" | "courses" | "gradebook" | "schedule";
+
 export function UniversityDemo() {
   const t = useTranslations("demoPreview.university");
-  const [tab, setTab] = useState<"dashboard" | "courses" | "grades">("dashboard");
+  const [tab, setTab] = useState<TabId>("dashboard");
 
   const COURSES = [
     { code: "CS401", name: t("courses.cs401.name"), prof: t("courses.cs401.prof"), room: t("courses.cs401.room"), students: 42, time: t("courses.cs401.time") },
     { code: "ECON210", name: t("courses.econ210.name"), prof: t("courses.econ210.prof"), room: t("courses.econ210.room"), students: 78, time: t("courses.econ210.time") },
     { code: "PHIL150", name: t("courses.phil150.name"), prof: t("courses.phil150.prof"), room: t("courses.phil150.room"), students: 26, time: t("courses.phil150.time") },
     { code: "BIO302", name: t("courses.bio302.name"), prof: t("courses.bio302.prof"), room: t("courses.bio302.room"), students: 56, time: t("courses.bio302.time") },
+  ];
+
+  const ASSIGNMENTS = [
+    t("gradebook.col.hw1"),
+    t("gradebook.col.hw2"),
+    t("gradebook.col.project"),
+    t("gradebook.col.mid"),
+    t("gradebook.col.final"),
+  ];
+
+  const GRADEBOOK_ROWS: { n: string; grades: number[] }[] = [
+    { n: t("gradebook.students.s1"), grades: [92, 88, 90, 84, 91] },
+    { n: t("gradebook.students.s2"), grades: [76, 82, 78, 79, 85] },
+    { n: t("gradebook.students.s3"), grades: [98, 95, 97, 92, 96] },
+    { n: t("gradebook.students.s4"), grades: [85, 88, 82, 86, 89] },
+    { n: t("gradebook.students.s5"), grades: [72, 70, 74, 68, 74] },
+    { n: t("gradebook.students.s6"), grades: [88, 91, 87, 90, 93] },
+    { n: t("gradebook.students.s7"), grades: [65, 70, 72, 64, 69] },
+    { n: t("gradebook.students.s8"), grades: [94, 90, 92, 89, 95] },
+    { n: t("gradebook.students.s9"), grades: [80, 78, 83, 76, 81] },
+  ];
+
+  const DAYS = [
+    t("schedule.days.mon"),
+    t("schedule.days.tue"),
+    t("schedule.days.wed"),
+    t("schedule.days.thu"),
+    t("schedule.days.fri"),
+  ];
+  const HOURS = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30"];
+
+  // 10 classes plotted across the week
+  const CLASSES: { day: number; hour: number; code: string; name: string; room: string }[] = [
+    { day: 0, hour: 0, code: "CS401",   name: t("courses.cs401.name"),   room: t("courses.cs401.room") },
+    { day: 0, hour: 2, code: "ECON210", name: t("courses.econ210.name"), room: t("courses.econ210.room") },
+    { day: 1, hour: 1, code: "PHIL150", name: t("courses.phil150.name"), room: t("courses.phil150.room") },
+    { day: 1, hour: 3, code: "BIO302",  name: t("courses.bio302.name"),  room: t("courses.bio302.room") },
+    { day: 2, hour: 0, code: "CS401",   name: t("courses.cs401.name"),   room: t("courses.cs401.room") },
+    { day: 2, hour: 4, code: "ECON210", name: t("courses.econ210.name"), room: t("courses.econ210.room") },
+    { day: 3, hour: 1, code: "BIO302",  name: t("courses.bio302.name"),  room: t("courses.bio302.room") },
+    { day: 3, hour: 5, code: "PHIL150", name: t("courses.phil150.name"), room: t("courses.phil150.room") },
+    { day: 4, hour: 0, code: "CS401",   name: t("courses.cs401.name"),   room: t("courses.cs401.room") },
+    { day: 4, hour: 3, code: "ECON210", name: t("courses.econ210.name"), room: t("courses.econ210.room") },
+  ];
+
+  const NAV: { id: TabId; label: string; Icon: typeof Page }[] = [
+    { id: "dashboard", label: t("nav.dashboard"), Icon: Medal },
+    { id: "courses",   label: t("nav.courses"),   Icon: BookmarkBook },
+    { id: "gradebook", label: t("nav.gradebook"), Icon: Page },
+    { id: "schedule",  label: t("nav.schedule"),  Icon: Calendar },
   ];
 
   return (
@@ -49,14 +101,10 @@ export function UniversityDemo() {
 
       <nav style={{ background: C.paper, borderBottom: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", display: "flex", gap: 6 }}>
-          {[
-            { id: "dashboard", label: t("nav.dashboard") },
-            { id: "courses", label: t("nav.courses") },
-            { id: "grades", label: t("nav.grades") },
-          ].map((it) => (
+          {NAV.map((it) => (
             <button
               key={it.id}
-              onClick={() => setTab(it.id as typeof tab)}
+              onClick={() => setTab(it.id)}
               style={{
                 background: "transparent",
                 color: tab === it.id ? C.primary : C.muted,
@@ -67,8 +115,12 @@ export function UniversityDemo() {
                 borderBottom: `3px solid ${tab === it.id ? C.primary : "transparent"}`,
                 cursor: "pointer",
                 fontFamily: "Georgia, serif",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
               }}
             >
+              <it.Icon style={{ width: 16, height: 16 }} />
               {it.label}
             </button>
           ))}
@@ -145,51 +197,131 @@ export function UniversityDemo() {
           </>
         )}
 
-        {tab === "grades" && (
+        {tab === "gradebook" && (
           <>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>{t("gradebook.title")}</h1>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+              <h1 style={{ fontSize: 28, fontWeight: 700 }}>{t("gradebook.title")}</h1>
+              <span style={{ fontSize: 13, color: C.muted, fontFamily: "ui-sans-serif" }}>
+                {t("gradebook.courseLabel")}: <strong style={{ color: C.primary }}>CS401 — {t("courses.cs401.name")}</strong>
+              </span>
+            </div>
+            <p style={{ color: C.muted, marginBottom: 18, fontFamily: "ui-sans-serif", fontSize: 14 }}>
+              {t("gradebook.subtitle")}
+            </p>
+
             <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", fontFamily: "ui-sans-serif" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                 <thead>
                   <tr style={{ background: C.bg }}>
-                    {[
-                      t("gradebook.col.student"),
-                      t("gradebook.col.hw1"),
-                      t("gradebook.col.hw2"),
-                      t("gradebook.col.mid"),
-                      t("gradebook.col.final"),
-                      t("gradebook.col.average"),
-                    ].map((h) => (
+                    <th style={{ textAlign: "left", padding: "12px 16px", fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                      {t("gradebook.col.student")}
+                    </th>
+                    {ASSIGNMENTS.map((h) => (
                       <th key={h} style={{ textAlign: "left", padding: "12px 16px", fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>
                         {h}
                       </th>
                     ))}
+                    <th style={{ textAlign: "left", padding: "12px 16px", fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                      {t("gradebook.col.average")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { n: t("gradebook.students.s1"), hw: [92, 88], m: 84, f: 91 },
-                    { n: t("gradebook.students.s2"), hw: [76, 82], m: 79, f: 85 },
-                    { n: t("gradebook.students.s3"), hw: [98, 95], m: 92, f: 96 },
-                    { n: t("gradebook.students.s4"), hw: [85, 88], m: 86, f: 89 },
-                    { n: t("gradebook.students.s5"), hw: [72, 70], m: 68, f: 74 },
-                  ].map((s, i) => {
-                    const avg = Math.round((s.hw[0] + s.hw[1] + s.m + s.f) / 4);
+                  {GRADEBOOK_ROWS.map((s, i) => {
+                    const sum = s.grades.reduce((a, b) => a + b, 0);
+                    const avg = Math.round(sum / s.grades.length);
+                    const color = avg >= 85 ? "#15803d" : avg >= 70 ? "#b45309" : "#b91c1c";
                     return (
                       <tr key={s.n} style={{ borderTop: i === 0 ? "none" : `1px solid ${C.border}` }}>
                         <td style={{ padding: "12px 16px", fontWeight: 600 }}>{s.n}</td>
-                        <td style={{ padding: "12px 16px" }}>{s.hw[0]}</td>
-                        <td style={{ padding: "12px 16px" }}>{s.hw[1]}</td>
-                        <td style={{ padding: "12px 16px" }}>{s.m}</td>
-                        <td style={{ padding: "12px 16px" }}>{s.f}</td>
-                        <td style={{ padding: "12px 16px", fontWeight: 700, color: avg >= 85 ? "#15803d" : avg >= 70 ? "#b45309" : "#b91c1c" }}>
-                          {avg}
-                        </td>
+                        {s.grades.map((g, gi) => (
+                          <td key={gi} style={{ padding: "12px 16px" }}>{g}</td>
+                        ))}
+                        <td style={{ padding: "12px 16px", fontWeight: 700, color }}>{avg}</td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
+            </div>
+          </>
+        )}
+
+        {tab === "schedule" && (
+          <>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 6 }}>{t("schedule.title")}</h1>
+            <p style={{ color: C.muted, marginBottom: 18, fontFamily: "ui-sans-serif", fontSize: 14 }}>
+              {t("schedule.subtitle")}
+            </p>
+
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", fontFamily: "ui-sans-serif" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: `90px repeat(${DAYS.length}, 1fr)`,
+                  background: C.bg,
+                  borderBottom: `1px solid ${C.border}`,
+                }}
+              >
+                <div style={{ padding: "12px 14px", fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  {t("schedule.col.time")}
+                </div>
+                {DAYS.map((d) => (
+                  <div key={d} style={{ padding: "12px 14px", fontSize: 12, color: C.primary, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              {HOURS.map((hr, hi) => (
+                <div
+                  key={hr}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: `90px repeat(${DAYS.length}, 1fr)`,
+                    borderTop: hi === 0 ? "none" : `1px solid ${C.border}`,
+                    minHeight: 84,
+                  }}
+                >
+                  <div style={{ padding: "12px 14px", fontSize: 12, color: C.muted, borderRight: `1px solid ${C.border}` }}>
+                    {hr}
+                  </div>
+                  {DAYS.map((_d, di) => {
+                    const cls = CLASSES.find((c) => c.day === di && c.hour === hi);
+                    return (
+                      <div
+                        key={di}
+                        style={{
+                          padding: 8,
+                          borderRight: di === DAYS.length - 1 ? "none" : `1px solid ${C.border}`,
+                        }}
+                      >
+                        {cls && (
+                          <div
+                            style={{
+                              background: "#fff7ed",
+                              border: `1px solid ${C.accent}`,
+                              borderLeft: `3px solid ${C.primary}`,
+                              borderRadius: 8,
+                              padding: "8px 10px",
+                              height: "100%",
+                              fontFamily: "ui-sans-serif",
+                            }}
+                          >
+                            <div style={{ fontSize: 11, fontWeight: 700, color: C.accent, letterSpacing: 0.5 }}>{cls.code}</div>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: C.ink, marginTop: 2, lineHeight: 1.2 }}>
+                              {cls.name}
+                            </div>
+                            <div style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>
+                              {hr} · {cls.room}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </>
         )}

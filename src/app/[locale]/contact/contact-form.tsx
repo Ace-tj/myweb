@@ -31,14 +31,15 @@ export function ContactForm() {
     "beauty-salon",
   ];
 
+  const inputClass =
+    "mt-2 w-full rounded-sm border border-border-strong bg-bg px-3 py-2.5 font-mono text-sm text-fg placeholder:text-subtle transition focus:border-primary focus:outline-none";
+
   if (status === "sent") {
     return (
-      <div className="rounded-2xl border border-success/30 bg-success/5 p-10 text-center">
-        <CheckCircle2 className="mx-auto size-10 text-success" />
-        <h3 className="mt-4 font-display text-xl font-bold text-fg">
-          {t("successTitle")}
-        </h3>
-        <p className="mt-2 text-sm text-muted">{t("successBody")}</p>
+      <div className="rounded-sm border border-primary/40 bg-primary/5 p-10 text-center">
+        <CheckCircle2 className="mx-auto size-10 text-primary" />
+        <h3 className="mt-4 font-display text-2xl font-bold text-fg">{t("successTitle")}</h3>
+        <p className="mt-3 text-sm text-muted">{t("successBody")}</p>
       </div>
     );
   }
@@ -46,42 +47,25 @@ export function ContactForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-2xl border border-border bg-surface p-6 sm:p-8"
+      className="rounded-sm border border-border bg-bg p-6 sm:p-8"
     >
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-medium text-fg">{t("name")}</span>
-          <input
-            required
-            name="name"
-            autoComplete="name"
-            className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
-          />
+          <span className="spec-line">{t("name")}</span>
+          <input required name="name" autoComplete="name" className={inputClass} />
         </label>
         <label className="block">
-          <span className="text-sm font-medium text-fg">{t("email")}</span>
-          <input
-            required
-            type="email"
-            name="email"
-            autoComplete="email"
-            className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
-          />
+          <span className="spec-line">{t("email")}</span>
+          <input required type="email" name="email" autoComplete="email" className={inputClass} />
         </label>
       </div>
-      <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">{t("company")}</span>
-        <input
-          name="company"
-          className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
-        />
+      <label className="mt-5 block">
+        <span className="spec-line">{t("company")}</span>
+        <input name="company" className={inputClass} />
       </label>
-      <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">{t("demoChooser")}</span>
-        <select
-          name="demo"
-          className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
-        >
+      <label className="mt-5 block">
+        <span className="spec-line">{t("demoChooser")}</span>
+        <select name="demo" className={inputClass}>
           <option value="">{t("demoChooserNone")}</option>
           {demoOptions.map((slug) => (
             <option key={slug} value={slug}>
@@ -90,24 +74,24 @@ export function ContactForm() {
           ))}
         </select>
       </label>
-      <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">{t("message")}</span>
+      <label className="mt-5 block">
+        <span className="spec-line">{t("message")}</span>
         <textarea
           required
           name="message"
           rows={5}
           placeholder={t("messagePlaceholder")}
-          className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg placeholder:text-subtle focus:border-primary focus:outline-none"
+          className={inputClass}
         />
       </label>
 
       <button
         type="submit"
         disabled={status === "sending"}
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-fg transition hover:bg-primary-hover disabled:opacity-60"
+        className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 font-mono text-xs font-bold uppercase tracking-widest text-primary-fg transition hover:bg-primary-hover hover:shadow-[0_0_24px_rgb(197_255_63_/_0.35)] disabled:opacity-60"
       >
         {status === "sending" && <Loader2 className="size-4 animate-spin" />}
-        {status === "sending" ? t("sending") : t("submit")}
+        {status === "sending" ? t("sending") : t("submit")} →
       </button>
     </form>
   );

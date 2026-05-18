@@ -49,27 +49,29 @@ export function Header({ profile }: { profile: Profile | null }) {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-300 ${
+      className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
         scrolled
-          ? "border-b border-border/70 bg-bg/75 backdrop-blur-xl"
-          : "border-b border-transparent bg-bg/30 backdrop-blur-md"
+          ? "border-border bg-bg/90 backdrop-blur-xl"
+          : "border-transparent bg-bg/50 backdrop-blur-md"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Wordmark — editorial serif + tiny dot accent */}
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Brutalist square wordmark */}
         <Link
           href="/"
-          className="group flex items-center gap-2 font-display text-lg font-semibold tracking-tight"
+          className="group flex items-center gap-2.5 font-display text-sm font-bold uppercase tracking-tight"
         >
           <span
             aria-hidden
-            className="size-2 rounded-full bg-primary transition group-hover:scale-150"
-          />
+            className="grid size-6 place-items-center rounded-sm bg-primary text-primary-fg transition group-hover:rotate-90"
+          >
+            <span className="block size-2 rounded-[1px] bg-primary-fg" />
+          </span>
           <span className="text-fg">{tBrand("name")}</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 lg:flex">
+        {/* Desktop nav — mono */}
+        <nav className="hidden items-center gap-1 lg:flex">
           {NAV.map((n) => {
             const active = pathname.startsWith(n.href);
             return (
@@ -77,19 +79,16 @@ export function Header({ profile }: { profile: Profile | null }) {
                 key={n.href}
                 href={n.href}
                 aria-current={active ? "page" : undefined}
-                className={`relative py-2 text-sm transition-colors ${
+                className={`relative inline-flex items-center gap-2 rounded-sm px-3 py-2 font-mono text-[11px] uppercase tracking-widest transition-colors ${
                   active
                     ? "text-fg"
                     : "text-muted hover:text-fg"
                 }`}
               >
+                {active && (
+                  <span aria-hidden className="size-1 rounded-full bg-primary" />
+                )}
                 {t(n.key)}
-                <span
-                  aria-hidden
-                  className={`absolute -bottom-px left-0 right-0 h-px origin-left transition-transform duration-300 ${
-                    active ? "scale-x-100 bg-primary" : "scale-x-0 bg-fg/30 group-hover:scale-x-100"
-                  }`}
-                />
               </Link>
             );
           })}
@@ -101,7 +100,7 @@ export function Header({ profile }: { profile: Profile | null }) {
           {profile ? (
             <Link
               href={accountHref}
-              className="ml-1 inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2 text-sm font-medium text-bg transition hover:bg-fg/85"
+              className="ml-1 inline-flex items-center gap-2 rounded-sm bg-fg px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-widest text-bg transition hover:bg-muted"
             >
               {t(
                 profile.role === "admin"
@@ -115,15 +114,15 @@ export function Header({ profile }: { profile: Profile | null }) {
             <>
               <Link
                 href="/auth/login"
-                className="rounded-full px-3 py-2 text-sm font-medium text-fg transition hover:text-primary"
+                className="rounded-sm px-3 py-2 font-mono text-[11px] uppercase tracking-widest text-muted transition hover:text-fg"
               >
                 {t("login")}
               </Link>
               <Link
                 href="/auth/signup"
-                className="ml-1 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-fg shadow-sm transition hover:bg-primary-hover"
+                className="ml-1 inline-flex items-center gap-2 rounded-sm bg-primary px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-widest text-primary-fg transition hover:bg-primary-hover hover:shadow-[0_0_24px_rgb(197_255_63_/_0.35)]"
               >
-                {t("signup")}
+                {t("signup")} <span aria-hidden>→</span>
               </Link>
             </>
           )}
@@ -134,7 +133,7 @@ export function Header({ profile }: { profile: Profile | null }) {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? t("closeMenu") : t("openMenu")}
           aria-expanded={open}
-          className="grid size-9 place-items-center rounded-lg border border-border bg-surface text-fg transition hover:bg-surface-2 lg:hidden"
+          className="grid size-9 place-items-center rounded-sm border border-border-strong bg-surface text-fg transition hover:bg-surface-2 lg:hidden"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -142,20 +141,22 @@ export function Header({ profile }: { profile: Profile | null }) {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="absolute inset-x-0 top-16 z-50 border-t border-border bg-bg/95 backdrop-blur-xl lg:hidden">
-          <div className="mx-auto max-w-7xl space-y-1 px-4 py-6">
+        <div className="absolute inset-x-0 top-14 z-50 border-y border-border bg-bg/97 backdrop-blur-xl lg:hidden">
+          <div className="mx-auto max-w-[1400px] space-y-1 px-4 py-6">
             {NAV.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-3 font-display text-xl text-fg transition hover:bg-surface-2"
+                className="flex items-center justify-between rounded-sm border-b border-border px-3 py-4 font-display text-2xl font-bold uppercase text-fg transition hover:bg-surface"
               >
                 {t(n.key)}
+                <span aria-hidden className="font-mono text-xs text-muted">
+                  →
+                </span>
               </Link>
             ))}
-            <div className="my-4 h-px bg-border" />
-            <div className="flex items-center gap-2 px-1">
+            <div className="mt-6 flex items-center gap-2 px-1">
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
@@ -164,7 +165,7 @@ export function Header({ profile }: { profile: Profile | null }) {
                 <Link
                   href={accountHref}
                   onClick={() => setOpen(false)}
-                  className="block rounded-full bg-fg px-4 py-3 text-center text-sm font-medium text-bg"
+                  className="block rounded-sm bg-fg px-4 py-3 text-center font-mono text-xs font-bold uppercase tracking-widest text-bg"
                 >
                   {t(
                     profile.role === "admin"
@@ -179,16 +180,16 @@ export function Header({ profile }: { profile: Profile | null }) {
                   <Link
                     href="/auth/login"
                     onClick={() => setOpen(false)}
-                    className="block rounded-full border border-border px-4 py-3 text-center text-sm font-medium text-fg"
+                    className="block rounded-sm border border-border-strong px-4 py-3 text-center font-mono text-xs uppercase tracking-widest text-fg"
                   >
                     {t("login")}
                   </Link>
                   <Link
                     href="/auth/signup"
                     onClick={() => setOpen(false)}
-                    className="block rounded-full bg-primary px-4 py-3 text-center text-sm font-medium text-primary-fg"
+                    className="block rounded-sm bg-primary px-4 py-3 text-center font-mono text-xs font-bold uppercase tracking-widest text-primary-fg"
                   >
-                    {t("signup")}
+                    {t("signup")} →
                   </Link>
                 </>
               )}

@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter_Tight, Lora, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,21 +15,21 @@ const interTight = Inter_Tight({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const serif = Lora({
+const interDisplay = Inter_Tight({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-display",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700", "800", "900"],
 });
 
 const mono = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
   variable: "--font-mono",
   display: "swap",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export function generateStaticParams() {
@@ -67,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${interTight.variable} ${serif.variable} ${mono.variable} h-full`}
+      className={`${interTight.variable} ${interDisplay.variable} ${mono.variable} h-full`}
       suppressHydrationWarning
     >
       <head>

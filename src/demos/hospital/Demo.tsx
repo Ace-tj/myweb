@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { IconStethoscope, IconHeart, IconCalendar, IconFileText, IconPill, IconActivity, IconUser } from "@tabler/icons-react";
+import { IconStethoscope, IconHeart, IconCalendar, IconFileText, IconPill, IconActivity, IconUser, IconFlask } from "@tabler/icons-react";
 
 const C = {
   bg: "#f0fdfa",
@@ -16,9 +16,11 @@ const C = {
   border: "#cbeae5",
 };
 
+type View = "schedule" | "patient" | "prescriptions" | "labs";
+
 export function HospitalDemo() {
   const t = useTranslations("demoPreview.hospital");
-  const [view, setView] = useState<"schedule" | "patient">("schedule");
+  const [view, setView] = useState<View>("schedule");
 
   const TODAY = [
     { time: "09:00", patient: t("appointments.0.patient"), reason: t("appointments.0.reason"), room: "C-3", status: t("status.waiting"), statusKey: "waiting" },
@@ -27,6 +29,25 @@ export function HospitalDemo() {
     { time: "11:00", patient: t("appointments.3.patient"), reason: t("appointments.3.reason"), room: "B-2", status: t("status.scheduled"), statusKey: "scheduled" },
     { time: "11:30", patient: t("appointments.4.patient"), reason: t("appointments.4.reason"), room: "C-3", status: t("status.scheduled"), statusKey: "scheduled" },
   ];
+
+  const PRESCRIPTIONS = Array.from({ length: 10 }, (_, i) => ({
+    patient: t(`prescriptions.items.${i}.patient`),
+    drug: t(`prescriptions.items.${i}.drug`),
+    dosage: t(`prescriptions.items.${i}.dosage`),
+    frequency: t(`prescriptions.items.${i}.frequency`),
+    refills: t(`prescriptions.items.${i}.refills`),
+    date: t(`prescriptions.items.${i}.date`),
+  }));
+
+  const LABS = Array.from({ length: 8 }, (_, i) => ({
+    patient: t(`labs.items.${i}.patient`),
+    test: t(`labs.items.${i}.test`),
+    value: t(`labs.items.${i}.value`),
+    range: t(`labs.items.${i}.range`),
+    flag: t(`labs.items.${i}.flag`),
+    abnormal: t(`labs.items.${i}.abnormal`) === "true",
+    date: t(`labs.items.${i}.date`),
+  }));
 
   return (
     <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "ui-sans-serif, system-ui", display: "grid", gridTemplateColumns: "240px 1fr" }}>
@@ -45,10 +66,12 @@ export function HospitalDemo() {
           {[
             { id: "schedule", label: t("nav.schedule"), Icon: IconCalendar },
             { id: "patient", label: t("nav.activePatient"), Icon: IconUser },
+            { id: "prescriptions", label: t("nav.prescriptions"), Icon: IconPill },
+            { id: "labs", label: t("nav.labs"), Icon: IconFlask },
           ].map((m) => (
             <button
               key={m.id}
-              onClick={() => setView(m.id as typeof view)}
+              onClick={() => setView(m.id as View)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -179,6 +202,145 @@ export function HospitalDemo() {
                 <div key={i} style={{ padding: "14px 18px", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14 }}>
                   <div style={{ fontSize: 11, color: C.muted, fontWeight: 600 }}>{n.date}</div>
                   <div style={{ marginTop: 4 }}>{n.note}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {view === "prescriptions" && (
+          <>
+            <h1 style={{ fontSize: 26, fontWeight: 700 }}>{t("prescriptions.title")}</h1>
+            <p style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>{t("prescriptions.subtitle")}</p>
+
+            <div style={{ marginTop: 22, background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1.2fr 1.3fr 0.9fr 1fr 0.8fr 1fr",
+                  padding: "12px 18px",
+                  background: C.bg,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: C.muted,
+                  textTransform: "uppercase",
+                  letterSpacing: 0.5,
+                  gap: 12,
+                }}
+              >
+                <span>{t("prescriptions.col.patient")}</span>
+                <span>{t("prescriptions.col.drug")}</span>
+                <span>{t("prescriptions.col.dosage")}</span>
+                <span>{t("prescriptions.col.frequency")}</span>
+                <span>{t("prescriptions.col.refills")}</span>
+                <span>{t("prescriptions.col.date")}</span>
+              </div>
+              {PRESCRIPTIONS.map((p, i) => {
+                const refillsNum = parseInt(p.refills, 10);
+                const lowRefill = !Number.isNaN(refillsNum) && refillsNum <= 1;
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1.2fr 1.3fr 0.9fr 1fr 0.8fr 1fr",
+                      padding: "14px 18px",
+                      borderTop: `1px solid ${C.border}`,
+                      fontSize: 13,
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600 }}>{p.patient}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <IconPill size={14} stroke={1.5} style={{ color: C.primary }} />
+                      {p.drug}
+                    </span>
+                    <span style={{ color: C.muted }}>{p.dosage}</span>
+                    <span style={{ color: C.muted }}>{p.frequency}</span>
+                    <span
+                      style={{
+                        background: lowRefill ? "#fef3c7" : "#ccfbf1",
+                        color: lowRefill ? "#854d0e" : C.primaryDark,
+                        padding: "3px 10px",
+                        borderRadius: 9999,
+                        fontSize: 11,
+                        fontWeight: 700,
+                        justifySelf: "start",
+                      }}
+                    >
+                      {p.refills}
+                    </span>
+                    <span style={{ color: C.muted }}>{p.date}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {view === "labs" && (
+          <>
+            <h1 style={{ fontSize: 26, fontWeight: 700 }}>{t("labs.title")}</h1>
+            <p style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>{t("labs.subtitle")}</p>
+
+            <div style={{ marginTop: 22, background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1.2fr 1.4fr 1fr 1.2fr 0.8fr 1fr",
+                  padding: "12px 18px",
+                  background: C.bg,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: C.muted,
+                  textTransform: "uppercase",
+                  letterSpacing: 0.5,
+                  gap: 12,
+                }}
+              >
+                <span>{t("labs.col.patient")}</span>
+                <span>{t("labs.col.test")}</span>
+                <span>{t("labs.col.value")}</span>
+                <span>{t("labs.col.range")}</span>
+                <span>{t("labs.col.flag")}</span>
+                <span>{t("labs.col.date")}</span>
+              </div>
+              {LABS.map((l, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1.2fr 1.4fr 1fr 1.2fr 0.8fr 1fr",
+                    padding: "14px 18px",
+                    borderTop: `1px solid ${C.border}`,
+                    borderLeft: l.abnormal ? `4px solid ${C.red}` : "4px solid transparent",
+                    fontSize: 13,
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
+                  <span style={{ fontWeight: 600 }}>{l.patient}</span>
+                  <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <IconFlask size={14} stroke={1.5} style={{ color: l.abnormal ? C.red : C.primary }} />
+                    {l.test}
+                  </span>
+                  <span style={{ fontWeight: 700, color: l.abnormal ? C.red : C.ink }}>{l.value}</span>
+                  <span style={{ color: C.muted }}>{l.range}</span>
+                  <span
+                    style={{
+                      background: l.abnormal ? "#fee2e2" : "#ccfbf1",
+                      color: l.abnormal ? "#991b1b" : C.primaryDark,
+                      padding: "3px 10px",
+                      borderRadius: 9999,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      justifySelf: "start",
+                    }}
+                  >
+                    {l.flag}
+                  </span>
+                  <span style={{ color: C.muted }}>{l.date}</span>
                 </div>
               ))}
             </div>

@@ -582,7 +582,8 @@
       "nav": {
         "ledger": "Ledger",
         "invoices": "Invoices",
-        "reports": "Reports"
+        "reports": "Reports",
+        "expenses": "Expenses"
       },
       "stats": {
         "revenueMTD": "Revenue MTD",
@@ -605,20 +606,39 @@
         "paid": "Paid",
         "sent": "Sent",
         "overdue": "Overdue",
-        "draft": "Draft"
+        "draft": "Draft",
+        "pending": "Pending"
       },
       "clients": {
         "helios": "Helios Foods LLC",
         "parkEight": "Park & Eight",
         "northbound": "Northbound Mfg",
         "ridgeSons": "Ridge & Sons Ltd",
-        "lumen": "Lumen Studios"
+        "lumen": "Lumen Studios",
+        "atlasGrove": "Atlas Grove Co",
+        "brightOak": "Bright Oak Realty",
+        "cobalt": "Cobalt Print House",
+        "delmarCo": "Delmar & Co",
+        "echoLabs": "Echo Labs"
       },
       "dates": {
         "apr18": "Apr 18",
         "may02": "May 02",
         "apr10": "Apr 10",
-        "apr22": "Apr 22"
+        "apr22": "Apr 22",
+        "may01": "May 01",
+        "may03": "May 03",
+        "may05": "May 05",
+        "may06": "May 06",
+        "may07": "May 07",
+        "may08": "May 08",
+        "may09": "May 09",
+        "may10": "May 10",
+        "may11": "May 11",
+        "may12": "May 12",
+        "may15": "May 15",
+        "may16": "May 16",
+        "apr14": "Apr 14"
       },
       "ledger": {
         "title": "Recent transactions",
@@ -642,13 +662,47 @@
           "feb": "Feb",
           "mar": "Mar",
           "apr": "Apr",
-          "may": "May"
+          "may": "May",
+          "dec": "Dec"
         },
         "legend": {
           "revenue": "Revenue",
           "expenses": "Expenses"
         },
-        "exportPdf": "Export PDF"
+        "exportPdf": "Export PDF",
+        "trendUp": "Trending up",
+        "sixMonthTrend": "6-month revenue vs expenses",
+        "pnl": {
+          "revenue": "Revenue",
+          "cost": "Cost of goods",
+          "profit": "Net profit"
+        }
+      },
+      "expenses": {
+        "title": "Expenses · May 2026",
+        "subtitle": "Grouped by category",
+        "total": "Total",
+        "categories": {
+          "rent": "Rent & facilities",
+          "payroll": "Payroll",
+          "software": "Software & SaaS",
+          "utilities": "Utilities",
+          "marketing": "Marketing"
+        },
+        "items": {
+          "officeRent": "HQ office rent",
+          "warehouseLease": "Warehouse lease",
+          "payrollMay1": "Payroll · May 1",
+          "payrollMay15": "Payroll · May 15",
+          "contractor": "Contractor · design",
+          "aws": "AWS · May invoice",
+          "figma": "Figma · team",
+          "salesforce": "Salesforce · seats",
+          "electricity": "Electricity",
+          "internet": "Internet & phone",
+          "adsGoogle": "Google Ads",
+          "adsLinkedin": "LinkedIn Ads"
+        }
       }
     },
     "beauty-salon": {
@@ -657,7 +711,10 @@
         "tagline": "Hair · Skin · Mood"
       },
       "nav": {
-        "signIn": "Sign in"
+        "signIn": "Sign in",
+        "booking": "Booking",
+        "services": "Services",
+        "stylists": "Stylists"
       },
       "hero": {
         "eyebrow": "✿ Spring slots open",
@@ -704,6 +761,107 @@
         "dateLabel": "Saturday · May 22",
         "confirmButton": "Confirm appointment",
         "noCard": "No-card-required. Confirm by SMS."
+      },
+      "menu": {
+        "eyebrow": "✿ Full menu",
+        "title": "Service menu",
+        "subtitle": "Twelve signature treatments across hair, nails, skin and spa. Tap any item to add it to your booking.",
+        "itemCount": "{count} treatments",
+        "categories": {
+          "hair": "Hair",
+          "nails": "Nails",
+          "skin": "Skin",
+          "spa": "Spa"
+        },
+        "hair": {
+          "0": {
+            "name": "Signature Cut & Style",
+            "duration": "60 min"
+          },
+          "1": {
+            "name": "Balayage · Full",
+            "duration": "150 min"
+          },
+          "2": {
+            "name": "Express Blowout",
+            "duration": "30 min"
+          }
+        },
+        "nails": {
+          "0": {
+            "name": "Classic Manicure",
+            "duration": "40 min"
+          },
+          "1": {
+            "name": "Gel Polish · Hands",
+            "duration": "55 min"
+          },
+          "2": {
+            "name": "Pedicure Spa Ritual",
+            "duration": "75 min"
+          }
+        },
+        "skin": {
+          "0": {
+            "name": "Glow Facial",
+            "duration": "50 min"
+          },
+          "1": {
+            "name": "Brightening Peel",
+            "duration": "65 min"
+          },
+          "2": {
+            "name": "Hydra Lift",
+            "duration": "80 min"
+          }
+        },
+        "spa": {
+          "0": {
+            "name": "Aromatic Massage",
+            "duration": "60 min"
+          },
+          "1": {
+            "name": "Hot Stone Ritual",
+            "duration": "75 min"
+          },
+          "2": {
+            "name": "Couples Retreat",
+            "duration": "120 min"
+          }
+        }
+      },
+      "roster": {
+        "0": {
+          "name": "Nora Petrova",
+          "specialties": "Cuts · Bridal · Updos",
+          "nextSlot": "Tomorrow · 10:30"
+        },
+        "1": {
+          "name": "Mara Lindqvist",
+          "specialties": "Balayage · Color · Keratin",
+          "nextSlot": "Today · 16:00"
+        },
+        "2": {
+          "name": "Liv Tanaka",
+          "specialties": "Blowouts · Styling",
+          "nextSlot": "Sat · 09:00"
+        },
+        "3": {
+          "name": "Iris Moreau",
+          "specialties": "Skin · Facials · Peels",
+          "nextSlot": "Tomorrow · 14:30"
+        },
+        "4": {
+          "name": "Sofia Reyes",
+          "specialties": "Nails · Spa · Pedicure",
+          "nextSlot": "Today · 18:00"
+        },
+        "eyebrow": "✿ Our team",
+        "title": "Meet the stylists",
+        "subtitle": "Five hands you can trust with your next look — pick yours and we'll handle the rest.",
+        "ratingLabel": "rating",
+        "nextAvailable": "Next available",
+        "bookButton": "Book with stylist"
       }
     },
     "china-agency": {
@@ -711,7 +869,9 @@
       "tagline": "STUDY-IN-CHINA AGENCY · CRM",
       "nav": {
         "pipeline": "Pipeline",
-        "students": "Students"
+        "students": "Students",
+        "universities": "Universities",
+        "documents": "Documents"
       },
       "stats": {
         "activeApplicants": "Active applicants",
@@ -765,6 +925,170 @@
         "title": "September intake closing in 18 days",
         "subtitle": "9 applications still awaiting visa documents",
         "button": "Send reminders"
+      },
+      "universities": {
+        "title": "Partner universities",
+        "subtitle": "Active placement agreements across mainland China",
+        "addButton": "+ Add partner",
+        "successRate": "Success rate",
+        "placedSuffix": "placed",
+        "lastBatch": "last batch",
+        "list": {
+          "0": {
+            "name": "Tsinghua University",
+            "city": "Beijing",
+            "programs": {
+              "0": "Computer Science",
+              "1": "Electrical Eng.",
+              "2": "MBA"
+            },
+            "lastBatchMonth": "Sep 2025"
+          },
+          "1": {
+            "name": "Peking University",
+            "city": "Beijing",
+            "programs": {
+              "0": "International Trade",
+              "1": "Economics",
+              "2": "Chinese Studies"
+            },
+            "lastBatchMonth": "Sep 2025"
+          },
+          "2": {
+            "name": "Fudan University",
+            "city": "Shanghai",
+            "programs": {
+              "0": "Clinical Medicine",
+              "1": "Journalism",
+              "2": "Finance"
+            },
+            "lastBatchMonth": "Aug 2025"
+          },
+          "3": {
+            "name": "Zhejiang University",
+            "city": "Hangzhou",
+            "programs": {
+              "0": "Business Admin",
+              "1": "Civil Engineering",
+              "2": "Agriculture"
+            },
+            "lastBatchMonth": "Sep 2025"
+          },
+          "4": {
+            "name": "Shanghai Jiao Tong",
+            "city": "Shanghai",
+            "programs": {
+              "0": "Mechanical Eng.",
+              "1": "Naval Architecture",
+              "2": "Materials Science"
+            },
+            "lastBatchMonth": "Aug 2025"
+          },
+          "5": {
+            "name": "Nanjing University",
+            "city": "Nanjing",
+            "programs": {
+              "0": "Physics",
+              "1": "Astronomy",
+              "2": "Sociology"
+            },
+            "lastBatchMonth": "Jul 2025"
+          },
+          "6": {
+            "name": "Wuhan University",
+            "city": "Wuhan",
+            "programs": {
+              "0": "Surveying",
+              "1": "Library Science",
+              "2": "Law"
+            },
+            "lastBatchMonth": "Jul 2025"
+          },
+          "7": {
+            "name": "Xi'an Jiaotong",
+            "city": "Xi'an",
+            "programs": {
+              "0": "Energy Engineering",
+              "1": "Management",
+              "2": "Medicine"
+            },
+            "lastBatchMonth": "Jun 2025"
+          }
+        }
+      },
+      "documents": {
+        "title": "Document tracker",
+        "subtitle": "Real-time status of student files across embassies and partners",
+        "uploadButton": "+ Upload",
+        "exportButton": "Export CSV",
+        "col": {
+          "student": "Student",
+          "type": "Document type",
+          "status": "Status",
+          "date": "Date"
+        },
+        "types": {
+          "passport": "Passport copy",
+          "transcript": "Academic transcript",
+          "visa": "Visa (X1)",
+          "sponsorship": "Sponsorship letter"
+        },
+        "status": {
+          "submitted": "Submitted",
+          "verified": "Verified",
+          "sent": "Sent",
+          "issued": "Issued"
+        },
+        "entries": {
+          "0": {
+            "ref": "DOC-2025-0148",
+            "date": "May 12, 2026"
+          },
+          "1": {
+            "ref": "DOC-2025-0149",
+            "date": "May 12, 2026"
+          },
+          "2": {
+            "ref": "DOC-2025-0151",
+            "date": "May 16, 2026"
+          },
+          "3": {
+            "ref": "DOC-2025-0155",
+            "date": "May 14, 2026"
+          },
+          "4": {
+            "ref": "DOC-2025-0156",
+            "date": "May 17, 2026"
+          },
+          "5": {
+            "ref": "DOC-2025-0157",
+            "date": "May 17, 2026"
+          },
+          "6": {
+            "ref": "DOC-2025-0160",
+            "date": "May 18, 2026"
+          },
+          "7": {
+            "ref": "DOC-2025-0161",
+            "date": "May 18, 2026"
+          },
+          "8": {
+            "ref": "DOC-2025-0162",
+            "date": "May 19, 2026"
+          },
+          "9": {
+            "ref": "DOC-2025-0163",
+            "date": "May 15, 2026"
+          },
+          "10": {
+            "ref": "DOC-2025-0164",
+            "date": "May 16, 2026"
+          },
+          "11": {
+            "ref": "DOC-2025-0165",
+            "date": "May 19, 2026"
+          }
+        }
       }
     },
     "gym": {
@@ -773,7 +1097,10 @@
       "nav": {
         "today": "Today",
         "members": "Members",
-        "kpis": "KPIs"
+        "kpis": "KPIs",
+        "classes": "Classes",
+        "trainers": "Trainers",
+        "checkin": "Check-in"
       },
       "stats": {
         "activeMembers": {
@@ -807,13 +1134,69 @@
         "lunchMobility": "Lunch Mobility",
         "strengthLab": "Strength Lab",
         "boxingFoundations": "Boxing Foundations",
-        "coolDownYoga": "Cool Down Yoga"
+        "coolDownYoga": "Cool Down Yoga",
+        "title": "Weekly schedule",
+        "subtitle": "All sessions across the week with live capacity",
+        "col": {
+          "when": "When",
+          "class": "Class",
+          "instructor": "Instructor",
+          "capacity": "Capacity",
+          "fill": "Fill"
+        },
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri",
+          "sat": "Sat"
+        },
+        "list": {
+          "0": {
+            "name": "Sunrise Yoga"
+          },
+          "1": {
+            "name": "Strength Lab"
+          },
+          "2": {
+            "name": "HIIT Burner"
+          },
+          "3": {
+            "name": "Boxing Foundations"
+          },
+          "4": {
+            "name": "Lunch Mobility"
+          },
+          "5": {
+            "name": "Power Hour"
+          },
+          "6": {
+            "name": "Vinyasa Flow"
+          },
+          "7": {
+            "name": "Olympic Lifting"
+          },
+          "8": {
+            "name": "Spin & Burn"
+          },
+          "9": {
+            "name": "Functional Circuit"
+          },
+          "10": {
+            "name": "Weekend Bootcamp"
+          },
+          "11": {
+            "name": "Pilates Core"
+          }
+        }
       },
       "coaches": {
         "alex": "Alex",
         "mira": "Mira",
         "sam": "Sam",
-        "jordan": "Jordan"
+        "jordan": "Jordan",
+        "sara": "Sara"
       },
       "members": {
         "heading": "Recent members",
@@ -837,11 +1220,94 @@
           "pending": "Pending",
           "new": "New",
           "expiring": "Expiring"
-        }
+        },
+        "subheading": "Active roster across all plans"
       },
       "kpi": {
         "heading": "This month",
         "caption": "Daily check-ins · Last 14 days"
+      },
+      "trainers": {
+        "title": "Trainer roster",
+        "subtitle": "Coaches on staff this week",
+        "sessionsThisWeek": "Sessions this week",
+        "list": {
+          "0": {
+            "name": "Sara Akhmedova",
+            "specialty": "Yoga · Mobility"
+          },
+          "1": {
+            "name": "Alex Petrov",
+            "specialty": "Strength · HIIT"
+          },
+          "2": {
+            "name": "Mira Tanaka",
+            "specialty": "Power · Olympic"
+          },
+          "3": {
+            "name": "Sam Reyes",
+            "specialty": "Mobility · Pilates"
+          },
+          "4": {
+            "name": "Jordan Hayes",
+            "specialty": "Boxing · Conditioning"
+          },
+          "5": {
+            "name": "Lena Volkov",
+            "specialty": "Spin · Cardio"
+          }
+        }
+      },
+      "checkin": {
+        "title": "Front desk",
+        "subtitle": "Live kiosk feed for today",
+        "currentlyInside": "Currently inside",
+        "peakToday": "Peak today: 92 @ 18:00",
+        "liveFeed": "Today's check-ins",
+        "live": "Live",
+        "types": {
+          "gym": "Gym",
+          "class": "Class",
+          "pt": "PT"
+        },
+        "feed": {
+          "0": {
+            "name": "Tatiana K."
+          },
+          "1": {
+            "name": "Marcus L."
+          },
+          "2": {
+            "name": "Anya P."
+          },
+          "3": {
+            "name": "Daler R."
+          },
+          "4": {
+            "name": "Maya O."
+          },
+          "5": {
+            "name": "Sergei T."
+          },
+          "6": {
+            "name": "Nadia I."
+          },
+          "7": {
+            "name": "Bekzod M."
+          },
+          "8": {
+            "name": "Elena V."
+          },
+          "9": {
+            "name": "Rustam S."
+          },
+          "10": {
+            "name": "Olivia W."
+          },
+          "11": {
+            "name": "Jamshed F."
+          }
+        }
       }
     },
     "hospital": {
@@ -851,7 +1317,9 @@
       },
       "nav": {
         "schedule": "Schedule",
-        "activePatient": "Active patient"
+        "activePatient": "Active patient",
+        "prescriptions": "Prescriptions",
+        "labs": "Lab Results"
       },
       "load": {
         "title": "Today's load",
@@ -931,6 +1399,186 @@
           "note": "Annual blood work — within normal limits."
         },
         "title": "Recent notes"
+      },
+      "prescriptions": {
+        "title": "Active Prescriptions",
+        "subtitle": "Currently dispensed medications across your patient list.",
+        "col": {
+          "patient": "Patient",
+          "drug": "Medication",
+          "dosage": "Dosage",
+          "frequency": "Frequency",
+          "refills": "Refills",
+          "date": "Prescribed"
+        },
+        "items": {
+          "0": {
+            "patient": "Alex Carter",
+            "drug": "Lisinopril",
+            "dosage": "10 mg",
+            "frequency": "Once daily",
+            "refills": "3",
+            "date": "May 02, 2026"
+          },
+          "1": {
+            "patient": "Maria Nazarova",
+            "drug": "Metformin",
+            "dosage": "500 mg",
+            "frequency": "Twice daily",
+            "refills": "5",
+            "date": "Apr 28, 2026"
+          },
+          "2": {
+            "patient": "Daniel Khan",
+            "drug": "Atorvastatin",
+            "dosage": "20 mg",
+            "frequency": "At bedtime",
+            "refills": "2",
+            "date": "May 04, 2026"
+          },
+          "3": {
+            "patient": "Sophia Reyes",
+            "drug": "Amoxicillin",
+            "dosage": "500 mg",
+            "frequency": "Every 8 hours",
+            "refills": "0",
+            "date": "May 12, 2026"
+          },
+          "4": {
+            "patient": "Jamal Idris",
+            "drug": "Albuterol Inhaler",
+            "dosage": "90 mcg",
+            "frequency": "As needed",
+            "refills": "4",
+            "date": "Apr 17, 2026"
+          },
+          "5": {
+            "patient": "Elena Petrova",
+            "drug": "Levothyroxine",
+            "dosage": "75 mcg",
+            "frequency": "Once daily",
+            "refills": "6",
+            "date": "Mar 30, 2026"
+          },
+          "6": {
+            "patient": "Noah Bennett",
+            "drug": "Omeprazole",
+            "dosage": "20 mg",
+            "frequency": "Once daily",
+            "refills": "1",
+            "date": "May 09, 2026"
+          },
+          "7": {
+            "patient": "Aisha Rahman",
+            "drug": "Sertraline",
+            "dosage": "50 mg",
+            "frequency": "Once daily",
+            "refills": "3",
+            "date": "May 06, 2026"
+          },
+          "8": {
+            "patient": "Victor Holt",
+            "drug": "Warfarin",
+            "dosage": "5 mg",
+            "frequency": "Once daily",
+            "refills": "2",
+            "date": "May 11, 2026"
+          },
+          "9": {
+            "patient": "Linh Tran",
+            "drug": "Ibuprofen",
+            "dosage": "400 mg",
+            "frequency": "Every 6 hours",
+            "refills": "1",
+            "date": "May 15, 2026"
+          }
+        }
+      },
+      "labs": {
+        "title": "Recent Lab Results",
+        "subtitle": "Latest results drawn in the past 72 hours. Abnormal values are flagged.",
+        "col": {
+          "patient": "Patient",
+          "test": "Test",
+          "value": "Value",
+          "range": "Reference Range",
+          "flag": "Flag",
+          "date": "Drawn"
+        },
+        "items": {
+          "0": {
+            "patient": "Alex Carter",
+            "test": "Hemoglobin",
+            "value": "14.2 g/dL",
+            "range": "13.5 - 17.5",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 18, 2026"
+          },
+          "1": {
+            "patient": "Maria Nazarova",
+            "test": "Fasting Glucose",
+            "value": "142 mg/dL",
+            "range": "70 - 99",
+            "flag": "High",
+            "abnormal": "true",
+            "date": "May 18, 2026"
+          },
+          "2": {
+            "patient": "Daniel Khan",
+            "test": "LDL Cholesterol",
+            "value": "168 mg/dL",
+            "range": "< 100",
+            "flag": "High",
+            "abnormal": "true",
+            "date": "May 17, 2026"
+          },
+          "3": {
+            "patient": "Sophia Reyes",
+            "test": "WBC Count",
+            "value": "7.8 x10^9/L",
+            "range": "4.0 - 11.0",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 17, 2026"
+          },
+          "4": {
+            "patient": "Jamal Idris",
+            "test": "Potassium",
+            "value": "3.1 mmol/L",
+            "range": "3.5 - 5.0",
+            "flag": "Low",
+            "abnormal": "true",
+            "date": "May 17, 2026"
+          },
+          "5": {
+            "patient": "Elena Petrova",
+            "test": "TSH",
+            "value": "2.4 mIU/L",
+            "range": "0.4 - 4.0",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 16, 2026"
+          },
+          "6": {
+            "patient": "Victor Holt",
+            "test": "INR",
+            "value": "3.8",
+            "range": "2.0 - 3.0",
+            "flag": "High",
+            "abnormal": "true",
+            "date": "May 16, 2026"
+          },
+          "7": {
+            "patient": "Linh Tran",
+            "test": "Creatinine",
+            "value": "0.9 mg/dL",
+            "range": "0.6 - 1.2",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 16, 2026"
+          }
+        }
       }
     },
     "restaurant": {
@@ -939,7 +1587,9 @@
       "nav": {
         "floor": "Floor",
         "kitchen": "Kitchen",
-        "menu": "Menu"
+        "menu": "Menu",
+        "reservations": "Reservations",
+        "reports": "Reports"
       },
       "stats": {
         "coversToday": "Covers today",
@@ -953,7 +1603,11 @@
         "menuTitle": "Today's menu",
         "floorSubtitle": "Tap a table to seat or check status.",
         "kitchenSubtitle": "Live tickets, sorted by time on station.",
-        "menuSubtitle": "Edit prices, mark 86'd items, push to printers."
+        "menuSubtitle": "Edit prices, mark 86'd items, push to printers.",
+        "reservationsTitle": "Reservations",
+        "reservationsSubtitle": "Tonight's bookings and guest list",
+        "reportsTitle": "End of Day",
+        "reportsSubtitle": "Service summary and trends"
       },
       "seatWalkIn": "Seat walk-in",
       "seatsLabel": "seats",
@@ -1040,6 +1694,147 @@
           "item2": "Chablis · $16",
           "item3": "Etna Rosso · $18"
         }
+      },
+      "reservations": {
+        "newBooking": "New Booking",
+        "dateLabel": "Date",
+        "dateValue": "Tue, May 19",
+        "totalLabel": "Bookings",
+        "totalValue": "10",
+        "coversLabel": "Covers",
+        "coversValue": "38",
+        "partyLabel": "guests",
+        "columns": {
+          "guest": "Guest",
+          "party": "Party",
+          "time": "Time",
+          "table": "Table",
+          "status": "Status"
+        },
+        "statusLabels": {
+          "confirmed": "Confirmed",
+          "seated": "Seated",
+          "noShow": "No-show"
+        },
+        "r1": {
+          "name": "Marco Bianchi",
+          "time": "6:00 PM",
+          "table": "T2"
+        },
+        "r2": {
+          "name": "Elena Rossi",
+          "time": "6:15 PM",
+          "table": "T5"
+        },
+        "r3": {
+          "name": "Hartwell Family",
+          "time": "6:30 PM",
+          "table": "T8"
+        },
+        "r4": {
+          "name": "Sofia Lin",
+          "time": "6:45 PM",
+          "table": "T1"
+        },
+        "r5": {
+          "name": "James Carter",
+          "time": "7:00 PM",
+          "table": "T3"
+        },
+        "r6": {
+          "name": "The Ahmadi Party",
+          "time": "7:15 PM",
+          "table": "T6"
+        },
+        "r7": {
+          "name": "Noah Becker",
+          "time": "7:30 PM",
+          "table": "T4"
+        },
+        "r8": {
+          "name": "Yamamoto Group",
+          "time": "7:45 PM",
+          "table": "T7"
+        },
+        "r9": {
+          "name": "Clara Dupont",
+          "time": "8:00 PM",
+          "table": "T5"
+        },
+        "r10": {
+          "name": "Owen Reilly",
+          "time": "8:30 PM",
+          "table": "T1"
+        }
+      },
+      "reports": {
+        "statCards": {
+          "covers": {
+            "label": "Covers",
+            "value": "142",
+            "delta": "+12% vs last Tue"
+          },
+          "revenue": {
+            "label": "Revenue",
+            "value": "$6,840",
+            "delta": "+8% vs last Tue"
+          },
+          "avgTicket": {
+            "label": "Avg Ticket",
+            "value": "$48.20",
+            "delta": "+$2.10 vs last Tue"
+          },
+          "topDish": {
+            "label": "Top Dish",
+            "value": "Risotto Milanese",
+            "delta": "32 served"
+          }
+        },
+        "hourly": {
+          "title": "Hourly Covers",
+          "subtitle": "5pm – 10pm"
+        },
+        "hours": {
+          "h1": "5p",
+          "h2": "5:30",
+          "h3": "6p",
+          "h4": "6:30",
+          "h5": "7p",
+          "h6": "7:30",
+          "h7": "8p",
+          "h8": "8:30",
+          "h9": "9p",
+          "h10": "9:30"
+        },
+        "topItemsTitle": "Top Items Today",
+        "topItemsSubtitle": "Service count",
+        "servedLabel": "served",
+        "topItems": {
+          "i1": {
+            "name": "Risotto Milanese",
+            "count": "32"
+          },
+          "i2": {
+            "name": "Tagliatelle al Ragù",
+            "count": "28"
+          },
+          "i3": {
+            "name": "Branzino al Sale",
+            "count": "24"
+          },
+          "i4": {
+            "name": "Burrata & Peach",
+            "count": "21"
+          },
+          "i5": {
+            "name": "Bistecca Fiorentina",
+            "count": "17"
+          },
+          "i6": {
+            "name": "Tiramisu",
+            "count": "15"
+          }
+        }
       }
     },
     "school": {
@@ -1049,7 +1844,10 @@
       "tabs": {
         "home": "Home",
         "homework": "Homework",
-        "grades": "Grades"
+        "grades": "Grades",
+        "attendance": "Attendance",
+        "schedule": "Schedule",
+        "bus": "Bus tracker"
       },
       "home": {
         "greeting": "Good morning, Karim 👋",
@@ -1070,7 +1868,9 @@
         "recess": "Recess",
         "science": "Science · Plants & soil",
         "lunch": "Lunch",
-        "art": "Art · Spring posters"
+        "art": "Art · Spring posters",
+        "sub": "Your classes for today, in order.",
+        "upcoming": "Upcoming"
       },
       "note": {
         "title": "Note from Mrs. Petrova",
@@ -1109,6 +1909,49 @@
           "pe": "P.E.",
           "music": "Music"
         }
+      },
+      "attendance": {
+        "greeting": "Good morning, Karim 👋",
+        "subGreeting": "Mom checked you in 3 minutes ago. Math homework is due tomorrow.",
+        "weekTitle": "This week",
+        "statusPresent": "Present",
+        "statusLate": "Late arrival",
+        "in": "In",
+        "out": "Out",
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri"
+        }
+      },
+      "bus": {
+        "title": "Live bus tracker",
+        "sub": "Three active routes serving Sunny Hills this afternoon.",
+        "busPrefix": "Bus",
+        "currentStop": "At stop",
+        "eta": "ETA",
+        "onboard": "On board",
+        "statusInbound": "Inbound",
+        "statusArrived": "Arrived",
+        "alertTitle": "Pickup tip",
+        "alertBody": "Bus 7 is running 2 minutes ahead of schedule — please arrive at the stop a little early.",
+        "routes": {
+          "r7": "North Loop · Maple → Oak → School",
+          "r12": "East Loop · Cedar → Birch → School",
+          "r3": "South Loop · Willow → Pine → School"
+        },
+        "stops": {
+          "maple": "Maple & 4th Ave",
+          "cedar": "Cedar Grove Park",
+          "school": "Sunny Hills gate"
+        },
+        "etas": {
+          "fiveMin": "5 min",
+          "twelveMin": "12 min",
+          "arrived": "Now"
+        }
       }
     },
     "shopping": {
@@ -1127,7 +1970,8 @@
         "save": "Save",
         "close": "Close",
         "decrease": "Decrease",
-        "increase": "Increase"
+        "increase": "Increase",
+        "remove": "Remove"
       },
       "hero": {
         "eyebrow": "Spring drop · 03",
@@ -1141,7 +1985,26 @@
       },
       "product": {
         "inStock": "in stock",
-        "add": "Add"
+        "add": "Add",
+        "back": "Back to catalog",
+        "eyebrow": "Featured piece",
+        "reviewsCount": "214 reviews",
+        "shippingNote": "Free flat-rate shipping",
+        "description": "Hand-finished cedar base with a brushed brass diffuser, the Cedar Walking Lamp throws a slow warm pool of light at calf height — designed for hallways, reading nooks, and the long evenings of a small studio. Each piece is signed by the maker.",
+        "colorLabel": "Color",
+        "selectedColor": "Selected",
+        "addToCart": "Add to cart",
+        "swatches": {
+          "terracotta": "Terracotta",
+          "ivory": "Ivory",
+          "olive": "Olive",
+          "midnight": "Midnight"
+        },
+        "bullets": {
+          "material": "Solid cedar, brushed brass, hand-rubbed wax finish",
+          "origin": "Made in Porto by Atelier Vinha — 8-week lead time",
+          "care": "Wipe with a soft dry cloth; re-wax annually"
+        }
       },
       "products": {
         "coralLinenTote": "Coral Linen Tote",
@@ -1161,6 +2024,58 @@
         "empty": "Cart is empty.",
         "subtotal": "Subtotal",
         "checkout": "Checkout"
+      },
+      "tabs": {
+        "catalog": "Catalog",
+        "product": "Product",
+        "cart": "Cart",
+        "orders": "Orders"
+      },
+      "cartPage": {
+        "title": "Your cart",
+        "itemsCount": "{count} items reserved for 30 minutes",
+        "skuPrefix": "SKU",
+        "col": {
+          "item": "Item",
+          "qty": "Qty",
+          "price": "Price",
+          "lineTotal": "Line total"
+        },
+        "promoTitle": "Members ship free over $120",
+        "promoNote": "Returns are free for 60 days. Refunds are issued to the original card within 3 business days of arrival at our studio.",
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "total": "Total",
+        "checkout": "Proceed to checkout"
+      },
+      "ordersPage": {
+        "title": "Recent orders",
+        "subtitle": "Studio orders from the last 14 days",
+        "showing": "Showing {count} orders",
+        "col": {
+          "order": "Order #",
+          "customer": "Customer",
+          "total": "Total",
+          "status": "Status"
+        }
+      },
+      "ordersList": {
+        "customer1": "Amara Okafor",
+        "customer2": "Theo Lindqvist",
+        "customer3": "Suki Tanaka",
+        "customer4": "Mateo Reyes",
+        "customer5": "Priya Anand",
+        "customer6": "Jonas Weber",
+        "customer7": "Yara Halabi",
+        "customer8": "Camille Beaumont",
+        "customer9": "Ravi Subramanian",
+        "customer10": "Hana Park"
+      },
+      "status": {
+        "paid": "Paid",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "refunded": "Refunded"
       }
     },
     "travel-agency": {
@@ -1170,7 +2085,10 @@
       },
       "nav": {
         "discover": "Discover tours",
-        "bookings": "Bookings"
+        "bookings": "Bookings",
+        "tours": "Tours",
+        "itinerary": "Itinerary",
+        "customers": "Customers"
       },
       "search": {
         "from": "From",
@@ -1219,7 +2137,92 @@
         "status": {
           "confirmed": "Confirmed",
           "pendingPayment": "Pending payment",
-          "quoteSent": "Quote sent"
+          "quoteSent": "Quote sent",
+          "paid": "Paid",
+          "cancelled": "Cancelled"
+        },
+        "cols": {
+          "code": "Booking",
+          "customer": "Customer",
+          "tour": "Tour",
+          "departure": "Departure",
+          "party": "Party",
+          "total": "Total",
+          "status": "Status"
+        }
+      },
+      "itinerary": {
+        "heading": "Pamir Highland Loop · 7 Days",
+        "subheading": "Day-by-day itinerary builder for the signature Pamir tour",
+        "addDay": "Add day",
+        "dayLabel": "Day",
+        "location": "Location",
+        "activity": "Activity",
+        "hotel": "Hotel",
+        "meals": "Meals",
+        "days": {
+          "d1": {
+            "location": "Dushanbe",
+            "activity": "Arrival, city walking tour, Rudaki Avenue",
+            "hotel": "Hyatt Regency Dushanbe",
+            "meals": "Dinner"
+          },
+          "d2": {
+            "location": "Dushanbe → Kalaikhum",
+            "activity": "Drive along the Vakhsh river, Nurek reservoir stop",
+            "hotel": "Karon Palace Guesthouse",
+            "meals": "Breakfast, Lunch, Dinner"
+          },
+          "d3": {
+            "location": "Kalaikhum → Khorog",
+            "activity": "Panj river border road, Afghan bazaar visit",
+            "hotel": "Serena Inn Khorog",
+            "meals": "Breakfast, Lunch, Dinner"
+          },
+          "d4": {
+            "location": "Khorog → Langar",
+            "activity": "Wakhan corridor, Yamchun fortress, hot springs",
+            "hotel": "Bibi Fatima Homestay",
+            "meals": "Breakfast, Lunch, Dinner"
+          },
+          "d5": {
+            "location": "Langar → Murghab",
+            "activity": "Khargush pass (4344 m), high-altitude plateau",
+            "hotel": "Pamir Hotel Murghab",
+            "meals": "Breakfast, Lunch, Dinner"
+          },
+          "d6": {
+            "location": "Murghab → Karakul",
+            "activity": "Ak-Baital pass (4655 m), Karakul lake sunset",
+            "hotel": "Karakul Lakeside Yurt",
+            "meals": "Breakfast, Lunch, Dinner"
+          },
+          "d7": {
+            "location": "Karakul → Osh",
+            "activity": "Kyzyl-Art pass, border crossing, transfer",
+            "hotel": "Departure",
+            "meals": "Breakfast, Lunch"
+          }
+        }
+      },
+      "customers": {
+        "heading": "Customers",
+        "tripsSuffix": "trips",
+        "cols": {
+          "name": "Name",
+          "country": "Country",
+          "trips": "Trips",
+          "ltv": "Lifetime value"
+        },
+        "countries": {
+          "tj": "Tajikistan",
+          "jp": "Japan",
+          "fr": "France",
+          "it": "Italy",
+          "dk": "Denmark",
+          "ie": "Ireland",
+          "kz": "Kazakhstan",
+          "de": "Germany"
         }
       }
     },
@@ -1231,7 +2234,9 @@
       "nav": {
         "dashboard": "Dashboard",
         "courses": "My Courses",
-        "grades": "Gradebook"
+        "grades": "Gradebook",
+        "gradebook": "Gradebook",
+        "schedule": "Schedule"
       },
       "dashboard": {
         "welcome": "Welcome back, Dr. Hassan.",
@@ -1294,21 +2299,42 @@
         }
       },
       "gradebook": {
-        "title": "Gradebook · CS401",
+        "title": "Gradebook",
         "col": {
           "student": "Student",
           "hw1": "HW1",
           "hw2": "HW2",
           "mid": "Mid",
           "final": "Final",
-          "average": "Average"
+          "average": "Average",
+          "project": "Project"
         },
         "students": {
           "s1": "Aslan K.",
           "s2": "Bermet J.",
           "s3": "Chen W.",
           "s4": "Diyora N.",
-          "s5": "Erlan S."
+          "s5": "Erlan S.",
+          "s6": "Farida O.",
+          "s7": "Gulnoza R.",
+          "s8": "Hamid T.",
+          "s9": "Iskandar Z."
+        },
+        "subtitle": "Track student performance across assignments. Color-coded averages flag students who may need outreach.",
+        "courseLabel": "Course"
+      },
+      "schedule": {
+        "title": "Weekly schedule",
+        "subtitle": "Your teaching week at a glance. Click any class to view roster and materials.",
+        "col": {
+          "time": "Time"
+        },
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri"
         }
       }
     }
