@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function ContactForm() {
@@ -32,39 +32,38 @@ export function ContactForm() {
   ];
 
   const inputClass =
-    "mt-2 w-full rounded-sm border border-border-strong bg-bg px-3 py-2.5 font-mono text-sm text-fg placeholder:text-subtle transition focus:border-primary focus:outline-none";
+    "mt-2 w-full rounded-2xl border-[1.5px] border-border bg-surface px-4 py-3 text-sm text-fg placeholder:text-subtle transition focus:border-primary focus:outline-none";
 
   if (status === "sent") {
     return (
-      <div className="rounded-sm border border-primary/40 bg-primary/5 p-10 text-center">
-        <CheckCircle2 className="mx-auto size-10 text-primary" />
-        <h3 className="mt-4 font-display text-2xl font-bold text-fg">{t("successTitle")}</h3>
+      <div className="card p-12 text-center">
+        <div className="mx-auto grid size-16 place-items-center rounded-3xl bg-primary/10 text-primary">
+          <CheckCircle2 className="size-8" />
+        </div>
+        <h3 className="mt-5 font-display text-2xl font-extrabold text-fg">{t("successTitle")}</h3>
         <p className="mt-3 text-sm text-muted">{t("successBody")}</p>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="rounded-sm border border-border bg-bg p-6 sm:p-8"
-    >
+    <form onSubmit={onSubmit} className="card p-7 sm:p-8">
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className="spec-line">{t("name")}</span>
+          <span className="eyebrow">{t("name")}</span>
           <input required name="name" autoComplete="name" className={inputClass} />
         </label>
         <label className="block">
-          <span className="spec-line">{t("email")}</span>
+          <span className="eyebrow">{t("email")}</span>
           <input required type="email" name="email" autoComplete="email" className={inputClass} />
         </label>
       </div>
       <label className="mt-5 block">
-        <span className="spec-line">{t("company")}</span>
+        <span className="eyebrow">{t("company")}</span>
         <input name="company" className={inputClass} />
       </label>
       <label className="mt-5 block">
-        <span className="spec-line">{t("demoChooser")}</span>
+        <span className="eyebrow">{t("demoChooser")}</span>
         <select name="demo" className={inputClass}>
           <option value="">{t("demoChooserNone")}</option>
           {demoOptions.map((slug) => (
@@ -75,7 +74,7 @@ export function ContactForm() {
         </select>
       </label>
       <label className="mt-5 block">
-        <span className="spec-line">{t("message")}</span>
+        <span className="eyebrow">{t("message")}</span>
         <textarea
           required
           name="message"
@@ -88,10 +87,16 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 font-mono text-xs font-bold uppercase tracking-widest text-primary-fg transition hover:bg-primary-hover hover:shadow-[0_0_24px_rgb(197_255_63_/_0.35)] disabled:opacity-60"
+        className="btn-primary mt-8 w-full disabled:opacity-60"
       >
-        {status === "sending" && <Loader2 className="size-4 animate-spin" />}
-        {status === "sending" ? t("sending") : t("submit")} →
+        {status === "sending" ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <>
+            {t("submit")} <ArrowRight className="size-4" />
+          </>
+        )}
+        {status === "sending" && t("sending")}
       </button>
     </form>
   );

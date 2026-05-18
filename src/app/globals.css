@@ -1,11 +1,10 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------
-   PIXELFORGE — Brutalist Tech wrapper
-   Black canvas · paper foreground · acid lime accent · mono prominent
-   Visible grid lines · sharp edges · massive sans-serif
-   (Demos inside retain their own editorial palettes.)
-   ------------------------------------------------------------------ */
+/* ────────────────────────────────────────────────────────
+   PIXELFORGE — FORGE WARM design system
+   Cream canvas · ember accent · brass + sage support · soft rounded
+   Inspired by warm-bazaar UI; identity is Pixelforge / forge-craft.
+   ──────────────────────────────────────────────────────── */
 
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -30,119 +29,119 @@
   --color-danger: rgb(var(--danger) / <alpha-value>);
   --color-warning: rgb(var(--warning) / <alpha-value>);
 
-  --shadow-xs: 0 1px 0 rgb(255 255 255 / 0.04);
-  --shadow-sm: 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.04);
-  --shadow-md: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 0 0 1px rgb(197 255 63 / 0.10), 0 20px 60px rgb(0 0 0 / 0.6);
-  --shadow-xl: 0 0 0 1px rgb(197 255 63 / 0.18), 0 40px 100px rgb(0 0 0 / 0.7);
-  --shadow-glow: 0 0 24px rgb(197 255 63 / 0.35);
+  /* Warm rounded radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-pill: 9999px;
 
-  --radius-xs: 2px;
-  --radius-sm: 3px;
-  --radius-md: 5px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
+  /* Warm shadows (brown-tinted, not gray) */
+  --shadow-xs: 0 1px 2px rgb(63 38 22 / 0.04);
+  --shadow-sm: 0 2px 8px -2px rgb(63 38 22 / 0.06);
+  --shadow-md: 0 8px 24px -6px rgb(63 38 22 / 0.10);
+  --shadow-lg: 0 20px 48px -10px rgb(63 38 22 / 0.16);
+  --shadow-xl: 0 32px 72px -14px rgb(63 38 22 / 0.22);
+  --shadow-pop: 0 20px 56px -10px rgb(224 78 44 / 0.32);
+  --ring-focus: 0 0 0 3px rgb(224 78 44 / 0.22);
 
+  /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.5, 1.5, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
 }
 
-/* ----------------- DARK (default) — Brutalist canonical look ----------------- */
+/* ────────────── LIGHT (default canonical Forge Warm) ────────────── */
 :root {
-  --bg: 10 10 10;             /* #0A0A0A near-black */
-  --surface: 15 15 15;        /* #0F0F0F */
-  --surface-2: 26 26 26;      /* #1A1A1A */
-  --fg: 250 250 249;          /* #FAFAF9 paper */
-  --muted: 168 168 168;       /* #A8A8A8 */
-  --subtle: 102 102 102;      /* #666 */
-  --primary: 197 255 63;      /* #C5FF3F acid lime */
-  --primary-hover: 217 255 110; /* #D9FF6E */
-  --primary-fg: 10 10 10;     /* black on lime */
-  --accent: 250 250 249;      /* paper as secondary accent */
-  --accent-fg: 10 10 10;
-  --border: 31 31 31;         /* #1F1F1F */
-  --border-strong: 51 51 51;  /* #333 */
-  --ring: 197 255 63;
-  --success: 132 204 22;
-  --danger: 248 113 113;
-  --warning: 250 204 21;
+  --bg: 248 241 227;            /* #F8F1E3 warm cream */
+  --surface: 255 252 245;       /* #FFFCF5 paper */
+  --surface-2: 244 235 217;     /* #F4EBD9 oat */
+  --fg: 35 23 18;               /* #231712 forge-ink */
+  --muted: 122 90 70;            /* #7A5A46 ink-soft */
+  --subtle: 165 138 117;         /* #A58A75 ink-faint */
+  --primary: 224 78 44;         /* #E04E2C ember */
+  --primary-hover: 247 109 60;  /* #F76D3C molten */
+  --primary-fg: 255 252 245;
+  --accent: 193 137 49;          /* #C18931 brass */
+  --accent-fg: 35 23 18;
+  --border: 232 220 199;         /* #E8DCC7 */
+  --border-strong: 203 184 154;  /* #CBB89A */
+  --ring: 224 78 44;
+  --success: 107 142 96;
+  --danger: 178 60 60;
+  --warning: 198 122 30;
 }
 
-/* ----------------- LIGHT — paper alternate ----------------- */
-.light, :root.light {
-  --bg: 250 250 249;
-  --surface: 240 240 238;
-  --surface-2: 224 224 220;
-  --fg: 10 10 10;
-  --muted: 90 90 90;
-  --subtle: 140 140 140;
-  --primary: 130 184 36;      /* dimmer lime on paper */
-  --primary-hover: 108 158 24;
-  --primary-fg: 250 250 249;
-  --accent: 10 10 10;
-  --accent-fg: 250 250 249;
-  --border: 224 224 220;
-  --border-strong: 180 180 175;
-  --ring: 130 184 36;
-  --success: 90 145 30;
-  --danger: 200 50 50;
-  --warning: 184 128 18;
+/* ────────────── DARK alt — forge-deep ────────────── */
+.dark {
+  --bg: 26 18 15;               /* #1A120F night-forge */
+  --surface: 35 24 19;          /* #231813 */
+  --surface-2: 52 36 28;        /* #34241C */
+  --fg: 247 234 211;            /* #F7EAD3 warm paper */
+  --muted: 200 178 152;          /* #C8B298 */
+  --subtle: 138 117 92;         /* #8A755C */
+  --primary: 247 109 60;        /* #F76D3C molten */
+  --primary-hover: 255 138 88;
+  --primary-fg: 26 18 15;
+  --accent: 212 169 59;          /* #D4A93B brass-dark */
+  --accent-fg: 26 18 15;
+  --border: 67 47 36;           /* #432F24 */
+  --border-strong: 102 76 58;
+  --ring: 247 109 60;
+  --success: 138 174 152;
+  --danger: 235 130 130;
+  --warning: 235 180 90;
 }
 
-/* ----------------- Base ----------------- */
-html {
-  scroll-behavior: smooth;
-}
+/* ────────────── Base ────────────── */
+* { -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   background: rgb(var(--bg));
   color: rgb(var(--fg));
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "ss03", "cv02", "cv11";
+  font-feature-settings: "ss01", "cv02", "cv11";
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Brutalist signature: 24px grid texture overlay (subtle on dark, faint on light) */
+/* Forge texture: subtle warm radial wash + diagonal hatch (low opacity) */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background-image:
-    linear-gradient(rgb(var(--fg) / 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(var(--fg) / 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: 50% 50%;
-  mask-image: radial-gradient(80% 60% at 50% 30%, black 40%, transparent 100%);
-}
-.light body::before {
-  background-image:
-    linear-gradient(rgb(var(--fg) / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(var(--fg) / 0.03) 1px, transparent 1px);
+  background:
+    radial-gradient(900px 600px at 90% -10%, rgb(var(--primary) / 0.06), transparent 60%),
+    radial-gradient(700px 500px at 0% 110%, rgb(var(--accent) / 0.05), transparent 60%);
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 0.98;
 }
 
 ::selection {
-  background: rgb(var(--primary));
-  color: rgb(var(--primary-fg));
+  background: rgb(var(--primary) / 0.20);
+  color: rgb(var(--fg));
 }
 
-/* Visible focus rings — brutalist crisp */
-*:focus-visible {
-  outline: 2px solid rgb(var(--ring));
-  outline-offset: 2px;
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--radius-sm);
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -152,94 +151,193 @@ h1, h2, h3, h4 {
   }
 }
 
-/* ----------------- Utility helpers ----------------- */
-
-/* Spec-line — small mono uppercase label (brutalist "spec sheet" feel) */
-.spec-line {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgb(var(--muted));
-  font-weight: 500;
+/* ────────────── GRADIENT UTILITIES ────────────── */
+.grad-ember {
+  background: linear-gradient(135deg, #F76D3C 0%, #E04E2C 50%, #B33C1F 100%);
+}
+.grad-forge {
+  background: linear-gradient(135deg, #3F2A1F 0%, #231712 100%);
+}
+.grad-brass {
+  background: linear-gradient(135deg, #F4C168 0%, #C18931 100%);
+}
+.grad-text-ember {
+  background: linear-gradient(135deg, #F76D3C 0%, #E04E2C 50%, #B33C1F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
-/* Hard rule between sections (visible grid divider) */
-.brut-rule {
-  border-color: rgb(var(--border));
+/* ────────────── ANIMATION KEYFRAMES ────────────── */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fade-down { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pop-in { 0% { opacity: 0; transform: scale(0.86); } 60% { opacity: 1; transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes spring-in { 0% { opacity: 0; transform: translateY(10px) scale(0.96); } 60% { opacity: 1; transform: translateY(-2px) scale(1.02); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0    rgba(224, 78, 44, 0.40); }
+  70%  { box-shadow: 0 0 0 16px rgba(224, 78, 44, 0); }
+  100% { box-shadow: 0 0 0 0    rgba(224, 78, 44, 0); }
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes bounce-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+/* Animation utilities */
+.anim-fade-in    { animation: fade-in       var(--dur-base) var(--ease-out-soft) both; }
+.anim-fade-up    { animation: fade-up       var(--dur-slow) var(--ease-out-soft) both; }
+.anim-fade-down  { animation: fade-down     var(--dur-base) var(--ease-out-soft) both; }
+.anim-pop        { animation: pop-in        var(--dur-base) var(--ease-spring) both; }
+.anim-spring     { animation: spring-in     var(--dur-slow) var(--ease-spring) both; }
+.anim-pulse-ring { animation: pulse-ring    1.8s var(--ease-out-soft) infinite; }
+.anim-float      { animation: float         4s var(--ease-in-out) infinite; }
+.anim-twinkle    { animation: spark-twinkle 2.4s var(--ease-in-out) infinite; }
+.anim-bounce     { animation: bounce-soft   1.6s var(--ease-in-out) infinite; }
+
+/* Stagger helpers */
+.delay-1 { animation-delay: 60ms; }
+.delay-2 { animation-delay: 120ms; }
+.delay-3 { animation-delay: 180ms; }
+.delay-4 { animation-delay: 240ms; }
+.delay-5 { animation-delay: 300ms; }
+.delay-6 { animation-delay: 360ms; }
+.delay-7 { animation-delay: 420ms; }
+.delay-8 { animation-delay: 480ms; }
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, rgb(var(--surface-2)) 0%, rgb(var(--border)) 50%, rgb(var(--surface-2)) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
 }
 
-/* Brutalist card — sharp corners, hairline borders */
-.brut-card {
-  background: rgb(var(--surface));
-  border: 1px solid rgb(var(--border));
-  border-radius: var(--radius-md);
-  transition:
-    transform 250ms var(--ease-out-soft),
-    border-color 250ms,
-    box-shadow 250ms;
+/* Card lift on hover */
+.lift {
+  transition: transform var(--dur-base) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft);
 }
-.brut-card:hover {
-  border-color: rgb(var(--border-strong));
-  transform: translateY(-2px);
-}
+.lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 
-/* Primary button — sharp pill with lime accent */
-.brut-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgb(var(--primary));
-  color: rgb(var(--primary-fg));
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  border-radius: var(--radius-sm);
-  transition: background 200ms, transform 100ms, box-shadow 200ms;
-}
-.brut-btn-primary:hover { background: rgb(var(--primary-hover)); box-shadow: var(--shadow-glow); }
-.brut-btn-primary:active { transform: translateY(1px); }
+.press { transition: transform var(--dur-fast) var(--ease-out-soft); }
+.press:active { transform: scale(0.97); }
 
-/* Ghost button */
-.brut-btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  color: rgb(var(--fg));
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border: 1px solid rgb(var(--border-strong));
-  border-radius: var(--radius-sm);
-  transition: background 200ms, border-color 200ms;
-}
-.brut-btn-ghost:hover { background: rgb(var(--surface)); border-color: rgb(var(--fg)); }
+/* ────────────── COMPONENT UTILITIES ────────────── */
 
-/* Reveal-on-scroll entrance */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 700ms var(--ease-out-soft),
-    transform 700ms var(--ease-out-soft);
-}
-.reveal.is-visible { opacity: 1; transform: translateY(0); }
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-}
-
-/* Hero number badge — square block, mono */
-.brut-number-badge {
+/* Primary button — ember gradient */
+.btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  background: rgb(var(--primary));
-  color: rgb(var(--primary-fg));
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  gap: 8px;
+  background: linear-gradient(135deg, #F76D3C 0%, #E04E2C 100%);
+  color: white;
   font-weight: 700;
-  border-radius: var(--radius-xs);
+  font-size: 14px;
+  padding: 13px 22px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft);
+  box-shadow: 0 8px 24px -6px rgba(224, 78, 44, 0.45);
 }
+.btn-primary:hover { box-shadow: 0 14px 32px -6px rgba(224, 78, 44, 0.55); }
+.btn-primary:active { transform: scale(0.97); }
+
+/* Ghost button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: rgb(var(--fg));
+  font-weight: 600;
+  font-size: 14px;
+  padding: 13px 22px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgb(var(--border-strong));
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out-soft);
+}
+.btn-ghost:hover {
+  background: rgb(var(--surface));
+  border-color: rgb(var(--fg));
+}
+.btn-ghost:active { transform: scale(0.97); }
+
+/* Card */
+.card {
+  background: rgb(var(--surface));
+  border: 1px solid rgb(var(--border));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Pill chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  background: rgb(var(--surface-2));
+  color: rgb(var(--fg));
+  transition: all var(--dur-fast) var(--ease-out-soft);
+  white-space: nowrap;
+}
+.chip:hover { background: rgb(var(--border)); }
+.chip-active { background: rgb(var(--primary)); color: rgb(var(--primary-fg)); }
+
+/* Avatar ring (gradient halo) */
+.avatar-ring {
+  position: relative;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(135deg, #F76D3C 0%, #C18931 100%);
+}
+.avatar-ring > * { border-radius: 50%; background: rgb(var(--surface)); }
+
+/* Section eyebrow — small caps mono */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--primary));
+  font-weight: 600;
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: rgb(var(--primary));
+}
+
+/* Glass blur header */
+.blur-header {
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  background: color-mix(in oklab, rgb(var(--bg)) 80%, transparent);
+}
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+img { -webkit-user-drag: none; }

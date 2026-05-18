@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Sora, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,14 +15,14 @@ const interTight = Inter_Tight({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const interDisplay = Inter_Tight({
-  subsets: ["latin", "cyrillic", "cyrillic-ext"],
+const sora = Sora({
+  subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["600", "700", "800", "900"],
+  weight: ["700", "800"],
 });
 
 const mono = JetBrains_Mono({
@@ -67,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${interTight.variable} ${interDisplay.variable} ${mono.variable} h-full`}
+      className={`${interTight.variable} ${sora.variable} ${mono.variable} h-full`}
       suppressHydrationWarning
     >
       <head>
