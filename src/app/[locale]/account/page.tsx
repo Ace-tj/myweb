@@ -11,6 +11,7 @@ export default async function AccountPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("account");
   const tNav = await getTranslations("nav");
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/auth/login?next=/${locale}/account`);
@@ -18,12 +19,14 @@ export default async function AccountPage({
   if (profile.role === "admin") redirect(`/${locale}/admin/dashboard`);
   if (profile.role === "consultant") redirect(`/${locale}/consultant/inbox`);
 
+  const displayName = profile.full_name || profile.email.split("@")[0];
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold text-fg">
-            Hi, {profile.full_name || profile.email.split("@")[0]}
+            {t("greeting", { name: displayName })}
           </h1>
           <p className="mt-1 text-sm text-muted">{profile.email}</p>
         </div>
@@ -43,12 +46,10 @@ export default async function AccountPage({
           href="/demos"
           className="group rounded-2xl border border-border bg-surface p-6 transition hover:-translate-y-0.5 hover:shadow-md"
         >
-          <h2 className="font-display text-lg font-bold text-fg">Browse demos</h2>
-          <p className="mt-2 text-sm text-muted">
-            Pick the system closest to what you need.
-          </p>
+          <h2 className="font-display text-lg font-bold text-fg">{t("browseDemosTitle")}</h2>
+          <p className="mt-2 text-sm text-muted">{t("browseDemosBody")}</p>
           <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
-            Open gallery <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+            {t("browseDemosCta")} <ArrowRight className="size-4 transition group-hover:translate-x-1" />
           </span>
         </Link>
 
@@ -58,13 +59,11 @@ export default async function AccountPage({
         >
           <h2 className="flex items-center gap-2 font-display text-lg font-bold text-fg">
             <MessageCircle className="size-5 text-primary" />
-            Chat with a consultant
+            {t("chatTitle")}
           </h2>
-          <p className="mt-2 text-sm text-muted">
-            Average reply time: under 1 hour.
-          </p>
+          <p className="mt-2 text-sm text-muted">{t("chatBody")}</p>
           <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
-            Open chat <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+            {t("chatCta")} <ArrowRight className="size-4 transition group-hover:translate-x-1" />
           </span>
         </Link>
       </div>

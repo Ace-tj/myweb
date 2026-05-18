@@ -48,7 +48,7 @@ export function LoginForm({
           <button
             type="button"
             onClick={() => setShow((s) => !s)}
-            aria-label={show ? "Hide password" : "Show password"}
+            aria-label={show ? t("hidePassword") : t("showPassword")}
             className="absolute right-2 top-1/2 -translate-y-1/2 grid size-7 place-items-center rounded-md text-muted hover:bg-surface-2"
           >
             {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -14,6 +14,8 @@ export default async function ConsultantThreadPage({
 }) {
   const { locale, id } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("consultant");
+  const tChat = await getTranslations("chat");
 
   const profile = await getCurrentProfile();
   if (!profile) notFound();
@@ -24,7 +26,7 @@ export default async function ConsultantThreadPage({
   ) {
     return (
       <div className="rounded-2xl border border-border bg-surface p-8 text-center text-sm text-muted">
-        Chat is offline in this preview.
+        {tChat("offlinePreview")}
       </div>
     );
   }
@@ -45,7 +47,7 @@ export default async function ConsultantThreadPage({
         href="/consultant/inbox"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-fg"
       >
-        <ArrowLeft className="size-4" /> Back to inbox
+        <ArrowLeft className="size-4" /> {t("backToInbox")}
       </Link>
       <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-bg">
         <header className="flex items-center justify-between border-b border-border bg-surface px-5 py-4">
@@ -55,7 +57,7 @@ export default async function ConsultantThreadPage({
               {(conv as any).customer?.full_name ||
                 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                 (conv as any).customer?.email ||
-                "Customer"}
+                t("customerFallback")}
             </h1>
             <p className="mt-0.5 text-xs text-muted">{conv.subject}</p>
           </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { School, Book, Calendar, Users, Award } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { GraduationCap, BookmarkBook, Calendar, Group, Medal } from "iconoir-react";
 
 const C = {
   bg: "#fafaf7",
@@ -13,34 +14,35 @@ const C = {
   border: "#e8dccd",
 };
 
-const COURSES = [
-  { code: "CS401", name: "Distributed Systems", prof: "Dr. M. Hassan", room: "Lewin Hall · 204", students: 42, time: "Mon · 10:00" },
-  { code: "ECON210", name: "Macroeconomic Theory", prof: "Prof. A. Volkov", room: "Babbage Block · 12", students: 78, time: "Tue · 14:00" },
-  { code: "PHIL150", name: "Ethics in Practice", prof: "Dr. F. Okafor", room: "Old Library · 1", students: 26, time: "Wed · 09:00" },
-  { code: "BIO302", name: "Molecular Biology", prof: "Dr. K. Sato", room: "Science Wing · L3", students: 56, time: "Thu · 11:00" },
-];
-
 export function UniversityDemo() {
+  const t = useTranslations("demoPreview.university");
   const [tab, setTab] = useState<"dashboard" | "courses" | "grades">("dashboard");
+
+  const COURSES = [
+    { code: "CS401", name: t("courses.cs401.name"), prof: t("courses.cs401.prof"), room: t("courses.cs401.room"), students: 42, time: t("courses.cs401.time") },
+    { code: "ECON210", name: t("courses.econ210.name"), prof: t("courses.econ210.prof"), room: t("courses.econ210.room"), students: 78, time: t("courses.econ210.time") },
+    { code: "PHIL150", name: t("courses.phil150.name"), prof: t("courses.phil150.prof"), room: t("courses.phil150.room"), students: 26, time: t("courses.phil150.time") },
+    { code: "BIO302", name: t("courses.bio302.name"), prof: t("courses.bio302.prof"), room: t("courses.bio302.room"), students: 56, time: t("courses.bio302.time") },
+  ];
 
   return (
     <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "Georgia, serif" }}>
       <header style={{ background: C.primary, color: "white", padding: "22px 32px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <School style={{ width: 28, height: 28 }} />
+            <GraduationCap style={{ width: 28, height: 28 }} />
             <div>
-              <div style={{ fontSize: 20, fontWeight: 700 }}>Westmoor University</div>
+              <div style={{ fontSize: 20, fontWeight: 700 }}>{t("brand")}</div>
               <div style={{ fontSize: 11, opacity: 0.75, letterSpacing: 2, textTransform: "uppercase", marginTop: 2 }}>
-                Faculty Portal · Spring 2026
+                {t("brandSubtitle")}
               </div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13 }}>
             <div style={{ width: 32, height: 32, borderRadius: 9999, background: C.accent, color: C.primary, display: "grid", placeItems: "center", fontWeight: 800 }}>
-              MH
+              {t("userInitials")}
             </div>
-            Dr. Mira Hassan
+            {t("userName")}
           </div>
         </div>
       </header>
@@ -48,26 +50,26 @@ export function UniversityDemo() {
       <nav style={{ background: C.paper, borderBottom: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", display: "flex", gap: 6 }}>
           {[
-            { id: "dashboard", label: "Dashboard" },
-            { id: "courses", label: "My Courses" },
-            { id: "grades", label: "Gradebook" },
-          ].map((t) => (
+            { id: "dashboard", label: t("nav.dashboard") },
+            { id: "courses", label: t("nav.courses") },
+            { id: "grades", label: t("nav.grades") },
+          ].map((it) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id as typeof tab)}
+              key={it.id}
+              onClick={() => setTab(it.id as typeof tab)}
               style={{
                 background: "transparent",
-                color: tab === t.id ? C.primary : C.muted,
+                color: tab === it.id ? C.primary : C.muted,
                 border: "none",
                 padding: "16px 18px",
                 fontSize: 14,
                 fontWeight: 600,
-                borderBottom: `3px solid ${tab === t.id ? C.primary : "transparent"}`,
+                borderBottom: `3px solid ${tab === it.id ? C.primary : "transparent"}`,
                 cursor: "pointer",
                 fontFamily: "Georgia, serif",
               }}
             >
-              {t.label}
+              {it.label}
             </button>
           ))}
         </div>
@@ -76,16 +78,16 @@ export function UniversityDemo() {
       <main style={{ maxWidth: 1280, margin: "0 auto", padding: 32 }}>
         {tab === "dashboard" && (
           <>
-            <h1 style={{ fontSize: 30, fontWeight: 700, marginBottom: 6 }}>Welcome back, Dr. Hassan.</h1>
+            <h1 style={{ fontSize: 30, fontWeight: 700, marginBottom: 6 }}>{t("dashboard.welcome")}</h1>
             <p style={{ color: C.muted, marginBottom: 24, fontFamily: "ui-sans-serif" }}>
-              You have 4 active courses, 12 ungraded assignments, and an office-hour request.
+              {t("dashboard.summary")}
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
               {[
-                { Icon: Book, label: "Courses", v: "4" },
-                { Icon: Users, label: "Students", v: "202" },
-                { Icon: Calendar, label: "Hours this week", v: "12" },
-                { Icon: Award, label: "Avg. course rating", v: "4.7" },
+                { Icon: BookmarkBook, label: t("stats.courses"), v: "4" },
+                { Icon: Group, label: t("stats.students"), v: "202" },
+                { Icon: Calendar, label: t("stats.hoursThisWeek"), v: "12" },
+                { Icon: Medal, label: t("stats.avgRating"), v: "4.7" },
               ].map((s) => (
                 <div key={s.label} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
                   <s.Icon style={{ width: 18, height: 18, color: C.primary }} />
@@ -97,13 +99,13 @@ export function UniversityDemo() {
               ))}
             </div>
 
-            <h2 style={{ fontSize: 22, fontWeight: 700, marginTop: 36, marginBottom: 14 }}>Up next</h2>
+            <h2 style={{ fontSize: 22, fontWeight: 700, marginTop: 36, marginBottom: 14 }}>{t("dashboard.upNext")}</h2>
             <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12 }}>
               {[
-                { t: "Today · 10:00", e: "CS401 Lecture · Lewin Hall 204" },
-                { t: "Today · 14:30", e: "Office hours · Room 312" },
-                { t: "Tomorrow · 09:00", e: "Faculty meeting · East Wing" },
-                { t: "Tomorrow · 11:00", e: "BIO302 Seminar · Science Wing L3" },
+                { t: t("upNext.row1.time"), e: t("upNext.row1.event") },
+                { t: t("upNext.row2.time"), e: t("upNext.row2.event") },
+                { t: t("upNext.row3.time"), e: t("upNext.row3.event") },
+                { t: t("upNext.row4.time"), e: t("upNext.row4.event") },
               ].map((row, i) => (
                 <div
                   key={i}
@@ -119,7 +121,7 @@ export function UniversityDemo() {
 
         {tab === "courses" && (
           <>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>My courses</h1>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>{t("coursesPage.title")}</h1>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16 }}>
               {COURSES.map((c) => (
                 <article key={c.code} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
@@ -132,9 +134,9 @@ export function UniversityDemo() {
                     {c.prof} · {c.room}
                   </div>
                   <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "ui-sans-serif" }}>
-                    <span style={{ fontSize: 12, color: C.muted }}>{c.students} enrolled</span>
+                    <span style={{ fontSize: 12, color: C.muted }}>{t("coursesPage.enrolled", { count: c.students })}</span>
                     <button style={{ background: C.primary, color: "white", border: "none", padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                      Open course
+                      {t("coursesPage.openCourse")}
                     </button>
                   </div>
                 </article>
@@ -145,12 +147,19 @@ export function UniversityDemo() {
 
         {tab === "grades" && (
           <>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Gradebook · CS401</h1>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>{t("gradebook.title")}</h1>
             <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", fontFamily: "ui-sans-serif" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                 <thead>
                   <tr style={{ background: C.bg }}>
-                    {["Student", "HW1", "HW2", "Mid", "Final", "Average"].map((h) => (
+                    {[
+                      t("gradebook.col.student"),
+                      t("gradebook.col.hw1"),
+                      t("gradebook.col.hw2"),
+                      t("gradebook.col.mid"),
+                      t("gradebook.col.final"),
+                      t("gradebook.col.average"),
+                    ].map((h) => (
                       <th key={h} style={{ textAlign: "left", padding: "12px 16px", fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>
                         {h}
                       </th>
@@ -159,11 +168,11 @@ export function UniversityDemo() {
                 </thead>
                 <tbody>
                   {[
-                    { n: "Aslan K.", hw: [92, 88], m: 84, f: 91 },
-                    { n: "Bermet J.", hw: [76, 82], m: 79, f: 85 },
-                    { n: "Chen W.", hw: [98, 95], m: 92, f: 96 },
-                    { n: "Diyora N.", hw: [85, 88], m: 86, f: 89 },
-                    { n: "Erlan S.", hw: [72, 70], m: 68, f: 74 },
+                    { n: t("gradebook.students.s1"), hw: [92, 88], m: 84, f: 91 },
+                    { n: t("gradebook.students.s2"), hw: [76, 82], m: 79, f: 85 },
+                    { n: t("gradebook.students.s3"), hw: [98, 95], m: 92, f: 96 },
+                    { n: t("gradebook.students.s4"), hw: [85, 88], m: 86, f: 89 },
+                    { n: t("gradebook.students.s5"), hw: [72, 70], m: 68, f: 74 },
                   ].map((s, i) => {
                     const avg = Math.round((s.hw[0] + s.hw[1] + s.m + s.f) / 4);
                     return (

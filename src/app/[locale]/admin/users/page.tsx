@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { setConsultantStatus } from "@/app/actions/admin";
 import type { Profile } from "@/lib/types";
@@ -10,6 +10,7 @@ export default async function AdminUsersPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("admin.users");
 
   let users: Profile[] = [];
   if (
@@ -27,19 +28,17 @@ export default async function AdminUsersPage({
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Users</h1>
-      <p className="mt-1 text-sm text-slate-400">
-        Approve consultant applications, manage roles.
-      </p>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <p className="mt-1 text-sm text-slate-400">{t("lede")}</p>
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950">
         <table className="w-full text-sm">
           <thead className="bg-slate-900 text-xs uppercase tracking-widest text-slate-400">
             <tr>
-              <th className="px-5 py-3 text-left">User</th>
-              <th className="px-5 py-3 text-left">Role</th>
-              <th className="px-5 py-3 text-left">Status</th>
-              <th className="px-5 py-3 text-left">Joined</th>
+              <th className="px-5 py-3 text-left">{t("columns.user")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.role")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.status")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.joined")}</th>
               <th className="px-5 py-3"></th>
             </tr>
           </thead>
@@ -47,7 +46,7 @@ export default async function AdminUsersPage({
             {users.length === 0 && (
               <tr>
                 <td colSpan={5} className="px-5 py-8 text-center text-slate-400">
-                  No users yet. Sign up to populate this list.
+                  {t("empty")}
                 </td>
               </tr>
             )}
@@ -75,14 +74,14 @@ export default async function AdminUsersPage({
                             : "bg-amber-500/20 text-amber-300"
                       }`}
                     >
-                      {u.consultant_status ?? "pending"}
+                      {u.consultant_status ?? t("statusPending")}
                     </span>
                   ) : (
                     <span className="text-xs text-slate-500">—</span>
                   )}
                 </td>
                 <td className="px-5 py-4 text-xs text-slate-400">
-                  {new Date(u.created_at).toLocaleDateString()}
+                  {new Date(u.created_at).toLocaleDateString(locale)}
                 </td>
                 <td className="px-5 py-4 text-right">
                   {u.role === "consultant" && u.consultant_status !== "approved" && (
@@ -93,7 +92,7 @@ export default async function AdminUsersPage({
                         type="submit"
                         className="mr-2 rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-400"
                       >
-                        Approve
+                        {t("approve")}
                       </button>
                     </form>
                   )}
@@ -105,7 +104,7 @@ export default async function AdminUsersPage({
                         type="submit"
                         className="rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800"
                       >
-                        Reject
+                        {t("reject")}
                       </button>
                     </form>
                   )}

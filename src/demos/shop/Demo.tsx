@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingBag, Search, Heart, Star, Plus, Minus, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ShoppingBagIcon, MagnifyingGlassIcon, HeartIcon, StarIcon, PlusIcon, MinusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const C = {
   bg: "#fff8f3",
@@ -13,16 +14,18 @@ const C = {
   border: "#f3dccb",
 };
 
-const PRODUCTS = [
-  { id: 1, name: "Coral Linen Tote", price: 48, tag: "New", rating: 4.8, img: "linear-gradient(140deg,#ffb89a,#e25a31)" },
-  { id: 2, name: "Stoneware Pour Set", price: 96, tag: "Best", rating: 4.9, img: "linear-gradient(140deg,#fef3e6,#d8a679)" },
-  { id: 3, name: "Cedar Walking Lamp", price: 138, tag: "Limited", rating: 4.7, img: "linear-gradient(140deg,#fce0c8,#b46a3e)" },
-  { id: 4, name: "Olive Quilted Throw", price: 84, tag: "", rating: 4.6, img: "linear-gradient(140deg,#e9d8a6,#8b7a5a)" },
-  { id: 5, name: "Wool Loafer · Sand", price: 162, tag: "", rating: 4.8, img: "linear-gradient(140deg,#f4e0d0,#a07560)" },
-  { id: 6, name: "Almond Mug Pair", price: 38, tag: "", rating: 4.9, img: "linear-gradient(140deg,#fff0e2,#c98e6e)" },
-];
-
 export function ShopDemo() {
+  const t = useTranslations("demoPreview.shopping");
+
+  const PRODUCTS = [
+    { id: 1, name: t("products.coralLinenTote"), price: 48, tag: t("tags.new"), rating: 4.8, img: "linear-gradient(140deg,#ffb89a,#e25a31)" },
+    { id: 2, name: t("products.stonewarePourSet"), price: 96, tag: t("tags.best"), rating: 4.9, img: "linear-gradient(140deg,#fef3e6,#d8a679)" },
+    { id: 3, name: t("products.cedarWalkingLamp"), price: 138, tag: t("tags.limited"), rating: 4.7, img: "linear-gradient(140deg,#fce0c8,#b46a3e)" },
+    { id: 4, name: t("products.oliveQuiltedThrow"), price: 84, tag: "", rating: 4.6, img: "linear-gradient(140deg,#e9d8a6,#8b7a5a)" },
+    { id: 5, name: t("products.woolLoaferSand"), price: 162, tag: "", rating: 4.8, img: "linear-gradient(140deg,#f4e0d0,#a07560)" },
+    { id: 6, name: t("products.almondMugPair"), price: 38, tag: "", rating: 4.9, img: "linear-gradient(140deg,#fff0e2,#c98e6e)" },
+  ];
+
   const [cart, setCart] = useState<{ id: number; qty: number }[]>([
     { id: 1, qty: 1 },
     { id: 3, qty: 2 },
@@ -65,13 +68,13 @@ export function ShopDemo() {
         }}
       >
         <div style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700, color: C.accent }}>
-          maison&amp;moss
+          {t("brand")}
         </div>
         <nav style={{ display: "flex", gap: 18, fontSize: 14, color: C.muted }}>
-          <span style={{ color: C.ink, fontWeight: 600 }}>Home goods</span>
-          <span>Apparel</span>
-          <span>Studio</span>
-          <span>Journal</span>
+          <span style={{ color: C.ink, fontWeight: 600 }}>{t("nav.homeGoods")}</span>
+          <span>{t("nav.apparel")}</span>
+          <span>{t("nav.studio")}</span>
+          <span>{t("nav.journal")}</span>
         </nav>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
           <div
@@ -86,9 +89,9 @@ export function ShopDemo() {
               minWidth: 220,
             }}
           >
-            <Search style={{ width: 14, height: 14, color: C.muted }} />
+            <MagnifyingGlassIcon style={{ width: 14, height: 14, color: C.muted }} />
             <input
-              placeholder="Search 2,134 items"
+              placeholder={t("search.placeholder")}
               style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13 }}
             />
           </div>
@@ -102,9 +105,9 @@ export function ShopDemo() {
               background: C.surface,
               cursor: "pointer",
             }}
-            aria-label="Cart"
+            aria-label={t("aria.cart")}
           >
-            <ShoppingBag style={{ width: 16, height: 16 }} />
+            <ShoppingBagIcon style={{ width: 16, height: 16 }} />
             {count > 0 && (
               <span
                 style={{
@@ -152,7 +155,7 @@ export function ShopDemo() {
               fontWeight: 700,
             }}
           >
-            Spring drop · 03
+            {t("hero.eyebrow")}
           </span>
           <h1
             style={{
@@ -163,11 +166,10 @@ export function ShopDemo() {
               maxWidth: 480,
             }}
           >
-            Pieces that age beautifully, on shelves and on people.
+            {t("hero.title")}
           </h1>
           <p style={{ color: C.muted, maxWidth: 460, lineHeight: 1.6 }}>
-            Small-batch goods from independent makers we visit personally.
-            Shipped flat-rate, returned free, kept forever.
+            {t("hero.description")}
           </p>
           <button
             style={{
@@ -182,7 +184,7 @@ export function ShopDemo() {
               cursor: "pointer",
             }}
           >
-            Shop the drop
+            {t("hero.cta")}
           </button>
         </div>
         <div
@@ -206,8 +208,8 @@ export function ShopDemo() {
       {/* GRID */}
       <section style={{ padding: "20px 28px 80px", maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 18 }}>
-          <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22 }}>This week's picks</h2>
-          <span style={{ color: C.muted, fontSize: 12 }}>Showing 6 of 24</span>
+          <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22 }}>{t("grid.title")}</h2>
+          <span style={{ color: C.muted, fontSize: 12 }}>{t("grid.showing")}</span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
           {PRODUCTS.map((p) => (
@@ -254,16 +256,16 @@ export function ShopDemo() {
                     placeItems: "center",
                     cursor: "pointer",
                   }}
-                  aria-label="Save"
+                  aria-label={t("aria.save")}
                 >
-                  <Heart style={{ width: 14, height: 14, color: C.accentDark }} />
+                  <HeartIcon style={{ width: 14, height: 14, color: C.accentDark }} />
                 </button>
               </div>
               <div style={{ padding: 14 }}>
                 <div style={{ fontWeight: 600, fontSize: 14 }}>{p.name}</div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4, color: C.muted, fontSize: 12 }}>
-                  <Star style={{ width: 12, height: 12, fill: "#f5b400", color: "#f5b400" }} />
-                  {p.rating} · in stock
+                  <StarIcon style={{ width: 12, height: 12, fill: "#f5b400", color: "#f5b400" }} />
+                  {p.rating} · {t("product.inStock")}
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
                   <span style={{ fontWeight: 700, fontSize: 15 }}>${p.price}</span>
@@ -280,7 +282,7 @@ export function ShopDemo() {
                       cursor: "pointer",
                     }}
                   >
-                    Add
+                    {t("product.add")}
                   </button>
                 </div>
               </div>
@@ -314,18 +316,18 @@ export function ShopDemo() {
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h3 style={{ fontFamily: "Georgia, serif", fontSize: 20 }}>Your cart</h3>
+              <h3 style={{ fontFamily: "Georgia, serif", fontSize: 20 }}>{t("cart.title")}</h3>
               <button
                 onClick={() => setDrawer(false)}
-                aria-label="Close"
+                aria-label={t("aria.close")}
                 style={{ background: "transparent", border: "none", cursor: "pointer" }}
               >
-                <X style={{ width: 16, height: 16 }} />
+                <XMarkIcon style={{ width: 16, height: 16 }} />
               </button>
             </div>
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
               {cart.length === 0 && (
-                <p style={{ color: C.muted, fontSize: 13 }}>Cart is empty.</p>
+                <p style={{ color: C.muted, fontSize: 13 }}>{t("cart.empty")}</p>
               )}
               {cart.map((line) => {
                 const p = PRODUCTS.find((x) => x.id === line.id)!;
@@ -341,7 +343,7 @@ export function ShopDemo() {
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
                         <button
                           onClick={() => bump(line.id, -1)}
-                          aria-label="Decrease"
+                          aria-label={t("aria.decrease")}
                           style={{
                             width: 22,
                             height: 22,
@@ -353,14 +355,14 @@ export function ShopDemo() {
                             cursor: "pointer",
                           }}
                         >
-                          <Minus style={{ width: 12, height: 12 }} />
+                          <MinusIcon style={{ width: 12, height: 12 }} />
                         </button>
                         <span style={{ fontSize: 13, fontWeight: 600, minWidth: 16, textAlign: "center" }}>
                           {line.qty}
                         </span>
                         <button
                           onClick={() => bump(line.id, 1)}
-                          aria-label="Increase"
+                          aria-label={t("aria.increase")}
                           style={{
                             width: 22,
                             height: 22,
@@ -372,7 +374,7 @@ export function ShopDemo() {
                             cursor: "pointer",
                           }}
                         >
-                          <Plus style={{ width: 12, height: 12 }} />
+                          <PlusIcon style={{ width: 12, height: 12 }} />
                         </button>
                       </div>
                     </div>
@@ -383,7 +385,7 @@ export function ShopDemo() {
             </div>
             <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-                <span style={{ color: C.muted, fontSize: 13 }}>Subtotal</span>
+                <span style={{ color: C.muted, fontSize: 13 }}>{t("cart.subtotal")}</span>
                 <span style={{ fontWeight: 700 }}>${total}</span>
               </div>
               <button
@@ -398,7 +400,7 @@ export function ShopDemo() {
                   cursor: "pointer",
                 }}
               >
-                Checkout
+                {t("cart.checkout")}
               </button>
             </div>
           </aside>

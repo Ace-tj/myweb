@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Utensils, Clock, ChefHat, Check, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ForkKnife, Clock, ChefHat, Check, Plus } from "@phosphor-icons/react";
 
 const C = {
   bg: "#fbf6ee",
@@ -13,32 +14,33 @@ const C = {
   border: "#e8dcc5",
 };
 
-const TABLES = [
-  { n: "T1", seats: 2, status: "open" },
-  { n: "T2", seats: 4, status: "open" },
-  { n: "T3", seats: 4, status: "seated", since: "12m" },
-  { n: "T4", seats: 6, status: "ordering", since: "5m" },
-  { n: "T5", seats: 2, status: "served" },
-  { n: "T6", seats: 4, status: "open" },
-  { n: "T7", seats: 8, status: "seated", since: "32m" },
-  { n: "T8", seats: 4, status: "open" },
-];
-
-const KITCHEN = [
-  { table: "T4", time: "5m", items: ["Burrata · 1", "Lamb tartare · 1", "Linguine vongole · 2"] },
-  { table: "T7", time: "8m", items: ["Bone marrow · 2", "Wood-fired pizza ×2"] },
-  { table: "T3", time: "11m", items: ["Half chicken · 1", "Risotto · 1", "Side spinach · 2"] },
-];
-
-const STATUS_C: Record<string, { bg: string; fg: string; label: string }> = {
-  open: { bg: "#f4f1e6", fg: "#857c5e", label: "Open" },
-  seated: { bg: "#d8eecf", fg: "#3f6212", label: "Seated" },
-  ordering: { bg: "#fce8d4", fg: "#c2410c", label: "Ordering" },
-  served: { bg: "#dfe7f3", fg: "#1d4ed8", label: "Served" },
-};
-
 export function RestaurantDemo() {
+  const t = useTranslations("demoPreview.restaurant");
   const [view, setView] = useState<"floor" | "kitchen" | "menu">("floor");
+
+  const TABLES = [
+    { n: t("tables.t1.n"), seats: 2, status: "open" },
+    { n: t("tables.t2.n"), seats: 4, status: "open" },
+    { n: t("tables.t3.n"), seats: 4, status: "seated", since: t("tables.t3.since") },
+    { n: t("tables.t4.n"), seats: 6, status: "ordering", since: t("tables.t4.since") },
+    { n: t("tables.t5.n"), seats: 2, status: "served" },
+    { n: t("tables.t6.n"), seats: 4, status: "open" },
+    { n: t("tables.t7.n"), seats: 8, status: "seated", since: t("tables.t7.since") },
+    { n: t("tables.t8.n"), seats: 4, status: "open" },
+  ];
+
+  const KITCHEN = [
+    { table: t("kitchen.k1.table"), time: t("kitchen.k1.time"), items: [t("kitchen.k1.item1"), t("kitchen.k1.item2"), t("kitchen.k1.item3")] },
+    { table: t("kitchen.k2.table"), time: t("kitchen.k2.time"), items: [t("kitchen.k2.item1"), t("kitchen.k2.item2")] },
+    { table: t("kitchen.k3.table"), time: t("kitchen.k3.time"), items: [t("kitchen.k3.item1"), t("kitchen.k3.item2"), t("kitchen.k3.item3")] },
+  ];
+
+  const STATUS_C: Record<string, { bg: string; fg: string; label: string }> = {
+    open: { bg: "#f4f1e6", fg: "#857c5e", label: t("status.open") },
+    seated: { bg: "#d8eecf", fg: "#3f6212", label: t("status.seated") },
+    ordering: { bg: "#fce8d4", fg: "#c2410c", label: t("status.ordering") },
+    served: { bg: "#dfe7f3", fg: "#1d4ed8", label: t("status.served") },
+  };
 
   return (
     <div
@@ -73,19 +75,19 @@ export function RestaurantDemo() {
               color: "white",
             }}
           >
-            <Utensils style={{ width: 18, height: 18 }} />
+            <ForkKnife size={18} weight="regular" />
           </div>
           <div>
-            <div style={{ fontFamily: "Georgia, serif", fontSize: 18, fontWeight: 700 }}>Tavola</div>
-            <div style={{ fontSize: 11, color: C.muted }}>Tue · Service open</div>
+            <div style={{ fontFamily: "Georgia, serif", fontSize: 18, fontWeight: 700 }}>{t("brand")}</div>
+            <div style={{ fontSize: 11, color: C.muted }}>{t("serviceStatus")}</div>
           </div>
         </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {[
-            { id: "floor", label: "Floor", Icon: Utensils },
-            { id: "kitchen", label: "Kitchen", Icon: ChefHat },
-            { id: "menu", label: "Menu", Icon: Check },
+            { id: "floor", label: t("nav.floor"), Icon: ForkKnife },
+            { id: "kitchen", label: t("nav.kitchen"), Icon: ChefHat },
+            { id: "menu", label: t("nav.menu"), Icon: Check },
           ].map((m) => {
             const active = view === m.id;
             return (
@@ -107,7 +109,7 @@ export function RestaurantDemo() {
                   cursor: "pointer",
                 }}
               >
-                <m.Icon style={{ width: 16, height: 16 }} />
+                <m.Icon size={16} weight="regular" />
                 {m.label}
               </button>
             );
@@ -116,12 +118,12 @@ export function RestaurantDemo() {
 
         <div style={{ marginTop: "auto", borderTop: `1px solid ${C.border}`, paddingTop: 14, fontSize: 12, color: C.muted }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-            <span>Covers today</span>
-            <span style={{ color: C.ink, fontWeight: 700 }}>84</span>
+            <span>{t("stats.coversToday")}</span>
+            <span style={{ color: C.ink, fontWeight: 700 }}>{t("stats.coversValue")}</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span>Avg ticket</span>
-            <span style={{ color: C.ink, fontWeight: 700 }}>$58</span>
+            <span>{t("stats.avgTicket")}</span>
+            <span style={{ color: C.ink, fontWeight: 700 }}>{t("stats.avgTicketValue")}</span>
           </div>
         </div>
       </aside>
@@ -130,14 +132,14 @@ export function RestaurantDemo() {
         <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
           <div>
             <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, fontWeight: 700 }}>
-              {view === "floor" ? "Floor plan" : view === "kitchen" ? "Kitchen display" : "Today's menu"}
+              {view === "floor" ? t("header.floorTitle") : view === "kitchen" ? t("header.kitchenTitle") : t("header.menuTitle")}
             </h1>
             <p style={{ color: C.muted, fontSize: 13 }}>
               {view === "floor"
-                ? "Tap a table to seat or check status."
+                ? t("header.floorSubtitle")
                 : view === "kitchen"
-                  ? "Live tickets, sorted by time on station."
-                  : "Edit prices, mark 86'd items, push to printers."}
+                  ? t("header.kitchenSubtitle")
+                  : t("header.menuSubtitle")}
             </p>
           </div>
           <button
@@ -155,17 +157,17 @@ export function RestaurantDemo() {
               cursor: "pointer",
             }}
           >
-            <Plus style={{ width: 14, height: 14 }} /> Seat walk-in
+            <Plus size={14} weight="regular" /> {t("seatWalkIn")}
           </button>
         </header>
 
         {view === "floor" && (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px,1fr))", gap: 14 }}>
-            {TABLES.map((t) => {
-              const s = STATUS_C[t.status];
+            {TABLES.map((tbl) => {
+              const s = STATUS_C[tbl.status];
               return (
                 <article
-                  key={t.n}
+                  key={tbl.n}
                   style={{
                     background: C.paper,
                     border: `1px solid ${C.border}`,
@@ -177,7 +179,7 @@ export function RestaurantDemo() {
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span style={{ fontWeight: 700, fontSize: 18 }}>{t.n}</span>
+                    <span style={{ fontWeight: 700, fontSize: 18 }}>{tbl.n}</span>
                     <span
                       style={{
                         background: s.bg,
@@ -193,10 +195,10 @@ export function RestaurantDemo() {
                       {s.label}
                     </span>
                   </div>
-                  <div style={{ color: C.muted, fontSize: 12 }}>{t.seats} seats</div>
-                  {t.since && (
+                  <div style={{ color: C.muted, fontSize: 12 }}>{tbl.seats} {t("seatsLabel")}</div>
+                  {tbl.since && (
                     <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: C.muted }}>
-                      <Clock style={{ width: 11, height: 11 }} /> {t.since}
+                      <Clock size={11} weight="regular" /> {tbl.since}
                     </div>
                   )}
                 </article>
@@ -221,7 +223,7 @@ export function RestaurantDemo() {
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
                   <span style={{ fontWeight: 700, fontSize: 18 }}>{k.table}</span>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: C.accent, fontSize: 12, fontWeight: 600 }}>
-                    <Clock style={{ width: 12, height: 12 }} /> {k.time}
+                    <Clock size={12} weight="regular" /> {k.time}
                   </span>
                 </div>
                 {k.items.map((i, idx) => (
@@ -243,7 +245,7 @@ export function RestaurantDemo() {
                     cursor: "pointer",
                   }}
                 >
-                  Mark fired
+                  {t("markFired")}
                 </button>
               </article>
             ))}
@@ -253,10 +255,10 @@ export function RestaurantDemo() {
         {view === "menu" && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
             {[
-              { cat: "Starters", items: ["Burrata · $16", "Bone marrow · $19", "Lamb tartare · $21"] },
-              { cat: "Pasta", items: ["Linguine vongole · $26", "Cacio e pepe · $22", "Wild boar ragu · $28"] },
-              { cat: "Mains", items: ["Half chicken · $32", "Côte de boeuf · $86", "Branzino · $38"] },
-              { cat: "Wine by glass", items: ["Sangiovese · $14", "Chablis · $16", "Etna Rosso · $18"] },
+              { cat: t("menu.starters.cat"), items: [t("menu.starters.item1"), t("menu.starters.item2"), t("menu.starters.item3")] },
+              { cat: t("menu.pasta.cat"), items: [t("menu.pasta.item1"), t("menu.pasta.item2"), t("menu.pasta.item3")] },
+              { cat: t("menu.mains.cat"), items: [t("menu.mains.item1"), t("menu.mains.item2"), t("menu.mains.item3")] },
+              { cat: t("menu.wine.cat"), items: [t("menu.wine.item1"), t("menu.wine.item2"), t("menu.wine.item3")] },
             ].map((s) => (
               <div key={s.cat} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18 }}>
                 <h3 style={{ fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 12, color: C.accent }}>{s.cat}</h3>

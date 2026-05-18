@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { Loader2, CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function ContactForm() {
+  const t = useTranslations("contact.form");
+  const tData = useTranslations("demoData");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
@@ -15,16 +18,27 @@ export function ContactForm() {
     setStatus("sent");
   }
 
+  const demoOptions = [
+    "china-agency",
+    "university",
+    "school",
+    "restaurant",
+    "accounting",
+    "hospital",
+    "gym",
+    "shopping",
+    "travel-agency",
+    "beauty-salon",
+  ];
+
   if (status === "sent") {
     return (
       <div className="rounded-2xl border border-success/30 bg-success/5 p-10 text-center">
         <CheckCircle2 className="mx-auto size-10 text-success" />
         <h3 className="mt-4 font-display text-xl font-bold text-fg">
-          Got it — a consultant is on it.
+          {t("successTitle")}
         </h3>
-        <p className="mt-2 text-sm text-muted">
-          Expect a personal reply within one business hour.
-        </p>
+        <p className="mt-2 text-sm text-muted">{t("successBody")}</p>
       </div>
     );
   }
@@ -36,7 +50,7 @@ export function ContactForm() {
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-medium text-fg">Your name</span>
+          <span className="text-sm font-medium text-fg">{t("name")}</span>
           <input
             required
             name="name"
@@ -45,7 +59,7 @@ export function ContactForm() {
           />
         </label>
         <label className="block">
-          <span className="text-sm font-medium text-fg">Work email</span>
+          <span className="text-sm font-medium text-fg">{t("email")}</span>
           <input
             required
             type="email"
@@ -56,38 +70,33 @@ export function ContactForm() {
         </label>
       </div>
       <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">Company (optional)</span>
+        <span className="text-sm font-medium text-fg">{t("company")}</span>
         <input
           name="company"
           className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
         />
       </label>
       <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">Which demo are you closest to?</span>
+        <span className="text-sm font-medium text-fg">{t("demoChooser")}</span>
         <select
           name="demo"
           className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg focus:border-primary focus:outline-none"
         >
-          <option value="">Not sure yet</option>
-          <option value="china-agency">Study-in-China Agency</option>
-          <option value="university">University Portal</option>
-          <option value="school">K-12 School Portal</option>
-          <option value="restaurant">Restaurant Operating System</option>
-          <option value="accounting">Accounting Suite</option>
-          <option value="hospital">Clinic &amp; Hospital Ops</option>
-          <option value="gym">Gym Membership Hub</option>
-          <option value="shopping">Storefront</option>
-          <option value="travel-agency">Travel Agency Platform</option>
-          <option value="beauty-salon">Beauty &amp; Spa Booking</option>
+          <option value="">{t("demoChooserNone")}</option>
+          {demoOptions.map((slug) => (
+            <option key={slug} value={slug}>
+              {tData(`${slug}.title`)}
+            </option>
+          ))}
         </select>
       </label>
       <label className="mt-4 block">
-        <span className="text-sm font-medium text-fg">What are you trying to build?</span>
+        <span className="text-sm font-medium text-fg">{t("message")}</span>
         <textarea
           required
           name="message"
           rows={5}
-          placeholder="Tell us the goal, the deadline, and one thing that's non-negotiable."
+          placeholder={t("messagePlaceholder")}
           className="mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm text-fg placeholder:text-subtle focus:border-primary focus:outline-none"
         />
       </label>
@@ -98,7 +107,7 @@ export function ContactForm() {
         className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-fg transition hover:bg-primary-hover disabled:opacity-60"
       >
         {status === "sending" && <Loader2 className="size-4 animate-spin" />}
-        Send the brief
+        {status === "sending" ? t("sending") : t("submit")}
       </button>
     </form>
   );

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { LayoutDashboard, Users, Sparkles, MessageSquare, LogOut } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -13,6 +13,8 @@ export default async function AdminLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("admin");
+  const tBrand = await getTranslations("brand");
 
   const profile = await getCurrentProfile();
   if (!profile)
@@ -20,10 +22,10 @@ export default async function AdminLayout({
   if (profile.role !== "admin") redirect(`/${locale}/account`);
 
   const NAV = [
-    { href: "/admin/dashboard", label: "Dashboard", Icon: LayoutDashboard },
-    { href: "/admin/users", label: "Users", Icon: Users },
-    { href: "/admin/demos", label: "Demos", Icon: Sparkles },
-    { href: "/admin/chats", label: "Chats", Icon: MessageSquare },
+    { href: "/admin/dashboard", label: t("nav.dashboard"), Icon: LayoutDashboard },
+    { href: "/admin/users", label: t("nav.users"), Icon: Users },
+    { href: "/admin/demos", label: t("nav.demos"), Icon: Sparkles },
+    { href: "/admin/chats", label: t("nav.chats"), Icon: MessageSquare },
   ];
 
   return (
@@ -35,9 +37,9 @@ export default async function AdminLayout({
               <Sparkles className="size-4" />
             </div>
             <div>
-              <div className="font-bold leading-tight">Pixelforge</div>
+              <div className="font-bold leading-tight">{tBrand("name")}</div>
               <div className="text-[10px] uppercase tracking-widest text-slate-400">
-                Admin
+                {t("sectionLabel")}
               </div>
             </div>
           </div>
@@ -61,7 +63,7 @@ export default async function AdminLayout({
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-800"
               >
                 <LogOut className="size-4" />
-                Log out
+                {t("nav.logout")}
               </button>
             </form>
           </div>

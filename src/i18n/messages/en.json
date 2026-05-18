@@ -18,6 +18,28 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   },
+  "common": {
+    "loading": "Loading…",
+    "empty": "Nothing here yet",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "language": "Language",
+    "theme": "Theme",
+    "lightTheme": "Light",
+    "darkTheme": "Dark",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "open": "Open",
+    "close": "Close",
+    "viewAll": "View all"
+  },
   "home": {
     "eyebrow": "Web agency",
     "hero": {
@@ -30,34 +52,100 @@
     "demosTitle": "See what we've already built",
     "demosLede": "Each demo is a real, working system. Open one and click through — that's exactly what you'll get.",
     "viewAll": "View all demos",
+    "popularBadge": "Popular",
     "process": {
       "title": "How a project runs",
       "lede": "No 50-page proposals. We re-skin a working demo to your brand, hook up real data, and hand over the keys.",
       "steps": [
-        { "title": "Pick a demo", "body": "Choose the system closest to what you need. Preview it live, share with your team." },
-        { "title": "Brief us in 20 min", "body": "We meet on a call, you tell us your brand, your data, and your must-haves." },
-        { "title": "We tailor it", "body": "Colors, copy, integrations, domains. You watch the staging site grow daily." },
-        { "title": "Launch & support", "body": "We ship to your domain, train your team, and keep the lights on for 60 days free." }
+        {
+          "title": "Pick a demo",
+          "body": "Choose the system closest to what you need. Preview it live, share with your team."
+        },
+        {
+          "title": "Brief us in 20 min",
+          "body": "We meet on a call, you tell us your brand, your data, and your must-haves."
+        },
+        {
+          "title": "We tailor it",
+          "body": "Colors, copy, integrations, domains. You watch the staging site grow daily."
+        },
+        {
+          "title": "Launch & support",
+          "body": "We ship to your domain, train your team, and keep the lights on for 60 days free."
+        }
       ]
     },
     "features": {
       "title": "What you get with every project",
       "items": [
-        { "title": "Your domain, your data", "body": "Everything runs under your name. No vendor lock, no shared tenants." },
-        { "title": "Multi-language ready", "body": "Built for English, Russian, and Tajik out of the box. Add more in a day." },
-        { "title": "Admin you can use", "body": "Dashboards your team will actually open, not a pile of CRUD tables." },
-        { "title": "Mobile-first", "body": "Every demo is tested on a phone before it ships. No half-broken mobile experience." },
-        { "title": "Real-time chat", "body": "Customers reach a human in seconds. Your team replies from one inbox." },
-        { "title": "Two-week lead time", "body": "Average ship from brief to launch. Faster than your last RFP cycle." }
+        {
+          "title": "Your domain, your data",
+          "body": "Everything runs under your name. No vendor lock, no shared tenants."
+        },
+        {
+          "title": "Multi-language ready",
+          "body": "Built for English, Russian, and Tajik out of the box. Add more in a day."
+        },
+        {
+          "title": "Admin you can use",
+          "body": "Dashboards your team will actually open, not a pile of CRUD tables."
+        },
+        {
+          "title": "Mobile-first",
+          "body": "Every demo is tested on a phone before it ships. No half-broken mobile experience."
+        },
+        {
+          "title": "Real-time chat",
+          "body": "Customers reach a human in seconds. Your team replies from one inbox."
+        },
+        {
+          "title": "Two-week lead time",
+          "body": "Average ship from brief to launch. Faster than your last RFP cycle."
+        }
       ]
     },
     "pricing": {
       "title": "Straight-line pricing",
       "lede": "No discovery-call carousel. Pick a tier; we start tomorrow.",
+      "popularBadge": "Most picked",
       "tiers": [
-        { "name": "Re-skin", "price": "from $900", "blurb": "Pick a demo, change brand + copy + 1 integration.", "bullets": ["Custom palette + fonts", "Your domain + email", "1 third-party integration", "30 days support"], "cta": "Start a re-skin" },
-        { "name": "Tailored", "price": "from $2,400", "blurb": "Re-skin plus your real data model, 3 integrations, role-based access.", "bullets": ["Everything in Re-skin", "Custom data fields", "3 integrations", "60 days support"], "cta": "Talk to a consultant", "highlight": true },
-        { "name": "Bespoke", "price": "from $6,000", "blurb": "We start from a demo but rebuild whatever you need from scratch.", "bullets": ["Custom flows + UI", "Unlimited integrations", "On-prem option", "12 months support"], "cta": "Request a quote" }
+        {
+          "name": "Re-skin",
+          "price": "from $900",
+          "blurb": "Pick a demo, change brand + copy + 1 integration.",
+          "bullets": [
+            "Custom palette + fonts",
+            "Your domain + email",
+            "1 third-party integration",
+            "30 days support"
+          ],
+          "cta": "Start a re-skin"
+        },
+        {
+          "name": "Tailored",
+          "price": "from $2,400",
+          "blurb": "Re-skin plus your real data model, 3 integrations, role-based access.",
+          "bullets": [
+            "Everything in Re-skin",
+            "Custom data fields",
+            "3 integrations",
+            "60 days support"
+          ],
+          "cta": "Talk to a consultant",
+          "highlight": true
+        },
+        {
+          "name": "Bespoke",
+          "price": "from $6,000",
+          "blurb": "We start from a demo but rebuild whatever you need from scratch.",
+          "bullets": [
+            "Custom flows + UI",
+            "Unlimited integrations",
+            "On-prem option",
+            "12 months support"
+          ],
+          "cta": "Request a quote"
+        }
       ]
     },
     "finalCta": {
@@ -67,6 +155,114 @@
       "secondary": "Sign up"
     }
   },
+  "about": {
+    "eyebrow": "About us",
+    "title": "We sold the same starter twice and never wrote the proposal again.",
+    "p1": "Pixelforge is a small studio that ships web systems in two-week cycles. We noticed every client kept describing the same software: bookings, a CRM, an admin, payments. So we built those once — really well — and now we re-skin them.",
+    "p2": "That means lower price, faster launch, and code that's been battle-tested across dozens of projects rather than written from zero on yours. We still tailor it: your colors, your data, your integrations. Only the boring stuff stays the same.",
+    "cards": {
+      "goal": {
+        "title": "Single goal",
+        "body": "Ship a working system, not a deck. Every meeting drives toward a staging link."
+      },
+      "team": {
+        "title": "Six people",
+        "body": "Two designers, three engineers, one PM. You'll know all six by name."
+      },
+      "speed": {
+        "title": "Two weeks",
+        "body": "Average from kickoff to launch. Larger scope still ships in 6-8 weeks."
+      }
+    },
+    "howWeWorkTitle": "How we work",
+    "steps": [
+      {
+        "label": "Pick a demo.",
+        "body": " Browse the gallery, open one in your browser, share with stakeholders. If something isn't there, tell us and we'll either add it or scope it as bespoke."
+      },
+      {
+        "label": "20-minute brief.",
+        "body": " One call, one shared doc. We finalize palette, copy, integrations, and the first three things we're cutting from your wishlist."
+      },
+      {
+        "label": "Daily staging.",
+        "body": " You get a link that updates every day. Comment inline, we ship the same afternoon."
+      },
+      {
+        "label": "Launch + 60 days.",
+        "body": " Production go-live and bug fixes for free. After that we offer a flat monthly retainer."
+      }
+    ]
+  },
+  "services": {
+    "title": "What we actually do",
+    "lede": "Every project includes the bullets below. Pick the ones you need on the quote; we'll skip the rest.",
+    "items": {
+      "branding": {
+        "title": "Brand + UI tailoring",
+        "body": "We re-skin one of our demos to your palette, typography, and tone. Includes a 30-page design review."
+      },
+      "hosting": {
+        "title": "Hosting + deployment",
+        "body": "We ship to Vercel, your VPS, or your existing cloud. SSL, domains, backups — handled."
+      },
+      "integrations": {
+        "title": "Integrations",
+        "body": "Stripe, payment.tj, Telegram bot, WhatsApp Business, Twilio, your accounting software, REST/GraphQL APIs."
+      },
+      "data": {
+        "title": "Custom data model",
+        "body": "Need fields the demo doesn't have? We add them, with admin UI and proper validation, in the first week."
+      },
+      "i18n": {
+        "title": "Multi-language",
+        "body": "Russian and Tajik built in. We can add Uzbek, Arabic, or any RTL language with a day of localization."
+      },
+      "compliance": {
+        "title": "Compliance + audit",
+        "body": "GDPR-ready data export, role-based access control, audit log, and a security report on launch."
+      }
+    },
+    "ctaTitle": "Not sure which service fits?",
+    "ctaLede": "Open a demo, tell us what's missing. We'll send a quote in 24 hours.",
+    "ctaPrimary": "Browse demos",
+    "ctaSecondary": "Contact us"
+  },
+  "pricing": {
+    "includedTitle": "What's included on every tier",
+    "included": [
+      "Source code ownership",
+      "Postgres database",
+      "Daily backups",
+      "Free SSL + domain pointing",
+      "60-day post-launch support",
+      "Mobile-first responsive design",
+      "WCAG AA accessibility pass",
+      "Lighthouse 90+ performance"
+    ]
+  },
+  "contact": {
+    "title": "Tell us what you need",
+    "lede": "One reply within an hour, even on weekends. No sales funnels.",
+    "form": {
+      "name": "Your name",
+      "email": "Work email",
+      "company": "Company (optional)",
+      "demoChooser": "Which demo are you closest to?",
+      "demoChooserNone": "Not sure yet",
+      "message": "What are you trying to build?",
+      "messagePlaceholder": "Tell us the goal, the deadline, and one thing that's non-negotiable.",
+      "submit": "Send the brief",
+      "sending": "Sending…",
+      "successTitle": "Got it — a consultant is on it.",
+      "successBody": "Expect a personal reply within one business hour."
+    },
+    "directTitle": "Direct lines",
+    "location": "Dushanbe, Tajikistan",
+    "hours": "Mon–Fri, 09:00–19:00 (GMT+5)",
+    "hurryTitle": "In a hurry?",
+    "hurryBody": "Sign up and open the chat widget in the bottom right of any page — a consultant will pick up within an hour."
+  },
   "demos": {
     "title": "Our demo systems",
     "lede": "Each demo is a fully built, click-through system. The one you pick becomes the foundation of your project.",
@@ -74,8 +270,147 @@
     "details": "View details",
     "back": "Back to demos",
     "openPreview": "Open live preview",
-    "youGet": "Whatcomes with this demo",
-    "startingFrom": "Starting from"
+    "youGet": "What comes with this demo",
+    "startingFrom": "Starting from",
+    "includesNote": "Includes re-skin, your domain, one integration, 30 days support.",
+    "talkToConsultant": "Talk to a consultant",
+    "preview_header": {
+      "backToDetail": "Back to {name}",
+      "livePreviewLabel": "Live preview · {name}",
+      "getThisOne": "Get this one"
+    }
+  },
+  "demoData": {
+    "china-agency": {
+      "title": "Study-in-China Agency",
+      "tagline": "Send students to top Chinese universities",
+      "category": "Education",
+      "description": "End-to-end CRM for agencies that place students at Chinese universities — applications, document tracking, visa workflow, commission reports.",
+      "features": [
+        "Application pipeline",
+        "Document vault",
+        "Visa tracker",
+        "Partner universities",
+        "Commission reports"
+      ]
+    },
+    "university": {
+      "title": "University Portal",
+      "tagline": "Student information system for higher ed",
+      "category": "Education",
+      "description": "Course catalog, enrollment, gradebook, faculty hub, and student self-service for universities.",
+      "features": [
+        "Course catalog",
+        "Enrollment",
+        "Gradebook",
+        "Faculty portal",
+        "Self-service"
+      ]
+    },
+    "school": {
+      "title": "K-12 School Portal",
+      "tagline": "School management for parents, teachers, students",
+      "category": "Education",
+      "description": "Attendance, gradebook, homework, parent messaging, and bus tracking for primary and secondary schools.",
+      "features": [
+        "Attendance",
+        "Gradebook",
+        "Homework",
+        "Parent chat",
+        "Reports"
+      ]
+    },
+    "restaurant": {
+      "title": "Restaurant Operating System",
+      "tagline": "Tables, orders, kitchen display, reservations",
+      "category": "Hospitality",
+      "description": "Floor plan, table-side ordering, KDS, reservation book, and end-of-day reports for full-service restaurants.",
+      "features": [
+        "Tables",
+        "Orders",
+        "KDS",
+        "Reservations",
+        "Reports"
+      ]
+    },
+    "accounting": {
+      "title": "Accounting Suite",
+      "tagline": "Bookkeeping, invoices, reports",
+      "category": "Finance",
+      "description": "Double-entry bookkeeping, invoicing, expense tracking, and audit-ready financial reports.",
+      "features": [
+        "Ledger",
+        "Invoices",
+        "Expenses",
+        "VAT",
+        "Reports"
+      ]
+    },
+    "hospital": {
+      "title": "Clinic & Hospital Ops",
+      "tagline": "Patients, appointments, EMR-lite",
+      "category": "Healthcare",
+      "description": "Patient registry, appointments, prescriptions, lab results, and billing for clinics and small hospitals.",
+      "features": [
+        "Patients",
+        "Appointments",
+        "Prescriptions",
+        "Lab",
+        "Billing"
+      ]
+    },
+    "gym": {
+      "title": "Gym Membership Hub",
+      "tagline": "Memberships, classes, trainers",
+      "category": "Fitness",
+      "description": "Member CRM, class scheduling, trainer assignments, and check-in kiosk for gyms and studios.",
+      "features": [
+        "Members",
+        "Classes",
+        "Trainers",
+        "Check-in",
+        "Payments"
+      ]
+    },
+    "shopping": {
+      "title": "Storefront",
+      "tagline": "Modern e-commerce front + admin",
+      "category": "Commerce",
+      "description": "Product catalog, cart, checkout, order management, and inventory for online stores.",
+      "features": [
+        "Catalog",
+        "Cart",
+        "Checkout",
+        "Orders",
+        "Inventory"
+      ]
+    },
+    "travel-agency": {
+      "title": "Travel Agency Platform",
+      "tagline": "Tours, bookings, itineraries",
+      "category": "Travel",
+      "description": "Tour catalog, multi-room bookings, itinerary builder, and traveler CRM for agencies.",
+      "features": [
+        "Tours",
+        "Bookings",
+        "Itinerary",
+        "CRM",
+        "Payments"
+      ]
+    },
+    "beauty-salon": {
+      "title": "Beauty & Spa Booking",
+      "tagline": "Appointments, services, stylists",
+      "category": "Beauty",
+      "description": "Service menu, stylist calendars, online booking, and client history for salons and spas.",
+      "features": [
+        "Services",
+        "Calendar",
+        "Stylists",
+        "Clients",
+        "SMS"
+      ]
+    }
   },
   "auth": {
     "signup": {
@@ -101,12 +436,16 @@
       "submit": "Log in",
       "noAccount": "Don't have an account?",
       "signupLink": "Get started",
-      "forgot": "Forgot password?"
+      "forgot": "Forgot password?",
+      "confirmEmailBanner": "Check your email to confirm your account, then log in.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
     },
     "errors": {
       "generic": "Something went wrong. Please try again.",
       "invalidCredentials": "Email or password is incorrect.",
-      "emailInUse": "An account with this email already exists."
+      "emailInUse": "An account with this email already exists.",
+      "validation": "Please fill all required fields correctly."
     }
   },
   "chat": {
@@ -125,43 +464,97 @@
     "noConversations": "No conversations yet",
     "loginToChat": "Log in to start chatting",
     "openInbox": "Open inbox",
-    "loadMore": "Load earlier messages"
+    "loadMore": "Load earlier messages",
+    "signIn": "Sign in",
+    "openWidget": "Open chat",
+    "closeWidget": "Close chat",
+    "offlinePreview": "Chat is offline in this preview. Configure Supabase to enable."
+  },
+  "account": {
+    "greeting": "Hi, {name}",
+    "browseDemosTitle": "Browse demos",
+    "browseDemosBody": "Pick the system closest to what you need.",
+    "browseDemosCta": "Open gallery",
+    "chatTitle": "Chat with a consultant",
+    "chatBody": "Average reply time: under 1 hour.",
+    "chatCta": "Open chat",
+    "backToAccount": "Back to account"
   },
   "consultant": {
+    "sectionLabel": "Consultant",
     "inboxTitle": "Inbox",
+    "openConversationsCount": "{count, plural, =0 {No open conversations} one {# open conversation} other {# open conversations}}",
     "pendingApproval": "Your consultant account is awaiting admin approval. You'll get an email when it's active.",
     "rejected": "Your consultant application was declined. Contact admin@pixelforge.dev for details.",
+    "pendingTitle": "Awaiting approval",
+    "rejectedTitle": "Application declined",
+    "emptyInbox": "No conversations yet. New customer messages will show up here in real time.",
+    "newConvSubject": "New conversation",
+    "customerFallback": "Customer",
+    "backToInbox": "Back to inbox",
     "openThreads": "Open",
     "myThreads": "Mine",
     "all": "All"
   },
   "admin": {
-    "dashboard": "Dashboard",
-    "users": "Users",
-    "demos": "Demos",
-    "chats": "Chats",
-    "approve": "Approve",
-    "reject": "Reject",
-    "revoke": "Revoke",
-    "totalUsers": "Total users",
-    "openChats": "Open chats",
-    "approvedConsultants": "Approved consultants",
-    "demoToggle": "Enabled"
-  },
-  "common": {
-    "loading": "Loading…",
-    "empty": "Nothing here yet",
-    "error": "Something went wrong",
-    "retry": "Try again",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "search": "Search",
-    "language": "Language",
-    "theme": "Theme",
-    "lightTheme": "Light",
-    "darkTheme": "Dark"
+    "sectionLabel": "Admin",
+    "nav": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "demos": "Demos",
+      "chats": "Chats",
+      "logout": "Log out"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "lede": "Snapshot across the platform — auto-refreshes every page load.",
+      "totalUsers": "Total users",
+      "openChats": "Open chats",
+      "approvedConsultants": "Approved consultants",
+      "liveDemos": "Live demos",
+      "quickActionsTitle": "Quick actions",
+      "quickActions": [
+        "Approve pending consultant accounts on the Users page",
+        "Disable demos that are out of inventory on the Demos page",
+        "Inspect any conversation on the Chats page (read-only)",
+        "Promote a user to admin via the Users page"
+      ]
+    },
+    "users": {
+      "title": "Users",
+      "lede": "Approve consultant applications, manage roles.",
+      "columns": {
+        "user": "User",
+        "role": "Role",
+        "status": "Status",
+        "joined": "Joined"
+      },
+      "empty": "No users yet. Sign up to populate this list.",
+      "approve": "Approve",
+      "reject": "Reject",
+      "statusPending": "pending"
+    },
+    "demos": {
+      "title": "Demos",
+      "lede": "Toggle which demos appear publicly. Pricing edits sync to the gallery instantly.",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "chats": {
+      "title": "Conversations",
+      "lede": "Read-only audit view of every chat. Last 50 by activity.",
+      "columns": {
+        "customer": "Customer",
+        "consultant": "Consultant",
+        "status": "Status",
+        "lastActive": "Last active"
+      },
+      "empty": "No conversations yet.",
+      "unassigned": "Unassigned",
+      "tip": "Tip: ",
+      "openInboxLink": "Open the consultant inbox",
+      "tipAfter": " to reply as a participant."
+    }
   },
   "footer": {
     "tagline": "Web systems, shipped in two weeks.",
@@ -173,6 +566,751 @@
     "terms": "Terms",
     "newsletter": "Get a monthly note on what we shipped",
     "newsletterCta": "Subscribe",
-    "rights": "All rights reserved."
+    "newsletterPlaceholder": "you@company.com",
+    "rights": "All rights reserved.",
+    "socialAria": {
+      "code": "Source code",
+      "updates": "Updates",
+      "network": "Network",
+      "email": "Email"
+    }
+  },
+  "demoPreview": {
+    "accounting": {
+      "brand": "Ledgerly",
+      "fiscalPeriod": "FY 2026 · Q2",
+      "nav": {
+        "ledger": "Ledger",
+        "invoices": "Invoices",
+        "reports": "Reports"
+      },
+      "stats": {
+        "revenueMTD": "Revenue MTD",
+        "expensesMTD": "Expenses MTD",
+        "outstandingAR": "Outstanding A/R",
+        "cashOnHand": "Cash on hand"
+      },
+      "invoices": {
+        "title": "Invoices",
+        "newInvoice": "+ New invoice",
+        "col": {
+          "number": "Number",
+          "client": "Client",
+          "due": "Due",
+          "amount": "Amount",
+          "status": "Status"
+        }
+      },
+      "status": {
+        "paid": "Paid",
+        "sent": "Sent",
+        "overdue": "Overdue",
+        "draft": "Draft"
+      },
+      "clients": {
+        "helios": "Helios Foods LLC",
+        "parkEight": "Park & Eight",
+        "northbound": "Northbound Mfg",
+        "ridgeSons": "Ridge & Sons Ltd",
+        "lumen": "Lumen Studios"
+      },
+      "dates": {
+        "apr18": "Apr 18",
+        "may02": "May 02",
+        "apr10": "Apr 10",
+        "apr22": "Apr 22"
+      },
+      "ledger": {
+        "title": "Recent transactions",
+        "dates": {
+          "may17": "May 17",
+          "may16": "May 16",
+          "may15": "May 15"
+        },
+        "tx": {
+          "heliosWire": "Helios Foods · Wire",
+          "stripePayout": "Stripe payout",
+          "awsInvoice": "AWS · May invoice",
+          "payroll": "Payroll · biweekly",
+          "lumenAch": "Lumen Studios · ACH"
+        }
+      },
+      "reports": {
+        "title": "Profit & Loss · YTD",
+        "months": {
+          "jan": "Jan",
+          "feb": "Feb",
+          "mar": "Mar",
+          "apr": "Apr",
+          "may": "May"
+        },
+        "legend": {
+          "revenue": "Revenue",
+          "expenses": "Expenses"
+        },
+        "exportPdf": "Export PDF"
+      }
+    },
+    "beauty-salon": {
+      "brand": {
+        "name": "Maison Mira",
+        "tagline": "Hair · Skin · Mood"
+      },
+      "nav": {
+        "signIn": "Sign in"
+      },
+      "hero": {
+        "eyebrow": "✿ Spring slots open",
+        "title": "Two stylists, one mirror, your best hair day.",
+        "subtitle": "Pick a service. Pick a time. We'll text you the directions."
+      },
+      "services": {
+        "heading": "Choose a service",
+        "withStylist": "with {stylist}",
+        "signatureCut": {
+          "name": "Signature Cut & Style",
+          "duration": "60 min"
+        },
+        "balayageFull": {
+          "name": "Balayage · Full",
+          "duration": "150 min"
+        },
+        "colorRefresh": {
+          "name": "Color Refresh",
+          "duration": "75 min"
+        },
+        "bridalTrial": {
+          "name": "Bridal Trial",
+          "duration": "90 min"
+        },
+        "expressBlowout": {
+          "name": "Express Blowout",
+          "duration": "30 min"
+        },
+        "keratinSmoothing": {
+          "name": "Keratin Smoothing",
+          "duration": "180 min"
+        }
+      },
+      "stylists": {
+        "nora": "Nora",
+        "mara": "Mara",
+        "liv": "Liv"
+      },
+      "booking": {
+        "heading": "Your booking",
+        "serviceLabel": "Service",
+        "servicePlaceholder": "Choose a service →",
+        "dateLabel": "Saturday · May 22",
+        "confirmButton": "Confirm appointment",
+        "noCard": "No-card-required. Confirm by SMS."
+      }
+    },
+    "china-agency": {
+      "brand": "东风 · Eastwind",
+      "tagline": "STUDY-IN-CHINA AGENCY · CRM",
+      "nav": {
+        "pipeline": "Pipeline",
+        "students": "Students"
+      },
+      "stats": {
+        "activeApplicants": "Active applicants",
+        "offersIssued": "Offers issued",
+        "departuresQ3": "Departures Q3",
+        "partnerUniversities": "Partner universities"
+      },
+      "pipeline": {
+        "title": "Application pipeline",
+        "inquiry": "Inquiry",
+        "documents": "Documents",
+        "application": "Application",
+        "offer": "Offer",
+        "visa": "Visa",
+        "departed": "Departed",
+        "studentLabel": "Student",
+        "daysLabel": "{days} days"
+      },
+      "stages": {
+        "visa": "Visa",
+        "offer": "Offer",
+        "application": "Application",
+        "documents": "Documents"
+      },
+      "students": {
+        "0": {
+          "name": "Aslan Karimov",
+          "uni": "Tsinghua University",
+          "track": "Computer Science · Bachelor"
+        },
+        "1": {
+          "name": "Mehrangiz N.",
+          "uni": "Peking University",
+          "track": "International Trade · Master"
+        },
+        "2": {
+          "name": "Dilshod R.",
+          "uni": "Fudan University",
+          "track": "Medicine · Bachelor"
+        },
+        "3": {
+          "name": "Aziza T.",
+          "uni": "Zhejiang University",
+          "track": "Business · Master"
+        },
+        "title": "Active applicants",
+        "addButton": "+ Add student",
+        "daysInStage": "{days}d in stage"
+      },
+      "cta": {
+        "title": "September intake closing in 18 days",
+        "subtitle": "9 applications still awaiting visa documents",
+        "button": "Send reminders"
+      }
+    },
+    "gym": {
+      "brand": "IRON / PARK",
+      "tagline": "Coach console",
+      "nav": {
+        "today": "Today",
+        "members": "Members",
+        "kpis": "KPIs"
+      },
+      "stats": {
+        "activeMembers": {
+          "label": "Active members",
+          "sub": "+12 this week"
+        },
+        "bookingsToday": {
+          "label": "Bookings today",
+          "sub": "32 walk-ins"
+        },
+        "checkInsLive": {
+          "label": "Check-ins live",
+          "sub": "Peak: 84 @ 18:00"
+        },
+        "revenueMtd": {
+          "label": "Revenue MTD",
+          "sub": "+8% vs last"
+        }
+      },
+      "today": {
+        "heading": "Today's classes",
+        "coachPrefix": "Coach",
+        "booked": "booked",
+        "left": "left",
+        "full": "Full",
+        "book": "Book"
+      },
+      "classes": {
+        "hiitBurner": "HIIT Burner",
+        "powerHour": "Power Hour",
+        "lunchMobility": "Lunch Mobility",
+        "strengthLab": "Strength Lab",
+        "boxingFoundations": "Boxing Foundations",
+        "coolDownYoga": "Cool Down Yoga"
+      },
+      "coaches": {
+        "alex": "Alex",
+        "mira": "Mira",
+        "sam": "Sam",
+        "jordan": "Jordan"
+      },
+      "members": {
+        "heading": "Recent members",
+        "dayPrefix": "Day",
+        "list": {
+          "tatiana": "Tatiana K.",
+          "marcus": "Marcus L.",
+          "anya": "Anya P.",
+          "daler": "Daler R.",
+          "maya": "Maya O.",
+          "sergei": "Sergei T."
+        },
+        "plans": {
+          "proAnnual": "Pro · Annual",
+          "liteMonthly": "Lite · Monthly",
+          "proQuarterly": "Pro · Quarterly",
+          "dropIn": "Drop-in"
+        },
+        "status": {
+          "active": "Active",
+          "pending": "Pending",
+          "new": "New",
+          "expiring": "Expiring"
+        }
+      },
+      "kpi": {
+        "heading": "This month",
+        "caption": "Daily check-ins · Last 14 days"
+      }
+    },
+    "hospital": {
+      "brand": {
+        "name": "Cedar Clinic",
+        "doctor": "Dr. Hassan · Family"
+      },
+      "nav": {
+        "schedule": "Schedule",
+        "activePatient": "Active patient"
+      },
+      "load": {
+        "title": "Today's load",
+        "booked": "Booked",
+        "seen": "Seen",
+        "noShows": "No-shows"
+      },
+      "schedule": {
+        "title": "Tuesday, May 18",
+        "subtitle": "14 appointments · 4 unsigned charts from yesterday",
+        "room": "Room {room}",
+        "openChart": "Open chart"
+      },
+      "status": {
+        "waiting": "Waiting",
+        "inRoom": "In room",
+        "scheduled": "Scheduled"
+      },
+      "appointments": {
+        "0": {
+          "patient": "Aslan K., 42",
+          "reason": "Follow-up · diabetes"
+        },
+        "1": {
+          "patient": "Mehri T., 34",
+          "reason": "Annual physical"
+        },
+        "2": {
+          "patient": "Daler R., 67",
+          "reason": "Cardiology consult"
+        },
+        "3": {
+          "patient": "Aziza N., 29",
+          "reason": "Prenatal week 32"
+        },
+        "4": {
+          "patient": "Karim S., 51",
+          "reason": "Back pain · MRI review"
+        }
+      },
+      "patient": {
+        "initials": "MT",
+        "name": "Mehri Tursunova",
+        "meta": "F · 34 yrs · MRN 008142 · No known allergies",
+        "lastVisit": "Last visit",
+        "lastVisitDate": "Mar 04, 2026"
+      },
+      "stats": {
+        "hr": {
+          "label": "HR",
+          "value": "72 bpm"
+        },
+        "bp": {
+          "label": "BP",
+          "value": "118/76"
+        },
+        "meds": {
+          "label": "Active meds",
+          "value": "2"
+        },
+        "notes": {
+          "label": "Notes (12mo)",
+          "value": "8"
+        }
+      },
+      "notes": {
+        "0": {
+          "date": "Mar 04",
+          "note": "Routine physical. BMI in range. Recommended iron supplement."
+        },
+        "1": {
+          "date": "Jan 12",
+          "note": "URI symptoms x 5 days. Conservative care, no antibiotics."
+        },
+        "2": {
+          "date": "Nov 22, 2025",
+          "note": "Annual blood work — within normal limits."
+        },
+        "title": "Recent notes"
+      }
+    },
+    "restaurant": {
+      "brand": "Tavola",
+      "serviceStatus": "Tue · Service open",
+      "nav": {
+        "floor": "Floor",
+        "kitchen": "Kitchen",
+        "menu": "Menu"
+      },
+      "stats": {
+        "coversToday": "Covers today",
+        "coversValue": "84",
+        "avgTicket": "Avg ticket",
+        "avgTicketValue": "$58"
+      },
+      "header": {
+        "floorTitle": "Floor plan",
+        "kitchenTitle": "Kitchen display",
+        "menuTitle": "Today's menu",
+        "floorSubtitle": "Tap a table to seat or check status.",
+        "kitchenSubtitle": "Live tickets, sorted by time on station.",
+        "menuSubtitle": "Edit prices, mark 86'd items, push to printers."
+      },
+      "seatWalkIn": "Seat walk-in",
+      "seatsLabel": "seats",
+      "markFired": "Mark fired",
+      "status": {
+        "open": "Open",
+        "seated": "Seated",
+        "ordering": "Ordering",
+        "served": "Served"
+      },
+      "tables": {
+        "t1": {
+          "n": "T1"
+        },
+        "t2": {
+          "n": "T2"
+        },
+        "t3": {
+          "n": "T3",
+          "since": "12m"
+        },
+        "t4": {
+          "n": "T4",
+          "since": "5m"
+        },
+        "t5": {
+          "n": "T5"
+        },
+        "t6": {
+          "n": "T6"
+        },
+        "t7": {
+          "n": "T7",
+          "since": "32m"
+        },
+        "t8": {
+          "n": "T8"
+        }
+      },
+      "kitchen": {
+        "k1": {
+          "table": "T4",
+          "time": "5m",
+          "item1": "Burrata · 1",
+          "item2": "Lamb tartare · 1",
+          "item3": "Linguine vongole · 2"
+        },
+        "k2": {
+          "table": "T7",
+          "time": "8m",
+          "item1": "Bone marrow · 2",
+          "item2": "Wood-fired pizza ×2"
+        },
+        "k3": {
+          "table": "T3",
+          "time": "11m",
+          "item1": "Half chicken · 1",
+          "item2": "Risotto · 1",
+          "item3": "Side spinach · 2"
+        }
+      },
+      "menu": {
+        "starters": {
+          "cat": "Starters",
+          "item1": "Burrata · $16",
+          "item2": "Bone marrow · $19",
+          "item3": "Lamb tartare · $21"
+        },
+        "pasta": {
+          "cat": "Pasta",
+          "item1": "Linguine vongole · $26",
+          "item2": "Cacio e pepe · $22",
+          "item3": "Wild boar ragu · $28"
+        },
+        "mains": {
+          "cat": "Mains",
+          "item1": "Half chicken · $32",
+          "item2": "Côte de boeuf · $86",
+          "item3": "Branzino · $38"
+        },
+        "wine": {
+          "cat": "Wine by glass",
+          "item1": "Sangiovese · $14",
+          "item2": "Chablis · $16",
+          "item3": "Etna Rosso · $18"
+        }
+      }
+    },
+    "school": {
+      "brand": "Sunny Hills · Parent Portal",
+      "brandSub": "Grade 5 · Mrs. Petrova",
+      "busStatus": "Bus 7 · 5 min away",
+      "tabs": {
+        "home": "Home",
+        "homework": "Homework",
+        "grades": "Grades"
+      },
+      "home": {
+        "greeting": "Good morning, Karim 👋",
+        "subGreeting": "Mom checked you in 3 minutes ago. Math homework is due tomorrow."
+      },
+      "stats": {
+        "attendance": "Today's attendance",
+        "attendanceValue": "Present",
+        "stars": "Stars this week",
+        "starsValue": "12 ⭐",
+        "overdue": "Overdue",
+        "overdueValue": "0"
+      },
+      "schedule": {
+        "title": "Today's schedule",
+        "math": "Math · Multiplication tables",
+        "english": "English · Reading aloud",
+        "recess": "Recess",
+        "science": "Science · Plants & soil",
+        "lunch": "Lunch",
+        "art": "Art · Spring posters"
+      },
+      "note": {
+        "title": "Note from Mrs. Petrova",
+        "body": "Reminder: bring a labelled water bottle for tomorrow's field trip to the planetarium."
+      },
+      "homework": {
+        "title": "Homework",
+        "duePrefix": "Due",
+        "subjects": {
+          "math": "Math",
+          "english": "English",
+          "science": "Science",
+          "art": "Art"
+        },
+        "items": {
+          "math": "Tables of 6 and 7 — pages 24-25",
+          "english": "Read 'The Lost Kite' chapter 3",
+          "science": "Plant cuttings observation log",
+          "art": "Bring magazines for collage"
+        },
+        "due": {
+          "tomorrow": "Tomorrow",
+          "friday": "Friday",
+          "may23": "Mon May 23",
+          "may25": "Wed May 25"
+        }
+      },
+      "grades": {
+        "title": "This term so far",
+        "vsLastTerm": "vs last term",
+        "subjects": {
+          "math": "Math",
+          "english": "English",
+          "science": "Science",
+          "art": "Art",
+          "pe": "P.E.",
+          "music": "Music"
+        }
+      }
+    },
+    "shopping": {
+      "brand": "maison&moss",
+      "nav": {
+        "homeGoods": "Home goods",
+        "apparel": "Apparel",
+        "studio": "Studio",
+        "journal": "Journal"
+      },
+      "search": {
+        "placeholder": "Search 2,134 items"
+      },
+      "aria": {
+        "cart": "Cart",
+        "save": "Save",
+        "close": "Close",
+        "decrease": "Decrease",
+        "increase": "Increase"
+      },
+      "hero": {
+        "eyebrow": "Spring drop · 03",
+        "title": "Pieces that age beautifully, on shelves and on people.",
+        "description": "Small-batch goods from independent makers we visit personally. Shipped flat-rate, returned free, kept forever.",
+        "cta": "Shop the drop"
+      },
+      "grid": {
+        "title": "This week's picks",
+        "showing": "Showing 6 of 24"
+      },
+      "product": {
+        "inStock": "in stock",
+        "add": "Add"
+      },
+      "products": {
+        "coralLinenTote": "Coral Linen Tote",
+        "stonewarePourSet": "Stoneware Pour Set",
+        "cedarWalkingLamp": "Cedar Walking Lamp",
+        "oliveQuiltedThrow": "Olive Quilted Throw",
+        "woolLoaferSand": "Wool Loafer · Sand",
+        "almondMugPair": "Almond Mug Pair"
+      },
+      "tags": {
+        "new": "New",
+        "best": "Best",
+        "limited": "Limited"
+      },
+      "cart": {
+        "title": "Your cart",
+        "empty": "Cart is empty.",
+        "subtotal": "Subtotal",
+        "checkout": "Checkout"
+      }
+    },
+    "travel-agency": {
+      "brand": {
+        "name": "Silk Road Trails",
+        "tagline": "Tour operator"
+      },
+      "nav": {
+        "discover": "Discover tours",
+        "bookings": "Bookings"
+      },
+      "search": {
+        "from": "From",
+        "fromValue": "Dushanbe",
+        "destination": "Destination",
+        "destinationValue": "Anywhere",
+        "departure": "Departure",
+        "departureValue": "Jun 12, 2026",
+        "travelers": "Travelers",
+        "travelersValue": "2 adults",
+        "button": "Search"
+      },
+      "featured": {
+        "heading": "Featured tours this month",
+        "bestseller": "Bestseller",
+        "fromPrefix": "From",
+        "fromLabel": "From",
+        "reviews": "reviews",
+        "view": "View"
+      },
+      "tours": {
+        "pamir": {
+          "title": "Pamir Highway · 9 days",
+          "from": "Dushanbe"
+        },
+        "samarkand": {
+          "title": "Samarkand & Bukhara · 6 days",
+          "from": "Tashkent"
+        },
+        "iskanderkul": {
+          "title": "Iskanderkul Lake · 3 days",
+          "from": "Dushanbe"
+        },
+        "wakhan": {
+          "title": "Wakhan Valley · 7 days",
+          "from": "Khorog"
+        }
+      },
+      "bookings": {
+        "heading": "Recent bookings",
+        "items": {
+          "samarkandShort": "Samarkand & Bukhara",
+          "iskanderkulShort": "Iskanderkul Lake",
+          "wakhanShort": "Wakhan Valley"
+        },
+        "status": {
+          "confirmed": "Confirmed",
+          "pendingPayment": "Pending payment",
+          "quoteSent": "Quote sent"
+        }
+      }
+    },
+    "university": {
+      "brand": "Westmoor University",
+      "brandSubtitle": "Faculty Portal · Spring 2026",
+      "userInitials": "MH",
+      "userName": "Dr. Mira Hassan",
+      "nav": {
+        "dashboard": "Dashboard",
+        "courses": "My Courses",
+        "grades": "Gradebook"
+      },
+      "dashboard": {
+        "welcome": "Welcome back, Dr. Hassan.",
+        "summary": "You have 4 active courses, 12 ungraded assignments, and an office-hour request.",
+        "upNext": "Up next"
+      },
+      "stats": {
+        "courses": "Courses",
+        "students": "Students",
+        "hoursThisWeek": "Hours this week",
+        "avgRating": "Avg. course rating"
+      },
+      "upNext": {
+        "row1": {
+          "time": "Today · 10:00",
+          "event": "CS401 Lecture · Lewin Hall 204"
+        },
+        "row2": {
+          "time": "Today · 14:30",
+          "event": "Office hours · Room 312"
+        },
+        "row3": {
+          "time": "Tomorrow · 09:00",
+          "event": "Faculty meeting · East Wing"
+        },
+        "row4": {
+          "time": "Tomorrow · 11:00",
+          "event": "BIO302 Seminar · Science Wing L3"
+        }
+      },
+      "coursesPage": {
+        "title": "My courses",
+        "enrolled": "{count} enrolled",
+        "openCourse": "Open course"
+      },
+      "courses": {
+        "cs401": {
+          "name": "Distributed Systems",
+          "prof": "Dr. M. Hassan",
+          "room": "Lewin Hall · 204",
+          "time": "Mon · 10:00"
+        },
+        "econ210": {
+          "name": "Macroeconomic Theory",
+          "prof": "Prof. A. Volkov",
+          "room": "Babbage Block · 12",
+          "time": "Tue · 14:00"
+        },
+        "phil150": {
+          "name": "Ethics in Practice",
+          "prof": "Dr. F. Okafor",
+          "room": "Old Library · 1",
+          "time": "Wed · 09:00"
+        },
+        "bio302": {
+          "name": "Molecular Biology",
+          "prof": "Dr. K. Sato",
+          "room": "Science Wing · L3",
+          "time": "Thu · 11:00"
+        }
+      },
+      "gradebook": {
+        "title": "Gradebook · CS401",
+        "col": {
+          "student": "Student",
+          "hw1": "HW1",
+          "hw2": "HW2",
+          "mid": "Mid",
+          "final": "Final",
+          "average": "Average"
+        },
+        "students": {
+          "s1": "Aslan K.",
+          "s2": "Bermet J.",
+          "s3": "Chen W.",
+          "s4": "Diyora N.",
+          "s5": "Erlan S."
+        }
+      }
+    }
   }
 }

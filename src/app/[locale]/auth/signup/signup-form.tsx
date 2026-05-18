@@ -11,6 +11,7 @@ const initial: SignupState = { ok: false };
 export function SignupForm({ locale }: { locale: string }) {
   const t = useTranslations("auth.signup");
   const tErr = useTranslations("auth.errors");
+  const tLogin = useTranslations("auth.login");
   const [state, action, pending] = useActionState(signupAction, initial);
   const [show, setShow] = useState(false);
   const [role, setRole] = useState<"customer" | "consultant">("customer");
@@ -55,7 +56,7 @@ export function SignupForm({ locale }: { locale: string }) {
           <button
             type="button"
             onClick={() => setShow((s) => !s)}
-            aria-label={show ? "Hide password" : "Show password"}
+            aria-label={show ? tLogin("hidePassword") : tLogin("showPassword")}
             className="absolute right-2 top-1/2 -translate-y-1/2 grid size-7 place-items-center rounded-md text-muted hover:bg-surface-2"
           >
             {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}

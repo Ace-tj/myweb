@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   PIXELFORGE — Refined Editorial design system
+   Warm cream canvas · deep ink · terracotta accent · moss secondary
+   Serif display (Fraunces) + clean body (Inter Tight) + mono labels
+   ------------------------------------------------------------------ */
+
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
+  /* Tailwind color aliases — driven by CSS vars below */
   --color-bg: rgb(var(--bg) / <alpha-value>);
   --color-surface: rgb(var(--surface) / <alpha-value>);
   --color-surface-2: rgb(var(--surface-2) / <alpha-value>);
@@ -14,50 +22,77 @@
   --color-primary-hover: rgb(var(--primary-hover) / <alpha-value>);
   --color-primary-fg: rgb(var(--primary-fg) / <alpha-value>);
   --color-accent: rgb(var(--accent) / <alpha-value>);
+  --color-accent-fg: rgb(var(--accent-fg) / <alpha-value>);
   --color-border: rgb(var(--border) / <alpha-value>);
+  --color-border-strong: rgb(var(--border-strong) / <alpha-value>);
   --color-ring: rgb(var(--ring) / <alpha-value>);
   --color-success: rgb(var(--success) / <alpha-value>);
   --color-danger: rgb(var(--danger) / <alpha-value>);
   --color-warning: rgb(var(--warning) / <alpha-value>);
+
+  /* Shadows — soft, editorial */
+  --shadow-xs: 0 1px 2px 0 rgb(20 17 10 / 0.03);
+  --shadow-sm: 0 2px 6px -1px rgb(20 17 10 / 0.05);
+  --shadow-md: 0 6px 16px -4px rgb(20 17 10 / 0.07);
+  --shadow-lg: 0 12px 32px -6px rgb(20 17 10 / 0.10);
+  --shadow-xl: 0 24px 64px -12px rgb(20 17 10 / 0.16);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  /* Easings */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.5, 1.5, 0.5, 1);
 }
 
+/* ----------------- Light (default): warm cream ----------------- */
 :root {
-  /* Light tokens — RGB triplets */
-  --bg: 255 255 255;
-  --surface: 250 250 250;
-  --surface-2: 244 244 245;
-  --fg: 9 9 11;
-  --muted: 82 82 91;
-  --subtle: 161 161 170;
-  --primary: 79 70 229;          /* indigo-600 */
-  --primary-hover: 67 56 202;    /* indigo-700 */
-  --primary-fg: 255 255 255;
-  --accent: 244 114 182;         /* pink-400 */
-  --border: 228 228 231;
-  --ring: 99 102 241;            /* indigo-500 */
-  --success: 22 163 74;
-  --danger: 220 38 38;
-  --warning: 217 119 6;
+  --bg: 251 248 243;          /* #FBF8F3 warm cream */
+  --surface: 246 241 232;     /* #F6F1E8 cream surface */
+  --surface-2: 239 232 218;   /* #EFE8DA */
+  --fg: 11 11 14;             /* #0B0B0E deep ink */
+  --muted: 107 103 96;        /* #6B6760 stone */
+  --subtle: 165 160 151;      /* #A5A097 */
+  --primary: 182 83 42;       /* #B6532A terracotta */
+  --primary-hover: 154 64 28; /* #9A401C */
+  --primary-fg: 251 248 243;  /* same as bg → pills feel cut-out */
+  --accent: 50 71 60;         /* #32473C deep moss */
+  --accent-fg: 251 248 243;
+  --border: 224 217 203;      /* #E0D9CB */
+  --border-strong: 198 190 173; /* #C6BEAD */
+  --ring: 182 83 42;
+  --success: 50 110 70;
+  --danger: 168 50 50;
+  --warning: 178 122 30;
 }
 
+/* ----------------- Dark: warm deep ----------------- */
 .dark {
-  --bg: 9 9 11;
-  --surface: 24 24 27;
-  --surface-2: 39 39 42;
-  --fg: 250 250 250;
-  --muted: 161 161 170;
-  --subtle: 113 113 122;
-  --primary: 129 140 248;        /* indigo-400 */
-  --primary-hover: 165 180 252;  /* indigo-300 */
-  --primary-fg: 17 24 39;
-  --accent: 244 114 182;
-  --border: 39 39 42;
-  --ring: 129 140 248;
-  --success: 34 197 94;
-  --danger: 248 113 113;
-  --warning: 251 191 36;
+  --bg: 17 16 13;             /* #11100D deep brown-black */
+  --surface: 27 25 21;        /* #1B1915 */
+  --surface-2: 40 37 31;      /* #28251F */
+  --fg: 245 241 232;          /* #F5F1E8 warm off-white */
+  --muted: 173 167 154;       /* #ADA79A */
+  --subtle: 116 110 99;       /* #746E63 */
+  --primary: 220 130 90;      /* #DC825A lifted terracotta */
+  --primary-hover: 235 152 110;
+  --primary-fg: 17 16 13;
+  --accent: 138 174 152;      /* #8AAE98 light moss */
+  --accent-fg: 17 16 13;
+  --border: 50 47 40;         /* #322F28 */
+  --border-strong: 87 81 70;  /* #575146 */
+  --ring: 220 130 90;
+  --success: 138 174 152;
+  --danger: 235 130 130;
+  --warning: 235 180 90;
 }
 
+/* ----------------- Base ----------------- */
 html {
   scroll-behavior: smooth;
 }
@@ -66,20 +101,42 @@ body {
   background: rgb(var(--bg));
   color: rgb(var(--fg));
   font-family: var(--font-sans);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-feature-settings: "ss01", "ss03", "cv02", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* Subtle paper-grain feel on light mode */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.4;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgb(var(--primary) / 0.06), transparent 60%),
+    radial-gradient(800px 600px at 100% 0%, rgb(var(--accent) / 0.04), transparent 60%);
+}
+.dark body::before {
+  opacity: 0.55;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
 ::selection {
-  background: rgb(var(--primary) / 0.2);
+  background: rgb(var(--primary) / 0.25);
   color: rgb(var(--fg));
 }
 
 /* Visible focus rings everywhere */
 *:focus-visible {
   outline: 2px solid rgb(var(--ring));
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
@@ -91,4 +148,49 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ----------------- Utility helpers ----------------- */
+
+/* Mono eyebrow / kicker — small caps uppercase label */
+.editorial-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--muted));
+}
+
+/* Editorial divider — terracotta hairline */
+.editorial-rule {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--primary) / 0.5), transparent);
+}
+
+/* Soft card */
+.editorial-card {
+  background: rgb(var(--surface));
+  border: 1px solid rgb(var(--border));
+  border-radius: var(--radius-lg);
+  transition: transform 250ms var(--ease-out-soft), box-shadow 250ms var(--ease-out-soft), border-color 250ms;
+}
+.editorial-card:hover {
+  border-color: rgb(var(--border-strong));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Reveal-on-scroll entrance (paired with IntersectionObserver in components) */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
 }

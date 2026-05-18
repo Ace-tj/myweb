@@ -22,7 +22,7 @@ export default async function LoginPage({
 
         {sp.confirm && (
           <div className="mt-4 rounded-lg border border-success/30 bg-success/10 p-3 text-sm text-success">
-            Check your email to confirm your account, then log in.
+            {t("confirmEmailBanner")}
           </div>
         )}
 

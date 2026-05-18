@@ -27,7 +27,7 @@ export function ChatWidget({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close chat" : "Open chat"}
+        aria-label={open ? t("closeWidget") : t("openWidget")}
         className="fixed bottom-5 right-5 z-50 grid size-14 place-items-center rounded-full bg-primary text-primary-fg shadow-xl shadow-primary/30 transition active:scale-95 hover:bg-primary-hover"
       >
         {open ? <X className="size-5" /> : <MessageCircle className="size-6" />}
@@ -46,7 +46,7 @@ export function ChatWidget({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              aria-label="Close"
+              aria-label={t("closeWidget")}
               className="grid size-7 place-items-center rounded-md text-muted hover:bg-surface-2"
             >
               <X className="size-4" />
@@ -61,14 +61,12 @@ export function ChatWidget({
                 onClick={() => setOpen(false)}
                 className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-primary-hover"
               >
-                Sign in
+                {t("signIn")}
               </Link>
             </div>
           ) : !conversationId ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
-              <p className="text-sm text-muted">
-                Chat is offline in this preview. Configure Supabase to enable.
-              </p>
+              <p className="text-sm text-muted">{t("offlinePreview")}</p>
             </div>
           ) : (
             <ChatThread

@@ -1,39 +1,23 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { ArrowRight, Palette, Server, Plug, Database, Globe, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Palette,
+  Server,
+  Plug,
+  Database,
+  Globe,
+  ShieldCheck,
+} from "lucide-react";
 
-const SERVICES = [
-  {
-    Icon: Palette,
-    title: "Brand + UI tailoring",
-    body: "We re-skin one of our demos to your palette, typography, and tone. Includes a 30-page design review.",
-  },
-  {
-    Icon: Server,
-    title: "Hosting + deployment",
-    body: "We ship to Vercel, your VPS, or your existing cloud. SSL, domains, backups — handled.",
-  },
-  {
-    Icon: Plug,
-    title: "Integrations",
-    body: "Stripe, payment.tj, Telegram bot, WhatsApp Business, Twilio, your accounting software, REST/GraphQL APIs.",
-  },
-  {
-    Icon: Database,
-    title: "Custom data model",
-    body: "Need fields the demo doesn't have? We add them, with admin UI and proper validation, in the first week.",
-  },
-  {
-    Icon: Globe,
-    title: "Multi-language",
-    body: "Russian and Tajik built in. We can add Uzbek, Arabic, or any RTL language with a day of localization.",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "Compliance + audit",
-    body: "GDPR-ready data export, role-based access control, audit log, and a security report on launch.",
-  },
-];
+const ITEM_KEYS = [
+  { key: "branding", Icon: Palette },
+  { key: "hosting", Icon: Server },
+  { key: "integrations", Icon: Plug },
+  { key: "data", Icon: Database },
+  { key: "i18n", Icon: Globe },
+  { key: "compliance", Icon: ShieldCheck },
+] as const;
 
 export default async function ServicesPage({
   params,
@@ -42,53 +26,56 @@ export default async function ServicesPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("services");
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-      <div className="mx-auto max-w-2xl text-center">
-        <h1 className="font-display text-4xl font-bold tracking-tight text-fg sm:text-5xl">
-          What we actually do
-        </h1>
-        <p className="mt-4 text-pretty text-lg text-muted">
-          Every project includes the bullets below. Pick the ones you need
-          on the quote; we'll skip the rest.
+    <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-7">
+          <div className="editorial-eyebrow flex items-center gap-3">
+            <span aria-hidden className="h-px w-8 bg-primary" />
+            {t("title")}
+          </div>
+          <h1 className="mt-6 text-balance font-display text-5xl font-medium leading-[1.05] tracking-tight text-fg sm:text-6xl">
+            {t("title")}
+          </h1>
+        </div>
+        <p className="text-pretty text-lg leading-relaxed text-muted lg:col-span-4 lg:col-start-9">
+          {t("lede")}
         </p>
       </div>
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {SERVICES.map(({ Icon, title, body }) => (
-          <article
-            key={title}
-            className="rounded-2xl border border-border bg-surface p-6 transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary">
+      <div className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
+        {ITEM_KEYS.map(({ key, Icon }) => (
+          <article key={key} className="bg-bg p-8 transition hover:bg-surface/60">
+            <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-primary">
               <Icon className="size-5" />
             </div>
-            <h2 className="mt-4 text-base font-semibold text-fg">{title}</h2>
-            <p className="mt-2 text-sm text-muted">{body}</p>
+            <h2 className="mt-5 font-display text-lg font-medium text-fg">
+              {t(`items.${key}.title`)}
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t(`items.${key}.body`)}</p>
           </article>
         ))}
       </div>
 
-      <div className="mt-16 rounded-3xl border border-border bg-surface p-10 text-center">
-        <h2 className="font-display text-2xl font-bold text-fg">
-          Not sure which service fits?
+      <div className="mt-20 rounded-3xl border border-border bg-surface/60 p-12 text-center sm:p-16">
+        <h2 className="font-display text-3xl font-medium tracking-tight text-fg sm:text-4xl">
+          {t("ctaTitle")}
         </h2>
-        <p className="mt-3 text-muted">
-          Open a demo, tell us what's missing. We'll send a quote in 24 hours.
-        </p>
-        <div className="mt-6 flex justify-center gap-3">
+        <p className="mx-auto mt-5 max-w-xl text-pretty text-muted">{t("ctaLede")}</p>
+        <div className="mt-8 flex justify-center gap-3">
           <Link
             href="/demos"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-fg hover:bg-primary-hover"
+            className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-fg transition hover:bg-primary-hover"
           >
-            Browse demos <ArrowRight className="size-4" />
+            {t("ctaPrimary")} <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-bg px-5 py-3 text-sm font-semibold text-fg hover:bg-surface-2"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-bg px-6 py-3.5 text-sm font-medium text-fg hover:bg-surface"
           >
-            Contact us
+            {t("ctaSecondary")}
           </Link>
         </div>
       </div>

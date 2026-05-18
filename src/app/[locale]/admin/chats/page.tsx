@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { Link } from "@/i18n/navigation";
 
@@ -9,6 +9,7 @@ export default async function AdminChatsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("admin.chats");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let convos: any[] = [];
@@ -29,26 +30,24 @@ export default async function AdminChatsPage({
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Conversations</h1>
-      <p className="mt-1 text-sm text-slate-400">
-        Read-only audit view of every chat. Last 50 by activity.
-      </p>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <p className="mt-1 text-sm text-slate-400">{t("lede")}</p>
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950">
         <table className="w-full text-sm">
           <thead className="bg-slate-900 text-xs uppercase tracking-widest text-slate-400">
             <tr>
-              <th className="px-5 py-3 text-left">Customer</th>
-              <th className="px-5 py-3 text-left">Consultant</th>
-              <th className="px-5 py-3 text-left">Status</th>
-              <th className="px-5 py-3 text-left">Last active</th>
+              <th className="px-5 py-3 text-left">{t("columns.customer")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.consultant")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.status")}</th>
+              <th className="px-5 py-3 text-left">{t("columns.lastActive")}</th>
             </tr>
           </thead>
           <tbody>
             {convos.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-5 py-8 text-center text-slate-400">
-                  No conversations yet.
+                  {t("empty")}
                 </td>
               </tr>
             )}
@@ -61,7 +60,7 @@ export default async function AdminChatsPage({
                 </td>
                 <td className="px-5 py-4 text-slate-300">
                   {c.consultant?.full_name || c.consultant?.email || (
-                    <span className="text-slate-500">Unassigned</span>
+                    <span className="text-slate-500">{t("unassigned")}</span>
                   )}
                 </td>
                 <td className="px-5 py-4">
@@ -70,7 +69,7 @@ export default async function AdminChatsPage({
                   </span>
                 </td>
                 <td className="px-5 py-4 text-xs text-slate-400">
-                  {new Date(c.last_message_at).toLocaleString()}
+                  {new Date(c.last_message_at).toLocaleString(locale)}
                 </td>
               </tr>
             ))}
@@ -79,7 +78,9 @@ export default async function AdminChatsPage({
       </div>
 
       <p className="mt-6 text-xs text-slate-500">
-        Tip: <Link href="/consultant/inbox" className="underline">Open the consultant inbox</Link> to reply as a participant.
+        {t("tip")}
+        <Link href="/consultant/inbox" className="underline">{t("openInboxLink")}</Link>
+        {t("tipAfter")}
       </p>
     </>
   );

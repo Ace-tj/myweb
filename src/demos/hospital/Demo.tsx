@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Stethoscope, Heart, Calendar, FileText, Pill, Activity, User } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { IconStethoscope, IconHeart, IconCalendar, IconFileText, IconPill, IconActivity, IconUser } from "@tabler/icons-react";
 
 const C = {
   bg: "#f0fdfa",
@@ -15,34 +16,35 @@ const C = {
   border: "#cbeae5",
 };
 
-const TODAY = [
-  { time: "09:00", patient: "Aslan K., 42", reason: "Follow-up · diabetes", room: "C-3", status: "Waiting" },
-  { time: "09:30", patient: "Mehri T., 34", reason: "Annual physical", room: "B-1", status: "In room" },
-  { time: "10:15", patient: "Daler R., 67", reason: "Cardiology consult", room: "C-4", status: "Scheduled" },
-  { time: "11:00", patient: "Aziza N., 29", reason: "Prenatal week 32", room: "B-2", status: "Scheduled" },
-  { time: "11:30", patient: "Karim S., 51", reason: "Back pain · MRI review", room: "C-3", status: "Scheduled" },
-];
-
 export function HospitalDemo() {
+  const t = useTranslations("demoPreview.hospital");
   const [view, setView] = useState<"schedule" | "patient">("schedule");
+
+  const TODAY = [
+    { time: "09:00", patient: t("appointments.0.patient"), reason: t("appointments.0.reason"), room: "C-3", status: t("status.waiting"), statusKey: "waiting" },
+    { time: "09:30", patient: t("appointments.1.patient"), reason: t("appointments.1.reason"), room: "B-1", status: t("status.inRoom"), statusKey: "inRoom" },
+    { time: "10:15", patient: t("appointments.2.patient"), reason: t("appointments.2.reason"), room: "C-4", status: t("status.scheduled"), statusKey: "scheduled" },
+    { time: "11:00", patient: t("appointments.3.patient"), reason: t("appointments.3.reason"), room: "B-2", status: t("status.scheduled"), statusKey: "scheduled" },
+    { time: "11:30", patient: t("appointments.4.patient"), reason: t("appointments.4.reason"), room: "C-3", status: t("status.scheduled"), statusKey: "scheduled" },
+  ];
 
   return (
     <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "ui-sans-serif, system-ui", display: "grid", gridTemplateColumns: "240px 1fr" }}>
       <aside style={{ background: C.paper, padding: 22, borderRight: `1px solid ${C.border}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
           <div style={{ width: 36, height: 36, background: C.primary, borderRadius: 10, display: "grid", placeItems: "center" }}>
-            <Stethoscope style={{ width: 18, height: 18, color: "white" }} />
+            <IconStethoscope size={18} stroke={1.5} style={{ color: "white" }} />
           </div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 15 }}>Cedar Clinic</div>
-            <div style={{ fontSize: 11, color: C.muted }}>Dr. Hassan · Family</div>
+            <div style={{ fontWeight: 700, fontSize: 15 }}>{t("brand.name")}</div>
+            <div style={{ fontSize: 11, color: C.muted }}>{t("brand.doctor")}</div>
           </div>
         </div>
 
         <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {[
-            { id: "schedule", label: "Schedule", Icon: Calendar },
-            { id: "patient", label: "Active patient", Icon: User },
+            { id: "schedule", label: t("nav.schedule"), Icon: IconCalendar },
+            { id: "patient", label: t("nav.activePatient"), Icon: IconUser },
           ].map((m) => (
             <button
               key={m.id}
@@ -62,24 +64,24 @@ export function HospitalDemo() {
                 textAlign: "left",
               }}
             >
-              <m.Icon style={{ width: 16, height: 16 }} />
+              <m.Icon size={16} stroke={1.5} />
               {m.label}
             </button>
           ))}
         </nav>
 
         <div style={{ marginTop: 28, padding: 14, background: C.bg, borderRadius: 10, fontSize: 12 }}>
-          <div style={{ color: C.muted, marginBottom: 6, fontWeight: 600 }}>Today's load</div>
+          <div style={{ color: C.muted, marginBottom: 6, fontWeight: 600 }}>{t("load.title")}</div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span>Booked</span>
+            <span>{t("load.booked")}</span>
             <strong>14</strong>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-            <span>Seen</span>
+            <span>{t("load.seen")}</span>
             <strong>4</strong>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-            <span>No-shows</span>
+            <span>{t("load.noShows")}</span>
             <strong>0</strong>
           </div>
         </div>
@@ -88,8 +90,8 @@ export function HospitalDemo() {
       <main style={{ padding: 32 }}>
         {view === "schedule" && (
           <>
-            <h1 style={{ fontSize: 26, fontWeight: 700 }}>Tuesday, May 18</h1>
-            <p style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>14 appointments · 4 unsigned charts from yesterday</p>
+            <h1 style={{ fontSize: 26, fontWeight: 700 }}>{t("schedule.title")}</h1>
+            <p style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>{t("schedule.subtitle")}</p>
 
             <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 8 }}>
               {TODAY.map((row, i) => (
@@ -102,7 +104,7 @@ export function HospitalDemo() {
                     padding: "14px 18px",
                     background: C.paper,
                     border: `1px solid ${C.border}`,
-                    borderLeft: `4px solid ${row.status === "In room" ? C.red : row.status === "Waiting" ? C.yellow : C.primary}`,
+                    borderLeft: `4px solid ${row.statusKey === "inRoom" ? C.red : row.statusKey === "waiting" ? C.yellow : C.primary}`,
                     borderRadius: 10,
                     fontSize: 14,
                     gap: 12,
@@ -113,11 +115,11 @@ export function HospitalDemo() {
                     <div style={{ fontWeight: 600 }}>{row.patient}</div>
                   </div>
                   <div style={{ color: C.muted }}>{row.reason}</div>
-                  <span style={{ color: C.muted }}>Room {row.room}</span>
+                  <span style={{ color: C.muted }}>{t("schedule.room", { room: row.room })}</span>
                   <span
                     style={{
-                      background: row.status === "In room" ? "#fee2e2" : row.status === "Waiting" ? "#fef3c7" : "#ccfbf1",
-                      color: row.status === "In room" ? "#991b1b" : row.status === "Waiting" ? "#854d0e" : C.primaryDark,
+                      background: row.statusKey === "inRoom" ? "#fee2e2" : row.statusKey === "waiting" ? "#fef3c7" : "#ccfbf1",
+                      color: row.statusKey === "inRoom" ? "#991b1b" : row.statusKey === "waiting" ? "#854d0e" : C.primaryDark,
                       padding: "3px 10px",
                       borderRadius: 9999,
                       fontSize: 11,
@@ -128,7 +130,7 @@ export function HospitalDemo() {
                     {row.status}
                   </span>
                   <button style={{ background: C.primary, color: "white", border: "none", padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                    Open chart
+                    {t("schedule.openChart")}
                   </button>
                 </article>
               ))}
@@ -140,39 +142,39 @@ export function HospitalDemo() {
           <>
             <header style={{ display: "flex", alignItems: "center", gap: 18, paddingBottom: 18, borderBottom: `1px solid ${C.border}`, marginBottom: 22 }}>
               <div style={{ width: 64, height: 64, borderRadius: 9999, background: C.primary, color: "white", display: "grid", placeItems: "center", fontSize: 22, fontWeight: 700 }}>
-                MT
+                {t("patient.initials")}
               </div>
               <div style={{ flex: 1 }}>
-                <h1 style={{ fontSize: 22, fontWeight: 700 }}>Mehri Tursunova</h1>
-                <div style={{ color: C.muted, fontSize: 13, marginTop: 2 }}>F · 34 yrs · MRN 008142 · No known allergies</div>
+                <h1 style={{ fontSize: 22, fontWeight: 700 }}>{t("patient.name")}</h1>
+                <div style={{ color: C.muted, fontSize: 13, marginTop: 2 }}>{t("patient.meta")}</div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ color: C.muted, fontSize: 11 }}>Last visit</div>
-                <div style={{ fontWeight: 700 }}>Mar 04, 2026</div>
+                <div style={{ color: C.muted, fontSize: 11 }}>{t("patient.lastVisit")}</div>
+                <div style={{ fontWeight: 700 }}>{t("patient.lastVisitDate")}</div>
               </div>
             </header>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
               {[
-                { Icon: Heart, label: "HR", v: "72 bpm", c: C.primary },
-                { Icon: Activity, label: "BP", v: "118/76", c: C.primary },
-                { Icon: Pill, label: "Active meds", v: "2", c: C.yellow },
-                { Icon: FileText, label: "Notes (12mo)", v: "8", c: C.muted },
+                { Icon: IconHeart, label: t("stats.hr.label"), v: t("stats.hr.value"), c: C.primary },
+                { Icon: IconActivity, label: t("stats.bp.label"), v: t("stats.bp.value"), c: C.primary },
+                { Icon: IconPill, label: t("stats.meds.label"), v: t("stats.meds.value"), c: C.yellow },
+                { Icon: IconFileText, label: t("stats.notes.label"), v: t("stats.notes.value"), c: C.muted },
               ].map((s) => (
                 <div key={s.label} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
-                  <s.Icon style={{ width: 18, height: 18, color: s.c }} />
+                  <s.Icon size={18} stroke={1.5} style={{ color: s.c }} />
                   <div style={{ fontSize: 11, color: C.muted, marginTop: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
                   <div style={{ fontSize: 22, fontWeight: 700, marginTop: 4 }}>{s.v}</div>
                 </div>
               ))}
             </div>
 
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 28, marginBottom: 12 }}>Recent notes</h2>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 28, marginBottom: 12 }}>{t("notes.title")}</h2>
             <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12 }}>
               {[
-                { date: "Mar 04", note: "Routine physical. BMI in range. Recommended iron supplement." },
-                { date: "Jan 12", note: "URI symptoms x 5 days. Conservative care, no antibiotics." },
-                { date: "Nov 22, 2025", note: "Annual blood work — within normal limits." },
+                { date: t("notes.0.date"), note: t("notes.0.note") },
+                { date: t("notes.1.date"), note: t("notes.1.note") },
+                { date: t("notes.2.date"), note: t("notes.2.note") },
               ].map((n, i) => (
                 <div key={i} style={{ padding: "14px 18px", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14 }}>
                   <div style={{ fontSize: 11, color: C.muted, fontWeight: 600 }}>{n.date}</div>

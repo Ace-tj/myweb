@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Backpack, Check, AlertCircle, Star, Bus, MessageSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Backpack, CheckCircle, WarningCircle, Star, Bus, ChatText } from "@phosphor-icons/react";
 
 const C = {
   bg: "#eff8ff",
@@ -15,7 +16,45 @@ const C = {
 };
 
 export function SchoolDemo() {
+  const t = useTranslations("demoPreview.school");
   const [tab, setTab] = useState<"home" | "homework" | "grades">("home");
+
+  const tabs = [
+    { id: "home", label: t("tabs.home") },
+    { id: "homework", label: t("tabs.homework") },
+    { id: "grades", label: t("tabs.grades") },
+  ];
+
+  const stats = [
+    { Icon: CheckCircle, label: t("stats.attendance"), v: t("stats.attendanceValue"), c: C.green },
+    { Icon: Star, label: t("stats.stars"), v: t("stats.starsValue"), c: C.yellow },
+    { Icon: WarningCircle, label: t("stats.overdue"), v: t("stats.overdueValue"), c: C.green },
+  ];
+
+  const schedule = [
+    { time: "08:30", c: t("schedule.math"), done: true },
+    { time: "09:30", c: t("schedule.english"), done: true },
+    { time: "10:30", c: t("schedule.recess"), done: true },
+    { time: "11:00", c: t("schedule.science"), done: false },
+    { time: "12:00", c: t("schedule.lunch"), done: false },
+    { time: "13:00", c: t("schedule.art"), done: false },
+  ];
+
+  const homework = [
+    { sub: t("homework.subjects.math"), title: t("homework.items.math"), due: t("homework.due.tomorrow"), done: false },
+    { sub: t("homework.subjects.english"), title: t("homework.items.english"), due: t("homework.due.friday"), done: false },
+    { sub: t("homework.subjects.science"), title: t("homework.items.science"), due: t("homework.due.may23"), done: true },
+    { sub: t("homework.subjects.art"), title: t("homework.items.art"), due: t("homework.due.may25"), done: false },
+  ];
+
+  const grades = [
+    { sub: t("grades.subjects.math"), grade: "A-", trend: "↑" },
+    { sub: t("grades.subjects.english"), grade: "B+", trend: "→" },
+    { sub: t("grades.subjects.science"), grade: "A", trend: "↑" },
+    { sub: t("grades.subjects.art"), grade: "A+", trend: "↑" },
+    { sub: t("grades.subjects.pe"), grade: "B", trend: "↓" },
+    { sub: t("grades.subjects.music"), grade: "A", trend: "→" },
+  ];
 
   return (
     <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "ui-sans-serif, system-ui" }}>
@@ -23,31 +62,27 @@ export function SchoolDemo() {
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ width: 38, height: 38, background: C.yellow, color: C.primary, borderRadius: 12, display: "grid", placeItems: "center" }}>
-              <Backpack style={{ width: 20, height: 20 }} strokeWidth={2.5} />
+              <Backpack size={20} weight="duotone" />
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: 18 }}>Sunny Hills · Parent Portal</div>
-              <div style={{ fontSize: 11, opacity: 0.85, letterSpacing: 1 }}>Grade 5 · Mrs. Petrova</div>
+              <div style={{ fontWeight: 800, fontSize: 18 }}>{t("brand")}</div>
+              <div style={{ fontSize: 11, opacity: 0.85, letterSpacing: 1 }}>{t("brandSub")}</div>
             </div>
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.18)", padding: "6px 14px", borderRadius: 9999, fontSize: 13 }}>
-            <Bus style={{ width: 14, height: 14 }} /> Bus 7 · 5 min away
+            <Bus size={14} weight="duotone" /> {t("busStatus")}
           </div>
         </div>
       </header>
 
       <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", gap: 6, marginTop: 12 }}>
-        {[
-          { id: "home", label: "Home" },
-          { id: "homework", label: "Homework" },
-          { id: "grades", label: "Grades" },
-        ].map((t) => (
+        {tabs.map((tabItem) => (
           <button
-            key={t.id}
-            onClick={() => setTab(t.id as typeof tab)}
+            key={tabItem.id}
+            onClick={() => setTab(tabItem.id as typeof tab)}
             style={{
-              background: tab === t.id ? C.paper : "transparent",
-              color: tab === t.id ? C.ink : C.muted,
+              background: tab === tabItem.id ? C.paper : "transparent",
+              color: tab === tabItem.id ? C.ink : C.muted,
               border: "none",
               padding: "10px 16px",
               borderRadius: "12px 12px 0 0",
@@ -56,7 +91,7 @@ export function SchoolDemo() {
               cursor: "pointer",
             }}
           >
-            {t.label}
+            {tabItem.label}
           </button>
         ))}
       </nav>
@@ -64,35 +99,24 @@ export function SchoolDemo() {
       <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px 28px" }}>
         {tab === "home" && (
           <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
-            <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>Good morning, Karim 👋</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>{t("home.greeting")}</h1>
             <p style={{ color: C.muted, marginBottom: 22 }}>
-              Mom checked you in 3 minutes ago. Math homework is due tomorrow.
+              {t("home.subGreeting")}
             </p>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
-              {[
-                { Icon: Check, label: "Today's attendance", v: "Present", c: C.green },
-                { Icon: Star, label: "Stars this week", v: "12 ⭐", c: C.yellow },
-                { Icon: AlertCircle, label: "Overdue", v: "0", c: C.green },
-              ].map((s) => (
+              {stats.map((s) => (
                 <div key={s.label} style={{ background: C.bg, borderRadius: 12, padding: 16 }}>
-                  <s.Icon style={{ width: 18, height: 18, color: s.c }} />
+                  <s.Icon size={18} weight="duotone" style={{ color: s.c }} />
                   <div style={{ fontSize: 11, color: C.muted, marginTop: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
                   <div style={{ fontSize: 22, fontWeight: 700, marginTop: 4 }}>{s.v}</div>
                 </div>
               ))}
             </div>
 
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>Today's schedule</h2>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>{t("schedule.title")}</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {[
-                { t: "08:30", c: "Math · Multiplication tables", done: true },
-                { t: "09:30", c: "English · Reading aloud", done: true },
-                { t: "10:30", c: "Recess", done: true },
-                { t: "11:00", c: "Science · Plants & soil", done: false },
-                { t: "12:00", c: "Lunch", done: false },
-                { t: "13:00", c: "Art · Spring posters", done: false },
-              ].map((row, i) => (
+              {schedule.map((row, i) => (
                 <div
                   key={i}
                   style={{
@@ -105,19 +129,19 @@ export function SchoolDemo() {
                     opacity: row.done ? 0.5 : 1,
                   }}
                 >
-                  <div style={{ width: 56, fontWeight: 700, color: C.primary }}>{row.t}</div>
+                  <div style={{ width: 56, fontWeight: 700, color: C.primary }}>{row.time}</div>
                   <div style={{ flex: 1, fontSize: 14, textDecoration: row.done ? "line-through" : "none" }}>{row.c}</div>
-                  {row.done && <Check style={{ width: 16, height: 16, color: C.green }} />}
+                  {row.done && <CheckCircle size={16} weight="duotone" style={{ color: C.green }} />}
                 </div>
               ))}
             </div>
 
             <div style={{ marginTop: 24, padding: 16, background: C.yellow, borderRadius: 12, display: "flex", alignItems: "center", gap: 12 }}>
-              <MessageSquare style={{ width: 22, height: 22, color: C.primary }} />
+              <ChatText size={22} weight="duotone" style={{ color: C.primary }} />
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700 }}>Note from Mrs. Petrova</div>
+                <div style={{ fontWeight: 700 }}>{t("note.title")}</div>
                 <div style={{ fontSize: 13, color: C.ink }}>
-                  Reminder: bring a labelled water bottle for tomorrow's field trip to the planetarium.
+                  {t("note.body")}
                 </div>
               </div>
             </div>
@@ -126,14 +150,9 @@ export function SchoolDemo() {
 
         {tab === "homework" && (
           <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
-            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>Homework</h1>
+            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>{t("homework.title")}</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {[
-                { sub: "Math", title: "Tables of 6 and 7 — pages 24-25", due: "Tomorrow", done: false },
-                { sub: "English", title: "Read 'The Lost Kite' chapter 3", due: "Friday", done: false },
-                { sub: "Science", title: "Plant cuttings observation log", due: "Mon May 23", done: true },
-                { sub: "Art", title: "Bring magazines for collage", due: "Wed May 25", done: false },
-              ].map((h, i) => (
+              {homework.map((h, i) => (
                 <article
                   key={i}
                   style={{
@@ -153,7 +172,7 @@ export function SchoolDemo() {
                       </span>
                       <span style={{ fontWeight: 600, textDecoration: h.done ? "line-through" : "none" }}>{h.title}</span>
                     </div>
-                    <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Due {h.due}</div>
+                    <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>{t("homework.duePrefix")} {h.due}</div>
                   </div>
                 </article>
               ))}
@@ -163,23 +182,16 @@ export function SchoolDemo() {
 
         {tab === "grades" && (
           <div style={{ background: C.paper, borderRadius: "0 12px 12px 12px", padding: 24 }}>
-            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>This term so far</h1>
+            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 16 }}>{t("grades.title")}</h1>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-              {[
-                { sub: "Math", grade: "A-", trend: "↑" },
-                { sub: "English", grade: "B+", trend: "→" },
-                { sub: "Science", grade: "A", trend: "↑" },
-                { sub: "Art", grade: "A+", trend: "↑" },
-                { sub: "P.E.", grade: "B", trend: "↓" },
-                { sub: "Music", grade: "A", trend: "→" },
-              ].map((g) => (
+              {grades.map((g) => (
                 <div key={g.sub} style={{ background: C.bg, borderRadius: 12, padding: 18, textAlign: "center" }}>
                   <div style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 1 }}>{g.sub}</div>
                   <div style={{ fontSize: 40, fontWeight: 800, color: C.primary, fontFamily: "Georgia, serif", marginTop: 4 }}>
                     {g.grade}
                   </div>
                   <div style={{ fontSize: 13, color: g.trend === "↑" ? C.green : g.trend === "↓" ? "#dc2626" : C.muted, marginTop: 4 }}>
-                    {g.trend} vs last term
+                    {g.trend} {t("grades.vsLastTerm")}
                   </div>
                 </div>
               ))}

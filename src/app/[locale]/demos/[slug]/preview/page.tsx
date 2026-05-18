@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { fallbackDemos, getFallbackDemo } from "@/lib/demos";
+import { demoMeta, getDemoMeta, localizedDemo } from "@/lib/demos";
 import { DemoRegistry } from "@/demos/registry";
 
 export async function generateStaticParams() {
-  return fallbackDemos.map((d) => ({ slug: d.slug }));
+  return demoMeta.map((d) => ({ slug: d.slug }));
 }
 
 export default async function DemoPreviewPage({
@@ -16,10 +16,17 @@ export default async function DemoPreviewPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("demos.preview_header");
+  const tData = await getTranslations("demoData");
 
-  const demo = getFallbackDemo(slug);
+  const meta = getDemoMeta(slug);
   const Demo = DemoRegistry[slug];
-  if (!demo || !Demo) notFound();
+  if (!meta || !Demo) notFound();
+
+  const demo = localizedDemo(
+    meta,
+    tData as unknown as Parameters<typeof localizedDemo>[1],
+  );
 
   return (
     <>
@@ -36,9 +43,9 @@ export default async function DemoPreviewPage({
           href={`/${locale}/demos/${slug}`}
           style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#404040" }}
         >
-          <ArrowLeft style={{ width: 14, height: 14 }} /> Back to {demo.title}
+          <ArrowLeft style={{ width: 14, height: 14 }} /> {t("backToDetail", { name: demo.title })}
         </Link>
-        <span style={{ fontWeight: 600 }}>Live preview · {demo.title}</span>
+        <span style={{ fontWeight: 600 }}>{t("livePreviewLabel", { name: demo.title })}</span>
         <Link
           href={`/${locale}/contact`}
           style={{
@@ -49,7 +56,7 @@ export default async function DemoPreviewPage({
             fontWeight: 600,
           }}
         >
-          Get this one
+          {t("getThisOne")}
         </Link>
       </div>
       <Demo />

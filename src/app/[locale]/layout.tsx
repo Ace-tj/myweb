@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Inter_Tight, Lora, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,17 +11,25 @@ import { Footer } from "@/components/footer";
 import { ChatWidgetServer } from "@/components/chat-widget-server";
 import { getCurrentProfile } from "@/lib/auth";
 
-const inter = Inter({
+const interTight = Inter_Tight({
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-sans",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
-const manrope = Manrope({
-  subsets: ["latin", "cyrillic"],
+const serif = Lora({
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-display",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 export function generateStaticParams() {
@@ -59,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${manrope.variable} h-full`}
+      className={`${interTight.variable} ${serif.variable} ${mono.variable} h-full`}
       suppressHydrationWarning
     >
       <head>

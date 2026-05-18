@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Users, MessageSquare, ShieldCheck, Sparkles } from "lucide-react";
 import { getSupabaseServer } from "@/lib/supabase/server";
 
@@ -37,21 +37,21 @@ export default async function AdminDashboardPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("admin.dashboard");
   const s = await getStats();
+  const quickActions = t.raw("quickActions") as string[];
 
   const cards = [
-    { Icon: Users, label: "Total users", v: s.users },
-    { Icon: MessageSquare, label: "Open chats", v: s.openChats },
-    { Icon: ShieldCheck, label: "Approved consultants", v: s.approvedConsultants },
-    { Icon: Sparkles, label: "Live demos", v: s.demos },
+    { Icon: Users, label: t("totalUsers"), v: s.users },
+    { Icon: MessageSquare, label: t("openChats"), v: s.openChats },
+    { Icon: ShieldCheck, label: t("approvedConsultants"), v: s.approvedConsultants },
+    { Icon: Sparkles, label: t("liveDemos"), v: s.demos },
   ];
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="mt-1 text-sm text-slate-400">
-        Snapshot across the platform — auto-refreshes every page load.
-      </p>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <p className="mt-1 text-sm text-slate-400">{t("lede")}</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
@@ -69,12 +69,11 @@ export default async function AdminDashboardPage({
       </div>
 
       <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-950 p-6">
-        <h2 className="text-lg font-bold">Quick actions</h2>
+        <h2 className="text-lg font-bold">{t("quickActionsTitle")}</h2>
         <ul className="mt-3 grid gap-2 text-sm text-slate-300 sm:grid-cols-2">
-          <li>· Approve pending consultant accounts on the Users page</li>
-          <li>· Disable demos that are out of inventory on the Demos page</li>
-          <li>· Inspect any conversation on the Chats page (read-only)</li>
-          <li>· Promote a user to admin via the Users page</li>
+          {quickActions.map((q) => (
+            <li key={q}>· {q}</li>
+          ))}
         </ul>
       </div>
     </>

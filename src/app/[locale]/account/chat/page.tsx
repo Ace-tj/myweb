@@ -14,6 +14,7 @@ export default async function AccountChatPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("chat");
+  const tAccount = await getTranslations("account");
 
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/auth/login?next=/${locale}/account/chat`);
@@ -28,7 +29,7 @@ export default async function AccountChatPage({
         href="/account"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-fg"
       >
-        <ArrowLeft className="size-4" /> Back to account
+        <ArrowLeft className="size-4" /> {tAccount("backToAccount")}
       </Link>
       <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-bg">
         <header className="border-b border-border bg-surface px-5 py-4">
@@ -38,7 +39,7 @@ export default async function AccountChatPage({
         <div className="h-[520px]">
           {!conversation ? (
             <div className="flex h-full items-center justify-center p-8 text-center text-sm text-muted">
-              Chat is offline in this preview. Configure Supabase to enable.
+              {t("offlinePreview")}
             </div>
           ) : (
             <ChatThread
