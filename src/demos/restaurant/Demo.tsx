@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ForkKnife, Clock, ChefHat, Check, Plus, CalendarBlank, ChartBar } from "@phosphor-icons/react";
+import {
+  DemoTopBar,
+  DemoStatusBar,
+  DemoKpiStrip,
+  DemoScreenHeader,
+  DemoBadge,
+} from "@/components/demo-shell";
 
 const C = {
   bg: "#fbf6ee",
@@ -13,6 +20,8 @@ const C = {
   green: "#3f6212",
   border: "#e8dcc5",
 };
+
+const palette = { ...C, primary: C.accent };
 
 export function RestaurantDemo() {
   const t = useTranslations("demoPreview.restaurant");
@@ -105,6 +114,67 @@ export function RestaurantDemo() {
             ? t("header.reservationsSubtitle")
             : t("header.reportsSubtitle");
 
+  const breadcrumb =
+    view === "floor"
+      ? t("breadcrumb.floor")
+      : view === "kitchen"
+        ? t("breadcrumb.kitchen")
+        : view === "menu"
+          ? t("breadcrumb.menu")
+          : view === "reservations"
+            ? t("breadcrumb.reservations")
+            : t("breadcrumb.reports");
+
+  const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
+    view === "floor"
+      ? [
+          { label: t("kpi.floor.0.label"), value: t("kpi.floor.0.value"), trend: t("kpi.floor.0.trend"), spark: [42, 48, 55, 60, 58, 66, 72, 78] },
+          { label: t("kpi.floor.1.label"), value: t("kpi.floor.1.value"), trend: t("kpi.floor.1.trend"), spark: [3, 4, 5, 4, 6, 5, 7, 6] },
+          { label: t("kpi.floor.2.label"), value: t("kpi.floor.2.value"), trend: t("kpi.floor.2.trend"), spark: [10, 12, 11, 14, 13, 15, 14, 16] },
+          { label: t("kpi.floor.3.label"), value: t("kpi.floor.3.value"), trend: t("kpi.floor.3.trend"), spark: [22, 18, 20, 16, 14, 15, 12, 11] },
+        ]
+      : view === "kitchen"
+        ? [
+            { label: t("kpi.kitchen.0.label"), value: t("kpi.kitchen.0.value"), trend: t("kpi.kitchen.0.trend"), spark: [6, 8, 7, 10, 9, 11, 12, 10] },
+            { label: t("kpi.kitchen.1.label"), value: t("kpi.kitchen.1.value"), trend: t("kpi.kitchen.1.trend"), spark: [14, 12, 13, 11, 12, 10, 11, 10] },
+            { label: t("kpi.kitchen.2.label"), value: t("kpi.kitchen.2.value"), trend: t("kpi.kitchen.2.trend"), spark: [3, 4, 5, 4, 6, 7, 5, 6] },
+            { label: t("kpi.kitchen.3.label"), value: t("kpi.kitchen.3.value"), trend: t("kpi.kitchen.3.trend"), spark: [38, 42, 48, 52, 55, 60, 58, 64] },
+          ]
+        : view === "menu"
+          ? [
+              { label: t("kpi.menu.0.label"), value: t("kpi.menu.0.value"), trend: t("kpi.menu.0.trend"), spark: [48, 50, 52, 51, 54, 56, 55, 58] },
+              { label: t("kpi.menu.1.label"), value: t("kpi.menu.1.value"), trend: t("kpi.menu.1.trend"), spark: [62, 64, 63, 66, 67, 68, 67, 70] },
+              { label: t("kpi.menu.2.label"), value: t("kpi.menu.2.value"), trend: t("kpi.menu.2.trend"), spark: [20, 24, 22, 28, 26, 30, 32, 34] },
+              { label: t("kpi.menu.3.label"), value: t("kpi.menu.3.value"), trend: t("kpi.menu.3.trend"), spark: [4, 3, 2, 3, 2, 1, 2, 2] },
+            ]
+          : view === "reservations"
+            ? [
+                { label: t("kpi.reservations.0.label"), value: t("kpi.reservations.0.value"), trend: t("kpi.reservations.0.trend"), spark: [28, 32, 36, 40, 42, 44, 46, 48] },
+                { label: t("kpi.reservations.1.label"), value: t("kpi.reservations.1.value"), trend: t("kpi.reservations.1.trend"), spark: [6, 8, 7, 9, 10, 8, 11, 12] },
+                { label: t("kpi.reservations.2.label"), value: t("kpi.reservations.2.value"), trend: t("kpi.reservations.2.trend"), spark: [8, 7, 6, 5, 6, 5, 4, 4] },
+                { label: t("kpi.reservations.3.label"), value: t("kpi.reservations.3.value"), trend: t("kpi.reservations.3.trend"), spark: [2, 3, 2, 4, 3, 5, 4, 6] },
+              ]
+            : [
+                { label: t("kpi.reports.0.label"), value: t("kpi.reports.0.value"), trend: t("kpi.reports.0.trend"), spark: [42, 48, 55, 60, 58, 66, 72, 78] },
+                { label: t("kpi.reports.1.label"), value: t("kpi.reports.1.value"), trend: t("kpi.reports.1.trend"), spark: [320, 380, 410, 460, 480, 520, 540, 580] },
+                { label: t("kpi.reports.2.label"), value: t("kpi.reports.2.value"), trend: t("kpi.reports.2.trend"), spark: [42, 44, 46, 45, 48, 47, 49, 50] },
+                { label: t("kpi.reports.3.label"), value: t("kpi.reports.3.value"), trend: t("kpi.reports.3.trend"), spark: [12, 14, 15, 18, 20, 22, 24, 26] },
+              ];
+
+  const screenEyebrow =
+    view === "floor"
+      ? t("screen.floor.eyebrow")
+      : view === "kitchen"
+        ? t("screen.kitchen.eyebrow")
+        : view === "menu"
+          ? t("screen.menu.eyebrow")
+          : view === "reservations"
+            ? t("screen.reservations.eyebrow")
+            : t("screen.reports.eyebrow");
+
+  const resBadgeVariant = (status: string): "success" | "warn" | "info" | "neutral" | "danger" =>
+    status === "seated" ? "success" : status === "no_show" ? "danger" : status === "confirmed" ? "info" : "neutral";
+
   return (
     <div
       style={{
@@ -112,10 +182,40 @@ export function RestaurantDemo() {
         minHeight: "100vh",
         color: C.ink,
         fontFamily: "ui-sans-serif, system-ui",
-        display: "grid",
-        gridTemplateColumns: "260px 1fr",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
+      <DemoTopBar
+        palette={palette}
+        brandName={t("brand")}
+        brandMark={
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              background: palette.primary,
+              borderRadius: 6,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <ForkKnife weight="regular" size={14} style={{ color: palette.paper }} />
+          </div>
+        }
+        breadcrumb={breadcrumb}
+        searchPlaceholder={t("shell.searchPlaceholder")}
+        userName={t("shell.userName")}
+        userInitials={t("shell.userInitials")}
+      />
+
+      <div
+        style={{
+          flex: 1,
+          display: "grid",
+          gridTemplateColumns: "260px 1fr",
+        }}
+      >
       <aside
         style={{
           background: C.paper,
@@ -194,33 +294,33 @@ export function RestaurantDemo() {
       </aside>
 
       <main style={{ padding: 28 }}>
-        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-          <div>
-            <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, fontWeight: 700 }}>
-              {headerTitle}
-            </h1>
-            <p style={{ color: C.muted, fontSize: 13 }}>
-              {headerSubtitle}
-            </p>
-          </div>
-          <button
-            style={{
-              padding: "10px 18px",
-              background: C.ink,
-              color: "white",
-              border: "none",
-              borderRadius: 9999,
-              fontWeight: 600,
-              fontSize: 13,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              cursor: "pointer",
-            }}
-          >
-            <Plus size={14} weight="regular" /> {view === "reservations" ? t("reservations.newBooking") : t("seatWalkIn")}
-          </button>
-        </header>
+        <DemoKpiStrip palette={palette} items={kpiItems} />
+
+        <DemoScreenHeader
+          palette={palette}
+          eyebrow={screenEyebrow}
+          title={headerTitle}
+          subtitle={headerSubtitle}
+          rightSlot={
+            <button
+              style={{
+                padding: "10px 18px",
+                background: C.ink,
+                color: "white",
+                border: "none",
+                borderRadius: 9999,
+                fontWeight: 600,
+                fontSize: 13,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                cursor: "pointer",
+              }}
+            >
+              <Plus size={14} weight="regular" /> {view === "reservations" ? t("reservations.newBooking") : t("seatWalkIn")}
+            </button>
+          }
+        />
 
         {view === "floor" && (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px,1fr))", gap: 14 }}>
@@ -419,20 +519,7 @@ export function RestaurantDemo() {
                     </span>
                     <span style={{ color: C.muted }}>{r.table}</span>
                     <span>
-                      <span
-                        style={{
-                          background: s.bg,
-                          color: s.fg,
-                          padding: "3px 10px",
-                          borderRadius: 9999,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          textTransform: "uppercase",
-                          letterSpacing: 0.5,
-                        }}
-                      >
-                        {s.label}
-                      </span>
+                      <DemoBadge palette={palette} variant={resBadgeVariant(r.status)} label={s.label} />
                     </span>
                   </div>
                 );
@@ -540,6 +627,13 @@ export function RestaurantDemo() {
           </div>
         )}
       </main>
+      </div>
+      <DemoStatusBar
+        palette={palette}
+        version={t("shell.version")}
+        region={t("shell.region")}
+        buildId={t("shell.build")}
+      />
     </div>
   );
 }

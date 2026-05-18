@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Scissors, Clock, User, Sparkle, Heart, Star } from "@phosphor-icons/react";
+import {
+  DemoTopBar,
+  DemoStatusBar,
+  DemoKpiStrip,
+  DemoScreenHeader,
+  DemoBadge,
+} from "@/components/demo-shell";
 
 const C = {
   bg: "#fdf4ff",
@@ -12,6 +19,15 @@ const C = {
   primary: "#a21caf",
   accent: "#e879f9",
   border: "#f0d3f0",
+};
+
+const palette = {
+  bg: C.bg,
+  paper: C.paper,
+  ink: C.ink,
+  muted: C.muted,
+  primary: C.primary,
+  border: C.border,
 };
 
 const SLOTS = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
@@ -83,6 +99,7 @@ export function BeautySalonDemo() {
       rating: 4.9,
       nextSlot: t("roster.0.nextSlot"),
       tint: "#f0abfc",
+      availability: "available" as const,
     },
     {
       name: t("roster.1.name"),
@@ -90,13 +107,15 @@ export function BeautySalonDemo() {
       rating: 4.8,
       nextSlot: t("roster.1.nextSlot"),
       tint: "#fbcfe8",
+      availability: "available" as const,
     },
     {
       name: t("roster.2.name"),
       specialties: t("roster.2.specialties"),
       rating: 5.0,
       nextSlot: t("roster.2.nextSlot"),
-      tint: "#ddd6fe"
+      tint: "#ddd6fe",
+      availability: "limited" as const,
     },
     {
       name: t("roster.3.name"),
@@ -104,6 +123,7 @@ export function BeautySalonDemo() {
       rating: 4.7,
       nextSlot: t("roster.3.nextSlot"),
       tint: "#fde68a",
+      availability: "available" as const,
     },
     {
       name: t("roster.4.name"),
@@ -111,6 +131,7 @@ export function BeautySalonDemo() {
       rating: 4.9,
       nextSlot: t("roster.4.nextSlot"),
       tint: "#c7d2fe",
+      availability: "booked" as const,
     },
   ];
 
@@ -127,22 +148,99 @@ export function BeautySalonDemo() {
       .slice(0, 2)
       .join("");
 
+  const breadcrumb =
+    tab === "booking"
+      ? t("shell.breadcrumb.booking")
+      : tab === "services"
+        ? t("shell.breadcrumb.services")
+        : t("shell.breadcrumb.stylists");
+
+  const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
+    tab === "booking"
+      ? [
+          { label: t("kpi.booking.0.label"), value: t("kpi.booking.0.value"), trend: t("kpi.booking.0.trend"), spark: [12, 14, 13, 16, 18, 20, 22, 24] },
+          { label: t("kpi.booking.1.label"), value: t("kpi.booking.1.value"), trend: t("kpi.booking.1.trend"), spark: [48, 52, 55, 58, 60, 62, 65, 68] },
+          { label: t("kpi.booking.2.label"), value: t("kpi.booking.2.value"), trend: t("kpi.booking.2.trend"), spark: [8, 7, 6, 5, 4, 5, 4, 3] },
+          { label: t("kpi.booking.3.label"), value: t("kpi.booking.3.value"), trend: t("kpi.booking.3.trend"), spark: [20, 22, 28, 32, 38, 42, 40, 36] },
+        ]
+      : tab === "services"
+        ? [
+            { label: t("kpi.services.0.label"), value: t("kpi.services.0.value"), trend: t("kpi.services.0.trend"), spark: [10, 11, 12, 12, 13, 13, 14, 14] },
+            { label: t("kpi.services.1.label"), value: t("kpi.services.1.value"), trend: t("kpi.services.1.trend"), spark: [28, 32, 30, 34, 36, 38, 40, 42] },
+            { label: t("kpi.services.2.label"), value: t("kpi.services.2.value"), trend: t("kpi.services.2.trend"), spark: [55, 58, 60, 62, 65, 68, 70, 72] },
+            { label: t("kpi.services.3.label"), value: t("kpi.services.3.value"), trend: t("kpi.services.3.trend"), spark: [42, 44, 46, 48, 50, 52, 54, 56] },
+          ]
+        : [
+            { label: t("kpi.stylists.0.label"), value: t("kpi.stylists.0.value"), trend: t("kpi.stylists.0.trend"), spark: [4, 4, 5, 5, 5, 5, 5, 5] },
+            { label: t("kpi.stylists.1.label"), value: t("kpi.stylists.1.value"), trend: t("kpi.stylists.1.trend"), spark: [4.7, 4.8, 4.8, 4.9, 4.9, 4.9, 5.0, 5.0] },
+            { label: t("kpi.stylists.2.label"), value: t("kpi.stylists.2.value"), trend: t("kpi.stylists.2.trend"), spark: [80, 90, 110, 130, 140, 155, 170, 180] },
+            { label: t("kpi.stylists.3.label"), value: t("kpi.stylists.3.value"), trend: t("kpi.stylists.3.trend"), spark: [55, 58, 60, 62, 65, 68, 70, 72] },
+          ];
+
+  const screenEyebrow =
+    tab === "booking"
+      ? t("screen.booking.eyebrow")
+      : tab === "services"
+        ? t("screen.services.eyebrow")
+        : t("screen.stylists.eyebrow");
+
+  const screenTitle =
+    tab === "booking"
+      ? t("screen.booking.title")
+      : tab === "services"
+        ? t("screen.services.title")
+        : t("screen.stylists.title");
+
+  const screenSubtitle =
+    tab === "booking"
+      ? t("screen.booking.subtitle")
+      : tab === "services"
+        ? t("screen.services.subtitle")
+        : t("screen.stylists.subtitle");
+
+  const availabilityVariant = (a: "available" | "limited" | "booked"): "success" | "warn" | "danger" =>
+    a === "available" ? "success" : a === "limited" ? "warn" : "danger";
+
+  const availabilityLabel = (a: "available" | "limited" | "booked") =>
+    a === "available"
+      ? t("shell.availability.available")
+      : a === "limited"
+        ? t("shell.availability.limited")
+        : t("shell.availability.booked");
+
   return (
-    <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "ui-sans-serif, system-ui" }}>
-      <header style={{ background: C.paper, padding: "20px 32px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 40, height: 40, background: C.primary, borderRadius: 12, display: "grid", placeItems: "center" }}>
-            <Scissors weight="thin" style={{ width: 20, height: 20, color: "white" }} />
+    <div
+      style={{
+        background: C.bg,
+        color: C.ink,
+        minHeight: "100vh",
+        fontFamily: "ui-sans-serif, system-ui",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <DemoTopBar
+        palette={palette}
+        brandName={t("brand.name")}
+        brandMark={
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              background: palette.primary,
+              borderRadius: 8,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <Scissors weight="thin" size={16} style={{ color: palette.paper }} />
           </div>
-          <div>
-            <div style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: 20 }}>{t("brand.name")}</div>
-            <div style={{ fontSize: 11, color: C.muted, letterSpacing: 2, textTransform: "uppercase" }}>{t("brand.tagline")}</div>
-          </div>
-        </div>
-        <button style={{ background: C.primary, color: "white", border: "none", padding: "10px 18px", borderRadius: 9999, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-          {t("nav.signIn")}
-        </button>
-      </header>
+        }
+        breadcrumb={breadcrumb}
+        searchPlaceholder={t("shell.searchPlaceholder")}
+        userName={t("shell.userName")}
+        userInitials={t("shell.userInitials")}
+      />
 
       <nav
         style={{
@@ -151,8 +249,6 @@ export function BeautySalonDemo() {
           padding: "0 32px",
           display: "flex",
           gap: 4,
-          maxWidth: 1200,
-          margin: "0 auto",
         }}
       >
         {TABS.map((tabItem) => {
@@ -185,16 +281,25 @@ export function BeautySalonDemo() {
         })}
       </nav>
 
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: 32 }}>
+      <main style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: 28, width: "100%" }}>
+        <DemoKpiStrip palette={palette} items={kpiItems} />
+
+        <DemoScreenHeader
+          palette={palette}
+          eyebrow={screenEyebrow}
+          title={screenTitle}
+          subtitle={screenSubtitle}
+        />
+
         {tab === "booking" && (
           <>
-            <section style={{ textAlign: "center", padding: "40px 0" }}>
+            <section style={{ textAlign: "center", padding: "24px 0 32px" }}>
               <span style={{ fontSize: 11, color: C.primary, letterSpacing: 3, textTransform: "uppercase", fontWeight: 700 }}>
                 {t("hero.eyebrow")}
               </span>
-              <h1 style={{ fontFamily: "Georgia, serif", fontSize: 48, lineHeight: 1.05, margin: "12px auto", maxWidth: 600 }}>
+              <h2 style={{ fontFamily: "Georgia, serif", fontSize: 40, lineHeight: 1.05, margin: "12px auto", maxWidth: 600 }}>
                 {t("hero.title")}
-              </h1>
+              </h2>
               <p style={{ color: C.muted, maxWidth: 540, margin: "0 auto" }}>
                 {t("hero.subtitle")}
               </p>
@@ -202,9 +307,9 @@ export function BeautySalonDemo() {
 
             <section style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 24 }}>
               <div>
-                <h2 style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700, marginBottom: 14 }}>
+                <h3 style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700, marginBottom: 14 }}>
                   {t("services.heading")}
-                </h2>
+                </h3>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   {SERVICES.map((s) => {
                     const active = chosen === s.name;
@@ -241,7 +346,10 @@ export function BeautySalonDemo() {
               </div>
 
               <aside style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 16, padding: 22, position: "sticky", top: 24, alignSelf: "start" }}>
-                <h2 style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700 }}>{t("booking.heading")}</h2>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                  <h3 style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, margin: 0 }}>{t("booking.heading")}</h3>
+                  <DemoBadge palette={palette} variant={chosen && time ? "success" : "neutral"} label={chosen && time ? t("shell.bookingStatus.ready") : t("shell.bookingStatus.draft")} />
+                </div>
                 <div style={{ marginTop: 12, padding: 14, background: C.bg, borderRadius: 10 }}>
                   <div style={{ fontSize: 11, color: C.primary, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>{t("booking.serviceLabel")}</div>
                   <div style={{ marginTop: 4, fontWeight: 600 }}>{chosen ?? t("booking.servicePlaceholder")}</div>
@@ -304,13 +412,7 @@ export function BeautySalonDemo() {
         )}
 
         {tab === "services" && (
-          <section style={{ padding: "24px 0" }}>
-            <span style={{ fontSize: 11, color: C.primary, letterSpacing: 3, textTransform: "uppercase", fontWeight: 700 }}>
-              {t("menu.eyebrow")}
-            </span>
-            <h1 style={{ fontFamily: "Georgia, serif", fontSize: 36, margin: "8px 0 6px" }}>{t("menu.title")}</h1>
-            <p style={{ color: C.muted, marginBottom: 28, maxWidth: 600 }}>{t("menu.subtitle")}</p>
-
+          <section style={{ padding: "8px 0" }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
               {MENU.map(({ category, items }) => {
                 const Icon = CATEGORY_ICON[category];
@@ -338,7 +440,7 @@ export function BeautySalonDemo() {
                       >
                         <Icon weight="thin" style={{ width: 20, height: 20 }} />
                       </div>
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <div style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: 18 }}>
                           {t(`menu.categories.${category}`)}
                         </div>
@@ -346,6 +448,7 @@ export function BeautySalonDemo() {
                           {t("menu.itemCount", { count: items.length })}
                         </div>
                       </div>
+                      <DemoBadge palette={palette} variant="info" label={t("shell.serviceTag.active")} />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       {items.map((item) => (
@@ -378,13 +481,7 @@ export function BeautySalonDemo() {
         )}
 
         {tab === "stylists" && (
-          <section style={{ padding: "24px 0" }}>
-            <span style={{ fontSize: 11, color: C.primary, letterSpacing: 3, textTransform: "uppercase", fontWeight: 700 }}>
-              {t("roster.eyebrow")}
-            </span>
-            <h1 style={{ fontFamily: "Georgia, serif", fontSize: 36, margin: "8px 0 6px" }}>{t("roster.title")}</h1>
-            <p style={{ color: C.muted, marginBottom: 28, maxWidth: 600 }}>{t("roster.subtitle")}</p>
-
+          <section style={{ padding: "8px 0" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
               {ROSTER.map((person) => (
                 <div
@@ -416,28 +513,30 @@ export function BeautySalonDemo() {
                     >
                       {initials(person.name)}
                     </div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: 17 }}>{person.name}</div>
                       <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{person.specialties}</div>
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "6px 10px",
-                      background: C.bg,
-                      borderRadius: 999,
-                      alignSelf: "flex-start",
-                      fontSize: 12,
-                      fontWeight: 700,
-                    }}
-                  >
-                    <Star weight="thin" style={{ width: 14, height: 14, color: C.primary, fill: C.primary }} />
-                    {person.rating.toFixed(1)}
-                    <span style={{ color: C.muted, fontWeight: 500, marginLeft: 4 }}>{t("roster.ratingLabel")}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "6px 10px",
+                        background: C.bg,
+                        borderRadius: 999,
+                        fontSize: 12,
+                        fontWeight: 700,
+                      }}
+                    >
+                      <Star weight="thin" style={{ width: 14, height: 14, color: C.primary, fill: C.primary }} />
+                      {person.rating.toFixed(1)}
+                      <span style={{ color: C.muted, fontWeight: 500, marginLeft: 4 }}>{t("roster.ratingLabel")}</span>
+                    </div>
+                    <DemoBadge palette={palette} variant={availabilityVariant(person.availability)} label={availabilityLabel(person.availability)} />
                   </div>
 
                   <div
@@ -481,6 +580,13 @@ export function BeautySalonDemo() {
           </section>
         )}
       </main>
+
+      <DemoStatusBar
+        palette={palette}
+        version={t("shell.statusBar.version")}
+        region={t("shell.statusBar.region")}
+        buildId={t("shell.statusBar.buildId")}
+      />
     </div>
   );
 }

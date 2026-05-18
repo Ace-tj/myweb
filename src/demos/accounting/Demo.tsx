@@ -12,6 +12,13 @@ import {
   ChartPieIcon,
   ArrowTrendingUpIcon,
 } from "@heroicons/react/20/solid";
+import {
+  DemoTopBar,
+  DemoStatusBar,
+  DemoKpiStrip,
+  DemoScreenHeader,
+  DemoBadge,
+} from "@/components/demo-shell";
 
 const C = {
   bg: "#f7f8fb",
@@ -25,12 +32,13 @@ const C = {
   border: "#e2e8f0",
 };
 
-const STATUS_C: Record<string, { bg: string; fg: string }> = {
-  Paid: { bg: "#dcfce7", fg: "#166534" },
-  Sent: { bg: "#dbeafe", fg: "#1e40af" },
-  Pending: { bg: "#fef3c7", fg: "#92400e" },
-  Overdue: { bg: "#fee2e2", fg: "#991b1b" },
-  Draft: { bg: "#f1f5f9", fg: "#475569" },
+const palette = {
+  bg: C.bg,
+  paper: C.paper,
+  ink: C.ink,
+  muted: C.muted,
+  primary: C.navy,
+  border: C.border,
 };
 
 const CATEGORY_C: Record<string, string> = {
@@ -42,6 +50,23 @@ const CATEGORY_C: Record<string, string> = {
 };
 
 type Tab = "ledger" | "invoices" | "expenses" | "reports";
+
+type BadgeVariant = "neutral" | "success" | "warn" | "danger" | "info";
+
+const statusVariant = (s: string): BadgeVariant => {
+  switch (s) {
+    case "Paid":
+      return "success";
+    case "Pending":
+      return "warn";
+    case "Overdue":
+      return "danger";
+    case "Sent":
+      return "info";
+    default:
+      return "neutral";
+  }
+};
 
 export function AccountingDemo() {
   const t = useTranslations("demoPreview.accounting");
@@ -108,26 +133,118 @@ export function AccountingDemo() {
     { id: "reports", label: t("nav.reports"), Icon: ChartPieIcon },
   ];
 
+  const breadcrumb =
+    tab === "ledger"
+      ? t("shell.breadcrumb.ledger")
+      : tab === "invoices"
+        ? t("shell.breadcrumb.invoices")
+        : tab === "expenses"
+          ? t("shell.breadcrumb.expenses")
+          : t("shell.breadcrumb.reports");
+
+  const screenEyebrow =
+    tab === "ledger"
+      ? t("shell.screen.ledger.eyebrow")
+      : tab === "invoices"
+        ? t("shell.screen.invoices.eyebrow")
+        : tab === "expenses"
+          ? t("shell.screen.expenses.eyebrow")
+          : t("shell.screen.reports.eyebrow");
+
+  const screenTitle =
+    tab === "ledger"
+      ? t("shell.screen.ledger.title")
+      : tab === "invoices"
+        ? t("shell.screen.invoices.title")
+        : tab === "expenses"
+          ? t("shell.screen.expenses.title")
+          : t("shell.screen.reports.title");
+
+  const screenSubtitle =
+    tab === "ledger"
+      ? t("shell.screen.ledger.subtitle")
+      : tab === "invoices"
+        ? t("shell.screen.invoices.subtitle")
+        : tab === "expenses"
+          ? t("shell.screen.expenses.subtitle")
+          : t("shell.screen.reports.subtitle");
+
+  const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
+    tab === "ledger"
+      ? [
+          { label: t("shell.kpi.ledger.0.label"), value: t("shell.kpi.ledger.0.value"), trend: t("shell.kpi.ledger.0.trend"), spark: [820, 860, 895, 910, 940, 980, 1020, 1080] },
+          { label: t("shell.kpi.ledger.1.label"), value: t("shell.kpi.ledger.1.value"), trend: t("shell.kpi.ledger.1.trend"), spark: [310, 305, 318, 322, 318, 314, 312, 308] },
+          { label: t("shell.kpi.ledger.2.label"), value: t("shell.kpi.ledger.2.value"), trend: t("shell.kpi.ledger.2.trend"), spark: [240, 260, 270, 285, 290, 300, 308, 312] },
+          { label: t("shell.kpi.ledger.3.label"), value: t("shell.kpi.ledger.3.value"), trend: t("shell.kpi.ledger.3.trend"), spark: [38, 39, 40, 41, 41, 42, 42, 43] },
+        ]
+      : tab === "invoices"
+        ? [
+            { label: t("shell.kpi.invoices.0.label"), value: t("shell.kpi.invoices.0.value"), trend: t("shell.kpi.invoices.0.trend"), spark: [18, 22, 24, 26, 28, 27, 30, 32] },
+            { label: t("shell.kpi.invoices.1.label"), value: t("shell.kpi.invoices.1.value"), trend: t("shell.kpi.invoices.1.trend"), spark: [12, 14, 18, 20, 22, 24, 23, 22] },
+            { label: t("shell.kpi.invoices.2.label"), value: t("shell.kpi.invoices.2.value"), trend: t("shell.kpi.invoices.2.trend"), spark: [42, 40, 38, 36, 34, 33, 31, 29] },
+            { label: t("shell.kpi.invoices.3.label"), value: t("shell.kpi.invoices.3.value"), trend: t("shell.kpi.invoices.3.trend"), spark: [8, 10, 12, 14, 14, 16, 18, 22] },
+          ]
+        : tab === "expenses"
+          ? [
+              { label: t("shell.kpi.expenses.0.label"), value: t("shell.kpi.expenses.0.value"), trend: t("shell.kpi.expenses.0.trend"), spark: [22, 28, 34, 38, 44, 52, 62, 76] },
+              { label: t("shell.kpi.expenses.1.label"), value: t("shell.kpi.expenses.1.value"), trend: t("shell.kpi.expenses.1.trend"), spark: [38, 40, 39, 41, 40, 42, 41, 41] },
+              { label: t("shell.kpi.expenses.2.label"), value: t("shell.kpi.expenses.2.value"), trend: t("shell.kpi.expenses.2.trend"), spark: [82, 86, 88, 90, 92, 95, 96, 98] },
+              { label: t("shell.kpi.expenses.3.label"), value: t("shell.kpi.expenses.3.value"), trend: t("shell.kpi.expenses.3.trend"), spark: [22, 23, 24, 25, 26, 27, 28, 29] },
+            ]
+          : [
+              { label: t("shell.kpi.reports.0.label"), value: t("shell.kpi.reports.0.value"), trend: t("shell.kpi.reports.0.trend"), spark: [142, 132, 148, 156, 172, 184, 192, 204] },
+              { label: t("shell.kpi.reports.1.label"), value: t("shell.kpi.reports.1.value"), trend: t("shell.kpi.reports.1.trend"), spark: [44, 45, 46, 46, 47, 47, 48, 49] },
+              { label: t("shell.kpi.reports.2.label"), value: t("shell.kpi.reports.2.value"), trend: t("shell.kpi.reports.2.trend"), spark: [54, 60, 68, 72, 80, 86, 92, 98] },
+              { label: t("shell.kpi.reports.3.label"), value: t("shell.kpi.reports.3.value"), trend: t("shell.kpi.reports.3.trend"), spark: [9, 10, 11, 12, 13, 14, 15, 16] },
+            ];
+
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", color: C.ink, fontFamily: "Inter, ui-sans-serif" }}>
-      <header
+    <div
+      style={{
+        background: C.bg,
+        minHeight: "100vh",
+        color: C.ink,
+        fontFamily: "Inter, ui-sans-serif",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <DemoTopBar
+        palette={palette}
+        brandName={t("brand")}
+        brandMark={
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              background: C.navy,
+              borderRadius: 8,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <CalculatorIcon style={{ width: 16, height: 16, color: "white" }} />
+          </div>
+        }
+        breadcrumb={breadcrumb}
+        searchPlaceholder={t("shell.searchPlaceholder")}
+        userName={t("shell.userName")}
+        userInitials={t("shell.userInitials")}
+      />
+
+      <div
         style={{
           background: C.paper,
-          padding: "16px 32px",
           borderBottom: `1px solid ${C.border}`,
+          padding: "10px 32px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: 12,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 36, height: 36, background: C.navy, borderRadius: 10, display: "grid", placeItems: "center" }}>
-            <CalculatorIcon style={{ width: 18, height: 18, color: "white" }} />
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 16 }}>{t("brand")}</div>
-            <div style={{ fontSize: 11, color: C.muted }}>{t("fiscalPeriod")}</div>
-          </div>
+        <div style={{ fontSize: 11, color: C.muted, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>
+          {t("fiscalPeriod")}
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           {TABS.map((tn) => {
@@ -157,9 +274,18 @@ export function AccountingDemo() {
             );
           })}
         </div>
-      </header>
+      </div>
 
-      <main style={{ padding: 32, maxWidth: 1400, margin: "0 auto" }}>
+      <main style={{ padding: 32, maxWidth: 1400, margin: "0 auto", width: "100%", flex: 1 }}>
+        <DemoScreenHeader
+          palette={palette}
+          eyebrow={screenEyebrow}
+          title={screenTitle}
+          subtitle={screenSubtitle}
+        />
+
+        <DemoKpiStrip palette={palette} items={kpiItems} />
+
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 32 }}>
           {[
             { label: t("stats.revenueMTD"), v: "$184,200", trend: "+12.4%", up: true },
@@ -233,25 +359,20 @@ export function AccountingDemo() {
                 </tr>
               </thead>
               <tbody>
-                {INVOICES.map((inv, i) => {
-                  const s = STATUS_C[inv.status];
-                  return (
-                    <tr key={inv.n} style={{ borderTop: i === 0 ? "none" : `1px solid ${C.border}` }}>
-                      <td style={{ padding: "14px 18px", fontWeight: 600 }}>{inv.n}</td>
-                      <td style={{ padding: "14px 18px" }}>{inv.client}</td>
-                      <td style={{ padding: "14px 18px", color: C.muted }}>{inv.due}</td>
-                      <td style={{ padding: "14px 18px", fontWeight: 700 }}>${inv.amount.toLocaleString()}</td>
-                      <td style={{ padding: "14px 18px" }}>
-                        <span style={{ background: s.bg, color: s.fg, padding: "3px 10px", borderRadius: 9999, fontSize: 11, fontWeight: 700 }}>
-                          {statusLabel(inv.status)}
-                        </span>
-                      </td>
-                      <td style={{ padding: "14px 18px" }}>
-                        <DocumentTextIcon style={{ width: 14, height: 14, color: C.muted, cursor: "pointer" }} />
-                      </td>
-                    </tr>
-                  );
-                })}
+                {INVOICES.map((inv, i) => (
+                  <tr key={inv.n} style={{ borderTop: i === 0 ? "none" : `1px solid ${C.border}` }}>
+                    <td style={{ padding: "14px 18px", fontWeight: 600 }}>{inv.n}</td>
+                    <td style={{ padding: "14px 18px" }}>{inv.client}</td>
+                    <td style={{ padding: "14px 18px", color: C.muted }}>{inv.due}</td>
+                    <td style={{ padding: "14px 18px", fontWeight: 700 }}>${inv.amount.toLocaleString()}</td>
+                    <td style={{ padding: "14px 18px" }}>
+                      <DemoBadge palette={palette} variant={statusVariant(inv.status)} label={statusLabel(inv.status)} />
+                    </td>
+                    <td style={{ padding: "14px 18px" }}>
+                      <DocumentTextIcon style={{ width: 14, height: 14, color: C.muted, cursor: "pointer" }} />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </section>
@@ -362,6 +483,13 @@ export function AccountingDemo() {
           </section>
         )}
       </main>
+
+      <DemoStatusBar
+        palette={palette}
+        version={t("shell.version")}
+        region={t("shell.region")}
+        buildId={t("shell.build")}
+      />
     </div>
   );
 }

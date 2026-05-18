@@ -14,6 +14,13 @@ import {
   ForkKnife,
   Path,
 } from "@phosphor-icons/react";
+import {
+  DemoTopBar,
+  DemoStatusBar,
+  DemoKpiStrip,
+  DemoScreenHeader,
+  DemoBadge,
+} from "@/components/demo-shell";
 
 const C = {
   bg: "#f0f9ff",
@@ -23,6 +30,15 @@ const C = {
   primary: "#0891b2",
   accent: "#f59e0b",
   border: "#bfdbf7",
+};
+
+const palette = {
+  bg: C.bg,
+  paper: C.paper,
+  ink: C.ink,
+  muted: C.muted,
+  primary: C.primary,
+  border: C.border,
 };
 
 type TabId = "tours" | "bookings" | "itinerary" | "customers";
@@ -43,17 +59,27 @@ export function TravelAgencyDemo() {
   const statusCancelled = t("bookings.status.cancelled");
 
   const BOOKINGS = [
-    { code: "TR-7821", customer: "Alibek Mirzoev",       tour: t("tours.pamir.title"),       depart: "Jun 02, 2026", party: 2, total: 2960, status: statusPaid },
-    { code: "TR-7822", customer: "Tanya & Olga K.",      tour: t("bookings.items.samarkandShort"), depart: "Jun 04, 2026", party: 2, total: 1840, status: statusPaid },
-    { code: "TR-7823", customer: "Yusuf Davlatov",       tour: t("bookings.items.iskanderkulShort"), depart: "May 28, 2026", party: 1, total: 380,  status: statusConfirmed },
-    { code: "TR-7824", customer: "Lars & Mia Petersen",  tour: t("bookings.items.wakhanShort"),    depart: "Jun 18, 2026", party: 2, total: 2240, status: statusConfirmed },
-    { code: "TR-7825", customer: "Hiroshi Tanaka",       tour: t("tours.pamir.title"),       depart: "Jul 03, 2026", party: 1, total: 1480, status: statusPaid },
-    { code: "TR-7826", customer: "Familie Becker",       tour: t("tours.samarkand.title"),   depart: "Jul 10, 2026", party: 4, total: 3680, status: statusConfirmed },
-    { code: "TR-7827", customer: "Aigerim S.",           tour: t("tours.iskanderkul.title"), depart: "Jul 12, 2026", party: 3, total: 1140, status: statusCancelled },
-    { code: "TR-7828", customer: "Marco & Elena Rossi",  tour: t("tours.wakhan.title"),      depart: "Aug 04, 2026", party: 2, total: 2240, status: statusConfirmed },
-    { code: "TR-7829", customer: "Sophie Laurent",       tour: t("tours.pamir.title"),       depart: "Aug 15, 2026", party: 1, total: 1480, status: statusPaid },
-    { code: "TR-7830", customer: "James O'Brien",        tour: t("tours.samarkand.title"),   depart: "Sep 02, 2026", party: 2, total: 1840, status: statusConfirmed },
+    { code: "TR-7821", customer: "Alibek Mirzoev",       tour: t("tours.pamir.title"),       depart: "Jun 02, 2026", party: 2, total: 2960, status: "paid" },
+    { code: "TR-7822", customer: "Tanya & Olga K.",      tour: t("bookings.items.samarkandShort"), depart: "Jun 04, 2026", party: 2, total: 1840, status: "paid" },
+    { code: "TR-7823", customer: "Yusuf Davlatov",       tour: t("bookings.items.iskanderkulShort"), depart: "May 28, 2026", party: 1, total: 380,  status: "confirmed" },
+    { code: "TR-7824", customer: "Lars & Mia Petersen",  tour: t("bookings.items.wakhanShort"),    depart: "Jun 18, 2026", party: 2, total: 2240, status: "confirmed" },
+    { code: "TR-7825", customer: "Hiroshi Tanaka",       tour: t("tours.pamir.title"),       depart: "Jul 03, 2026", party: 1, total: 1480, status: "paid" },
+    { code: "TR-7826", customer: "Familie Becker",       tour: t("tours.samarkand.title"),   depart: "Jul 10, 2026", party: 4, total: 3680, status: "pending" },
+    { code: "TR-7827", customer: "Aigerim S.",           tour: t("tours.iskanderkul.title"), depart: "Jul 12, 2026", party: 3, total: 1140, status: "cancelled" },
+    { code: "TR-7828", customer: "Marco & Elena Rossi",  tour: t("tours.wakhan.title"),      depart: "Aug 04, 2026", party: 2, total: 2240, status: "confirmed" },
+    { code: "TR-7829", customer: "Sophie Laurent",       tour: t("tours.pamir.title"),       depart: "Aug 15, 2026", party: 1, total: 1480, status: "paid" },
+    { code: "TR-7830", customer: "James O'Brien",        tour: t("tours.samarkand.title"),   depart: "Sep 02, 2026", party: 2, total: 1840, status: "pending" },
   ];
+
+  const BOOKING_STATUS: Record<
+    string,
+    { variant: "success" | "info" | "warn" | "danger"; label: string }
+  > = {
+    confirmed: { variant: "info", label: statusConfirmed },
+    paid: { variant: "success", label: statusPaid },
+    pending: { variant: "warn", label: t("bookings.status.pending") },
+    cancelled: { variant: "danger", label: statusCancelled },
+  };
 
   const ITINERARY = [
     { day: 1, location: t("itinerary.days.d1.location"), activity: t("itinerary.days.d1.activity"), hotel: t("itinerary.days.d1.hotel"), meals: t("itinerary.days.d1.meals") },
@@ -83,45 +109,170 @@ export function TravelAgencyDemo() {
     { id: "customers", label: t("nav.customers"), Icon: Users },
   ];
 
-  return (
-    <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "ui-sans-serif, system-ui" }}>
-      <header style={{ background: C.paper, padding: "18px 32px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 38, height: 38, background: C.primary, borderRadius: 10, display: "grid", placeItems: "center" }}>
-            <AirplaneTilt weight="light" style={{ width: 20, height: 20, color: "white" }} />
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 17 }}>{t("brand.name")}</div>
-            <div style={{ fontSize: 11, color: C.muted, letterSpacing: 1, textTransform: "uppercase" }}>{t("brand.tagline")}</div>
-          </div>
-        </div>
-        <nav style={{ display: "flex", gap: 6 }}>
-          {TABS.map((tab2) => (
-            <button
-              key={tab2.id}
-              onClick={() => setTab(tab2.id)}
-              style={{
-                background: tab === tab2.id ? C.primary : "transparent",
-                color: tab === tab2.id ? "white" : C.muted,
-                border: "none",
-                padding: "8px 14px",
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <tab2.Icon weight="light" style={{ width: 14, height: 14 }} />
-              {tab2.label}
-            </button>
-          ))}
-        </nav>
-      </header>
+  const breadcrumb =
+    tab === "tours"
+      ? t("breadcrumb.tours")
+      : tab === "bookings"
+        ? t("breadcrumb.bookings")
+        : tab === "itinerary"
+          ? t("breadcrumb.itinerary")
+          : t("breadcrumb.customers");
 
-      <main style={{ padding: 32, maxWidth: 1300, margin: "0 auto" }}>
+  const screenEyebrow =
+    tab === "tours"
+      ? t("screen.tours.eyebrow")
+      : tab === "bookings"
+        ? t("screen.bookings.eyebrow")
+        : tab === "itinerary"
+          ? t("screen.itinerary.eyebrow")
+          : t("screen.customers.eyebrow");
+
+  const screenTitle =
+    tab === "tours"
+      ? t("screen.tours.title")
+      : tab === "bookings"
+        ? t("screen.bookings.title")
+        : tab === "itinerary"
+          ? t("screen.itinerary.title")
+          : t("screen.customers.title");
+
+  const screenSubtitle =
+    tab === "tours"
+      ? t("screen.tours.subtitle")
+      : tab === "bookings"
+        ? t("screen.bookings.subtitle")
+        : tab === "itinerary"
+          ? t("screen.itinerary.subtitle")
+          : t("screen.customers.subtitle");
+
+  const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
+    tab === "tours"
+      ? [
+          { label: t("kpi.tours.0.label"), value: t("kpi.tours.0.value"), trend: t("kpi.tours.0.trend"), spark: [18, 20, 22, 24, 26, 28, 30, 32] },
+          { label: t("kpi.tours.1.label"), value: t("kpi.tours.1.value"), trend: t("kpi.tours.1.trend"), spark: [240, 280, 320, 360, 410, 440, 470, 510] },
+          { label: t("kpi.tours.2.label"), value: t("kpi.tours.2.value"), trend: t("kpi.tours.2.trend"), spark: [62, 66, 68, 72, 74, 78, 80, 84] },
+          { label: t("kpi.tours.3.label"), value: t("kpi.tours.3.value"), trend: t("kpi.tours.3.trend"), spark: [2, 2, 3, 2, 3, 3, 4, 3] },
+        ]
+      : tab === "bookings"
+        ? [
+            { label: t("kpi.bookings.0.label"), value: t("kpi.bookings.0.value"), trend: t("kpi.bookings.0.trend"), spark: [22, 28, 32, 36, 40, 44, 48, 52] },
+            { label: t("kpi.bookings.1.label"), value: t("kpi.bookings.1.value"), trend: t("kpi.bookings.1.trend"), spark: [38, 42, 48, 52, 58, 62, 68, 74] },
+            { label: t("kpi.bookings.2.label"), value: t("kpi.bookings.2.value"), trend: t("kpi.bookings.2.trend"), spark: [3.2, 3.4, 3.5, 3.7, 3.8, 4.0, 4.1, 4.3] },
+            { label: t("kpi.bookings.3.label"), value: t("kpi.bookings.3.value"), trend: t("kpi.bookings.3.trend"), spark: [4, 3, 3, 2, 3, 2, 2, 2] },
+          ]
+        : tab === "itinerary"
+          ? [
+              { label: t("kpi.itinerary.0.label"), value: t("kpi.itinerary.0.value"), trend: t("kpi.itinerary.0.trend"), spark: [5, 6, 6, 7, 7, 7, 8, 8] },
+              { label: t("kpi.itinerary.1.label"), value: t("kpi.itinerary.1.value"), trend: t("kpi.itinerary.1.trend"), spark: [12, 14, 15, 16, 18, 19, 20, 22] },
+              { label: t("kpi.itinerary.2.label"), value: t("kpi.itinerary.2.value"), trend: t("kpi.itinerary.2.trend"), spark: [6, 7, 8, 9, 10, 10, 11, 12] },
+              { label: t("kpi.itinerary.3.label"), value: t("kpi.itinerary.3.value"), trend: t("kpi.itinerary.3.trend"), spark: [40, 48, 60, 72, 86, 94, 88, 76] },
+            ]
+          : [
+              { label: t("kpi.customers.0.label"), value: t("kpi.customers.0.value"), trend: t("kpi.customers.0.trend"), spark: [180, 220, 260, 300, 340, 380, 420, 460] },
+              { label: t("kpi.customers.1.label"), value: t("kpi.customers.1.value"), trend: t("kpi.customers.1.trend"), spark: [22, 24, 26, 28, 29, 31, 32, 34] },
+              { label: t("kpi.customers.2.label"), value: t("kpi.customers.2.value"), trend: t("kpi.customers.2.trend"), spark: [12, 14, 15, 17, 18, 20, 21, 23] },
+              { label: t("kpi.customers.3.label"), value: t("kpi.customers.3.value"), trend: t("kpi.customers.3.trend"), spark: [48, 52, 56, 58, 60, 62, 64, 66] },
+            ];
+
+  return (
+    <div
+      style={{
+        background: C.bg,
+        color: C.ink,
+        minHeight: "100vh",
+        fontFamily: "ui-sans-serif, system-ui",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <DemoTopBar
+        palette={palette}
+        brandName={t("brand.name")}
+        brandMark={
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              background: C.primary,
+              borderRadius: 8,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <AirplaneTilt weight="light" size={16} style={{ color: C.paper }} />
+          </div>
+        }
+        breadcrumb={breadcrumb}
+        searchPlaceholder={t("shell.searchPlaceholder")}
+        userName={t("shell.userName")}
+        userInitials={t("shell.userInitials")}
+      />
+
+      <nav
+        style={{
+          background: C.paper,
+          borderBottom: `1px solid ${C.border}`,
+          padding: "10px 24px",
+          display: "flex",
+          gap: 6,
+        }}
+      >
+        {TABS.map((tab2) => (
+          <button
+            key={tab2.id}
+            onClick={() => setTab(tab2.id)}
+            style={{
+              background: tab === tab2.id ? C.primary : "transparent",
+              color: tab === tab2.id ? "white" : C.muted,
+              border: "none",
+              padding: "8px 14px",
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <tab2.Icon weight="light" style={{ width: 14, height: 14 }} />
+            {tab2.label}
+          </button>
+        ))}
+      </nav>
+
+      <main style={{ padding: 32, maxWidth: 1300, margin: "0 auto", width: "100%", flex: 1 }}>
+        <DemoScreenHeader
+          palette={palette}
+          eyebrow={screenEyebrow}
+          title={screenTitle}
+          subtitle={screenSubtitle}
+          rightSlot={
+            tab === "itinerary" ? (
+              <button
+                style={{
+                  background: C.primary,
+                  color: "white",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "10px 16px",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <Path weight="light" style={{ width: 14, height: 14 }} />
+                {t("itinerary.addDay")}
+              </button>
+            ) : undefined
+          }
+        />
+
+        <DemoKpiStrip palette={palette} items={kpiItems} />
+
         {tab === "tours" && (
           <>
             <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 16, padding: 16, display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 120px", gap: 10, alignItems: "center", marginBottom: 22 }}>
@@ -180,19 +331,19 @@ export function TravelAgencyDemo() {
         )}
 
         {tab === "bookings" && (
-          <>
-            <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 14 }}>{t("bookings.heading")}</h2>
-            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "100px 1.4fr 1.4fr 1.1fr 80px 100px 120px", padding: "12px 20px", background: C.bg, fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, gap: 10 }}>
-                <span>{t("bookings.cols.code")}</span>
-                <span>{t("bookings.cols.customer")}</span>
-                <span>{t("bookings.cols.tour")}</span>
-                <span>{t("bookings.cols.departure")}</span>
-                <span>{t("bookings.cols.party")}</span>
-                <span>{t("bookings.cols.total")}</span>
-                <span style={{ textAlign: "center" }}>{t("bookings.cols.status")}</span>
-              </div>
-              {BOOKINGS.map((b, i) => (
+          <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "100px 1.4fr 1.4fr 1.1fr 80px 100px 120px", padding: "12px 20px", background: C.bg, fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, gap: 10 }}>
+              <span>{t("bookings.cols.code")}</span>
+              <span>{t("bookings.cols.customer")}</span>
+              <span>{t("bookings.cols.tour")}</span>
+              <span>{t("bookings.cols.departure")}</span>
+              <span>{t("bookings.cols.party")}</span>
+              <span>{t("bookings.cols.total")}</span>
+              <span style={{ textAlign: "center" }}>{t("bookings.cols.status")}</span>
+            </div>
+            {BOOKINGS.map((b, i) => {
+              const s = BOOKING_STATUS[b.status];
+              return (
                 <div key={b.code} style={{ display: "grid", gridTemplateColumns: "100px 1.4fr 1.4fr 1.1fr 80px 100px 120px", padding: "16px 20px", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14, alignItems: "center", gap: 10 }}>
                   <span style={{ fontWeight: 700, color: C.primary }}>{b.code}</span>
                   <span>{b.customer}</span>
@@ -200,105 +351,87 @@ export function TravelAgencyDemo() {
                   <span style={{ color: C.muted, fontSize: 12 }}>{b.depart}</span>
                   <span style={{ fontSize: 13 }}>{b.party}</span>
                   <span style={{ fontWeight: 700 }}>${b.total.toLocaleString()}</span>
-                  <span
-                    style={{
-                      background: b.status === statusPaid ? "#d1fae5" : b.status === statusConfirmed ? "#dbeafe" : "#fee2e2",
-                      color: b.status === statusPaid ? "#065f46" : b.status === statusConfirmed ? "#1e40af" : "#991b1b",
-                      padding: "4px 10px",
-                      borderRadius: 9999,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      textAlign: "center",
-                    }}
-                  >
-                    {b.status}
+                  <span style={{ display: "inline-flex", justifyContent: "center" }}>
+                    <DemoBadge palette={palette} variant={s.variant} label={s.label} />
                   </span>
                 </div>
-              ))}
-            </div>
-          </>
+              );
+            })}
+          </div>
         )}
 
         {tab === "itinerary" && (
-          <>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-              <div>
-                <h2 style={{ fontSize: 22, fontWeight: 700 }}>{t("itinerary.heading")}</h2>
-                <div style={{ fontSize: 13, color: C.muted, marginTop: 4 }}>{t("itinerary.subheading")}</div>
-              </div>
-              <button style={{ background: C.primary, color: "white", border: "none", borderRadius: 10, padding: "10px 16px", fontWeight: 700, fontSize: 13, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                <Path weight="light" style={{ width: 14, height: 14 }} />
-                {t("itinerary.addDay")}
-              </button>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {ITINERARY.map((d) => (
-                <article key={d.day} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18, display: "grid", gridTemplateColumns: "70px 1fr 1fr 1fr 1fr", gap: 16, alignItems: "center" }}>
-                  <div style={{ background: C.primary, color: "white", borderRadius: 12, padding: "12px 0", textAlign: "center" }}>
-                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1, opacity: 0.8 }}>{t("itinerary.dayLabel")}</div>
-                    <div style={{ fontSize: 22, fontWeight: 800 }}>{d.day}</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {ITINERARY.map((d) => (
+              <article key={d.day} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18, display: "grid", gridTemplateColumns: "70px 1fr 1fr 1fr 1fr", gap: 16, alignItems: "center" }}>
+                <div style={{ background: C.primary, color: "white", borderRadius: 12, padding: "12px 0", textAlign: "center" }}>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1, opacity: 0.8 }}>{t("itinerary.dayLabel")}</div>
+                  <div style={{ fontSize: 22, fontWeight: 800 }}>{d.day}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                    <MapPin weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.location")}
                   </div>
-                  <div>
-                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                      <MapPin weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.location")}
-                    </div>
-                    <div style={{ fontSize: 14, fontWeight: 600, marginTop: 4 }}>{d.location}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, marginTop: 4 }}>{d.location}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                    <Compass weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.activity")}
                   </div>
-                  <div>
-                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                      <Compass weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.activity")}
-                    </div>
-                    <div style={{ fontSize: 13, marginTop: 4 }}>{d.activity}</div>
+                  <div style={{ fontSize: 13, marginTop: 4 }}>{d.activity}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                    <Bed weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.hotel")}
                   </div>
-                  <div>
-                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                      <Bed weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.hotel")}
-                    </div>
-                    <div style={{ fontSize: 13, marginTop: 4 }}>{d.hotel}</div>
+                  <div style={{ fontSize: 13, marginTop: 4 }}>{d.hotel}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                    <ForkKnife weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.meals")}
                   </div>
-                  <div>
-                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                      <ForkKnife weight="light" style={{ width: 12, height: 12 }} /> {t("itinerary.meals")}
-                    </div>
-                    <div style={{ fontSize: 13, marginTop: 4 }}>{d.meals}</div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </>
+                  <div style={{ fontSize: 13, marginTop: 4 }}>{d.meals}</div>
+                </div>
+              </article>
+            ))}
+          </div>
         )}
 
         {tab === "customers" && (
-          <>
-            <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 14 }}>{t("customers.heading")}</h2>
-            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1.1fr 0.9fr 1fr", padding: "12px 20px", background: C.bg, fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, gap: 10 }}>
-                <span>{t("customers.cols.name")}</span>
-                <span>{t("customers.cols.country")}</span>
-                <span>{t("customers.cols.trips")}</span>
-                <span style={{ textAlign: "right" }}>{t("customers.cols.ltv")}</span>
-              </div>
-              {CUSTOMERS.map((c, i) => (
-                <div key={c.name} style={{ display: "grid", gridTemplateColumns: "1.6fr 1.1fr 0.9fr 1fr", padding: "16px 20px", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14, alignItems: "center", gap: 10 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 9999, background: C.bg, color: C.primary, display: "grid", placeItems: "center", fontWeight: 700, fontSize: 12 }}>
-                      {c.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
-                    </div>
-                    <span style={{ fontWeight: 600 }}>{c.name}</span>
-                  </div>
-                  <span style={{ color: C.muted }}>{c.country}</span>
-                  <span>
-                    <span style={{ background: C.bg, color: C.primary, padding: "3px 10px", borderRadius: 9999, fontSize: 12, fontWeight: 700 }}>
-                      {c.trips} {t("customers.tripsSuffix")}
-                    </span>
-                  </span>
-                  <span style={{ textAlign: "right", fontWeight: 700, color: C.primary }}>${c.ltv.toLocaleString()}</span>
-                </div>
-              ))}
+          <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1.1fr 0.9fr 1fr", padding: "12px 20px", background: C.bg, fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, gap: 10 }}>
+              <span>{t("customers.cols.name")}</span>
+              <span>{t("customers.cols.country")}</span>
+              <span>{t("customers.cols.trips")}</span>
+              <span style={{ textAlign: "right" }}>{t("customers.cols.ltv")}</span>
             </div>
-          </>
+            {CUSTOMERS.map((c, i) => (
+              <div key={c.name} style={{ display: "grid", gridTemplateColumns: "1.6fr 1.1fr 0.9fr 1fr", padding: "16px 20px", borderTop: i === 0 ? "none" : `1px solid ${C.border}`, fontSize: 14, alignItems: "center", gap: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 9999, background: C.bg, color: C.primary, display: "grid", placeItems: "center", fontWeight: 700, fontSize: 12 }}>
+                    {c.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                  </div>
+                  <span style={{ fontWeight: 600 }}>{c.name}</span>
+                </div>
+                <span style={{ color: C.muted }}>{c.country}</span>
+                <span>
+                  <span style={{ background: C.bg, color: C.primary, padding: "3px 10px", borderRadius: 9999, fontSize: 12, fontWeight: 700 }}>
+                    {c.trips} {t("customers.tripsSuffix")}
+                  </span>
+                </span>
+                <span style={{ textAlign: "right", fontWeight: 700, color: C.primary }}>${c.ltv.toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
         )}
       </main>
+
+      <DemoStatusBar
+        palette={palette}
+        version={t("shell.version")}
+        region={t("shell.region")}
+        buildId={t("shell.buildId")}
+      />
     </div>
   );
 }

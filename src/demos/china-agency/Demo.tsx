@@ -4,17 +4,20 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   GraduationCap,
-  FileText,
-  AirplaneTilt,
-  Users,
   ArrowRight,
   Clock,
   Files,
   Buildings,
   MapPin,
-  CheckCircle,
   Certificate,
 } from "@phosphor-icons/react";
+import {
+  DemoTopBar,
+  DemoStatusBar,
+  DemoKpiStrip,
+  DemoScreenHeader,
+  DemoBadge,
+} from "@/components/demo-shell";
 
 const C = {
   bg: "#fef9f0",
@@ -24,6 +27,15 @@ const C = {
   red: "#b91c1c",
   gold: "#b8860b",
   border: "#eedcb8",
+};
+
+const palette = {
+  bg: C.bg,
+  paper: C.paper,
+  ink: C.ink,
+  muted: C.muted,
+  primary: C.red,
+  border: C.border,
 };
 
 type Tab = "pipeline" | "students" | "universities" | "documents";
@@ -74,86 +86,166 @@ export function ChinaAgencyDemo() {
     { i: 11, studentIdx: 3, typeKey: "visa", statusKey: "submitted" },
   ];
 
-  const statusColor = (k: string): { bg: string; fg: string } => {
+  // Map status keys -> DemoBadge variants
+  const badgeVariantFor = (k: string): "neutral" | "success" | "warn" | "danger" | "info" => {
     switch (k) {
       case "verified":
-        return { bg: "#fff7e6", fg: C.gold };
+        return "warn";
       case "issued":
-        return { bg: "#e8f5e9", fg: "#2e7d32" };
+        return "success";
       case "sent":
-        return { bg: "#fbe9e7", fg: C.red };
+        return "danger";
       case "submitted":
       default:
-        return { bg: C.bg, fg: C.muted };
+        return "neutral";
     }
   };
 
+  const breadcrumb =
+    tab === "pipeline"
+      ? t("shell.breadcrumb.pipeline")
+      : tab === "students"
+        ? t("shell.breadcrumb.students")
+        : tab === "universities"
+          ? t("shell.breadcrumb.universities")
+          : t("shell.breadcrumb.documents");
+
+  const screenEyebrow =
+    tab === "pipeline"
+      ? t("screen.pipeline.eyebrow")
+      : tab === "students"
+        ? t("screen.students.eyebrow")
+        : tab === "universities"
+          ? t("screen.universities.eyebrow")
+          : t("screen.documents.eyebrow");
+
+  const screenTitle =
+    tab === "pipeline"
+      ? t("screen.pipeline.title")
+      : tab === "students"
+        ? t("screen.students.title")
+        : tab === "universities"
+          ? t("screen.universities.title")
+          : t("screen.documents.title");
+
+  const screenSubtitle =
+    tab === "pipeline"
+      ? t("screen.pipeline.subtitle")
+      : tab === "students"
+        ? t("screen.students.subtitle")
+        : tab === "universities"
+          ? t("screen.universities.subtitle")
+          : t("screen.documents.subtitle");
+
+  const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
+    tab === "pipeline"
+      ? [
+          { label: t("kpi.pipeline.0.label"), value: t("kpi.pipeline.0.value"), trend: t("kpi.pipeline.0.trend"), spark: [98, 104, 112, 118, 121, 124, 122, 126] },
+          { label: t("kpi.pipeline.1.label"), value: t("kpi.pipeline.1.value"), trend: t("kpi.pipeline.1.trend"), spark: [22, 24, 23, 26, 28, 27, 29, 31] },
+          { label: t("kpi.pipeline.2.label"), value: t("kpi.pipeline.2.value"), trend: t("kpi.pipeline.2.trend"), spark: [18, 22, 26, 28, 30, 34, 36, 38] },
+          { label: t("kpi.pipeline.3.label"), value: t("kpi.pipeline.3.value"), trend: t("kpi.pipeline.3.trend"), spark: [12, 18, 24, 30, 36, 40, 44, 47] },
+        ]
+      : tab === "students"
+        ? [
+            { label: t("kpi.students.0.label"), value: t("kpi.students.0.value"), trend: t("kpi.students.0.trend"), spark: [108, 112, 116, 118, 121, 124, 123, 126] },
+            { label: t("kpi.students.1.label"), value: t("kpi.students.1.value"), trend: t("kpi.students.1.trend"), spark: [88, 84, 80, 76, 74, 72, 70, 68] },
+            { label: t("kpi.students.2.label"), value: t("kpi.students.2.value"), trend: t("kpi.students.2.trend"), spark: [32, 36, 38, 41, 44, 46, 48, 51] },
+            { label: t("kpi.students.3.label"), value: t("kpi.students.3.value"), trend: t("kpi.students.3.trend"), spark: [18, 22, 26, 30, 34, 38, 42, 46] },
+          ]
+        : tab === "universities"
+          ? [
+              { label: t("kpi.universities.0.label"), value: t("kpi.universities.0.value"), trend: t("kpi.universities.0.trend"), spark: [22, 24, 26, 27, 28, 29, 30, 31] },
+              { label: t("kpi.universities.1.label"), value: t("kpi.universities.1.value"), trend: t("kpi.universities.1.trend"), spark: [62, 66, 70, 74, 78, 82, 86, 92] },
+              { label: t("kpi.universities.2.label"), value: t("kpi.universities.2.value"), trend: t("kpi.universities.2.trend"), spark: [74, 76, 78, 80, 82, 84, 85, 86] },
+              { label: t("kpi.universities.3.label"), value: t("kpi.universities.3.value"), trend: t("kpi.universities.3.trend"), spark: [18, 22, 26, 30, 34, 38, 42, 47] },
+            ]
+          : [
+              { label: t("kpi.documents.0.label"), value: t("kpi.documents.0.value"), trend: t("kpi.documents.0.trend"), spark: [44, 48, 52, 56, 58, 62, 64, 68] },
+              { label: t("kpi.documents.1.label"), value: t("kpi.documents.1.value"), trend: t("kpi.documents.1.trend"), spark: [6, 8, 9, 11, 12, 14, 16, 18] },
+              { label: t("kpi.documents.2.label"), value: t("kpi.documents.2.value"), trend: t("kpi.documents.2.trend"), spark: [12, 11, 10, 9, 8, 8, 7, 7] },
+              { label: t("kpi.documents.3.label"), value: t("kpi.documents.3.value"), trend: t("kpi.documents.3.trend"), spark: [8, 7, 6, 6, 5, 4, 4, 3] },
+            ];
+
   return (
-    <div style={{ background: C.bg, color: C.ink, minHeight: "100vh", fontFamily: "ui-sans-serif, system-ui" }}>
-      <header
+    <div
+      style={{
+        background: C.bg,
+        color: C.ink,
+        minHeight: "100vh",
+        fontFamily: "ui-sans-serif, system-ui",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <DemoTopBar
+        palette={palette}
+        brandName={t("brand")}
+        brandMark={
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              background: palette.primary,
+              borderRadius: 8,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <GraduationCap weight="bold" size={16} style={{ color: palette.paper }} />
+          </div>
+        }
+        breadcrumb={breadcrumb}
+        searchPlaceholder={t("shell.searchPlaceholder")}
+        userName={t("shell.userName")}
+        userInitials={t("shell.userInitials")}
+      />
+
+      <div
         style={{
-          padding: "20px 32px",
           background: C.paper,
           borderBottom: `1px solid ${C.border}`,
+          padding: "8px 32px",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          gap: 8,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 40, height: 40, background: C.red, borderRadius: 12, display: "grid", placeItems: "center" }}>
-            <GraduationCap weight="bold" size={22} style={{ color: "white" }} />
-          </div>
-          <div>
-            <div style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: 19 }}>{t("brand")}</div>
-            <div style={{ fontSize: 11, color: C.muted, letterSpacing: 1 }}>{t("tagline")}</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          {[
-            { id: "pipeline" as const, label: t("nav.pipeline") },
-            { id: "students" as const, label: t("nav.students") },
-            { id: "universities" as const, label: t("nav.universities") },
-            { id: "documents" as const, label: t("nav.documents") },
-          ].map((tItem) => {
-            const active = tab === tItem.id;
-            return (
-              <button
-                key={tItem.id}
-                onClick={() => setTab(tItem.id)}
-                style={{
-                  background: active ? C.red : "transparent",
-                  color: active ? "white" : C.muted,
-                  border: "none",
-                  padding: "8px 18px",
-                  borderRadius: 8,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                {tItem.label}
-              </button>
-            );
-          })}
-        </div>
-      </header>
+        {[
+          { id: "pipeline" as const, label: t("nav.pipeline") },
+          { id: "students" as const, label: t("nav.students") },
+          { id: "universities" as const, label: t("nav.universities") },
+          { id: "documents" as const, label: t("nav.documents") },
+        ].map((tItem) => {
+          const active = tab === tItem.id;
+          return (
+            <button
+              key={tItem.id}
+              onClick={() => setTab(tItem.id)}
+              style={{
+                background: active ? C.red : "transparent",
+                color: active ? "white" : C.muted,
+                border: "none",
+                padding: "8px 18px",
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              {tItem.label}
+            </button>
+          );
+        })}
+      </div>
 
-      <main style={{ padding: 32, maxWidth: 1400, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 28 }}>
-          {[
-            { Icon: Users, label: t("stats.activeApplicants"), v: "126" },
-            { Icon: FileText, label: t("stats.offersIssued"), v: "38" },
-            { Icon: AirplaneTilt, label: t("stats.departuresQ3"), v: "47" },
-            { Icon: GraduationCap, label: t("stats.partnerUniversities"), v: "31" },
-          ].map((s) => (
-            <div key={s.label} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18 }}>
-              <s.Icon weight="bold" size={18} style={{ color: C.red }} />
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
-              <div style={{ fontSize: 28, fontWeight: 800, marginTop: 4, fontFamily: "Georgia, serif" }}>{s.v}</div>
-            </div>
-          ))}
-        </div>
+      <main style={{ flex: 1, padding: 32, maxWidth: 1400, margin: "0 auto", width: "100%" }}>
+        <DemoScreenHeader
+          palette={palette}
+          eyebrow={screenEyebrow}
+          title={screenTitle}
+          subtitle={screenSubtitle}
+        />
+
+        <DemoKpiStrip palette={palette} items={kpiItems} />
 
         {tab === "pipeline" && (
           <section>
@@ -335,7 +427,6 @@ export function ChinaAgencyDemo() {
 
             <div>
               {DOCUMENTS.map((d) => {
-                const sc = statusColor(d.statusKey);
                 return (
                   <div
                     key={d.i}
@@ -356,22 +447,12 @@ export function ChinaAgencyDemo() {
                       <div style={{ color: C.muted, fontSize: 11, marginTop: 2 }}>{t(`documents.entries.${d.i}.ref`)}</div>
                     </div>
                     <span style={{ color: C.ink }}>{t(`documents.types.${d.typeKey}`)}</span>
-                    <span
-                      style={{
-                        justifySelf: "start",
-                        background: sc.bg,
-                        color: sc.fg,
-                        padding: "3px 10px",
-                        borderRadius: 9999,
-                        fontSize: 11,
-                        fontWeight: 700,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                    >
-                      <CheckCircle weight="bold" size={11} />
-                      {t(`documents.status.${d.statusKey}`)}
+                    <span style={{ justifySelf: "start", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                      <DemoBadge
+                        palette={palette}
+                        variant={badgeVariantFor(d.statusKey)}
+                        label={t(`documents.status.${d.statusKey}`)}
+                      />
                     </span>
                     <span style={{ color: C.muted, fontSize: 12 }}>{t(`documents.entries.${d.i}.date`)}</span>
                   </div>
@@ -391,6 +472,13 @@ export function ChinaAgencyDemo() {
           </button>
         </div>
       </main>
+
+      <DemoStatusBar
+        palette={palette}
+        version={t("shell.statusBar.version")}
+        region={t("shell.statusBar.region")}
+        buildId={t("shell.statusBar.buildId")}
+      />
     </div>
   );
 }

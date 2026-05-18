@@ -153,6 +153,164 @@
       "subtitle": "Open a demo. Click around. Then chat with us when you're ready.",
       "primary": "Browse demos",
       "secondary": "Sign up"
+    },
+    "console": {
+      "label": "STATUS",
+      "lines": [
+        "$ pixelforge build restaurant.tj --tier=tailored",
+        "✓ schema generated · 38 tables · 12 rls policies",
+        "✓ build complete · 1.2s · 312kb",
+        "✓ deployed to: production · domain attached",
+        "→ next: brief intake · 20-min call · live in 14 days"
+      ],
+      "uptime": "UPTIME 99.98%",
+      "region": "TJ-DUSHANBE",
+      "build": "BUILD #2419"
+    },
+    "statsStrip": {
+      "title": "Numbers without the hand-wave",
+      "items": [
+        {
+          "value": "127",
+          "suffix": "",
+          "label": "Projects shipped",
+          "trend": "+18 this quarter"
+        },
+        {
+          "value": "14",
+          "suffix": " days",
+          "label": "Average launch time",
+          "trend": "Down from 21 last year"
+        },
+        {
+          "value": "99.6",
+          "suffix": "%",
+          "label": "Client retention",
+          "trend": "After 60-day support"
+        },
+        {
+          "value": "47",
+          "suffix": " min",
+          "label": "Median chat reply",
+          "trend": "During business hours"
+        }
+      ]
+    },
+    "marquee": {
+      "label": "INDUSTRIES SHIPPED",
+      "items": [
+        "Hospitality",
+        "Education",
+        "Healthcare",
+        "Commerce",
+        "Fitness",
+        "Travel",
+        "Finance",
+        "Beauty",
+        "Real Estate",
+        "Logistics",
+        "Legal",
+        "Construction"
+      ]
+    },
+    "bento": {
+      "title": "A working system in two weeks",
+      "items": {
+        "domain": {
+          "title": "Your domain, your data",
+          "body": "Everything ships under your name. Source code is yours from day one. No multi-tenant lock-in.",
+          "tag": "01"
+        },
+        "speed": {
+          "title": "Two-week lead time",
+          "body": "Median ship from kickoff to launch. Larger scope ships in 6–8 weeks.",
+          "tag": "02",
+          "stat": "14 days"
+        },
+        "multilang": {
+          "title": "English · Russian · Tajik",
+          "body": "i18n is built in. Adding Uzbek or Arabic is a one-day job.",
+          "tag": "03",
+          "chip": "EN · RU · TG"
+        },
+        "realtime": {
+          "title": "Live consultant chat",
+          "body": "Customers reach a human in seconds. Your team replies from one inbox.",
+          "tag": "04"
+        },
+        "a11y": {
+          "title": "WCAG AA out of the box",
+          "body": "Every demo passes contrast, focus, and keyboard checks before launch.",
+          "tag": "05",
+          "stat": "AA"
+        },
+        "perf": {
+          "title": "Lighthouse 90+",
+          "body": "Bundle audited, fonts subsetted, images served as WebP. We measure on a real phone.",
+          "tag": "06",
+          "stat": "90+"
+        }
+      }
+    },
+    "testimonials": {
+      "label": "WHAT THEYRE SAYING",
+      "title": "Built for the people running them",
+      "items": [
+        {
+          "quote": "We were quoted six months by three other shops. Pixelforge launched our marketplace in two weeks and the staging link beat anyone else's deck.",
+          "name": "Faridun S.",
+          "role": "Founder, Bozor Online",
+          "company": "Marketplace, Dushanbe"
+        },
+        {
+          "quote": "Our front desk had three different apps. They merged them into one demo we already understood and we just changed the colors.",
+          "name": "Madina T.",
+          "role": "Operations Manager",
+          "company": "Anush Clinic Network"
+        },
+        {
+          "quote": "The translation was the deal-breaker for us. Real Tajik, not Google Translate. Our customers noticed within a week.",
+          "name": "Komron R.",
+          "role": "CEO",
+          "company": "PamirTours"
+        },
+        {
+          "quote": "I got a working storefront for less than what one designer was quoting for a redesign of the static site we had.",
+          "name": "Lola K.",
+          "role": "Owner",
+          "company": "Saodat Boutique"
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Questions we get every week",
+      "items": [
+        {
+          "q": "How is this different from a no-code builder?",
+          "a": "You get real code, real Postgres, real domain. Nothing is locked to our infrastructure. The demos are starting points, not templates — we tailor them."
+        },
+        {
+          "q": "Do you have a portfolio of past clients?",
+          "a": "Yes. After the 20-min brief, we share three case studies closest to your industry. We don't list them publicly because most clients prefer the discretion."
+        },
+        {
+          "q": "What happens after the 60-day support window?",
+          "a": "You can self-host (we hand over everything) or sign a flat monthly retainer for ongoing updates. No surprise bills, no perpetual lock-in."
+        },
+        {
+          "q": "Can you start from a competitor's site I like?",
+          "a": "Yes. Tell us the URL on the brief call, we'll quote a re-skin that matches their UX and your data model."
+        },
+        {
+          "q": "Do you take equity instead of cash?",
+          "a": "Not for the standard tiers. For Bespoke we've done revenue share twice — both were industry-first products. Pitch us if you fit."
+        },
+        {
+          "q": "Why is the lead time only two weeks?",
+          "a": "Because we don't start from scratch. The system is built. We change the brand, the data model, and the integrations. The rest is configuration."
+        }
+      ]
     }
   },
   "about": {
@@ -703,6 +861,132 @@
           "adsGoogle": "Google Ads",
           "adsLinkedin": "LinkedIn Ads"
         }
+      },
+      "shell": {
+        "searchPlaceholder": "Search ledger, invoices, vendors…",
+        "userName": "Priya Kapoor",
+        "userInitials": "PK",
+        "version": "v4.12.0",
+        "region": "US-EAST · USD",
+        "build": "BUILD #8421",
+        "breadcrumb": {
+          "ledger": "Finance · Ledger",
+          "invoices": "Finance · Invoices",
+          "expenses": "Finance · Expenses",
+          "reports": "Finance · Reports"
+        },
+        "screen": {
+          "ledger": {
+            "eyebrow": "General ledger",
+            "title": "Recent activity",
+            "subtitle": "Posted entries across all accounts for the current period."
+          },
+          "invoices": {
+            "eyebrow": "Accounts receivable",
+            "title": "Invoices",
+            "subtitle": "Outstanding, overdue, and recently settled customer invoices."
+          },
+          "expenses": {
+            "eyebrow": "Accounts payable",
+            "title": "Expenses",
+            "subtitle": "Month-to-date spending grouped by category."
+          },
+          "reports": {
+            "eyebrow": "Financial reports",
+            "title": "Profit & Loss",
+            "subtitle": "Year-to-date performance with trend, margin, and runway."
+          }
+        },
+        "kpi": {
+          "ledger": {
+            "0": {
+              "label": "Total assets",
+              "value": "$1.08M",
+              "trend": "+$48k vs last close"
+            },
+            "1": {
+              "label": "Total liabilities",
+              "value": "$308k",
+              "trend": "-$4k vs last close"
+            },
+            "2": {
+              "label": "Cash on hand",
+              "value": "$312,940",
+              "trend": "+$28k MTD"
+            },
+            "3": {
+              "label": "Accounts open",
+              "value": "43",
+              "trend": "2 new this month"
+            }
+          },
+          "invoices": {
+            "0": {
+              "label": "Invoices open",
+              "value": "32",
+              "trend": "+6 this week"
+            },
+            "1": {
+              "label": "Overdue amount",
+              "value": "$22,580",
+              "trend": "3 invoices · 14+ days"
+            },
+            "2": {
+              "label": "Avg days to pay",
+              "value": "29 d",
+              "trend": "-4 d vs last quarter"
+            },
+            "3": {
+              "label": "Top client",
+              "value": "Delmar & Co",
+              "trend": "$22,100 in flight"
+            }
+          },
+          "expenses": {
+            "0": {
+              "label": "Spend MTD",
+              "value": "$61,300",
+              "trend": "+8.2% vs Apr MTD"
+            },
+            "1": {
+              "label": "Top category",
+              "value": "Payroll",
+              "trend": "$41,700 · 68% of spend"
+            },
+            "2": {
+              "label": "vs budget",
+              "value": "98%",
+              "trend": "$1,200 under plan"
+            },
+            "3": {
+              "label": "Vendor count",
+              "value": "29",
+              "trend": "+3 onboarded this month"
+            }
+          },
+          "reports": {
+            "0": {
+              "label": "Revenue YTD",
+              "value": "$932,400",
+              "trend": "+18% YoY"
+            },
+            "1": {
+              "label": "Gross margin",
+              "value": "46.6%",
+              "trend": "+2.4 pts vs last year"
+            },
+            "2": {
+              "label": "Net profit",
+              "value": "$434,200",
+              "trend": "+22% YoY"
+            },
+            "3": {
+              "label": "Runway",
+              "value": "16 mo",
+              "trend": "at current burn"
+            }
+          }
+        }
       }
     },
     "beauty-salon": {
@@ -862,6 +1146,118 @@
         "ratingLabel": "rating",
         "nextAvailable": "Next available",
         "bookButton": "Book with stylist"
+      },
+      "shell": {
+        "searchPlaceholder": "Search services, stylists, clients…",
+        "userName": "Aria Voss",
+        "userInitials": "AV",
+        "breadcrumb": {
+          "booking": "Salon · Booking",
+          "services": "Salon · Service menu",
+          "stylists": "Salon · Stylist roster"
+        },
+        "statusBar": {
+          "version": "v2.4.1",
+          "region": "EU-PAR-1",
+          "buildId": "BUILD #1182"
+        },
+        "availability": {
+          "available": "Open",
+          "limited": "Few slots",
+          "booked": "Fully booked"
+        },
+        "bookingStatus": {
+          "draft": "Draft",
+          "ready": "Ready to confirm"
+        },
+        "serviceTag": {
+          "active": "In menu"
+        }
+      },
+      "screen": {
+        "booking": {
+          "eyebrow": "Today · Saturday 22 May",
+          "title": "Booking desk",
+          "subtitle": "Build the appointment — pick a service, then a free slot."
+        },
+        "services": {
+          "eyebrow": "Service catalogue",
+          "title": "Service menu",
+          "subtitle": "Twelve signature treatments across hair, nails, skin and spa."
+        },
+        "stylists": {
+          "eyebrow": "Team roster",
+          "title": "Stylist roster",
+          "subtitle": "Specialties, ratings and the next free slot — at a glance."
+        }
+      },
+      "kpi": {
+        "booking": {
+          "0": {
+            "label": "Appointments today",
+            "value": "24",
+            "trend": "+3 vs. yesterday"
+          },
+          "1": {
+            "label": "Repeat clients",
+            "value": "68%",
+            "trend": "+4 pts MoM"
+          },
+          "2": {
+            "label": "No-show rate",
+            "value": "3.1%",
+            "trend": "Down from 5.4%"
+          },
+          "3": {
+            "label": "Peak hour",
+            "value": "15:00",
+            "trend": "6 chairs booked"
+          }
+        },
+        "services": {
+          "0": {
+            "label": "Services offered",
+            "value": "14",
+            "trend": "2 new this season"
+          },
+          "1": {
+            "label": "Top service",
+            "value": "Balayage",
+            "trend": "42 bookings / wk"
+          },
+          "2": {
+            "label": "Avg duration",
+            "value": "72 min",
+            "trend": "Steady"
+          },
+          "3": {
+            "label": "Profit margin",
+            "value": "56%",
+            "trend": "+3 pts QoQ"
+          }
+        },
+        "stylists": {
+          "0": {
+            "label": "Stylists active",
+            "value": "5",
+            "trend": "All in today"
+          },
+          "1": {
+            "label": "Top rated",
+            "value": "Liv · 5.0",
+            "trend": "27 reviews"
+          },
+          "2": {
+            "label": "Hours booked / week",
+            "value": "182",
+            "trend": "91% utilisation"
+          },
+          "3": {
+            "label": "Rebooking rate",
+            "value": "72%",
+            "trend": "+5 pts vs. Q1"
+          }
+        }
       }
     },
     "china-agency": {
@@ -1089,6 +1485,134 @@
             "date": "May 19, 2026"
           }
         }
+      },
+      "shell": {
+        "searchPlaceholder": "Search students, universities, documents...",
+        "userName": "Lola Mirzoeva",
+        "userInitials": "LM",
+        "breadcrumb": {
+          "pipeline": "CRM · Pipeline",
+          "students": "CRM · Students",
+          "universities": "CRM · Universities",
+          "documents": "CRM · Documents"
+        },
+        "statusBar": {
+          "version": "Eastwind v4.2.1",
+          "region": "CN-Beijing",
+          "buildId": "Build #5184"
+        }
+      },
+      "screen": {
+        "pipeline": {
+          "eyebrow": "Application funnel",
+          "title": "Pipeline overview",
+          "subtitle": "126 applicants moving across six stages this intake"
+        },
+        "students": {
+          "eyebrow": "Active cycle",
+          "title": "Students",
+          "subtitle": "Applicants currently in the September intake"
+        },
+        "universities": {
+          "eyebrow": "Placement network",
+          "title": "Partner universities",
+          "subtitle": "Live success rates across all mainland China partners"
+        },
+        "documents": {
+          "eyebrow": "Compliance",
+          "title": "Document tracker",
+          "subtitle": "Status of every file flowing through embassies and partners"
+        }
+      },
+      "kpi": {
+        "pipeline": {
+          "0": {
+            "label": "Active applicants",
+            "value": "126",
+            "trend": "+12 this week"
+          },
+          "1": {
+            "label": "Conversion rate",
+            "value": "31%",
+            "trend": "+4 pts vs last intake"
+          },
+          "2": {
+            "label": "Offers issued",
+            "value": "38",
+            "trend": "+8 this month"
+          },
+          "3": {
+            "label": "Departures Q3",
+            "value": "47",
+            "trend": "On track for Sep intake"
+          }
+        },
+        "students": {
+          "0": {
+            "label": "Active in cycle",
+            "value": "126",
+            "trend": "+12 this week"
+          },
+          "1": {
+            "label": "Days to placement",
+            "value": "68",
+            "trend": "-7 vs last intake"
+          },
+          "2": {
+            "label": "Scholarship rate",
+            "value": "51%",
+            "trend": "+6 pts YoY"
+          },
+          "3": {
+            "label": "Top track",
+            "value": "CS",
+            "trend": "46 applicants · Tsinghua"
+          }
+        },
+        "universities": {
+          "0": {
+            "label": "Partner universities",
+            "value": "31",
+            "trend": "+3 this year"
+          },
+          "1": {
+            "label": "Programs",
+            "value": "92",
+            "trend": "+12 new tracks"
+          },
+          "2": {
+            "label": "Success rate",
+            "value": "86%",
+            "trend": "+5 pts vs 2024"
+          },
+          "3": {
+            "label": "Top city",
+            "value": "Beijing",
+            "trend": "47 placed · Tsinghua / PKU"
+          }
+        },
+        "documents": {
+          "0": {
+            "label": "Docs in flight",
+            "value": "68",
+            "trend": "+18 this week"
+          },
+          "1": {
+            "label": "Verified today",
+            "value": "18",
+            "trend": "+6 vs yesterday"
+          },
+          "2": {
+            "label": "Avg processing days",
+            "value": "7.2",
+            "trend": "-1.8d vs last month"
+          },
+          "3": {
+            "label": "Rejection rate",
+            "value": "3%",
+            "trend": "-2 pts vs Q2"
+          }
+        }
       }
     },
     "gym": {
@@ -1308,6 +1832,94 @@
             "name": "Jamshed F."
           }
         }
+      },
+      "shell": {
+        "searchPlaceholder": "Search members, classes, trainers...",
+        "userName": "Coach Mira",
+        "userInitials": "MT",
+        "breadcrumb": {
+          "members": "Membership / Roster",
+          "classes": "Operations / Schedule",
+          "trainers": "People / Trainers",
+          "checkin": "Front Desk / Live"
+        },
+        "statusBar": {
+          "version": "v4.2.1",
+          "region": "eu-central-1",
+          "buildId": "build #2419"
+        },
+        "screen": {
+          "members": {
+            "eyebrow": "Membership"
+          },
+          "classes": {
+            "eyebrow": "Operations"
+          },
+          "trainers": {
+            "eyebrow": "People"
+          },
+          "checkin": {
+            "eyebrow": "Front desk"
+          }
+        },
+        "kpi": {
+          "members": {
+            "totalLabel": "Total members",
+            "totalValue": "1,284",
+            "totalTrend": "+62 vs last month",
+            "newLabel": "New this month",
+            "newValue": "84",
+            "newTrend": "+18% vs prior",
+            "churnLabel": "Churn rate",
+            "churnValue": "2.8%",
+            "churnTrend": "-0.4 pts QoQ",
+            "ltvLabel": "Lifetime value",
+            "ltvValue": "$1,156",
+            "ltvTrend": "+9% YoY"
+          },
+          "classes": {
+            "weekLabel": "Classes this week",
+            "weekValue": "58",
+            "weekTrend": "+6 vs last week",
+            "fillLabel": "Avg fill rate",
+            "fillValue": "87%",
+            "fillTrend": "+4 pts WoW",
+            "topLabel": "Top class",
+            "topValue": "HIIT Burner",
+            "topTrend": "21 sessions booked",
+            "instructorsLabel": "Instructors active",
+            "instructorsValue": "8",
+            "instructorsTrend": "Full coverage"
+          },
+          "trainers": {
+            "totalLabel": "Total trainers",
+            "totalValue": "8",
+            "totalTrend": "+1 onboarded",
+            "sessionsLabel": "Sessions this week",
+            "sessionsValue": "135",
+            "sessionsTrend": "+12 vs last week",
+            "ratingLabel": "Avg rating",
+            "ratingValue": "4.9",
+            "ratingTrend": "Top quartile",
+            "payrollLabel": "Payroll cost",
+            "payrollValue": "$14.2K",
+            "payrollTrend": "On budget"
+          },
+          "checkin": {
+            "insideLabel": "Currently inside",
+            "insideValue": "67",
+            "insideTrend": "Capacity 38%",
+            "todayLabel": "Today total",
+            "todayValue": "438",
+            "todayTrend": "+12% vs avg",
+            "peakLabel": "Peak hour",
+            "peakValue": "18:00",
+            "peakTrend": "92 visits",
+            "avgLabel": "Avg session",
+            "avgValue": "70 min",
+            "avgTrend": "+4 min WoW"
+          }
+        }
       }
     },
     "hospital": {
@@ -1365,7 +1977,9 @@
         "name": "Mehri Tursunova",
         "meta": "F · 34 yrs · MRN 008142 · No known allergies",
         "lastVisit": "Last visit",
-        "lastVisitDate": "Mar 04, 2026"
+        "lastVisitDate": "Mar 04, 2026",
+        "mrnLabel": "Medical record",
+        "mrn": "MRN 008142 · F · 34 yrs"
       },
       "stats": {
         "hr": {
@@ -1577,6 +2191,124 @@
             "flag": "Normal",
             "abnormal": "false",
             "date": "May 16, 2026"
+          }
+        }
+      },
+      "shell": {
+        "searchPlaceholder": "Search patients, charts, prescriptions...",
+        "userName": "Dr. Hassan",
+        "userInitials": "DH",
+        "version": "v3.8.2",
+        "region": "us-east-1",
+        "buildId": "build #1842"
+      },
+      "breadcrumb": {
+        "schedule": "Clinical / Today",
+        "patient": "Charts / Active",
+        "prescriptions": "Pharmacy / Active Rx",
+        "labs": "Diagnostics / Results"
+      },
+      "screen": {
+        "schedule": {
+          "eyebrow": "Clinical"
+        },
+        "patient": {
+          "eyebrow": "Patient chart"
+        },
+        "prescriptions": {
+          "eyebrow": "Pharmacy"
+        },
+        "labs": {
+          "eyebrow": "Diagnostics"
+        }
+      },
+      "kpi": {
+        "schedule": {
+          "0": {
+            "label": "Appointments today",
+            "value": "14",
+            "trend": "+2 vs avg"
+          },
+          "1": {
+            "label": "Seen / waiting",
+            "value": "4 / 2",
+            "trend": "On pace"
+          },
+          "2": {
+            "label": "No-show rate",
+            "value": "3.1%",
+            "trend": "-0.6 pts WoW"
+          },
+          "3": {
+            "label": "Avg wait",
+            "value": "11 min",
+            "trend": "-2 min WoW"
+          }
+        },
+        "patient": {
+          "0": {
+            "label": "Total patients",
+            "value": "962",
+            "trend": "+24 this month"
+          },
+          "1": {
+            "label": "Active treatments",
+            "value": "142",
+            "trend": "+8 vs last week"
+          },
+          "2": {
+            "label": "Charts pending",
+            "value": "4",
+            "trend": "Down from 10"
+          },
+          "3": {
+            "label": "Alerts",
+            "value": "2",
+            "trend": "1 critical"
+          }
+        },
+        "prescriptions": {
+          "0": {
+            "label": "Active Rx",
+            "value": "282",
+            "trend": "+14 vs last month"
+          },
+          "1": {
+            "label": "Refills due",
+            "value": "13",
+            "trend": "Next 7 days"
+          },
+          "2": {
+            "label": "Controlled substances",
+            "value": "7",
+            "trend": "DEA logged"
+          },
+          "3": {
+            "label": "Errors flagged",
+            "value": "1",
+            "trend": "Interaction check"
+          }
+        },
+        "labs": {
+          "0": {
+            "label": "Results pending",
+            "value": "18",
+            "trend": "6 STAT"
+          },
+          "1": {
+            "label": "Abnormal flags",
+            "value": "5",
+            "trend": "+1 vs yesterday"
+          },
+          "2": {
+            "label": "Avg turnaround",
+            "value": "92 min",
+            "trend": "-8 min WoW"
+          },
+          "3": {
+            "label": "Lab volume today",
+            "value": "76",
+            "trend": "+18% vs avg"
           }
         }
       }
@@ -1835,6 +2567,150 @@
             "count": "15"
           }
         }
+      },
+      "shell": {
+        "searchPlaceholder": "Search tables, guests, dishes...",
+        "userName": "Aslan K.",
+        "userInitials": "AK",
+        "version": "v4.2.1",
+        "region": "Dushanbe / Service",
+        "build": "build 2026.05.18"
+      },
+      "breadcrumb": {
+        "floor": "Service / Floor plan",
+        "kitchen": "Service / Kitchen display",
+        "menu": "Service / Menu",
+        "reservations": "Service / Reservations",
+        "reports": "Service / Reports"
+      },
+      "screen": {
+        "floor": {
+          "eyebrow": "Live service"
+        },
+        "kitchen": {
+          "eyebrow": "Expo line"
+        },
+        "menu": {
+          "eyebrow": "Menu engineering"
+        },
+        "reservations": {
+          "eyebrow": "Bookings"
+        },
+        "reports": {
+          "eyebrow": "Tonight's numbers"
+        }
+      },
+      "kpi": {
+        "floor": {
+          "0": {
+            "label": "Covers tonight",
+            "value": "142",
+            "trend": "+18% vs last Tue"
+          },
+          "1": {
+            "label": "Tables ready",
+            "value": "6 / 18",
+            "trend": "2 turning soon"
+          },
+          "2": {
+            "label": "Tables seated",
+            "value": "12",
+            "trend": "Peak in 35 min"
+          },
+          "3": {
+            "label": "Avg wait",
+            "value": "11 min",
+            "trend": "-4 min vs target"
+          }
+        },
+        "kitchen": {
+          "0": {
+            "label": "Orders in queue",
+            "value": "9",
+            "trend": "3 fired in last 5m"
+          },
+          "1": {
+            "label": "Avg ticket time",
+            "value": "12:40",
+            "trend": "Under 14:00 target"
+          },
+          "2": {
+            "label": "On the pass",
+            "value": "5",
+            "trend": "Calling runners"
+          },
+          "3": {
+            "label": "Items / hour",
+            "value": "64",
+            "trend": "+12 vs last hour"
+          }
+        },
+        "menu": {
+          "0": {
+            "label": "Items on menu",
+            "value": "58",
+            "trend": "3 seasonal added"
+          },
+          "1": {
+            "label": "Avg margin",
+            "value": "68%",
+            "trend": "+2 pts MoM"
+          },
+          "2": {
+            "label": "Top seller",
+            "value": "Plov",
+            "trend": "34 plates today"
+          },
+          "3": {
+            "label": "86'd items",
+            "value": "2",
+            "trend": "Restock by 19:00"
+          }
+        },
+        "reservations": {
+          "0": {
+            "label": "Bookings today",
+            "value": "48",
+            "trend": "+9 since open"
+          },
+          "1": {
+            "label": "Walk-ins",
+            "value": "12",
+            "trend": "Heaviest at 20:00"
+          },
+          "2": {
+            "label": "No-show rate",
+            "value": "4.2%",
+            "trend": "Under 6% target"
+          },
+          "3": {
+            "label": "Party of 6+",
+            "value": "6",
+            "trend": "2 require deposit"
+          }
+        },
+        "reports": {
+          "0": {
+            "label": "Covers today",
+            "value": "142",
+            "trend": "+18% WoW"
+          },
+          "1": {
+            "label": "Revenue today",
+            "value": "8 420 TJS",
+            "trend": "+12% WoW"
+          },
+          "2": {
+            "label": "Avg ticket",
+            "value": "59 TJS",
+            "trend": "+4 TJS"
+          },
+          "3": {
+            "label": "Top dish",
+            "value": "Plov",
+            "trend": "34 plates"
+          }
+        }
       }
     },
     "school": {
@@ -1870,7 +2746,8 @@
         "lunch": "Lunch",
         "art": "Art · Spring posters",
         "sub": "Your classes for today, in order.",
-        "upcoming": "Upcoming"
+        "upcoming": "Upcoming",
+        "statusDone": "Done"
       },
       "note": {
         "title": "Note from Mrs. Petrova",
@@ -1896,7 +2773,9 @@
           "friday": "Friday",
           "may23": "Mon May 23",
           "may25": "Wed May 25"
-        }
+        },
+        "statusOpen": "Open",
+        "statusDone": "Done"
       },
       "grades": {
         "title": "This term so far",
@@ -1951,6 +2830,160 @@
           "fiveMin": "5 min",
           "twelveMin": "12 min",
           "arrived": "Now"
+        }
+      },
+      "shell": {
+        "searchPlaceholder": "Search students, classes, buses…",
+        "userName": "Lola K.",
+        "userInitials": "LK",
+        "version": "v4.2.0",
+        "region": "SUNNY-HILLS · GRADE 5",
+        "buildId": "BUILD #1842"
+      },
+      "breadcrumb": {
+        "attendance": "Portal · Attendance",
+        "schedule": "Portal · Schedule",
+        "homework": "Portal · Homework",
+        "grades": "Portal · Grades",
+        "bus": "Portal · Bus tracker"
+      },
+      "screen": {
+        "attendance": {
+          "eyebrow": "Today · Tuesday",
+          "title": "Attendance log",
+          "subtitle": "Karim checked in 3 minutes ago. Bus 7 dropped off at 08:06."
+        },
+        "schedule": {
+          "eyebrow": "Today · Tuesday",
+          "title": "Today's schedule",
+          "subtitle": "Six lessons, one recess, one lunch break — finishing at 13:45."
+        },
+        "homework": {
+          "eyebrow": "This week",
+          "title": "Homework board",
+          "subtitle": "Four assignments across four subjects — one due tomorrow."
+        },
+        "grades": {
+          "eyebrow": "Spring term · Week 9",
+          "title": "Grades & feedback",
+          "subtitle": "Six subjects graded so far. Report cards go out next Friday."
+        },
+        "bus": {
+          "eyebrow": "Live · Afternoon run",
+          "title": "Bus tracker",
+          "subtitle": "Three active routes, 73 students riding home this afternoon."
+        }
+      },
+      "kpi": {
+        "attendance": {
+          "0": {
+            "label": "Present today",
+            "value": "26 / 28",
+            "trend": "vs 24 yesterday"
+          },
+          "1": {
+            "label": "Absent",
+            "value": "1",
+            "trend": "Notified at 08:15"
+          },
+          "2": {
+            "label": "On-time rate",
+            "value": "96%",
+            "trend": "Term average 93%"
+          },
+          "3": {
+            "label": "Late arrivals",
+            "value": "2",
+            "trend": "Wed, Fri · this week"
+          }
+        },
+        "schedule": {
+          "0": {
+            "label": "Classes today",
+            "value": "8",
+            "trend": "6 lessons · 2 breaks"
+          },
+          "1": {
+            "label": "Teachers active",
+            "value": "14",
+            "trend": "All rooms covered"
+          },
+          "2": {
+            "label": "Rooms in use",
+            "value": "12 / 16",
+            "trend": "75% utilisation"
+          },
+          "3": {
+            "label": "Next bell in",
+            "value": "08:42",
+            "trend": "Math · Room 204"
+          }
+        },
+        "homework": {
+          "0": {
+            "label": "Assignments due",
+            "value": "11",
+            "trend": "4 for Karim this week"
+          },
+          "1": {
+            "label": "Completion rate",
+            "value": "88%",
+            "trend": "vs 82% last week"
+          },
+          "2": {
+            "label": "Top subject",
+            "value": "Math",
+            "trend": "19 submissions · A avg"
+          },
+          "3": {
+            "label": "Late submissions",
+            "value": "3",
+            "trend": "Reminders sent"
+          }
+        },
+        "grades": {
+          "0": {
+            "label": "Average grade",
+            "value": "B+",
+            "trend": "Up from B last term"
+          },
+          "1": {
+            "label": "Top student",
+            "value": "Sara N.",
+            "trend": "98% term average"
+          },
+          "2": {
+            "label": "Parents notified",
+            "value": "218",
+            "trend": "97% read receipts"
+          },
+          "3": {
+            "label": "Report cards due",
+            "value": "May 27",
+            "trend": "9 days remaining"
+          }
+        },
+        "bus": {
+          "0": {
+            "label": "Buses in service",
+            "value": "14",
+            "trend": "3 inbound · 11 routing"
+          },
+          "1": {
+            "label": "On-time rate",
+            "value": "97%",
+            "trend": "Term average 94%"
+          },
+          "2": {
+            "label": "Students riding",
+            "value": "312",
+            "trend": "Capacity 420"
+          },
+          "3": {
+            "label": "Next pickup",
+            "value": "2 min",
+            "trend": "Bus 7 · Maple & 4th"
+          }
         }
       }
     },
@@ -2076,6 +3109,135 @@
         "shipped": "Shipped",
         "delivered": "Delivered",
         "refunded": "Refunded"
+      },
+      "shell": {
+        "user": {
+          "name": "Lena Marsh",
+          "initials": "LM"
+        },
+        "breadcrumb": {
+          "catalog": "Storefront / Catalog",
+          "product": "Storefront / Product",
+          "cart": "Storefront / Cart",
+          "orders": "Operations / Orders"
+        },
+        "screen": {
+          "catalog": {
+            "eyebrow": "Storefront",
+            "title": "Catalog overview",
+            "subtitle": "Live inventory, pricing, and merchandising across the studio shop"
+          },
+          "product": {
+            "eyebrow": "Featured piece",
+            "title": "Product detail",
+            "subtitle": "Performance signals for the page you're viewing right now"
+          },
+          "cart": {
+            "eyebrow": "Checkout",
+            "title": "Cart & recovery",
+            "subtitle": "Open carts, value held, and recovery from abandoned sessions"
+          },
+          "orders": {
+            "eyebrow": "Operations",
+            "title": "Orders & fulfillment",
+            "subtitle": "Today's order flow, revenue, and time from paid to shipped"
+          }
+        },
+        "kpi": {
+          "catalog": {
+            "productsLive": {
+              "label": "Products live",
+              "value": "248",
+              "trend": "+12 this week"
+            },
+            "topCategory": {
+              "label": "Top category",
+              "value": "Home goods",
+              "trend": "46% of sessions"
+            },
+            "avgPrice": {
+              "label": "Avg price",
+              "value": "$94",
+              "trend": "+$6 vs last drop"
+            },
+            "lowStock": {
+              "label": "Low stock",
+              "value": "8",
+              "trend": "Reorder this week"
+            }
+          },
+          "product": {
+            "viewsToday": {
+              "label": "Views today",
+              "value": "1,284",
+              "trend": "+22% vs yesterday"
+            },
+            "conversion": {
+              "label": "Conversion",
+              "value": "3.6%",
+              "trend": "+0.4 pts"
+            },
+            "returnsRate": {
+              "label": "Returns rate",
+              "value": "1.8%",
+              "trend": "Down from 2.4%"
+            },
+            "avgRating": {
+              "label": "Avg rating",
+              "value": "4.7",
+              "trend": "214 reviews"
+            }
+          },
+          "cart": {
+            "cartValue": {
+              "label": "Cart value",
+              "value": "$574",
+              "trend": "+$48 vs last hour"
+            },
+            "itemsInCart": {
+              "label": "Items in cart",
+              "value": "8",
+              "trend": "5 unique SKUs"
+            },
+            "abandonment": {
+              "label": "Abandonment",
+              "value": "46%",
+              "trend": "Down 4 pts"
+            },
+            "recovery": {
+              "label": "Recovery",
+              "value": "28%",
+              "trend": "+6 pts this week"
+            }
+          },
+          "orders": {
+            "ordersToday": {
+              "label": "Orders today",
+              "value": "62",
+              "trend": "+8 vs avg"
+            },
+            "revenueToday": {
+              "label": "Revenue today",
+              "value": "$5,412",
+              "trend": "+18% vs yday"
+            },
+            "avgOrder": {
+              "label": "Avg order",
+              "value": "$142",
+              "trend": "+$6 vs last week"
+            },
+            "fulfillment": {
+              "label": "Fulfillment",
+              "value": "32m",
+              "trend": "Paid to shipped"
+            }
+          }
+        },
+        "statusBar": {
+          "version": "v2.4.1",
+          "region": "EU-WEST",
+          "buildId": "BUILD #4821"
+        }
       }
     },
     "travel-agency": {
@@ -2139,7 +3301,8 @@
           "pendingPayment": "Pending payment",
           "quoteSent": "Quote sent",
           "paid": "Paid",
-          "cancelled": "Cancelled"
+          "cancelled": "Cancelled",
+          "pending": "Pending"
         },
         "cols": {
           "code": "Booking",
@@ -2223,6 +3386,132 @@
           "ie": "Ireland",
           "kz": "Kazakhstan",
           "de": "Germany"
+        }
+      },
+      "shell": {
+        "searchPlaceholder": "Search tours, bookings, customers",
+        "userName": "Farrukh N.",
+        "userInitials": "FN",
+        "version": "v3.8.2",
+        "region": "TJ-DUSHANBE",
+        "buildId": "BUILD #5184"
+      },
+      "breadcrumb": {
+        "tours": "Operations / Tours",
+        "bookings": "Operations / Bookings",
+        "itinerary": "Operations / Itinerary",
+        "customers": "Operations / Customers"
+      },
+      "screen": {
+        "tours": {
+          "eyebrow": "Catalog",
+          "title": "Featured tours",
+          "subtitle": "Curated multi-day journeys across the Silk Road."
+        },
+        "bookings": {
+          "eyebrow": "Sales",
+          "title": "Bookings ledger",
+          "subtitle": "Confirmed, paid, and pending reservations."
+        },
+        "itinerary": {
+          "eyebrow": "Planning",
+          "title": "Pamir Highway · 7-day plan",
+          "subtitle": "Day-by-day route, hotels, and activities."
+        },
+        "customers": {
+          "eyebrow": "CRM",
+          "title": "Customer ledger",
+          "subtitle": "Repeat travellers and lifetime value."
+        }
+      },
+      "kpi": {
+        "tours": {
+          "0": {
+            "label": "Tours offered",
+            "value": "32",
+            "trend": "+4 new this quarter"
+          },
+          "1": {
+            "label": "Bookings YTD",
+            "value": "512",
+            "trend": "+18% vs 2025"
+          },
+          "2": {
+            "label": "Top destination",
+            "value": "Pamir",
+            "trend": "184 reviews · 4.9"
+          },
+          "3": {
+            "label": "Avg party size",
+            "value": "2.4",
+            "trend": "Up from 2.1 last year"
+          }
+        },
+        "bookings": {
+          "0": {
+            "label": "Bookings this month",
+            "value": "52",
+            "trend": "+12 vs Apr"
+          },
+          "1": {
+            "label": "Revenue",
+            "value": "$74,200",
+            "trend": "+22% vs Apr"
+          },
+          "2": {
+            "label": "Conversion",
+            "value": "4.3%",
+            "trend": "Quote to paid"
+          },
+          "3": {
+            "label": "Cancellations",
+            "value": "2",
+            "trend": "Lowest since Feb"
+          }
+        },
+        "itinerary": {
+          "0": {
+            "label": "Avg trip length",
+            "value": "8 days",
+            "trend": "Range 5 – 14"
+          },
+          "1": {
+            "label": "Hotels booked",
+            "value": "22",
+            "trend": "Across 9 cities"
+          },
+          "2": {
+            "label": "Activities included",
+            "value": "12",
+            "trend": "Treks · culture · food"
+          },
+          "3": {
+            "label": "Peak season",
+            "value": "Jul – Sep",
+            "trend": "Book 6 weeks ahead"
+          }
+        },
+        "customers": {
+          "0": {
+            "label": "Total customers",
+            "value": "468",
+            "trend": "+34 this quarter"
+          },
+          "1": {
+            "label": "Repeat rate",
+            "value": "34%",
+            "trend": "Up from 29%"
+          },
+          "2": {
+            "label": "Top country",
+            "value": "Japan",
+            "trend": "23% of revenue"
+          },
+          "3": {
+            "label": "NPS",
+            "value": "66",
+            "trend": "Promoters lead detractors"
+          }
         }
       }
     },
@@ -2335,6 +3624,130 @@
           "wed": "Wed",
           "thu": "Thu",
           "fri": "Fri"
+        }
+      },
+      "shell": {
+        "breadcrumb": "Faculty Portal · Spring 2026",
+        "searchPlaceholder": "Search courses, students, rooms…",
+        "status": {
+          "version": "v3.8.1",
+          "region": "US-EAST · WESTMOOR",
+          "build": "BUILD #SP26-118",
+          "active": "Active",
+          "waitlist": "Waitlist",
+          "inProgress": "In progress"
+        },
+        "screen": {
+          "dashboard": {
+            "eyebrow": "Overview",
+            "title": "Faculty dashboard",
+            "subtitle": "Snapshot of enrollment, teaching load, and upcoming events for Dr. Hassan."
+          },
+          "courses": {
+            "eyebrow": "Teaching",
+            "title": "My courses",
+            "subtitle": "Four sections this semester · review rosters and open course pages."
+          },
+          "gradebook": {
+            "eyebrow": "Assessment",
+            "title": "Gradebook",
+            "subtitle": "Track student performance across assignments. Flagged averages need outreach."
+          },
+          "schedule": {
+            "eyebrow": "This week",
+            "title": "Weekly schedule",
+            "subtitle": "Your teaching week at a glance. Click any class to view roster and materials."
+          }
+        },
+        "kpi": {
+          "dashboard": {
+            "enrolled": {
+              "label": "Total enrolled",
+              "value": "1,842",
+              "trend": "+96 vs. fall term"
+            },
+            "gradRate": {
+              "label": "Graduation rate",
+              "value": "91.4%",
+              "trend": "Five-year cohort"
+            },
+            "faculty": {
+              "label": "Faculty",
+              "value": "184",
+              "trend": "+6 new hires"
+            },
+            "courses": {
+              "label": "Courses running",
+              "value": "312",
+              "trend": "Across 28 departments"
+            }
+          },
+          "courses": {
+            "offered": {
+              "label": "Courses offered",
+              "value": "4",
+              "trend": "Spring 2026"
+            },
+            "avgEnroll": {
+              "label": "Avg. enrollment",
+              "value": "50",
+              "trend": "Seats per section"
+            },
+            "topCourse": {
+              "label": "Top course",
+              "value": "ECON210",
+              "trend": "78 enrolled · full"
+            },
+            "sections": {
+              "label": "Sections",
+              "value": "6",
+              "trend": "Two co-taught"
+            }
+          },
+          "gradebook": {
+            "graded": {
+              "label": "Students graded",
+              "value": "168",
+              "trend": "Of 202 active"
+            },
+            "avgGrade": {
+              "label": "Average grade",
+              "value": "84.1",
+              "trend": "Cohort average"
+            },
+            "late": {
+              "label": "Late assignments",
+              "value": "9",
+              "trend": "Two flagged for outreach"
+            },
+            "pending": {
+              "label": "Pending submissions",
+              "value": "34",
+              "trend": "Due by Friday"
+            }
+          },
+          "schedule": {
+            "classes": {
+              "label": "Classes this week",
+              "value": "10",
+              "trend": "Mon–Fri · 5 days"
+            },
+            "rooms": {
+              "label": "Rooms in use",
+              "value": "4",
+              "trend": "Lewin · Babbage · Library · Science"
+            },
+            "conflicts": {
+              "label": "Conflicts",
+              "value": "0",
+              "trend": "All clear this week"
+            },
+            "peakHour": {
+              "label": "Peak hour",
+              "value": "09:00",
+              "trend": "Three concurrent classes"
+            }
+          }
         }
       }
     }
