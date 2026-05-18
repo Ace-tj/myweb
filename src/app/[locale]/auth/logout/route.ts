@@ -1,32 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { mockSignOut, supabaseConfigured, SESSION_COOKIE } from "@/lib/auth";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { NextResponse, type NextRequest } from "next/server";
+import { getSupabaseServer } from "@/lib/supabase/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ locale: string }> },
-) {
-  const { locale } = await params;
-
-  if (!supabaseConfigured()) {
-    await mockSignOut();
-  } else {
-    const sessionId = req.cookies.get(SESSION_COOKIE)?.value;
-    if (sessionId) {
-      try {
-        const admin = createAdminClient();
-        await admin.from("user_sessions").delete().eq("id", sessionId);
-      } catch {
-        // ignore — we'll clear the cookie regardless
-      }
-    }
+export async function POST(req: NextRequest) {
+  try {
+    const supabase = await getSupabaseServer();
+    await supabase.auth.signOut();
+  } catch {
+    /* noop */
   }
+  const url = req.nextUrl.clone();
+  const seg = url.pathname.split("/").filter(Boolean);
+  const locale = seg[0] || "en";
+  url.pathname = `/${locale}`;
+  return NextResponse.redirect(url);
+}
 
-  const response = NextResponse.redirect(new URL(`/${locale}`, req.url));
-  response.cookies.set(SESSION_COOKIE, "", {
-    path: "/",
-    maxAge: 0,
-    expires: new Date(0),
-  });
-  return response;
+export async function GET(req: NextRequest) {
+  return POST(req);
 }

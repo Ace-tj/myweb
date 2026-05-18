@@ -1,118 +1,64 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { mockSignUp, supabaseConfigured, type Role } from "@/lib/auth";
-import { createClient as createServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { getSupabaseServer } from "@/lib/supabase/server";
 
-const signupSchema = z.object({
+const Schema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  name: z.string().min(1),
-  role: z.enum(["buyer", "consultant"]),
-  locale: z.string().min(2).max(5),
+  fullName: z.string().min(1),
+  role: z.enum(["customer", "consultant"]),
+  locale: z.string(),
 });
 
-export type SignupState =
-  | { status: "idle" }
-  | { status: "error"; errorKey: string }
-  | { status: "ok" };
+export type SignupState = { ok: boolean; error?: string };
 
 export async function signupAction(
   _prev: SignupState,
   formData: FormData,
 ): Promise<SignupState> {
-  const parsed = signupSchema.safeParse({
+  const parsed = Schema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
-    name: formData.get("name"),
+    fullName: formData.get("fullName"),
     role: formData.get("role"),
     locale: formData.get("locale"),
   });
-
   if (!parsed.success) {
-    const issue = parsed.error.issues[0];
-    if (issue?.path[0] === "email") {
-      return {
-        status: "error",
-        errorKey:
-          issue.code === "invalid_format" || issue.code === "invalid_value"
-            ? "emailInvalid"
-            : "emailRequired",
-      };
-    }
-    if (issue?.path[0] === "password") {
-      return { status: "error", errorKey: "passwordShort" };
-    }
-    if (issue?.path[0] === "name") {
-      return { status: "error", errorKey: "nameRequired" };
-    }
-    if (issue?.path[0] === "role") {
-      return { status: "error", errorKey: "roleRequired" };
-    }
-    return { status: "error", errorKey: "generic" };
+    return { ok: false, error: "validation" };
+  }
+  const { email, password, fullName, role, locale } = parsed.data;
+
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    return { ok: false, error: "Supabase not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local." };
   }
 
-  const { email, password, name, role, locale } = parsed.data;
-  const isConsultant = role === "consultant";
+  const supabase = await getSupabaseServer();
 
-  // ── Mock fallback (no Supabase env) ──────────────────────────────────
-  if (!supabaseConfigured()) {
-    const result = await mockSignUp(email, password, name, role as Role);
-    if (!result.ok) return { status: "error", errorKey: "generic" };
-    redirect(
-      isConsultant
-        ? `/${locale}/auth/login?pending=1`
-        : `/${locale}/buyer/dashboard`,
-    );
-  }
-
-  // ── Supabase ─────────────────────────────────────────────────────────
-  const supabase = await createServerClient();
-  const { error, data } = await supabase.auth.signUp({
+  const { error: signUpErr } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      emailRedirectTo: undefined,
-      data: { name, role },
-    },
+    options: { data: { full_name: fullName, role } },
   });
-
-  if (error || !data.user) {
-    if (error?.message?.toLowerCase().includes("already")) {
-      return { status: "error", errorKey: "emailTaken" };
-    }
-    return { status: "error", errorKey: "generic" };
+  if (signUpErr) {
+    if (signUpErr.message.toLowerCase().includes("already"))
+      return { ok: false, error: "emailInUse" };
+    return { ok: false, error: signUpErr.message };
   }
 
-  // Create profile row (NOT NULL phone — pass empty).
-  await supabase.from("profiles").upsert({
-    id: data.user.id,
-    email,
-    full_name: name,
-    role,
-    phone: "",
-  });
-
-  // Auto sign-in for buyers so they land directly in the dashboard. Consultants
-  // skip auto-sign-in: they bounce to /auth/login?pending=1 because they need
-  // admin approval before they can use their account.
-  if (isConsultant) {
-    redirect(`/${locale}/auth/login?pending=1`);
-  }
-
-  const { error: signInError } = await supabase.auth.signInWithPassword({
+  // Immediately sign in so the user lands authenticated.
+  const { error: signInErr } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
-
-  if (signInError) {
-    redirect(`/${locale}/auth/login?registered=1`);
+  if (signInErr) {
+    // Account created but email confirmation may be required.
+    redirect(`/${locale}/auth/login?confirm=1`);
   }
 
-  // Revalidate layout so the buyer dashboard sees the freshly-set auth cookie.
-  revalidatePath("/", "layout");
-
-  redirect(`/${locale}/buyer/dashboard`);
+  redirect(`/${locale}/account`);
 }

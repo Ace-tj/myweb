@@ -1,120 +1,94 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
 
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-sans), system-ui, sans-serif;
+
+  --color-bg: rgb(var(--bg) / <alpha-value>);
+  --color-surface: rgb(var(--surface) / <alpha-value>);
+  --color-surface-2: rgb(var(--surface-2) / <alpha-value>);
+  --color-fg: rgb(var(--fg) / <alpha-value>);
+  --color-muted: rgb(var(--muted) / <alpha-value>);
+  --color-subtle: rgb(var(--subtle) / <alpha-value>);
+  --color-primary: rgb(var(--primary) / <alpha-value>);
+  --color-primary-hover: rgb(var(--primary-hover) / <alpha-value>);
+  --color-primary-fg: rgb(var(--primary-fg) / <alpha-value>);
+  --color-accent: rgb(var(--accent) / <alpha-value>);
+  --color-border: rgb(var(--border) / <alpha-value>);
+  --color-ring: rgb(var(--ring) / <alpha-value>);
+  --color-success: rgb(var(--success) / <alpha-value>);
+  --color-danger: rgb(var(--danger) / <alpha-value>);
+  --color-warning: rgb(var(--warning) / <alpha-value>);
 }
 
 :root {
-  --bg:            255 255 255;
-  --bg-subtle:     248 250 252;
-  --bg-card:       255 255 255;
-  --bg-hover:      241 245 249;
-  --border:        226 232 240;
-  --border-strong: 203 213 225;
-  --text:          15 23 42;
-  --text-muted:    100 116 139;
-  --text-subtle:   148 163 184;
-  --accent:        99 102 241;
-  --accent-hover:  79 70 229;
-  --accent-subtle: 238 242 255;
+  /* Light tokens — RGB triplets */
+  --bg: 255 255 255;
+  --surface: 250 250 250;
+  --surface-2: 244 244 245;
+  --fg: 9 9 11;
+  --muted: 82 82 91;
+  --subtle: 161 161 170;
+  --primary: 79 70 229;          /* indigo-600 */
+  --primary-hover: 67 56 202;    /* indigo-700 */
+  --primary-fg: 255 255 255;
+  --accent: 244 114 182;         /* pink-400 */
+  --border: 228 228 231;
+  --ring: 99 102 241;            /* indigo-500 */
+  --success: 22 163 74;
+  --danger: 220 38 38;
+  --warning: 217 119 6;
 }
 
 .dark {
-  --bg:            9 9 11;
-  --bg-subtle:     15 15 20;
-  --bg-card:       20 20 28;
-  --bg-hover:      28 28 40;
-  --border:        39 39 55;
-  --border-strong: 55 55 75;
-  --text:          248 250 252;
-  --text-muted:    148 163 184;
-  --text-subtle:   100 116 139;
-  --accent:        129 140 248;
-  --accent-hover:  99 102 241;
-  --accent-subtle: 30 27 75;
+  --bg: 9 9 11;
+  --surface: 24 24 27;
+  --surface-2: 39 39 42;
+  --fg: 250 250 250;
+  --muted: 161 161 170;
+  --subtle: 113 113 122;
+  --primary: 129 140 248;        /* indigo-400 */
+  --primary-hover: 165 180 252;  /* indigo-300 */
+  --primary-fg: 17 24 39;
+  --accent: 244 114 182;
+  --border: 39 39 42;
+  --ring: 129 140 248;
+  --success: 34 197 94;
+  --danger: 248 113 113;
+  --warning: 251 191 36;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background-color: rgb(var(--bg));
-  color: rgb(var(--text));
-  font-family: var(--font-geist-sans, system-ui, sans-serif);
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Smooth transitions for theme switching */
-html { transition: background-color 0.2s ease; }
-body { transition: background-color 0.2s ease, color 0.15s ease; }
-
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--border-strong));
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: rgb(var(--text-subtle)); }
-
-/* Text selection */
 ::selection {
-  background: rgb(var(--accent) / 0.2);
-  color: rgb(var(--text));
+  background: rgb(var(--primary) / 0.2);
+  color: rgb(var(--fg));
 }
 
-/* Focus */
-:focus-visible {
-  outline: 2px solid rgb(var(--accent));
+/* Visible focus rings everywhere */
+*:focus-visible {
+  outline: 2px solid rgb(var(--ring));
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Gradient text utility */
-.gradient-text {
-  background: linear-gradient(135deg, rgb(var(--accent)), #a78bfa 50%, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Glass morphism */
-.glass {
-  background: rgb(var(--bg-card) / 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-/* Animations */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
-}
-@keyframes pulse-ring {
-  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgb(var(--accent) / 0.4); }
-  70%  { transform: scale(1);    box-shadow: 0 0 0 10px rgb(var(--accent) / 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgb(var(--accent) / 0); }
-}
-
-.animate-fade-up { animation: fadeUp 0.5s ease forwards; }
-.animate-fade-in { animation: fadeIn 0.4s ease forwards; }
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgb(var(--bg-hover)) 25%,
-    rgb(var(--border)) 50%,
-    rgb(var(--bg-hover)) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

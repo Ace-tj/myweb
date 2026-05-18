@@ -1,16 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
-import { redirect } from "next/navigation";
-import { getCurrentSession } from "@/lib/auth";
-import { listAdminUsers } from "@/lib/admin";
-import { UserRoleControl } from "./UserRoleControl";
-
-export const dynamic = "force-dynamic";
-
-const ROLE_STYLE: Record<string, string> = {
-  buyer: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-  consultant: "bg-violet-500/20 text-violet-300 border-violet-500/30",
-  admin: "bg-rose-500/20 text-rose-300 border-rose-500/30",
-};
+import { getSupabaseServer } from "@/lib/supabase/server";
+import { setConsultantStatus } from "@/app/actions/admin";
+import type { Profile } from "@/lib/types";
 
 export default async function AdminUsersPage({
   params,
@@ -20,89 +11,110 @@ export default async function AdminUsersPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const session = await getCurrentSession();
-  if (!session || session.role !== "admin")
-    redirect(`/${locale}/auth/login`);
-
-  const users = await listAdminUsers();
+  let users: Profile[] = [];
+  if (
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    const supabase = await getSupabaseServer();
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    users = (data as Profile[]) ?? [];
+  }
 
   return (
-    <div className="p-6 sm:p-8 space-y-6">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-            Users
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            {users.length} total · From <code>profiles</code> table
-          </p>
-        </div>
-      </div>
+    <>
+      <h1 className="text-2xl font-bold">Users</h1>
+      <p className="mt-1 text-sm text-slate-400">
+        Approve consultant applications, manage roles.
+      </p>
 
-      <div className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-950 text-slate-400">
+      <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-900 text-xs uppercase tracking-widest text-slate-400">
+            <tr>
+              <th className="px-5 py-3 text-left">User</th>
+              <th className="px-5 py-3 text-left">Role</th>
+              <th className="px-5 py-3 text-left">Status</th>
+              <th className="px-5 py-3 text-left">Joined</th>
+              <th className="px-5 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.length === 0 && (
               <tr>
-                <th className="text-left font-semibold px-4 py-3 whitespace-nowrap">Name</th>
-                <th className="text-left font-semibold px-4 py-3 whitespace-nowrap">Email</th>
-                <th className="text-left font-semibold px-4 py-3 whitespace-nowrap">Role</th>
-                <th className="text-left font-semibold px-4 py-3 whitespace-nowrap">Joined</th>
-                <th className="text-left font-semibold px-4 py-3 whitespace-nowrap">Actions</th>
+                <td colSpan={5} className="px-5 py-8 text-center text-slate-400">
+                  No users yet. Sign up to populate this list.
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800">
-              {users.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center text-slate-500 py-12"
-                  >
-                    No users yet.
-                  </td>
-                </tr>
-              ) : (
-                users.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-800/40">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                          {(u.fullName || u.email || "?").slice(0, 1).toUpperCase()}
-                        </div>
-                        <span className="text-white font-medium">
-                          {u.fullName || "—"}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-slate-400 font-mono text-xs">
-                      {u.email || "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ${ROLE_STYLE[u.role] ?? ROLE_STYLE.buyer}`}
+            )}
+            {users.map((u) => (
+              <tr key={u.id} className="border-t border-slate-800">
+                <td className="px-5 py-4">
+                  <div className="font-semibold text-white">
+                    {u.full_name || u.email.split("@")[0]}
+                  </div>
+                  <div className="text-xs text-slate-400">{u.email}</div>
+                </td>
+                <td className="px-5 py-4">
+                  <span className="rounded-full bg-slate-800 px-2.5 py-1 text-xs font-medium">
+                    {u.role}
+                  </span>
+                </td>
+                <td className="px-5 py-4">
+                  {u.role === "consultant" ? (
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                        u.consultant_status === "approved"
+                          ? "bg-emerald-500/20 text-emerald-300"
+                          : u.consultant_status === "rejected"
+                            ? "bg-red-500/20 text-red-300"
+                            : "bg-amber-500/20 text-amber-300"
+                      }`}
+                    >
+                      {u.consultant_status ?? "pending"}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-slate-500">—</span>
+                  )}
+                </td>
+                <td className="px-5 py-4 text-xs text-slate-400">
+                  {new Date(u.created_at).toLocaleDateString()}
+                </td>
+                <td className="px-5 py-4 text-right">
+                  {u.role === "consultant" && u.consultant_status !== "approved" && (
+                    <form action={setConsultantStatus} className="inline">
+                      <input type="hidden" name="userId" value={u.id} />
+                      <input type="hidden" name="decision" value="approved" />
+                      <button
+                        type="submit"
+                        className="mr-2 rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-400"
                       >
-                        {u.role}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-slate-400 text-xs whitespace-nowrap tabular-nums">
-                      {u.createdAt
-                        ? new Date(u.createdAt).toLocaleDateString()
-                        : "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <UserRoleControl
-                        userId={u.id}
-                        currentRole={u.role}
-                        disabled={u.id === session.id}
-                      />
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                        Approve
+                      </button>
+                    </form>
+                  )}
+                  {u.role === "consultant" && u.consultant_status !== "rejected" && (
+                    <form action={setConsultantStatus} className="inline">
+                      <input type="hidden" name="userId" value={u.id} />
+                      <input type="hidden" name="decision" value="rejected" />
+                      <button
+                        type="submit"
+                        className="rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800"
+                      >
+                        Reject
+                      </button>
+                    </form>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+    </>
   );
 }

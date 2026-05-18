@@ -6,10 +6,4 @@ export const routing = defineRouting({
   localePrefix: "always",
 });
 
-export type Locale = (typeof routing.locales)[number];
-
-export const localeLabels: Record<Locale, string> = {
-  en: "English",
-  ru: "Русский",
-  tg: "Тоҷикӣ",
-};
+export type AppLocale = (typeof routing.locales)[number];

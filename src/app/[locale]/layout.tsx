@@ -1,31 +1,45 @@
+import "../globals.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { ThemeProvider } from "@/components/shared/ThemeProvider";
-import { ConsultantFab } from "@/components/consultant/ConsultantFab";
-import "../globals.css";
+import { ThemeScript } from "@/components/theme-script";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { ChatWidgetServer } from "@/components/chat-widget-server";
+import { getCurrentProfile } from "@/lib/auth";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "myweb — Ready-made websites and apps",
-  description:
-    "Browse 10 fully-functional demo platforms, request your customization, and launch.",
-};
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "brand" });
+  return {
+    title: { default: t("name"), template: `%s · ${t("name")}` },
+    description: t("tagline"),
+    icons: { icon: "/favicon.ico" },
+  };
 }
 
 export default async function LocaleLayout({
@@ -39,19 +53,25 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
+  const messages = await getMessages();
+  const profile = await getCurrentProfile();
+
   return (
     <html
       lang={locale}
+      className={`${inter.variable} ${manrope.variable} h-full`}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
-        <ThemeProvider>
-          <NextIntlClientProvider>
-            {children}
-            <ConsultantFab />
-          </NextIntlClientProvider>
-        </ThemeProvider>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="flex min-h-full flex-col bg-bg text-fg antialiased">
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <Header profile={profile} />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <ChatWidgetServer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

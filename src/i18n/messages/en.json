@@ -1,0 +1,178 @@
+{
+  "brand": {
+    "name": "Pixelforge",
+    "tagline": "Web systems your business already needs"
+  },
+  "nav": {
+    "demos": "Demos",
+    "services": "Services",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Log in",
+    "signup": "Get started",
+    "account": "Account",
+    "logout": "Log out",
+    "admin": "Admin",
+    "consultant": "Consultant",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "home": {
+    "eyebrow": "Web agency",
+    "hero": {
+      "title": "Ten ready-made web systems. One studio that ships.",
+      "subtitle": "Pick a demo, brand it, launch in two weeks. We've already built the hard part — you only configure what makes it yours.",
+      "primaryCta": "Browse the 10 demos",
+      "secondaryCta": "Talk to a consultant"
+    },
+    "trust": "Free preview · No card required · Replies within 1 business hour",
+    "demosTitle": "See what we've already built",
+    "demosLede": "Each demo is a real, working system. Open one and click through — that's exactly what you'll get.",
+    "viewAll": "View all demos",
+    "process": {
+      "title": "How a project runs",
+      "lede": "No 50-page proposals. We re-skin a working demo to your brand, hook up real data, and hand over the keys.",
+      "steps": [
+        { "title": "Pick a demo", "body": "Choose the system closest to what you need. Preview it live, share with your team." },
+        { "title": "Brief us in 20 min", "body": "We meet on a call, you tell us your brand, your data, and your must-haves." },
+        { "title": "We tailor it", "body": "Colors, copy, integrations, domains. You watch the staging site grow daily." },
+        { "title": "Launch & support", "body": "We ship to your domain, train your team, and keep the lights on for 60 days free." }
+      ]
+    },
+    "features": {
+      "title": "What you get with every project",
+      "items": [
+        { "title": "Your domain, your data", "body": "Everything runs under your name. No vendor lock, no shared tenants." },
+        { "title": "Multi-language ready", "body": "Built for English, Russian, and Tajik out of the box. Add more in a day." },
+        { "title": "Admin you can use", "body": "Dashboards your team will actually open, not a pile of CRUD tables." },
+        { "title": "Mobile-first", "body": "Every demo is tested on a phone before it ships. No half-broken mobile experience." },
+        { "title": "Real-time chat", "body": "Customers reach a human in seconds. Your team replies from one inbox." },
+        { "title": "Two-week lead time", "body": "Average ship from brief to launch. Faster than your last RFP cycle." }
+      ]
+    },
+    "pricing": {
+      "title": "Straight-line pricing",
+      "lede": "No discovery-call carousel. Pick a tier; we start tomorrow.",
+      "tiers": [
+        { "name": "Re-skin", "price": "from $900", "blurb": "Pick a demo, change brand + copy + 1 integration.", "bullets": ["Custom palette + fonts", "Your domain + email", "1 third-party integration", "30 days support"], "cta": "Start a re-skin" },
+        { "name": "Tailored", "price": "from $2,400", "blurb": "Re-skin plus your real data model, 3 integrations, role-based access.", "bullets": ["Everything in Re-skin", "Custom data fields", "3 integrations", "60 days support"], "cta": "Talk to a consultant", "highlight": true },
+        { "name": "Bespoke", "price": "from $6,000", "blurb": "We start from a demo but rebuild whatever you need from scratch.", "bullets": ["Custom flows + UI", "Unlimited integrations", "On-prem option", "12 months support"], "cta": "Request a quote" }
+      ]
+    },
+    "finalCta": {
+      "title": "Ready to see your system?",
+      "subtitle": "Open a demo. Click around. Then chat with us when you're ready.",
+      "primary": "Browse demos",
+      "secondary": "Sign up"
+    }
+  },
+  "demos": {
+    "title": "Our demo systems",
+    "lede": "Each demo is a fully built, click-through system. The one you pick becomes the foundation of your project.",
+    "preview": "Preview live",
+    "details": "View details",
+    "back": "Back to demos",
+    "openPreview": "Open live preview",
+    "youGet": "Whatcomes with this demo",
+    "startingFrom": "Starting from"
+  },
+  "auth": {
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Browse demos, save favorites, and chat with a consultant.",
+      "fullName": "Full name",
+      "email": "Work email",
+      "password": "Password",
+      "passwordHint": "At least 8 characters.",
+      "role": "I am a…",
+      "customer": "Customer (looking to buy a system)",
+      "consultant": "Consultant (applying to join the team)",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "consultantNote": "Consultant accounts need admin approval before you can reply to chats."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to continue your project.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Get started",
+      "forgot": "Forgot password?"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "invalidCredentials": "Email or password is incorrect.",
+      "emailInUse": "An account with this email already exists."
+    }
+  },
+  "chat": {
+    "title": "Chat with a consultant",
+    "subtitle": "Average reply time: under 1 hour",
+    "placeholder": "Tell us what you're looking for…",
+    "send": "Send",
+    "emptyCustomer": "Send your first message and we'll get a consultant on it.",
+    "emptyConsultant": "Pick a conversation from the list to reply.",
+    "online": "Online",
+    "you": "You",
+    "consultant": "Consultant",
+    "newConversation": "Start new conversation",
+    "subject": "Subject",
+    "subjectPlaceholder": "What's this about?",
+    "noConversations": "No conversations yet",
+    "loginToChat": "Log in to start chatting",
+    "openInbox": "Open inbox",
+    "loadMore": "Load earlier messages"
+  },
+  "consultant": {
+    "inboxTitle": "Inbox",
+    "pendingApproval": "Your consultant account is awaiting admin approval. You'll get an email when it's active.",
+    "rejected": "Your consultant application was declined. Contact admin@pixelforge.dev for details.",
+    "openThreads": "Open",
+    "myThreads": "Mine",
+    "all": "All"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "demos": "Demos",
+    "chats": "Chats",
+    "approve": "Approve",
+    "reject": "Reject",
+    "revoke": "Revoke",
+    "totalUsers": "Total users",
+    "openChats": "Open chats",
+    "approvedConsultants": "Approved consultants",
+    "demoToggle": "Enabled"
+  },
+  "common": {
+    "loading": "Loading…",
+    "empty": "Nothing here yet",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "language": "Language",
+    "theme": "Theme",
+    "lightTheme": "Light",
+    "darkTheme": "Dark"
+  },
+  "footer": {
+    "tagline": "Web systems, shipped in two weeks.",
+    "company": "Company",
+    "product": "Product",
+    "legal": "Legal",
+    "social": "Connect",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "newsletter": "Get a monthly note on what we shipped",
+    "newsletterCta": "Subscribe",
+    "rights": "All rights reserved."
+  }
+}

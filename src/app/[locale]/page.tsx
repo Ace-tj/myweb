@@ -1,435 +1,253 @@
-import Image from "next/image";
-import { setRequestLocale, getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { PublicHeaderNav } from "@/components/shared/PublicHeaderNav";
-import { getCurrentSession } from "@/lib/auth";
-import {
-  Zap, ShoppingBag, Dumbbell, Calculator, GraduationCap,
-  School, UtensilsCrossed, User, Stethoscope, Truck,
-  ArrowRight, CheckCircle2, Star, Globe2, Shield, Headphones,
-  BarChart3, Layers, Smartphone,
-} from "lucide-react";
-import { getPhoto, photoForSlug, DEMO_PHOTO_CATEGORY } from "@/lib/photos";
+import { ArrowRight, MessageCircle, Sparkles, Check } from "lucide-react";
+import { fallbackDemos } from "@/lib/demos";
+import { DemoCard } from "@/components/demo-card";
 
-export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ru" }, { locale: "tg" }];
-}
-
-const DEMOS = [
-  { slug: "shop",       icon: ShoppingBag,    titleKey: "demos.shop.title",       price: 499,  color: "from-orange-500 to-red-500",    tag: "ecommerce" },
-  { slug: "gym",        icon: Dumbbell,       titleKey: "demos.gym.title",        price: 399,  color: "from-green-400 to-emerald-600", tag: "fitness" },
-  { slug: "accounting", icon: Calculator,     titleKey: "demos.accounting.title", price: 599,  color: "from-blue-500 to-indigo-600",   tag: "business" },
-  { slug: "china-uni",  icon: GraduationCap,  titleKey: "demos.china_uni.title",  price: 799,  color: "from-red-700 to-red-900",       tag: "education" },
-  { slug: "school",     icon: School,         titleKey: "demos.school.title",     price: 699,  color: "from-sky-400 to-blue-500",      tag: "education" },
-  { slug: "university", icon: GraduationCap,  titleKey: "demos.university.title", price: 899,  color: "from-purple-600 to-violet-700", tag: "education" },
-  { slug: "restaurant", icon: UtensilsCrossed,titleKey: "demos.restaurant.title", price: 449,  color: "from-amber-500 to-orange-600",  tag: "food" },
-  { slug: "personal",   icon: User,           titleKey: "demos.pim.title",        price: 199,  color: "from-slate-600 to-slate-800",   tag: "personal" },
-  { slug: "clinic",     icon: Stethoscope,    titleKey: "demos.clinic.title",     price: 549,  color: "from-teal-400 to-cyan-600",     tag: "health" },
-  { slug: "logistics",  icon: Truck,          titleKey: "demos.logistics.title",  price: 649,  color: "from-orange-400 to-amber-500",  tag: "logistics" },
-] as const;
-
-const STATS_KEYS = [
-  { value: "10",   key: "demos" },
-  { value: "3",    key: "languages" },
-  { value: "200+", key: "businesses" },
-  { value: "4.9★", key: "rating" },
-] as const;
-
-const STEPS = [
-  { n: "01", icon: Globe2,     titleKey: "browse",  descKey: "browseDesc" },
-  { n: "02", icon: Layers,     titleKey: "request", descKey: "requestDesc" },
-  { n: "03", icon: Headphones, titleKey: "chat",    descKey: "chatDesc" },
-  { n: "04", icon: Zap,        titleKey: "receive", descKey: "receiveDesc" },
-] as const;
-
-const FEATURES = [
-  { icon: Shield,       titleKey: "ready",   descKey: "readyDesc" },
-  { icon: Smartphone,   titleKey: "mobile",  descKey: "mobileDesc" },
-  { icon: Globe2,       titleKey: "langs",   descKey: "langsDesc" },
-  { icon: BarChart3,    titleKey: "dash",    descKey: "dashDesc" },
-  { icon: Zap,          titleKey: "fast",    descKey: "fastDesc" },
-  { icon: CheckCircle2, titleKey: "consult", descKey: "consultDesc" },
-] as const;
-
-const TESTIMONIALS = [
-  { name: "Sardor Karimov", role: "Restaurant Owner, Dushanbe", body: "We launched our restaurant POS in 12 days. The consultant understood exactly what we needed.", rating: 5, photoCategory: "testimonial_restaurant" as const },
-  { name: "Nilufar Rashidova", role: "School Principal, Khujand", body: "BrightAcademy demo matched our school perfectly. Customization was seamless.", rating: 5, photoCategory: "testimonial_school" as const },
-  { name: "Timur Yuldashev", role: "Logistics Manager, Tashkent", body: "The logistics platform with live map tracking completely transformed our operations.", rating: 5, photoCategory: "testimonial_logistics" as const },
-];
-
-export default async function LandingPage({
+export default async function HomePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations();
-  const session = await getCurrentSession();
+  const t = await getTranslations("home");
+  const tDemos = await getTranslations("demos");
 
-  const PRICING = [
-    { id: "basic",      price: "$199",                                 features: ["f1","f2","f3","f4"],         highlight: false },
-    { id: "pro",        price: "$599",                                 features: ["p1","p2","p3","p4","p5"],    highlight: true },
-    { id: "enterprise", price: t("landing.pricing.enterprisePrice"),   features: ["e1","e2","e3","e4","e5"],    highlight: false },
-  ];
+  const featured = fallbackDemos.slice(0, 6);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
-
-      {/* ── NAVBAR ─────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/90 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight">
-            <span className="gradient-text text-xl font-extrabold">myweb</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[rgb(var(--text-muted))]">
-            <Link href="/demos" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navDemos")}</Link>
-            <a href="#how-it-works" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navHowItWorks")}</a>
-            <a href="#pricing" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navPricing")}</a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <ThemeToggle />
-            <PublicHeaderNav session={session ? { name: session.name, role: session.role } : null} />
-          </div>
-        </div>
-      </header>
-
-      <main className="flex-1">
-
-        {/* ── HERO ────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-20 pb-28 px-6">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-[rgb(var(--accent))]/10 blur-3xl" />
-            <div className="absolute top-32 left-1/4 w-[400px] h-[300px] rounded-full bg-violet-500/8 blur-3xl" />
-          </div>
-
-          <div className="relative mx-auto max-w-4xl text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] text-xs font-semibold text-[rgb(var(--text-muted))] mb-8 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              {t("landing.heroBadge")}
-            </div>
-
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
-              {t("landing.heroTitle1")}<br />
-              <span className="gradient-text">{t("landing.heroTitle2")}</span>
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_-10%,rgb(var(--primary)/0.18),transparent_60%)]"
+        />
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 pb-16 pt-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pb-28 lg:pt-24">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
+              <Sparkles className="size-3.5" /> {t("eyebrow")}
+            </span>
+            <h1 className="mt-5 text-balance font-display text-4xl font-bold leading-tight tracking-tight text-fg sm:text-5xl lg:text-6xl">
+              {t("hero.title")}
             </h1>
-
-            <p className="text-lg md:text-xl text-[rgb(var(--text-muted))] max-w-2xl mx-auto leading-relaxed mb-10">
-              {t("landing.heroDesc")}
+            <p className="mt-5 max-w-xl text-pretty text-lg text-muted">
+              {t("hero.subtitle")}
             </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 href="/demos"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[rgb(var(--accent))] text-white font-semibold text-base hover:bg-[rgb(var(--accent-hover))] transition-all shadow-xl shadow-[rgb(var(--accent))]/30 hover:scale-105"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-fg shadow-md transition active:scale-[0.98] hover:bg-primary-hover"
               >
-                {t("landing.browseAllDemos")} <ArrowRight size={16} />
+                {t("hero.primaryCta")}
+                <ArrowRight className="size-4" />
               </Link>
               <Link
-                href="/auth/signup"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] font-semibold text-base hover:bg-[rgb(var(--bg-hover))] transition-all"
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-3 text-sm font-semibold text-fg transition hover:bg-surface-2"
               >
-                {t("landing.talkConsultant")}
+                <MessageCircle className="size-4" />
+                {t("hero.secondaryCta")}
               </Link>
             </div>
+            <p className="mt-4 text-xs text-subtle">{t("trust")}</p>
           </div>
 
-          {/* Demo preview grid */}
-          <div className="relative mx-auto max-w-6xl mt-20 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {DEMOS.map((d) => {
-              const Icon = d.icon;
-              return (
-                <Link
-                  key={d.slug}
-                  href={`/demos/${d.slug}` as "/"}
-                  className="group rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-4 flex flex-col items-center gap-2 hover:border-[rgb(var(--accent))]/50 hover:shadow-lg hover:-translate-y-1 transition-all"
-                >
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${d.color} flex items-center justify-center shadow-md`}>
-                    <Icon size={18} className="text-white" />
-                  </div>
-                  <span className="text-xs font-semibold text-center text-[rgb(var(--text-muted))] group-hover:text-[rgb(var(--text))] transition-colors leading-tight">
-                    {t(d.titleKey as Parameters<typeof t>[0])}
-                  </span>
-                  <span className="text-[10px] text-[rgb(var(--text-subtle))]">{t("demosPage.from")} ${d.price}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── STATS BAR ───────────────────────────────────────────── */}
-        <section className="border-y border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))]">
-          <div className="mx-auto max-w-4xl px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {STATS_KEYS.map((s) => (
-              <div key={s.key}>
-                <div className="text-3xl font-extrabold gradient-text">{s.value}</div>
-                <div className="text-sm text-[rgb(var(--text-muted))] mt-1">{t(`landing.stats.${s.key}` as Parameters<typeof t>[0])}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── HOW IT WORKS ────────────────────────────────────────── */}
-        <section id="how-it-works" className="py-24 px-6">
-          <div className="mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.howItWorks")}</h2>
-              <p className="text-[rgb(var(--text-muted))] text-lg max-w-xl mx-auto">
-                {t("landing.howItWorksSub")}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {STEPS.map((step, i) => {
-                const Icon = step.icon;
-                return (
-                  <div key={i} className="relative rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
-                    <div className="text-xs font-bold text-[rgb(var(--accent))] mb-4">{step.n}</div>
-                    <div className="w-11 h-11 rounded-xl bg-[rgb(var(--accent-subtle))] flex items-center justify-center mb-4">
-                      <Icon size={20} className="text-[rgb(var(--accent))]" />
-                    </div>
-                    <h3 className="font-bold text-[rgb(var(--text))] mb-2">{t(`landing.steps.${step.titleKey}` as Parameters<typeof t>[0])}</h3>
-                    <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed">{t(`landing.steps.${step.descKey}` as Parameters<typeof t>[0])}</p>
-                    {i < STEPS.length - 1 && (
-                      <div className="hidden lg:block absolute top-1/2 -right-3 z-10">
-                        <ArrowRight size={16} className="text-[rgb(var(--text-subtle))]" />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURED DEMOS ──────────────────────────────────────── */}
-        <section className="py-20 px-6 bg-[rgb(var(--bg-subtle))]">
-          <div className="mx-auto max-w-6xl">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <h2 className="text-4xl font-extrabold tracking-tight mb-2">{t("landing.featuredDemos")}</h2>
-                <p className="text-[rgb(var(--text-muted))]">{t("landing.featuredSub")}</p>
-              </div>
-              <Link href="/demos" className="hidden sm:flex items-center gap-1 text-sm font-semibold text-[rgb(var(--accent))] hover:underline">
-                {t("landing.viewAll")} <ArrowRight size={14} />
-              </Link>
-            </div>
-            <div className="grid md:grid-cols-3 gap-5">
-              {DEMOS.slice(0, 3).map((d) => {
-                const Icon = d.icon;
-                const photoCat = DEMO_PHOTO_CATEGORY[d.slug];
-                const photo = photoCat ? photoForSlug(photoCat, d.slug) : null;
-                return (
-                  <div key={d.slug} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all group">
-                    <div className={`relative h-44 bg-gradient-to-br ${d.color} overflow-hidden`}>
-                      {photo && (
-                        <Image
-                          src={photo.src}
-                          alt={photo.alt || d.slug}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      )}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${d.color} mix-blend-multiply opacity-30`} />
-                      <div className="absolute bottom-3 left-3 w-12 h-12 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
-                        <Icon size={22} className="text-neutral-800" />
-                      </div>
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <span className="text-[10px] uppercase tracking-widest text-[rgb(var(--text-subtle))] font-semibold">{t(`demosPage.categories.${d.tag}` as Parameters<typeof t>[0])}</span>
-                          <h3 className="font-bold text-lg leading-tight mt-0.5">{t(d.titleKey as Parameters<typeof t>[0])}</h3>
-                        </div>
-                        <span className="text-lg font-extrabold text-[rgb(var(--accent))]">${d.price}</span>
-                      </div>
-                      <div className="flex gap-2 mt-4">
-                        <Link
-                          href={`/demos/${d.slug}/preview` as "/"}
-                          className="flex-1 text-center text-sm font-semibold py-2 rounded-lg border border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-hover))] transition-colors"
-                        >
-                          {t("landing.livePreview")}
-                        </Link>
-                        <Link
-                          href={`/auth/signup?demo=${d.slug}` as "/"}
-                          className="flex-1 text-center text-sm font-semibold py-2 rounded-lg bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))] transition-colors"
-                        >
-                          {t("landing.iWantThis")}
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURES ────────────────────────────────────────────── */}
-        <section className="py-24 px-6">
-          <div className="mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.featuresHeading")}</h2>
-              <p className="text-[rgb(var(--text-muted))] text-lg max-w-xl mx-auto">
-                {t("landing.featuresSub")}
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {FEATURES.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <div key={i} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6 hover:border-[rgb(var(--accent))]/40 hover:shadow-md transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-[rgb(var(--accent-subtle))] flex items-center justify-center mb-4">
-                      <Icon size={18} className="text-[rgb(var(--accent))]" />
-                    </div>
-                    <h3 className="font-bold mb-2">{t(`landing.features.${f.titleKey}` as Parameters<typeof t>[0])}</h3>
-                    <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed">{t(`landing.features.${f.descKey}` as Parameters<typeof t>[0])}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── PRICING ─────────────────────────────────────────────── */}
-        <section id="pricing" className="py-24 px-6 bg-[rgb(var(--bg-subtle))]">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.pricingHeading")}</h2>
-              <p className="text-[rgb(var(--text-muted))] text-lg">{t("landing.pricingSub")}</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-5">
-              {PRICING.map((p) => (
+          <div className="relative">
+            <div className="grid grid-cols-2 gap-3">
+              {featured.slice(0, 4).map((d) => (
                 <div
-                  key={p.id}
-                  className={`rounded-2xl border p-6 flex flex-col ${
-                    p.highlight
-                      ? "border-[rgb(var(--accent))] bg-[rgb(var(--accent-subtle))] shadow-xl shadow-[rgb(var(--accent))]/20"
-                      : "border-[rgb(var(--border))] bg-[rgb(var(--bg-card))]"
-                  }`}
+                  key={d.slug}
+                  className="aspect-[5/4] overflow-hidden rounded-2xl border border-border bg-surface p-5"
+                  style={{
+                    background: `linear-gradient(135deg, ${d.thumbnail_color}26, transparent 70%)`,
+                  }}
                 >
-                  {p.highlight && (
-                    <div className="text-[10px] font-bold text-[rgb(var(--accent))] uppercase tracking-widest mb-3">{t("landing.mostPopular")}</div>
-                  )}
-                  <div className="text-xl font-bold mb-1">{t(`landing.pricing.${p.id}` as Parameters<typeof t>[0])}</div>
-                  <div className="text-3xl font-extrabold mb-1">{p.price}</div>
-                  <div className="text-sm text-[rgb(var(--text-muted))] mb-6">{t(`landing.pricing.${p.id}Desc` as Parameters<typeof t>[0])}</div>
-                  <ul className="flex flex-col gap-2.5 flex-1 mb-6">
-                    {p.features.map((fKey) => (
-                      <li key={fKey} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 size={15} className="text-emerald-500 mt-0.5 shrink-0" />
-                        {t(`landing.pricing.${fKey}` as Parameters<typeof t>[0])}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/auth/signup"
-                    className={`text-center py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                      p.highlight
-                        ? "bg-[rgb(var(--accent))] text-white hover:bg-[rgb(var(--accent-hover))]"
-                        : "border border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-hover))]"
-                    }`}
+                  <div
+                    className="grid size-9 place-items-center rounded-lg text-white"
+                    style={{ background: d.thumbnail_color }}
                   >
-                    {t(`landing.pricing.${p.id}Cta` as Parameters<typeof t>[0])}
-                  </Link>
+                    <Sparkles className="size-4" />
+                  </div>
+                  <div className="mt-3 text-xs font-semibold uppercase tracking-wider text-muted">
+                    {d.category}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-fg">{d.title}</div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── TESTIMONIALS ────────────────────────────────────────── */}
-        <section className="py-24 px-6">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.testimonialsHeading")}</h2>
-            </div>
-            <div className="grid md:grid-cols-3 gap-5">
-              {TESTIMONIALS.map((tm) => {
-                const photo = getPhoto(tm.photoCategory, 0);
-                return (
-                  <div key={tm.name} className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-card))] p-6">
-                    <div className="flex gap-0.5 mb-4">
-                      {Array.from({ length: tm.rating }).map((_, i) => (
-                        <Star key={i} size={14} className="fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-[rgb(var(--text-muted))] leading-relaxed mb-5">&ldquo;{tm.body}&rdquo;</p>
-                    <div className="flex items-center gap-3">
-                      {photo && (
-                        <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-[rgb(var(--accent))]/30 flex-shrink-0">
-                          <Image
-                            src={photo.thumb}
-                            alt={tm.name}
-                            fill
-                            sizes="44px"
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <div className="font-semibold text-sm">{tm.name}</div>
-                        <div className="text-xs text-[rgb(var(--text-subtle))]">{tm.role}</div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+      {/* DEMOS GALLERY TEASER */}
+      <section className="border-t border-border bg-surface">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-balance font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              {t("demosTitle")}
+            </h2>
+            <p className="mt-3 text-pretty text-muted">{t("demosLede")}</p>
           </div>
-        </section>
-
-        {/* ── FINAL CTA ───────────────────────────────────────────── */}
-        <section className="py-20 px-6">
-          <div className="mx-auto max-w-3xl text-center rounded-3xl border border-[rgb(var(--border))] bg-gradient-to-br from-[rgb(var(--accent-subtle))] to-[rgb(var(--bg-card))] p-12">
-            <h2 className="text-4xl font-extrabold tracking-tight mb-4">{t("landing.finalCta")}</h2>
-            <p className="text-[rgb(var(--text-muted))] text-lg mb-8">
-              {t("landing.finalCtaSub")}
-            </p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((d) => (
+              <DemoCard key={d.slug} demo={d} previewLabel={tDemos("preview")} />
+            ))}
+          </div>
+          <div className="mt-10 text-center">
             <Link
               href="/demos"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[rgb(var(--accent))] text-white font-bold text-lg hover:bg-[rgb(var(--accent-hover))] transition-all shadow-xl shadow-[rgb(var(--accent))]/30 hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-bg px-5 py-3 text-sm font-semibold text-fg transition hover:bg-surface-2"
             >
-              {t("landing.browseAllDemos")} <ArrowRight size={18} />
+              {t("viewAll")} <ArrowRight className="size-4" />
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </main>
+      {/* PROCESS */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              {t("process.title")}
+            </h2>
+            <p className="mt-3 text-muted">{t("process.lede")}</p>
+          </div>
+          <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[0, 1, 2, 3].map((i) => (
+              <li
+                key={i}
+                className="relative rounded-2xl border border-border bg-surface p-6"
+              >
+                <span className="absolute -top-3 left-5 grid size-7 place-items-center rounded-full bg-primary text-xs font-bold text-primary-fg">
+                  {i + 1}
+                </span>
+                <h3 className="text-base font-semibold text-fg">
+                  {t(`process.steps.${i}.title`)}
+                </h3>
+                <p className="mt-2 text-sm text-muted">
+                  {t(`process.steps.${i}.body`)}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="border-t border-[rgb(var(--border))] bg-[rgb(var(--bg-subtle))]">
-        <div className="mx-auto max-w-6xl px-6 py-10 grid sm:grid-cols-4 gap-8">
-          <div className="sm:col-span-2">
-            <div className="font-extrabold text-lg gradient-text mb-2">myweb</div>
-            <p className="text-sm text-[rgb(var(--text-muted))] max-w-xs leading-relaxed">
-              {t("landing.footerTagline")}
-            </p>
+      {/* FEATURES */}
+      <section className="border-t border-border bg-surface">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              {t("features.title")}
+            </h2>
           </div>
-          <div>
-            <div className="text-xs font-bold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-3">{t("landing.footerPlatform")}</div>
-            <ul className="flex flex-col gap-2 text-sm text-[rgb(var(--text-muted))]">
-              <li><Link href="/demos" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navDemos")}</Link></li>
-              <li><a href="#pricing" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navPricing")}</a></li>
-              <li><a href="#how-it-works" className="hover:text-[rgb(var(--text))] transition-colors">{t("landing.navHowItWorks")}</a></li>
-            </ul>
-          </div>
-          <div>
-            <div className="text-xs font-bold uppercase tracking-widest text-[rgb(var(--text-subtle))] mb-3">{t("landing.footerAccount")}</div>
-            <ul className="flex flex-col gap-2 text-sm text-[rgb(var(--text-muted))]">
-              <li><Link href="/auth/login" className="hover:text-[rgb(var(--text))] transition-colors">{t("common.signIn")}</Link></li>
-              <li><Link href="/auth/signup" className="hover:text-[rgb(var(--text))] transition-colors">{t("common.signUp")}</Link></li>
-            </ul>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <article
+                key={i}
+                className="rounded-2xl border border-border bg-bg p-6 transition hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <div className="grid size-9 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <Check className="size-5" />
+                </div>
+                <h3 className="mt-4 font-semibold text-fg">
+                  {t(`features.items.${i}.title`)}
+                </h3>
+                <p className="mt-2 text-sm text-muted">
+                  {t(`features.items.${i}.body`)}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
-        <div className="border-t border-[rgb(var(--border))] mx-auto max-w-6xl px-6 py-4 flex items-center justify-between text-xs text-[rgb(var(--text-subtle))]">
-          <span>© {new Date().getFullYear()} myweb. {t("landing.footerRights")}</span>
-          <LanguageSwitcher />
+      </section>
+
+      {/* PRICING */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              {t("pricing.title")}
+            </h2>
+            <p className="mt-3 text-muted">{t("pricing.lede")}</p>
+          </div>
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {[0, 1, 2].map((i) => {
+              const highlight = i === 1;
+              return (
+                <div
+                  key={i}
+                  className={`relative rounded-2xl border p-6 ${
+                    highlight
+                      ? "border-primary bg-primary/5 lg:scale-[1.03]"
+                      : "border-border bg-surface"
+                  }`}
+                >
+                  {highlight && (
+                    <span className="absolute -top-3 right-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-fg">
+                      Popular
+                    </span>
+                  )}
+                  <div className="font-display text-xl font-bold text-fg">
+                    {t(`pricing.tiers.${i}.name`)}
+                  </div>
+                  <div className="mt-1 text-2xl font-bold text-primary">
+                    {t(`pricing.tiers.${i}.price`)}
+                  </div>
+                  <p className="mt-3 text-sm text-muted">
+                    {t(`pricing.tiers.${i}.blurb`)}
+                  </p>
+                  <ul className="mt-5 space-y-2 text-sm text-fg">
+                    {[0, 1, 2, 3].map((b) => (
+                      <li key={b} className="flex items-start gap-2">
+                        <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                        <span>{t(`pricing.tiers.${i}.bullets.${b}`)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/contact"
+                    className={`mt-6 inline-flex w-full items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                      highlight
+                        ? "bg-primary text-primary-fg hover:bg-primary-hover"
+                        : "border border-border bg-bg text-fg hover:bg-surface-2"
+                    }`}
+                  >
+                    {t(`pricing.tiers.${i}.cta`)}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </footer>
-    </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="border-t border-border bg-surface">
+        <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+            {t("finalCta.title")}
+          </h2>
+          <p className="mt-3 text-muted">{t("finalCta.subtitle")}</p>
+          <div className="mt-7 flex justify-center gap-3">
+            <Link
+              href="/demos"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-fg hover:bg-primary-hover"
+            >
+              {t("finalCta.primary")} <ArrowRight className="size-4" />
+            </Link>
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-bg px-5 py-3 text-sm font-semibold text-fg hover:bg-surface-2"
+            >
+              {t("finalCta.secondary")}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
