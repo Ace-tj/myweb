@@ -2321,7 +2321,16 @@
         "kitchen": "Kitchen",
         "menu": "Menu",
         "reservations": "Reservations",
-        "reports": "Reports"
+        "reports": "Reports",
+        "orders": "Orders",
+        "customers": "Guests",
+        "inventory": "Inventory",
+        "staff": "Staff",
+        "settings": "Settings",
+        "groups": {
+          "service": "Service",
+          "back": "Back of house"
+        }
       },
       "stats": {
         "coversToday": "Covers today",
@@ -2339,7 +2348,17 @@
         "reservationsTitle": "Reservations",
         "reservationsSubtitle": "Tonight's bookings and guest list",
         "reportsTitle": "End of Day",
-        "reportsSubtitle": "Service summary and trends"
+        "reportsSubtitle": "Service summary and trends",
+        "ordersTitle": "Active orders",
+        "ordersSubtitle": "POS tickets, fired, served, and paid — in one view.",
+        "customersTitle": "Guest book",
+        "customersSubtitle": "Lifetime value, recent visits, and loyalty tiers.",
+        "inventoryTitle": "Inventory",
+        "inventorySubtitle": "Stock movement, low-stock alerts, and one-tap reorder.",
+        "staffTitle": "Staff & shifts",
+        "staffSubtitle": "Today's roster — on shift, incoming, and clocked out.",
+        "settingsTitle": "Settings",
+        "settingsSubtitle": "Restaurant basics, taxes, and integrations."
       },
       "seatWalkIn": "Seat walk-in",
       "seatsLabel": "seats",
@@ -2566,7 +2585,9 @@
             "name": "Tiramisu",
             "count": "15"
           }
-        }
+        },
+        "revenueTrend": "Revenue trend",
+        "last30": "Last 30 days"
       },
       "shell": {
         "searchPlaceholder": "Search tables, guests, dishes...",
@@ -2581,7 +2602,12 @@
         "kitchen": "Service / Kitchen display",
         "menu": "Service / Menu",
         "reservations": "Service / Reservations",
-        "reports": "Service / Reports"
+        "reports": "Service / Reports",
+        "orders": "Service / Orders",
+        "customers": "Back / Guests",
+        "inventory": "Back / Inventory",
+        "staff": "Back / Staff",
+        "settings": "Back / Settings"
       },
       "screen": {
         "floor": {
@@ -2598,6 +2624,21 @@
         },
         "reports": {
           "eyebrow": "Tonight's numbers"
+        },
+        "orders": {
+          "eyebrow": "Live tickets"
+        },
+        "customers": {
+          "eyebrow": "Loyalty"
+        },
+        "inventory": {
+          "eyebrow": "Stock"
+        },
+        "staff": {
+          "eyebrow": "Roster"
+        },
+        "settings": {
+          "eyebrow": "Configuration"
         }
       },
       "kpi": {
@@ -2710,6 +2751,246 @@
             "value": "Plov",
             "trend": "34 plates"
           }
+        },
+        "orders": {
+          "0": {
+            "label": "Open tickets",
+            "value": "12",
+            "trend": "Avg ticket 4 dishes"
+          },
+          "1": {
+            "label": "Revenue (today)",
+            "value": "$2,486",
+            "trend": "+18% vs last Mon"
+          },
+          "2": {
+            "label": "Comps",
+            "value": "$24",
+            "trend": "Within budget"
+          },
+          "3": {
+            "label": "Send-out rate",
+            "value": "92%",
+            "trend": "+3 pp WoW"
+          }
+        },
+        "customers": {
+          "0": {
+            "label": "Active guests",
+            "value": "520",
+            "trend": "+12% this quarter"
+          },
+          "1": {
+            "label": "New this month",
+            "value": "72",
+            "trend": "Strong word of mouth"
+          },
+          "2": {
+            "label": "Avg LTV",
+            "value": "$540",
+            "trend": "+$60 YoY"
+          },
+          "3": {
+            "label": "Repeat in 30d",
+            "value": "5×",
+            "trend": "Top tier loyalty"
+          }
+        },
+        "inventory": {
+          "0": {
+            "label": "SKUs total",
+            "value": "132",
+            "trend": "Auto-replenish on"
+          },
+          "1": {
+            "label": "Low stock",
+            "value": "4",
+            "trend": "Reorder suggested"
+          },
+          "2": {
+            "label": "Critical",
+            "value": "1",
+            "trend": "Basil — order now"
+          },
+          "3": {
+            "label": "Spend this week",
+            "value": "$1,040",
+            "trend": "−6% vs last week"
+          }
+        },
+        "staff": {
+          "0": {
+            "label": "On shift now",
+            "value": "14",
+            "trend": "Coverage healthy"
+          },
+          "1": {
+            "label": "Incoming",
+            "value": "8",
+            "trend": "Next clock-in 17:00"
+          },
+          "2": {
+            "label": "Punctuality",
+            "value": "94%",
+            "trend": "Trending up"
+          },
+          "3": {
+            "label": "Open shifts",
+            "value": "2",
+            "trend": "Need cover Friday"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Uptime (30d)",
+            "value": "100%",
+            "trend": "All green"
+          },
+          "1": {
+            "label": "Integrations",
+            "value": "8 active",
+            "trend": "+2 this month"
+          },
+          "2": {
+            "label": "Team seats",
+            "value": "10 / 15",
+            "trend": "Room to grow"
+          },
+          "3": {
+            "label": "API calls (24h)",
+            "value": "2.6K",
+            "trend": "Within limits"
+          }
+        }
+      },
+      "actions": {
+        "floor": "Seat walk-in",
+        "kitchen": "Fire next",
+        "menu": "Add item",
+        "orders": "New order",
+        "reservations": "New booking",
+        "customers": "Add guest",
+        "inventory": "Add SKU",
+        "staff": "Schedule shift",
+        "reports": "Export",
+        "settings": "Save changes"
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "actionRun": "Action queued",
+        "firedTo": "Fired to kitchen · {table}",
+        "messageSent": "Message sent to {name}",
+        "reordered": "Reorder placed for {sku}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "orders": {
+        "col": {
+          "id": "ID",
+          "table": "Table",
+          "guest": "Guest",
+          "items": "Items",
+          "total": "Total",
+          "status": "Status"
+        },
+        "status": {
+          "open": "Open",
+          "fired": "Fired",
+          "served": "Served",
+          "paid": "Paid"
+        },
+        "liveFeed": "Live ticket events",
+        "feed": {
+          "paid": "{id} paid",
+          "fired": "{id} fired to kitchen",
+          "served": "{id} served",
+          "opened": "{id} opened"
+        }
+      },
+      "customers": {
+        "col": {
+          "guest": "Guest",
+          "tier": "Tier",
+          "visits": "Visits",
+          "ltv": "LTV",
+          "last": "Last seen"
+        },
+        "tiers": {
+          "vip": "VIP",
+          "regular": "Regular",
+          "new": "New",
+          "atrisk": "At risk"
+        },
+        "message": "Message"
+      },
+      "inventory": {
+        "heatTitle": "Stock movement",
+        "heatAria": "Inventory movement heatmap",
+        "heatNote": "Each tile is a day · darker = more units moved.",
+        "alertsTitle": "Low-stock alerts",
+        "col": {
+          "sku": "SKU",
+          "name": "Item",
+          "stock": "On hand",
+          "reorder": "Reorder at",
+          "status": "Status"
+        },
+        "status": {
+          "ok": "Healthy",
+          "low": "Low",
+          "critical": "Critical"
+        },
+        "reorder": "Reorder",
+        "liveFeed": "Live stock movements"
+      },
+      "staff": {
+        "roles": {
+          "headChef": "Head chef",
+          "sousChef": "Sous chef",
+          "lineChef": "Line cook",
+          "server": "Server",
+          "host": "Host",
+          "bartender": "Bartender",
+          "dishwasher": "Dishwasher"
+        },
+        "status": {
+          "on": "On shift",
+          "incoming": "Incoming",
+          "ended": "Clocked out"
+        },
+        "contact": "Message"
+      },
+      "settings": {
+        "basicsTitle": "Restaurant basics",
+        "fields": {
+          "restaurantName": "Name",
+          "currency": "Currency",
+          "timezone": "Timezone",
+          "contactEmail": "Contact email"
+        },
+        "placeholders": {
+          "restaurantName": "Trattoria Forno",
+          "currency": "TJS",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@trattoria.tj"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Card payments at the table — Tap to Pay supported.",
+          "opentable": "Sync reservations to your floor plan.",
+          "yandex": "Receive delivery orders from Yandex Eda.",
+          "glovo": "Enable Glovo deliveries from your kitchen.",
+          "quickbooks": "Bookkeeping and tax reports sync nightly.",
+          "twilio": "SMS reservation reminders to guests."
         }
       }
     },

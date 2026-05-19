@@ -2321,7 +2321,16 @@
         "kitchen": "Ошхона",
         "menu": "Меню",
         "reservations": "Брон",
-        "reports": "Ҳисоботҳо"
+        "reports": "Ҳисоботҳо",
+        "orders": "Фармоишҳо",
+        "customers": "Меҳмонон",
+        "inventory": "Анбор",
+        "staff": "Гурӯҳ",
+        "settings": "Танзимот",
+        "groups": {
+          "service": "Толор",
+          "back": "Бэк-офис"
+        }
       },
       "stats": {
         "coversToday": "Меҳмонони имрӯз",
@@ -2339,7 +2348,17 @@
         "reservationsTitle": "Брон",
         "reservationsSubtitle": "Брони имшаб ва рӯйхати меҳмонон",
         "reportsTitle": "Анҷоми рӯз",
-        "reportsSubtitle": "Хулосаи хидмат ва тамоюлҳо"
+        "reportsSubtitle": "Хулосаи хидмат ва тамоюлҳо",
+        "ordersTitle": "Фармоишҳои фаъол",
+        "ordersSubtitle": "Чекҳои POS — фиристода, хизмат, пардохт — дар як ҷой.",
+        "customersTitle": "Дафтари меҳмонон",
+        "customersSubtitle": "LTV, ташрифоти охирин ва дараҷаҳои вафодорӣ.",
+        "inventoryTitle": "Анбор",
+        "inventorySubtitle": "Ҳаракати захира, ҳушдорҳо ва фармоиш бо як зер.",
+        "staffTitle": "Гурӯҳ ва смена",
+        "staffSubtitle": "Графики имрӯза — дар смена, омадан ва баромадан.",
+        "settingsTitle": "Танзимот",
+        "settingsSubtitle": "Маълумоти асосии тарабхона, андоз ва интегратсияҳо."
       },
       "seatWalkIn": "Нишондани меҳмони бенубат",
       "seatsLabel": "ҷой",
@@ -2566,7 +2585,9 @@
             "name": "Тирамису",
             "count": "15"
           }
-        }
+        },
+        "revenueTrend": "Тренди даромад",
+        "last30": "30 рӯзи охирин"
       },
       "shell": {
         "searchPlaceholder": "Ҷустуҷӯи мизҳо, меҳмонон, хӯрокҳо...",
@@ -2581,7 +2602,12 @@
         "kitchen": "Хизматрасонӣ / Экрани ошхона",
         "menu": "Хизматрасонӣ / Меню",
         "reservations": "Хизматрасонӣ / Брон",
-        "reports": "Хизматрасонӣ / Ҳисоботҳо"
+        "reports": "Хизматрасонӣ / Ҳисоботҳо",
+        "orders": "Толор / Фармоишҳо",
+        "customers": "Бэк / Меҳмонон",
+        "inventory": "Бэк / Анбор",
+        "staff": "Бэк / Гурӯҳ",
+        "settings": "Бэк / Танзимот"
       },
       "screen": {
         "floor": {
@@ -2598,6 +2624,21 @@
         },
         "reports": {
           "eyebrow": "Рақамҳои имшаб"
+        },
+        "orders": {
+          "eyebrow": "Чекҳои зинда"
+        },
+        "customers": {
+          "eyebrow": "Вафодорӣ"
+        },
+        "inventory": {
+          "eyebrow": "Захира"
+        },
+        "staff": {
+          "eyebrow": "График"
+        },
+        "settings": {
+          "eyebrow": "Танзим"
         }
       },
       "kpi": {
@@ -2710,6 +2751,246 @@
             "value": "Палав",
             "trend": "34 табақ"
           }
+        },
+        "orders": {
+          "0": {
+            "label": "Чекҳои кушод",
+            "value": "12",
+            "trend": "Миёна 4 хӯрок"
+          },
+          "1": {
+            "label": "Даромад (имрӯз)",
+            "value": "$2 486",
+            "trend": "+18% нисбати д.ш."
+          },
+          "2": {
+            "label": "Тахфифҳо",
+            "value": "$24",
+            "trend": "Дар буҷет"
+          },
+          "3": {
+            "label": "Сурогат",
+            "value": "92%",
+            "trend": "+3 п.п. WoW"
+          }
+        },
+        "customers": {
+          "0": {
+            "label": "Меҳмонони фаъол",
+            "value": "520",
+            "trend": "+12% дар чоряк"
+          },
+          "1": {
+            "label": "Нав дар моҳ",
+            "value": "72",
+            "trend": "Аз даҳон ба даҳон"
+          },
+          "2": {
+            "label": "LTV миёна",
+            "value": "$540",
+            "trend": "+$60 YoY"
+          },
+          "3": {
+            "label": "Такрор дар 30 рӯз",
+            "value": "5×",
+            "trend": "Вафодории баланд"
+          }
+        },
+        "inventory": {
+          "0": {
+            "label": "Ҳамаи SKU",
+            "value": "132",
+            "trend": "Худпуркунӣ"
+          },
+          "1": {
+            "label": "Захираи паст",
+            "value": "4",
+            "trend": "Фармоиш зарур"
+          },
+          "2": {
+            "label": "Зарурӣ",
+            "value": "1",
+            "trend": "Райхон — фавран"
+          },
+          "3": {
+            "label": "Хароҷот дар ҳафта",
+            "value": "$1 040",
+            "trend": "−6%"
+          }
+        },
+        "staff": {
+          "0": {
+            "label": "Ҳозир дар смена",
+            "value": "14",
+            "trend": "Пӯшиш хуб"
+          },
+          "1": {
+            "label": "Меоянд",
+            "value": "8",
+            "trend": "Дар 17:00"
+          },
+          "2": {
+            "label": "Пунктуалӣ",
+            "value": "94%",
+            "trend": "Меафзояд"
+          },
+          "3": {
+            "label": "Сменаҳои кушод",
+            "value": "2",
+            "trend": "Ҷумъа кушод"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Аптайм (30 рӯз)",
+            "value": "100%",
+            "trend": "Ҳама хуб"
+          },
+          "1": {
+            "label": "Интегратсияҳо",
+            "value": "8 фаъол",
+            "trend": "+2 дар моҳ"
+          },
+          "2": {
+            "label": "Ҷойҳои даста",
+            "value": "10 / 15",
+            "trend": "Ҷой ҳаст"
+          },
+          "3": {
+            "label": "API дар 24с",
+            "value": "2,6K",
+            "trend": "Дар ҳудуд"
+          }
+        }
+      },
+      "actions": {
+        "floor": "Нишондан",
+        "kitchen": "Сар кардан",
+        "menu": "Илова",
+        "orders": "Фармоиши нав",
+        "reservations": "Брони нав",
+        "customers": "Меҳмони нав",
+        "inventory": "SKU-и нав",
+        "staff": "Сменаро таъин",
+        "reports": "Содирот",
+        "settings": "Нигоҳ доштан"
+      },
+      "commandPalette": {
+        "placeholder": "Ба экран гузаштан…"
+      },
+      "toast": {
+        "navigated": "{screen} кушода шуд",
+        "actionRun": "Амал дар навбат",
+        "firedTo": "Ба ошпазхона фиристода шуд · {table}",
+        "messageSent": "Паём ба {name} фиристода шуд",
+        "reordered": "Фармоиш барои {sku} гузошта шуд",
+        "settingsSaved": "Танзимот нигоҳ дошта шуд",
+        "connected": "{name} пайваст",
+        "disconnected": "{name} канда"
+      },
+      "orders": {
+        "col": {
+          "id": "ID",
+          "table": "Миз",
+          "guest": "Меҳмон",
+          "items": "Хӯрок",
+          "total": "Маблағ",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "open": "Кушод",
+          "fired": "Сар",
+          "served": "Хизмат",
+          "paid": "Пардохт"
+        },
+        "liveFeed": "Воқеаҳои зинда",
+        "feed": {
+          "paid": "{id} пардохт шуд",
+          "fired": "{id} сар шуд",
+          "served": "{id} хизмат шуд",
+          "opened": "{id} кушода шуд"
+        }
+      },
+      "customers": {
+        "col": {
+          "guest": "Меҳмон",
+          "tier": "Дараҷа",
+          "visits": "Ташриф",
+          "ltv": "LTV",
+          "last": "Охирин"
+        },
+        "tiers": {
+          "vip": "VIP",
+          "regular": "Доимӣ",
+          "new": "Нав",
+          "atrisk": "Дар хатар"
+        },
+        "message": "Паём"
+      },
+      "inventory": {
+        "heatTitle": "Ҳаракати захира",
+        "heatAria": "Харитаи гармии ҳаракат",
+        "heatNote": "Кулча — рӯз · равшанӣ = ҳаракати бештар.",
+        "alertsTitle": "Ҳушдорҳои захираи кам",
+        "col": {
+          "sku": "SKU",
+          "name": "Маҳсулот",
+          "stock": "Дар ҳозира",
+          "reorder": "Нуқтаи фармоиш",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "ok": "Меъёр",
+          "low": "Кам",
+          "critical": "Зарурӣ"
+        },
+        "reorder": "Фармоиш",
+        "liveFeed": "Ҳаракатҳои зинда"
+      },
+      "staff": {
+        "roles": {
+          "headChef": "Сарошпаз",
+          "sousChef": "Су-шеф",
+          "lineChef": "Ошпази хат",
+          "server": "Хидматрасон",
+          "host": "Хост",
+          "bartender": "Бармен",
+          "dishwasher": "Зарфшӯй"
+        },
+        "status": {
+          "on": "Дар смена",
+          "incoming": "Меояд",
+          "ended": "Баромад"
+        },
+        "contact": "Паём"
+      },
+      "settings": {
+        "basicsTitle": "Маълумоти асосӣ",
+        "fields": {
+          "restaurantName": "Ном",
+          "currency": "Асъор",
+          "timezone": "Минтақаи вақт",
+          "contactEmail": "Email"
+        },
+        "placeholders": {
+          "restaurantName": "Trattoria Forno",
+          "currency": "TJS",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@trattoria.tj"
+        },
+        "save": "Нигоҳ доштан",
+        "integrationsTitle": "Интегратсияҳо",
+        "connected": "Пайваст",
+        "disconnected": "Канда",
+        "connect": "Пайваст кардан",
+        "disconnect": "Кандан",
+        "integrations": {
+          "stripe": "Пардохт дар миз — Tap to Pay.",
+          "opentable": "Брунҳо бо нақшаи толор ҳамоҳанг мешаванд.",
+          "yandex": "Фармоишҳои расондан аз Яндекс Еда.",
+          "glovo": "Расондан тавассути Glovo.",
+          "quickbooks": "Ҳисобдорӣ ва андоз шабона.",
+          "twilio": "SMS-ёдоварӣ ба меҳмонон."
         }
       }
     },

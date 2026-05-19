@@ -2321,7 +2321,16 @@
         "kitchen": "Кухня",
         "menu": "Меню",
         "reservations": "Брони",
-        "reports": "Отчёты"
+        "reports": "Отчёты",
+        "orders": "Заказы",
+        "customers": "Гости",
+        "inventory": "Склад",
+        "staff": "Команда",
+        "settings": "Настройки",
+        "groups": {
+          "service": "Зал",
+          "back": "Бэк-офис"
+        }
       },
       "stats": {
         "coversToday": "Гостей сегодня",
@@ -2339,7 +2348,17 @@
         "reservationsTitle": "Брони",
         "reservationsSubtitle": "Брони и список гостей на вечер",
         "reportsTitle": "Итоги дня",
-        "reportsSubtitle": "Сводка по смене и тенденции"
+        "reportsSubtitle": "Сводка по смене и тенденции",
+        "ordersTitle": "Активные заказы",
+        "ordersSubtitle": "Чеки POS, отправленные, поданные и оплаченные — в одном виде.",
+        "customersTitle": "Книга гостей",
+        "customersSubtitle": "LTV, недавние визиты и уровни лояльности.",
+        "inventoryTitle": "Склад",
+        "inventorySubtitle": "Движение запасов, оповещения и заказ в один клик.",
+        "staffTitle": "Команда и смены",
+        "staffSubtitle": "Сегодняшний график — на смене, прибывающие и ушедшие.",
+        "settingsTitle": "Настройки",
+        "settingsSubtitle": "Основные данные ресторана, налоги и интеграции."
       },
       "seatWalkIn": "Посадить гостя",
       "seatsLabel": "мест",
@@ -2566,7 +2585,9 @@
             "name": "Тирамису",
             "count": "15"
           }
-        }
+        },
+        "revenueTrend": "Тренд выручки",
+        "last30": "Последние 30 дней"
       },
       "shell": {
         "searchPlaceholder": "Поиск столов, гостей, блюд...",
@@ -2581,7 +2602,12 @@
         "kitchen": "Обслуживание / Кухонный экран",
         "menu": "Обслуживание / Меню",
         "reservations": "Обслуживание / Бронирования",
-        "reports": "Обслуживание / Отчёты"
+        "reports": "Обслуживание / Отчёты",
+        "orders": "Зал / Заказы",
+        "customers": "Бэк / Гости",
+        "inventory": "Бэк / Склад",
+        "staff": "Бэк / Команда",
+        "settings": "Бэк / Настройки"
       },
       "screen": {
         "floor": {
@@ -2598,6 +2624,21 @@
         },
         "reports": {
           "eyebrow": "Показатели вечера"
+        },
+        "orders": {
+          "eyebrow": "Активные чеки"
+        },
+        "customers": {
+          "eyebrow": "Лояльность"
+        },
+        "inventory": {
+          "eyebrow": "Запасы"
+        },
+        "staff": {
+          "eyebrow": "График"
+        },
+        "settings": {
+          "eyebrow": "Конфигурация"
         }
       },
       "kpi": {
@@ -2710,6 +2751,246 @@
             "value": "Плов",
             "trend": "34 порции"
           }
+        },
+        "orders": {
+          "0": {
+            "label": "Открытых чеков",
+            "value": "12",
+            "trend": "В среднем 4 блюда"
+          },
+          "1": {
+            "label": "Выручка (сегодня)",
+            "value": "$2 486",
+            "trend": "+18% к прошлому пн"
+          },
+          "2": {
+            "label": "Компенсации",
+            "value": "$24",
+            "trend": "В рамках бюджета"
+          },
+          "3": {
+            "label": "Выдача",
+            "value": "92%",
+            "trend": "+3 п.п. WoW"
+          }
+        },
+        "customers": {
+          "0": {
+            "label": "Активные гости",
+            "value": "520",
+            "trend": "+12% за квартал"
+          },
+          "1": {
+            "label": "Новые за месяц",
+            "value": "72",
+            "trend": "Сильное сарафанное радио"
+          },
+          "2": {
+            "label": "Средний LTV",
+            "value": "$540",
+            "trend": "+$60 YoY"
+          },
+          "3": {
+            "label": "Повторно за 30д",
+            "value": "5×",
+            "trend": "Высокая лояльность"
+          }
+        },
+        "inventory": {
+          "0": {
+            "label": "Всего SKU",
+            "value": "132",
+            "trend": "Авто-пополнение"
+          },
+          "1": {
+            "label": "Низкий остаток",
+            "value": "4",
+            "trend": "Нужен заказ"
+          },
+          "2": {
+            "label": "Критично",
+            "value": "1",
+            "trend": "Базилик — срочно"
+          },
+          "3": {
+            "label": "Расход за неделю",
+            "value": "$1 040",
+            "trend": "−6% к неделе"
+          }
+        },
+        "staff": {
+          "0": {
+            "label": "На смене сейчас",
+            "value": "14",
+            "trend": "Покрытие хорошее"
+          },
+          "1": {
+            "label": "Прибывают",
+            "value": "8",
+            "trend": "Следующий в 17:00"
+          },
+          "2": {
+            "label": "Пунктуальность",
+            "value": "94%",
+            "trend": "Растёт"
+          },
+          "3": {
+            "label": "Открытых смен",
+            "value": "2",
+            "trend": "Пятница не закрыта"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Аптайм (30д)",
+            "value": "100%",
+            "trend": "Всё в порядке"
+          },
+          "1": {
+            "label": "Интеграций",
+            "value": "8 активных",
+            "trend": "+2 за месяц"
+          },
+          "2": {
+            "label": "Места команды",
+            "value": "10 / 15",
+            "trend": "Есть резерв"
+          },
+          "3": {
+            "label": "API за 24ч",
+            "value": "2,6K",
+            "trend": "В пределах"
+          }
+        }
+      },
+      "actions": {
+        "floor": "Усадить гостей",
+        "kitchen": "Запустить",
+        "menu": "Добавить",
+        "orders": "Новый заказ",
+        "reservations": "Новая бронь",
+        "customers": "Добавить гостя",
+        "inventory": "Новый SKU",
+        "staff": "Назначить смену",
+        "reports": "Экспорт",
+        "settings": "Сохранить"
+      },
+      "commandPalette": {
+        "placeholder": "Перейти к экрану…"
+      },
+      "toast": {
+        "navigated": "Открыт {screen}",
+        "actionRun": "Действие в очереди",
+        "firedTo": "Запущено на кухню · {table}",
+        "messageSent": "Сообщение отправлено {name}",
+        "reordered": "Заказ оформлен для {sku}",
+        "settingsSaved": "Настройки сохранены",
+        "connected": "{name} подключён",
+        "disconnected": "{name} отключён"
+      },
+      "orders": {
+        "col": {
+          "id": "ID",
+          "table": "Стол",
+          "guest": "Гость",
+          "items": "Блюд",
+          "total": "Сумма",
+          "status": "Статус"
+        },
+        "status": {
+          "open": "Открыт",
+          "fired": "Запущен",
+          "served": "Подан",
+          "paid": "Оплачен"
+        },
+        "liveFeed": "События в реальном времени",
+        "feed": {
+          "paid": "{id} оплачен",
+          "fired": "{id} запущен",
+          "served": "{id} подан",
+          "opened": "{id} открыт"
+        }
+      },
+      "customers": {
+        "col": {
+          "guest": "Гость",
+          "tier": "Уровень",
+          "visits": "Визитов",
+          "ltv": "LTV",
+          "last": "Был"
+        },
+        "tiers": {
+          "vip": "VIP",
+          "regular": "Постоянный",
+          "new": "Новый",
+          "atrisk": "В риске"
+        },
+        "message": "Написать"
+      },
+      "inventory": {
+        "heatTitle": "Движение запасов",
+        "heatAria": "Тепловая карта движения склада",
+        "heatNote": "Клетка — день · ярче = больше движения.",
+        "alertsTitle": "Оповещения о низком остатке",
+        "col": {
+          "sku": "SKU",
+          "name": "Позиция",
+          "stock": "Остаток",
+          "reorder": "Точка заказа",
+          "status": "Статус"
+        },
+        "status": {
+          "ok": "Норма",
+          "low": "Низкий",
+          "critical": "Критично"
+        },
+        "reorder": "Заказать",
+        "liveFeed": "Движения в реальном времени"
+      },
+      "staff": {
+        "roles": {
+          "headChef": "Шеф-повар",
+          "sousChef": "Су-шеф",
+          "lineChef": "Повар линии",
+          "server": "Официант",
+          "host": "Хост",
+          "bartender": "Бармен",
+          "dishwasher": "Посудомойщик"
+        },
+        "status": {
+          "on": "На смене",
+          "incoming": "Прибывает",
+          "ended": "Ушёл"
+        },
+        "contact": "Написать"
+      },
+      "settings": {
+        "basicsTitle": "Основные данные",
+        "fields": {
+          "restaurantName": "Название",
+          "currency": "Валюта",
+          "timezone": "Часовой пояс",
+          "contactEmail": "Email"
+        },
+        "placeholders": {
+          "restaurantName": "Trattoria Forno",
+          "currency": "TJS",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@trattoria.tj"
+        },
+        "save": "Сохранить",
+        "integrationsTitle": "Интеграции",
+        "connected": "Подключено",
+        "disconnected": "Отключено",
+        "connect": "Подключить",
+        "disconnect": "Отключить",
+        "integrations": {
+          "stripe": "Оплата у стола — Tap to Pay.",
+          "opentable": "Синхронизация бронирований с залом.",
+          "yandex": "Принимайте доставки от Яндекс Еда.",
+          "glovo": "Активируйте доставки Glovo с кухни.",
+          "quickbooks": "Бухгалтерия и налоги ночью.",
+          "twilio": "SMS-напоминания гостям."
         }
       }
     },
