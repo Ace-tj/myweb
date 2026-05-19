@@ -32,6 +32,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -516,7 +517,7 @@ function BeautySalonInner() {
                     {t("services.heading")}
                   </h3>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                    {SERVICES.map((s) => {
+                    {SERVICES.map((s, i) => {
                       const active = chosen === s.name;
                       return (
                         <button
@@ -531,24 +532,44 @@ function BeautySalonInner() {
                             color: active ? "white" : C.ink,
                             border: `1px solid ${active ? C.primary : C.border}`,
                             borderRadius: 14,
-                            padding: 16,
+                            padding: 0,
                             cursor: "pointer",
+                            overflow: "hidden",
                           }}
                         >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                            <span style={{ fontWeight: 700, fontSize: 15 }}>{s.name}</span>
-                            <span style={{ fontWeight: 800, fontSize: 17 }}>
-                              $<DemoCounter value={s.price} />
-                            </span>
+                          <div style={{ position: "relative", height: 90, overflow: "hidden" }}>
+                            <img
+                              src={demoImages["beauty-salon"].services[i % demoImages["beauty-salon"].services.length]}
+                              alt=""
+                              loading="lazy"
+                              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                            />
+                            <div
+                              style={{
+                                position: "absolute",
+                                inset: 0,
+                                background: active
+                                  ? `linear-gradient(180deg, ${C.primary}66 0%, ${C.primary}cc 100%)`
+                                  : `linear-gradient(180deg, transparent 0%, ${C.paper}66 100%)`,
+                              }}
+                            />
                           </div>
-                          <div style={{ marginTop: 8, display: "flex", gap: 12, fontSize: 12, opacity: active ? 0.9 : 0.7 }}>
-                            <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-                              <Clock weight="thin" style={{ width: 12, height: 12 }} /> {s.duration}
-                            </span>
-                            <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-                              <User weight="thin" style={{ width: 12, height: 12 }} />{" "}
-                              {t("services.withStylist", { stylist: s.stylist })}
-                            </span>
+                          <div style={{ padding: 16 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                              <span style={{ fontWeight: 700, fontSize: 15 }}>{s.name}</span>
+                              <span style={{ fontWeight: 800, fontSize: 17 }}>
+                                $<DemoCounter value={s.price} />
+                              </span>
+                            </div>
+                            <div style={{ marginTop: 8, display: "flex", gap: 12, fontSize: 12, opacity: active ? 0.9 : 0.7 }}>
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                                <Clock weight="thin" style={{ width: 12, height: 12 }} /> {s.duration}
+                              </span>
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                                <User weight="thin" style={{ width: 12, height: 12 }} />{" "}
+                                {t("services.withStylist", { stylist: s.stylist })}
+                              </span>
+                            </div>
                           </div>
                         </button>
                       );
@@ -679,7 +700,7 @@ function BeautySalonInner() {
                 subtitle={t("screen.services.subtitle")}
               />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-                {MENU.map(({ category, items }) => {
+                {MENU.map(({ category, items }, idx) => {
                   const Icon = CATEGORY_ICON[category];
                   return (
                     <div
@@ -689,8 +710,24 @@ function BeautySalonInner() {
                         border: `1px solid ${C.border}`,
                         borderRadius: 18,
                         padding: 22,
+                        overflow: "hidden",
                       }}
                     >
+                      <div style={{ position: "relative", margin: "-22px -22px 18px", height: 110, overflow: "hidden" }}>
+                        <img
+                          src={demoImages["beauty-salon"].services[idx % demoImages["beauty-salon"].services.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: `linear-gradient(180deg, ${C.primary}33 0%, ${C.paper}f0 100%)`,
+                          }}
+                        />
+                      </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                         <div
                           style={{
@@ -973,7 +1010,7 @@ function BeautySalonInner() {
                 subtitle={t("screen.products.subtitle")}
               />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 14 }}>
-                {PRODUCTS.map((p) => {
+                {PRODUCTS.map((p, idx) => {
                   const low = p.stock <= 5;
                   return (
                     <div
@@ -990,15 +1027,30 @@ function BeautySalonInner() {
                     >
                       <div
                         style={{
-                          background: `linear-gradient(135deg, ${C.card}, ${C.bg})`,
+                          position: "relative",
                           borderRadius: 12,
                           height: 90,
-                          display: "grid",
-                          placeItems: "center",
+                          overflow: "hidden",
                           color: C.primary,
                         }}
                       >
-                        <Package weight="thin" size={36} />
+                        <img
+                          src={demoImages["beauty-salon"].services[idx % demoImages["beauty-salon"].services.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: `linear-gradient(135deg, ${C.card}66, ${C.primary}33)`,
+                            display: "grid",
+                            placeItems: "center",
+                          }}
+                        >
+                          <Package weight="thin" size={36} style={{ color: C.paper, filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.25))" }} />
+                        </div>
                       </div>
                       <div>
                         <div style={{ fontSize: 10, color: C.muted, letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700 }}>

@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { localizedDemos } from "@/lib/demos";
+import { demoThumb } from "@/lib/demo-images";
 import { DemoCard } from "@/components/demo-card";
 import { Counter } from "@/components/marketing/counter";
 import { Sparkline } from "@/components/marketing/sparkline";
@@ -171,29 +172,53 @@ export default async function HomePage({
               <p className="anim-fade-up delay-4 mt-6 text-sm text-white/80">{t("trust")}</p>
             </div>
 
-            {/* Floating demo collage */}
+            {/* Floating demo collage — real themed photos with brand tint */}
             <div className="anim-fade-up delay-3 relative lg:col-span-5">
               <div className="grid grid-cols-2 gap-4">
-                {featured.slice(0, 4).map((d, i) => (
-                  <div
-                    key={d.slug}
-                    className={`glass group relative overflow-hidden rounded-2xl p-5 ${
-                      i % 2 === 1 ? "mt-8" : ""
-                    }`}
-                  >
+                {featured.slice(0, 4).map((d, i) => {
+                  const thumb = demoThumb(d.slug);
+                  return (
                     <div
-                      aria-hidden
-                      className="size-10 rounded-xl shadow-[0_10px_24px_-6px_rgba(0,0,0,0.35)] ring-1 ring-white/30"
-                      style={{ background: d.thumbnail_color }}
-                    />
-                    <div className="mt-5 font-mono text-[10px] uppercase tracking-widest text-white/75">
-                      {d.category}
+                      key={d.slug}
+                      className={`glass group relative overflow-hidden rounded-2xl ${
+                        i % 2 === 1 ? "mt-8" : ""
+                      }`}
+                    >
+                      {/* Themed photo */}
+                      <div className="relative aspect-[4/5] w-full overflow-hidden">
+                        {thumb && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={thumb}
+                            alt=""
+                            loading="lazy"
+                            className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-110"
+                          />
+                        )}
+                        {/* Brand tint */}
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 mix-blend-multiply"
+                          style={{
+                            background: `linear-gradient(160deg, ${d.thumbnail_color}cc 0%, ${d.thumbnail_color}66 60%, transparent 100%)`,
+                          }}
+                        />
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(0,0,0,0.65)_100%)]"
+                        />
+                        <div className="absolute inset-x-4 bottom-4">
+                          <div className="font-mono text-[10px] uppercase tracking-widest text-white/85">
+                            {d.category}
+                          </div>
+                          <div className="mt-1 font-display text-base font-extrabold leading-tight text-white drop-shadow-sm">
+                            {d.title}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="mt-1 font-display text-base font-extrabold leading-tight text-white">
-                      {d.title}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -23,6 +23,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -564,6 +565,7 @@ function GymInner() {
 
               <div
                 style={{
+                  position: "relative",
                   background: C.surface,
                   border: `1px solid ${C.border}`,
                   borderRadius: 16,
@@ -572,9 +574,23 @@ function GymInner() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  overflow: "hidden",
                 }}
               >
-                <div>
+                <img
+                  src={demoImages.gym.hero}
+                  alt=""
+                  loading="lazy"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.35 }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `linear-gradient(135deg, ${C.bg}cc 0%, ${C.surface}aa 60%, ${C.neon}26 100%)`,
+                  }}
+                />
+                <div style={{ position: "relative" }}>
                   <div style={{ fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>
                     {t("checkin.currentlyInside")}
                   </div>
@@ -583,6 +599,7 @@ function GymInner() {
                 </div>
                 <div
                   style={{
+                    position: "relative",
                     width: 120,
                     height: 120,
                     borderRadius: 999,
@@ -723,15 +740,33 @@ function GymInner() {
                     { id: "S-01", name: "Smith Rack", status: "online" },
                     { id: "C-01", name: "Cable Tower", status: "online" },
                     { id: "F-01", name: "Functional Rig", status: "service" },
-                  ].map((e) => (
-                    <div key={e.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderTop: `3px solid ${e.status === "online" ? C.neon : e.status === "service" ? "#fbbf24" : "#f87171"}`, borderRadius: 12, padding: 14 }}>
-                      <div style={{ fontSize: 11, color: C.muted, fontFamily: "ui-monospace, monospace", fontWeight: 700 }}>{e.id}</div>
-                      <div style={{ fontWeight: 700, fontSize: 13, marginTop: 4 }}>{e.name}</div>
-                      <div style={{ marginTop: 8 }}>
-                        <DemoBadge palette={palette} variant={e.status === "online" ? "success" : e.status === "service" ? "warn" : "danger"} label={t(`equipment.status.${e.status}`)} />
+                  ].map((e, idx) => {
+                    const accent = e.status === "online" ? C.neon : e.status === "service" ? "#fbbf24" : "#f87171";
+                    return (
+                      <div key={e.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderTop: `3px solid ${accent}`, borderRadius: 12, padding: 14, overflow: "hidden" }}>
+                        <div style={{ position: "relative", margin: "-14px -14px 10px", height: 80, overflow: "hidden" }}>
+                          <img
+                            src={demoImages.gym.photos[idx % demoImages.gym.photos.length]}
+                            alt=""
+                            loading="lazy"
+                            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                          <div
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              background: `linear-gradient(180deg, ${accent}33 0%, ${C.surface}f5 100%)`,
+                            }}
+                          />
+                        </div>
+                        <div style={{ fontSize: 11, color: C.muted, fontFamily: "ui-monospace, monospace", fontWeight: 700 }}>{e.id}</div>
+                        <div style={{ fontWeight: 700, fontSize: 13, marginTop: 4 }}>{e.name}</div>
+                        <div style={{ marginTop: 8 }}>
+                          <DemoBadge palette={palette} variant={e.status === "online" ? "success" : e.status === "service" ? "warn" : "danger"} label={t(`equipment.status.${e.status}`)} />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 <DemoLiveFeed
                   palette={palette}

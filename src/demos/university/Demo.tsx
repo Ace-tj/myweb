@@ -23,6 +23,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -280,6 +281,56 @@ function UniversityInner() {
             title={screenHeader.title}
             subtitle={screenHeader.subtitle}
           />
+
+          {tab === "dashboard" && (
+            <div
+              style={{
+                position: "relative",
+                height: 120,
+                borderRadius: 12,
+                overflow: "hidden",
+                marginBottom: 16,
+              }}
+            >
+              <img
+                src={demoImages.university.hero}
+                alt=""
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: `linear-gradient(135deg, ${C.primary}dd, ${C.primary}88)`,
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  padding: 18,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  color: "white",
+                  fontFamily: "ui-sans-serif",
+                }}
+              >
+                <span style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", opacity: 0.85 }}>
+                  {t("shell.screen.dashboard.eyebrow")}
+                </span>
+                <span style={{ fontSize: 22, fontWeight: 700 }}>
+                  {t("shell.screen.dashboard.title")}
+                </span>
+              </div>
+            </div>
+          )}
 
           {KPIS[tab] && <DemoKpiStrip palette={palette} items={KPIS[tab]!} />}
 

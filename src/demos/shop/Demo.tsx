@@ -48,6 +48,9 @@ import {
   DemoCommandPalette,
   type PaletteItem,
 } from "@/components/demo-shell/wow";
+import { demoImages } from "@/lib/demo-images";
+
+const SHOP_PHOTOS = demoImages.shopping.products;
 
 const C = {
   bg: "#fff8f3",
@@ -453,9 +456,31 @@ function ShopInner() {
                     fontFamily: "Georgia, serif",
                     fontWeight: 700,
                     letterSpacing: -1,
+                    position: "relative",
+                    overflow: "hidden",
                   }}
                 >
-                  ✿
+                  <img
+                    src={demoImages.shopping.hero}
+                    alt=""
+                    loading="lazy"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(135deg,rgba(255,184,154,0.55),rgba(226,90,49,0.55) 80%)",
+                      mixBlendMode: "multiply",
+                    }}
+                  />
+                  <span style={{ position: "relative", zIndex: 1 }}>✿</span>
                 </div>
               </div>
 
@@ -465,7 +490,7 @@ function ShopInner() {
                 <span style={{ color: C.muted, fontSize: 12 }}>{t("grid.showing")}</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
-                {PRODUCTS.map((p) => (
+                {PRODUCTS.map((p, idx) => (
                   <article
                     key={p.id}
                     style={{
@@ -476,7 +501,28 @@ function ShopInner() {
                       transition: "transform 200ms ease, box-shadow 200ms ease",
                     }}
                   >
-                    <div style={{ aspectRatio: "1/1", background: p.img, position: "relative" }}>
+                    <div style={{ aspectRatio: "1/1", background: p.img, position: "relative", overflow: "hidden" }}>
+                      <img
+                        src={SHOP_PHOTOS[idx % SHOP_PHOTOS.length]}
+                        alt=""
+                        loading="lazy"
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: p.img,
+                          mixBlendMode: "multiply",
+                          opacity: 0.35,
+                        }}
+                      />
                       {p.tag && (
                         <span
                           style={{
@@ -575,10 +621,54 @@ function ShopInner() {
               </button>
               <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 40, alignItems: "flex-start" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div style={{ aspectRatio: "1/1", borderRadius: 20, background: FEATURED.img, border: `1px solid ${C.border}` }} />
+                  <div style={{ aspectRatio: "1/1", borderRadius: 20, background: FEATURED.img, border: `1px solid ${C.border}`, position: "relative", overflow: "hidden" }}>
+                    <img
+                      src={SHOP_PHOTOS[2 % SHOP_PHOTOS.length]}
+                      alt=""
+                      loading="lazy"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: FEATURED.img,
+                        mixBlendMode: "multiply",
+                        opacity: 0.3,
+                      }}
+                    />
+                  </div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-                    {PRODUCTS.slice(0, 4).map((p) => (
-                      <div key={p.id} style={{ aspectRatio: "1/1", borderRadius: 12, background: p.img, border: `1px solid ${C.border}` }} />
+                    {PRODUCTS.slice(0, 4).map((p, idx) => (
+                      <div key={p.id} style={{ aspectRatio: "1/1", borderRadius: 12, background: p.img, border: `1px solid ${C.border}`, position: "relative", overflow: "hidden" }}>
+                        <img
+                          src={SHOP_PHOTOS[idx % SHOP_PHOTOS.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: p.img,
+                            mixBlendMode: "multiply",
+                            opacity: 0.35,
+                          }}
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -669,11 +759,33 @@ function ShopInner() {
                     </tr>
                   </thead>
                   <tbody>
-                    {CART_LINES.map((line) => (
+                    {CART_LINES.map((line, idx) => (
                       <tr key={line.id} style={{ borderTop: `1px solid ${C.border}` }}>
                         <td style={{ padding: "14px 18px" }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <div style={{ width: 48, height: 48, borderRadius: 10, background: line.img }} />
+                            <div style={{ width: 48, height: 48, borderRadius: 10, background: line.img, position: "relative", overflow: "hidden" }}>
+                              <img
+                                src={SHOP_PHOTOS[idx % SHOP_PHOTOS.length]}
+                                alt=""
+                                loading="lazy"
+                                style={{
+                                  position: "absolute",
+                                  inset: 0,
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                }}
+                              />
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  inset: 0,
+                                  background: line.img,
+                                  mixBlendMode: "multiply",
+                                  opacity: 0.35,
+                                }}
+                              />
+                            </div>
                             <div>
                               <div style={{ fontWeight: 600 }}>{line.name}</div>
                               <div style={{ color: C.muted, fontSize: 12 }}>{t("cartPage.skuPrefix")} #{line.id.toString().padStart(4, "0")}</div>

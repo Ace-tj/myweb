@@ -35,6 +35,9 @@ import {
   useDemoToast,
   type PaletteItem,
 } from "@/components/demo-shell/wow";
+import { demoImages } from "@/lib/demo-images";
+
+const DISH_PHOTOS = demoImages.restaurant.dishes;
 
 const C = {
   bg: "#fbf6ee",
@@ -329,7 +332,7 @@ function RestaurantInner() {
 
           {view === "kitchen" && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px,1fr))", gap: 14 }}>
-              {KITCHEN.map((k) => (
+              {KITCHEN.map((k, ki) => (
                 <article key={k.table} style={{ background: C.paper, border: `1px solid ${C.border}`, borderTop: `4px solid ${C.accent}`, borderRadius: 12, padding: 16 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
                     <span style={{ fontWeight: 700, fontSize: 18 }}>{k.table}</span>
@@ -338,7 +341,51 @@ function RestaurantInner() {
                     </span>
                   </div>
                   {k.items.map((i, idx) => (
-                    <div key={idx} style={{ fontSize: 13, padding: "6px 0", borderTop: idx === 0 ? "none" : `1px solid ${C.border}` }}>{i}</div>
+                    <div
+                      key={idx}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        fontSize: 13,
+                        padding: "6px 0",
+                        borderTop: idx === 0 ? "none" : `1px solid ${C.border}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 6,
+                          overflow: "hidden",
+                          position: "relative",
+                          flex: "0 0 auto",
+                          background: "linear-gradient(135deg,#fce8d4,#c2410c)",
+                        }}
+                      >
+                        <img
+                          src={DISH_PHOTOS[(ki * 3 + idx) % DISH_PHOTOS.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: "rgba(194,65,12,0.2)",
+                            mixBlendMode: "multiply",
+                          }}
+                        />
+                      </div>
+                      <span>{i}</span>
+                    </div>
                   ))}
                   <button
                     onClick={() => toast.push({ title: t("toast.firedTo", { table: k.table }), tone: "success" })}
@@ -358,11 +405,87 @@ function RestaurantInner() {
                 { cat: t("menu.pasta.cat"), items: [t("menu.pasta.item1"), t("menu.pasta.item2"), t("menu.pasta.item3")] },
                 { cat: t("menu.mains.cat"), items: [t("menu.mains.item1"), t("menu.mains.item2"), t("menu.mains.item3")] },
                 { cat: t("menu.wine.cat"), items: [t("menu.wine.item1"), t("menu.wine.item2"), t("menu.wine.item3")] },
-              ].map((s) => (
+              ].map((s, ci) => (
                 <div key={s.cat} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18 }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      aspectRatio: "16/7",
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      marginBottom: 14,
+                      background: "linear-gradient(135deg,#fce8d4,#c2410c)",
+                    }}
+                  >
+                    <img
+                      src={DISH_PHOTOS[ci % DISH_PHOTOS.length]}
+                      alt=""
+                      loading="lazy"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: "linear-gradient(135deg,rgba(252,232,212,0.35),rgba(194,65,12,0.45))",
+                        mixBlendMode: "multiply",
+                      }}
+                    />
+                  </div>
                   <h3 style={{ fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 12, color: C.accent }}>{s.cat}</h3>
-                  {s.items.map((i) => (
-                    <div key={i} style={{ padding: "8px 0", borderTop: `1px dashed ${C.border}`, fontSize: 14 }}>{i}</div>
+                  {s.items.map((i, ii) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        padding: "8px 0",
+                        borderTop: `1px dashed ${C.border}`,
+                        fontSize: 14,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: 8,
+                          overflow: "hidden",
+                          position: "relative",
+                          flex: "0 0 auto",
+                          background: "linear-gradient(135deg,#fce8d4,#c2410c)",
+                        }}
+                      >
+                        <img
+                          src={DISH_PHOTOS[(ci * 3 + ii + 4) % DISH_PHOTOS.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: "rgba(194,65,12,0.18)",
+                            mixBlendMode: "multiply",
+                          }}
+                        />
+                      </div>
+                      <span>{i}</span>
+                    </div>
                   ))}
                 </div>
               ))}

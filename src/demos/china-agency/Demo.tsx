@@ -17,6 +17,7 @@ import {
   ChartPie,
   Gear,
 } from "@phosphor-icons/react";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoTopBar,
   DemoStatusBar,
@@ -381,8 +382,24 @@ function ChinaAgencyInner() {
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                     <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                      <div style={{ width: 38, height: 38, background: C.bg, borderRadius: 10, display: "grid", placeItems: "center", flexShrink: 0 }}>
-                        <Buildings weight="bold" size={20} style={{ color: C.red }} />
+                      <div style={{ position: "relative", width: 56, height: 56, borderRadius: 10, overflow: "hidden", flexShrink: 0 }}>
+                        <img
+                          src={demoImages["china-agency"].photos[u.i % demoImages["china-agency"].photos.length]}
+                          alt=""
+                          loading="lazy"
+                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background: "linear-gradient(135deg, rgba(185,28,28,0.55), rgba(58,10,10,0.65))",
+                            pointerEvents: "none",
+                          }}
+                        />
+                        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center" }}>
+                          <Buildings weight="bold" size={22} style={{ color: "white" }} />
+                        </div>
                       </div>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "Georgia, serif" }}>{t(`universities.list.${u.i}.name`)}</div>
@@ -533,8 +550,27 @@ function ChinaAgencyInner() {
               { name: "Shanghai Jiao Tong", city: "Shanghai", placements: 56, commission: 17, hot: true },
               { name: "Wuhan University", city: "Wuhan", placements: 32, commission: 12, hot: false },
               { name: "Nanjing University", city: "Nanjing", placements: 28, commission: 13, hot: false },
-            ].map((p) => (
-              <article key={p.name} style={{ background: C.paper, border: `1px solid ${C.border}`, borderTop: p.hot ? `4px solid ${C.red}` : `4px solid ${C.gold}`, borderRadius: 12, padding: 16 }}>
+            ].map((p, pIdx) => (
+              <article key={p.name} style={{ background: C.paper, border: `1px solid ${C.border}`, borderTop: p.hot ? `4px solid ${C.red}` : `4px solid ${C.gold}`, borderRadius: 12, overflow: "hidden" }}>
+                <div style={{ position: "relative", aspectRatio: "16/7", overflow: "hidden" }}>
+                  <img
+                    src={demoImages["china-agency"].photos[pIdx % demoImages["china-agency"].photos.length]}
+                    alt=""
+                    loading="lazy"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: p.hot
+                        ? "linear-gradient(180deg, rgba(185,28,28,0.20) 0%, rgba(58,10,10,0.70) 100%)"
+                        : "linear-gradient(180deg, rgba(184,134,11,0.18) 0%, rgba(58,10,10,0.65) 100%)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
+                <div style={{ padding: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div>
                     <div style={{ fontFamily: "Georgia, serif", fontSize: 16, fontWeight: 700 }}>{p.name}</div>
@@ -551,6 +587,7 @@ function ChinaAgencyInner() {
                     <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>{t("partners.commission")}</div>
                     <div style={{ fontSize: 20, fontWeight: 800, marginTop: 2 }}>{p.commission}%</div>
                   </div>
+                </div>
                 </div>
               </article>
             ))}

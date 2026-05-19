@@ -25,6 +25,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -305,6 +306,55 @@ function AccountingInner() {
       </div>
 
       <main style={{ padding: 32, maxWidth: 1400, margin: "0 auto", width: "100%", flex: 1 }}>
+        {tab === "ledger" && (
+          <div
+            style={{
+              position: "relative",
+              height: 120,
+              borderRadius: 12,
+              overflow: "hidden",
+              marginBottom: 20,
+            }}
+          >
+            <img
+              src={demoImages.accounting.hero}
+              alt=""
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: `linear-gradient(135deg, ${C.navy}ee, ${C.navy}aa)`,
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                padding: 18,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                color: "white",
+              }}
+            >
+              <span style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", opacity: 0.85 }}>
+                {screenEyebrow}
+              </span>
+              <span style={{ fontSize: 22, fontWeight: 700 }}>
+                {screenTitle}
+              </span>
+            </div>
+          </div>
+        )}
+
         <DemoScreenHeader
           palette={palette}
           eyebrow={screenEyebrow}

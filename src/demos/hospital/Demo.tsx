@@ -23,6 +23,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -362,6 +363,52 @@ function HospitalInner() {
           {/* ───────── APPOINTMENTS ───────── */}
           {tab === "appointments" && (
             <section>
+              <div
+                style={{
+                  position: "relative",
+                  height: 120,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  marginBottom: 16,
+                }}
+              >
+                <img
+                  src={demoImages.hospital.hero}
+                  alt=""
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `linear-gradient(135deg, ${C.primary}f2, ${C.primaryDark}e6)`,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    padding: 18,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    color: "white",
+                  }}
+                >
+                  <span style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", opacity: 0.85 }}>
+                    {t("shell.screen.appointments.eyebrow")}
+                  </span>
+                  <span style={{ fontSize: 22, fontWeight: 800 }}>
+                    {t("appointments.title")}
+                  </span>
+                </div>
+              </div>
               <DemoKpiStrip palette={palette} items={appointmentsKpis} />
               <DemoScreenHeader
                 palette={palette}

@@ -22,6 +22,7 @@ import {
   Handshake,
   Storefront,
 } from "@phosphor-icons/react";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoTopBar,
   DemoStatusBar,
@@ -567,7 +568,7 @@ function TravelInner() {
 
               <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 14 }}>{t("featured.heading")}</h2>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 18 }}>
-                {TOURS.map((tour) => (
+                {TOURS.map((tour, tIdx) => (
                   <article
                     key={tour.key}
                     style={{
@@ -579,7 +580,21 @@ function TravelInner() {
                       flexDirection: "column",
                     }}
                   >
-                    <div style={{ aspectRatio: "16/10", background: tour.img, position: "relative" }}>
+                    <div style={{ aspectRatio: "16/10", background: tour.img, position: "relative", overflow: "hidden" }}>
+                      <img
+                        src={demoImages["travel-agency"].destinations[tIdx % demoImages["travel-agency"].destinations.length]}
+                        alt=""
+                        loading="lazy"
+                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: "linear-gradient(135deg, rgba(8,47,73,0.35), rgba(8,145,178,0.25) 60%, rgba(8,47,73,0.55))",
+                          pointerEvents: "none",
+                        }}
+                      />
                       <span
                         style={{
                           position: "absolute",
@@ -668,7 +683,7 @@ function TravelInner() {
                   marginBottom: 22,
                 }}
               >
-                {DESTINATIONS.map((d) => (
+                {DESTINATIONS.map((d, dIdx) => (
                   <article
                     key={d.key}
                     style={{
@@ -678,7 +693,21 @@ function TravelInner() {
                       overflow: "hidden",
                     }}
                   >
-                    <div style={{ aspectRatio: "16/9", background: d.gradient, position: "relative" }}>
+                    <div style={{ aspectRatio: "16/9", background: d.gradient, position: "relative", overflow: "hidden" }}>
+                      <img
+                        src={demoImages["travel-agency"].destinations[dIdx % demoImages["travel-agency"].destinations.length]}
+                        alt=""
+                        loading="lazy"
+                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: "linear-gradient(180deg, rgba(8,47,73,0.10) 0%, rgba(8,145,178,0.20) 50%, rgba(8,47,73,0.70) 100%)",
+                          pointerEvents: "none",
+                        }}
+                      />
                       <div
                         style={{
                           position: "absolute",
@@ -804,7 +833,7 @@ function TravelInner() {
 
           {tab === "itinerary" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {ITINERARY.map((d) => (
+              {ITINERARY.map((d, iIdx) => (
                 <article
                   key={d.day}
                   style={{
@@ -818,11 +847,25 @@ function TravelInner() {
                     alignItems: "center",
                   }}
                 >
-                  <div style={{ background: C.primary, color: "white", borderRadius: 12, padding: "12px 0", textAlign: "center" }}>
-                    <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1, opacity: 0.8 }}>
+                  <div style={{ position: "relative", color: "white", borderRadius: 12, padding: "12px 0", textAlign: "center", overflow: "hidden", minHeight: 70 }}>
+                    <img
+                      src={demoImages["travel-agency"].destinations[iIdx % demoImages["travel-agency"].destinations.length]}
+                      alt=""
+                      loading="lazy"
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: "linear-gradient(135deg, rgba(8,145,178,0.78), rgba(8,47,73,0.82))",
+                        pointerEvents: "none",
+                      }}
+                    />
+                    <div style={{ position: "relative", fontSize: 10, textTransform: "uppercase", letterSpacing: 1, opacity: 0.9 }}>
                       {t("itinerary.dayLabel")}
                     </div>
-                    <div style={{ fontSize: 22, fontWeight: 800 }}>{d.day}</div>
+                    <div style={{ position: "relative", fontSize: 22, fontWeight: 800 }}>{d.day}</div>
                   </div>
                   <div>
                     <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
@@ -1069,7 +1112,7 @@ function TravelInner() {
                   <h3 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 6px" }}>{t("calendar.departuresTitle")}</h3>
                   <p style={{ fontSize: 12, color: C.muted, margin: "0 0 14px" }}>{t("calendar.departuresSubtitle")}</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {CALENDAR_DEPARTURES.map((dep) => (
+                    {CALENDAR_DEPARTURES.map((dep, depIdx) => (
                       <div
                         key={dep.code}
                         style={{
@@ -1084,11 +1127,25 @@ function TravelInner() {
                           background: C.bg,
                         }}
                       >
-                        <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>
+                        <div style={{ position: "relative", textAlign: "center", borderRadius: 8, overflow: "hidden", padding: "6px 0", minHeight: 56 }}>
+                          <img
+                            src={demoImages["travel-agency"].destinations[depIdx % demoImages["travel-agency"].destinations.length]}
+                            alt=""
+                            loading="lazy"
+                            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                          <div
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              background: "linear-gradient(135deg, rgba(255,255,255,0.78), rgba(224,242,254,0.82))",
+                              pointerEvents: "none",
+                            }}
+                          />
+                          <div style={{ position: "relative", fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>
                             {t(`calendar.months.${dep.mon.toLowerCase()}`)}
                           </div>
-                          <div style={{ fontSize: 22, fontWeight: 800, color: C.ink, letterSpacing: -0.5 }}>{dep.day}</div>
+                          <div style={{ position: "relative", fontSize: 22, fontWeight: 800, color: C.ink, letterSpacing: -0.5 }}>{dep.day}</div>
                         </div>
                         <div>
                           <div style={{ fontWeight: 700, fontSize: 14 }}>{dep.title}</div>

@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Demo } from "@/lib/types";
+import { demoThumb } from "@/lib/demo-images";
 
 export function DemoCard({
   demo,
@@ -9,6 +10,7 @@ export function DemoCard({
   demo: Demo;
   previewLabel: string;
 }) {
+  const thumb = demoThumb(demo.slug);
   return (
     <Link
       href={`/demos/${demo.slug}`}
@@ -21,8 +23,26 @@ export function DemoCard({
           background: `linear-gradient(140deg, ${demo.thumbnail_color} 0%, ${demo.thumbnail_color}cc 50%, ${demo.thumbnail_color}80 100%)`,
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_30%_30%,rgba(255,255,255,0.30),transparent_70%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(0,0,0,0.40)_100%)]" />
+        {thumb && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumb}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 size-full object-cover opacity-90 transition group-hover:scale-105"
+          />
+        )}
+        {/* Brand color tint */}
+        <div
+          aria-hidden
+          className="absolute inset-0 mix-blend-multiply"
+          style={{
+            background: `linear-gradient(140deg, ${demo.thumbnail_color}cc 0%, ${demo.thumbnail_color}80 60%, ${demo.thumbnail_color}33 100%)`,
+          }}
+        />
+        {/* Highlight + shadow for legibility */}
+        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_30%_30%,rgba(255,255,255,0.25),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(0,0,0,0.55)_100%)]" />
 
         {/* mock window chrome */}
         <div className="absolute left-4 top-4 flex items-center gap-1.5">

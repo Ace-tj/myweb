@@ -30,6 +30,7 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import { demoImages } from "@/lib/demo-images";
 import {
   DemoCommandPalette,
   DemoCounter,
@@ -429,6 +430,52 @@ function SchoolInner() {
 
           {tab === "dashboard" && (
             <>
+              <div
+                style={{
+                  position: "relative",
+                  height: 120,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  marginBottom: 16,
+                }}
+              >
+                <img
+                  src={demoImages.school.hero}
+                  alt=""
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `linear-gradient(135deg, ${C.primary}dd, ${C.primary}88)`,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    padding: 18,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    color: "white",
+                  }}
+                >
+                  <span style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", opacity: 0.85 }}>
+                    {t("screen.dashboard.eyebrow")}
+                  </span>
+                  <span style={{ fontSize: 22, fontWeight: 800 }}>
+                    {t("screen.dashboard.title")}
+                  </span>
+                </div>
+              </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, marginBottom: 18 }}>
                 <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
