@@ -11,6 +11,12 @@ import {
   CurrencyDollarIcon,
   ChartPieIcon,
   ArrowTrendingUpIcon,
+  UserGroupIcon,
+  BanknotesIcon,
+  ReceiptPercentIcon,
+  BriefcaseIcon,
+  FolderOpenIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/20/solid";
 import {
   DemoTopBar,
@@ -19,6 +25,16 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import {
+  DemoCommandPalette,
+  DemoCounter,
+  DemoChart,
+  DemoHeatmap,
+  DemoLiveFeed,
+  DemoToastProvider,
+  useDemoToast,
+  type PaletteItem,
+} from "@/components/demo-shell/wow";
 
 const C = {
   bg: "#f7f8fb",
@@ -49,7 +65,17 @@ const CATEGORY_C: Record<string, string> = {
   marketing: "#be185d",
 };
 
-type Tab = "ledger" | "invoices" | "expenses" | "reports";
+type Tab =
+  | "ledger"
+  | "invoices"
+  | "expenses"
+  | "reports"
+  | "clients"
+  | "banking"
+  | "taxes"
+  | "payroll"
+  | "projects"
+  | "settings";
 
 type BadgeVariant = "neutral" | "success" | "warn" | "danger" | "info";
 
@@ -69,8 +95,17 @@ const statusVariant = (s: string): BadgeVariant => {
 };
 
 export function AccountingDemo() {
+  return (
+    <DemoToastProvider palette={palette}>
+      <AccountingInner />
+    </DemoToastProvider>
+  );
+}
+
+function AccountingInner() {
   const t = useTranslations("demoPreview.accounting");
   const [tab, setTab] = useState<Tab>("ledger");
+  const toast = useDemoToast();
 
   const INVOICES = [
     { n: "INV-1042", client: t("clients.helios"), amount: 12400, status: "Paid", due: t("dates.apr18") },
@@ -130,44 +165,29 @@ export function AccountingDemo() {
     { id: "ledger", label: t("nav.ledger"), Icon: CalculatorIcon },
     { id: "invoices", label: t("nav.invoices"), Icon: DocumentTextIcon },
     { id: "expenses", label: t("nav.expenses"), Icon: CurrencyDollarIcon },
+    { id: "clients", label: t("nav.clients"), Icon: UserGroupIcon },
+    { id: "banking", label: t("nav.banking"), Icon: BanknotesIcon },
+    { id: "taxes", label: t("nav.taxes"), Icon: ReceiptPercentIcon },
+    { id: "payroll", label: t("nav.payroll"), Icon: BriefcaseIcon },
+    { id: "projects", label: t("nav.projects"), Icon: FolderOpenIcon },
     { id: "reports", label: t("nav.reports"), Icon: ChartPieIcon },
+    { id: "settings", label: t("nav.settings"), Icon: Cog6ToothIcon },
   ];
 
-  const breadcrumb =
-    tab === "ledger"
-      ? t("shell.breadcrumb.ledger")
-      : tab === "invoices"
-        ? t("shell.breadcrumb.invoices")
-        : tab === "expenses"
-          ? t("shell.breadcrumb.expenses")
-          : t("shell.breadcrumb.reports");
+  const paletteItems: PaletteItem[] = TABS.map((tb) => ({
+    id: tb.id,
+    label: tb.label,
+    group: t("commandPalette.group"),
+    onRun: () => {
+      setTab(tb.id);
+      toast.push({ title: t("toast.navigated", { screen: tb.label }) });
+    },
+  }));
 
-  const screenEyebrow =
-    tab === "ledger"
-      ? t("shell.screen.ledger.eyebrow")
-      : tab === "invoices"
-        ? t("shell.screen.invoices.eyebrow")
-        : tab === "expenses"
-          ? t("shell.screen.expenses.eyebrow")
-          : t("shell.screen.reports.eyebrow");
-
-  const screenTitle =
-    tab === "ledger"
-      ? t("shell.screen.ledger.title")
-      : tab === "invoices"
-        ? t("shell.screen.invoices.title")
-        : tab === "expenses"
-          ? t("shell.screen.expenses.title")
-          : t("shell.screen.reports.title");
-
-  const screenSubtitle =
-    tab === "ledger"
-      ? t("shell.screen.ledger.subtitle")
-      : tab === "invoices"
-        ? t("shell.screen.invoices.subtitle")
-        : tab === "expenses"
-          ? t("shell.screen.expenses.subtitle")
-          : t("shell.screen.reports.subtitle");
+  const breadcrumb = t(`shell.breadcrumb.${tab}`);
+  const screenEyebrow = t(`shell.screen.${tab}.eyebrow`);
+  const screenTitle = t(`shell.screen.${tab}.title`);
+  const screenSubtitle = t(`shell.screen.${tab}.subtitle`);
 
   const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
     tab === "ledger"
@@ -191,12 +211,19 @@ export function AccountingDemo() {
               { label: t("shell.kpi.expenses.2.label"), value: t("shell.kpi.expenses.2.value"), trend: t("shell.kpi.expenses.2.trend"), spark: [82, 86, 88, 90, 92, 95, 96, 98] },
               { label: t("shell.kpi.expenses.3.label"), value: t("shell.kpi.expenses.3.value"), trend: t("shell.kpi.expenses.3.trend"), spark: [22, 23, 24, 25, 26, 27, 28, 29] },
             ]
-          : [
+          : tab === "reports"
+          ? [
               { label: t("shell.kpi.reports.0.label"), value: t("shell.kpi.reports.0.value"), trend: t("shell.kpi.reports.0.trend"), spark: [142, 132, 148, 156, 172, 184, 192, 204] },
               { label: t("shell.kpi.reports.1.label"), value: t("shell.kpi.reports.1.value"), trend: t("shell.kpi.reports.1.trend"), spark: [44, 45, 46, 46, 47, 47, 48, 49] },
               { label: t("shell.kpi.reports.2.label"), value: t("shell.kpi.reports.2.value"), trend: t("shell.kpi.reports.2.trend"), spark: [54, 60, 68, 72, 80, 86, 92, 98] },
               { label: t("shell.kpi.reports.3.label"), value: t("shell.kpi.reports.3.value"), trend: t("shell.kpi.reports.3.trend"), spark: [9, 10, 11, 12, 13, 14, 15, 16] },
-            ];
+            ]
+          : (["0", "1", "2", "3"] as const).map((i) => ({
+              label: t(`shell.kpi.${tab}.${i}.label`),
+              value: t(`shell.kpi.${tab}.${i}.value`),
+              trend: t(`shell.kpi.${tab}.${i}.trend`),
+              spark: [40, 44, 48, 52, 56, 60, 64, 68].map((n) => n + (Number(i) * 12)),
+            }));
 
   return (
     <div
@@ -230,6 +257,7 @@ export function AccountingDemo() {
         searchPlaceholder={t("shell.searchPlaceholder")}
         userName={t("shell.userName")}
         userInitials={t("shell.userInitials")}
+        rightSlot={<DemoCommandPalette palette={palette} items={paletteItems} placeholder={t("commandPalette.placeholder")} hint="⌘K" />}
       />
 
       <div
@@ -480,6 +508,234 @@ export function AccountingDemo() {
             >
               <ArrowDownTrayIcon style={{ width: 12, height: 12 }} /> {t("reports.exportPdf")}
             </button>
+          </section>
+        )}
+
+        {tab === "clients" && (
+          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ padding: "12px 18px", background: C.bg, display: "grid", gridTemplateColumns: "1fr 110px 100px 100px 90px", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.muted }}>
+              <span>{t("clientsScreen.col.name")}</span>
+              <span>{t("clientsScreen.col.industry")}</span>
+              <span style={{ textAlign: "right" }}>{t("clientsScreen.col.ytd")}</span>
+              <span style={{ textAlign: "right" }}>{t("clientsScreen.col.outstanding")}</span>
+              <span>{t("clientsScreen.col.status")}</span>
+            </div>
+            {[
+              { name: "Helios Studios", industry: "Design", ytd: 84200, due: 4800, status: "active" },
+              { name: "Northbound Logistics", industry: "Logistics", ytd: 142000, due: 18900, status: "overdue" },
+              { name: "Park Eight Capital", industry: "Finance", ytd: 96400, due: 0, status: "active" },
+              { name: "Ridge & Sons", industry: "Manufacturing", ytd: 22400, due: 2150, status: "draft" },
+              { name: "Lumen Health", industry: "Healthcare", ytd: 64800, due: 0, status: "active" },
+              { name: "Sunset Coast Co", industry: "Hospitality", ytd: 38200, due: 8400, status: "active" },
+            ].map((c) => (
+              <div key={c.name} style={{ display: "grid", gridTemplateColumns: "1fr 110px 100px 100px 90px", padding: "12px 18px", borderTop: `1px solid ${C.border}`, alignItems: "center", fontSize: 13 }}>
+                <span style={{ fontWeight: 600 }}>{c.name}</span>
+                <span style={{ color: C.muted }}>{c.industry}</span>
+                <span style={{ textAlign: "right", fontWeight: 700 }}>$<DemoCounter value={c.ytd} /></span>
+                <span style={{ textAlign: "right", color: c.due > 0 ? C.red : C.muted }}>{c.due > 0 ? `$${c.due.toLocaleString()}` : "—"}</span>
+                <DemoBadge palette={palette} variant={c.status === "active" ? "success" : c.status === "overdue" ? "danger" : "neutral"} label={t(`clientsScreen.status.${c.status}`)} />
+              </div>
+            ))}
+          </section>
+        )}
+
+        {tab === "banking" && (
+          <section style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18 }}>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>{t("banking.cashFlow")}</h3>
+                <span style={{ fontSize: 12, color: C.muted }}>{t("banking.last30")}</span>
+              </div>
+              <DemoChart data={[120, 132, 128, 145, 162, 158, 178, 184, 192, 210, 218, 232, 248, 256, 268, 284, 296, 302, 318, 332, 346, 358, 372, 388, 402, 416, 432, 448, 462, 478]} palette={palette} height={200} />
+              <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                {[
+                  { name: "Chase Business · 4821", bal: 312940, change: "+12.4%" },
+                  { name: "Wise Multi-currency", bal: 84620, change: "+3.1%" },
+                  { name: "Mercury Reserve", bal: 184000, change: "+0.8%" },
+                ].map((a) => (
+                  <div key={a.name} style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10, padding: 12 }}>
+                    <div style={{ fontSize: 11, color: C.muted, fontWeight: 600 }}>{a.name}</div>
+                    <div style={{ fontSize: 18, fontWeight: 800, marginTop: 4 }}>$<DemoCounter value={a.bal} /></div>
+                    <div style={{ fontSize: 11, color: C.green, fontWeight: 700, marginTop: 2 }}>{a.change}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <DemoLiveFeed
+              palette={palette}
+              liveLabel={t("banking.liveFeed")}
+              height={320}
+              initial={[
+                { id: "b1", title: "INV-1042 received · Helios", meta: "+$12,400 · just now", tone: "success" },
+                { id: "b2", title: "ACH out · Payroll", meta: "−$28,400 · 14s ago", tone: "warn" },
+                { id: "b3", title: "Card spend · AWS", meta: "−$1,820 · 1m ago", tone: "primary" },
+              ]}
+              rotating={[
+                { id: "br1", title: "FX gain on EUR balance", meta: "+$240", tone: "success" },
+                { id: "br2", title: "Wire received · Park Eight", meta: "+$4,800", tone: "success" },
+                { id: "br3", title: "Stripe payout", meta: "+$18,420", tone: "success" },
+              ]}
+            />
+          </section>
+        )}
+
+        {tab === "taxes" && (
+          <section style={{ display: "grid", gap: 18 }}>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700 }}>{t("taxes.estPaymentsTitle")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+                {[
+                  { q: "Q1", due: "Apr 15", amt: 28400, status: "paid" },
+                  { q: "Q2", due: "Jun 15", amt: 32200, status: "due" },
+                  { q: "Q3", due: "Sep 15", amt: 34800, status: "future" },
+                  { q: "Q4", due: "Jan 15", amt: 38600, status: "future" },
+                ].map((q) => (
+                  <div key={q.q} style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+                    <div style={{ fontSize: 11, color: C.muted, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>{q.q} · {q.due}</div>
+                    <div style={{ fontSize: 22, fontWeight: 800, marginTop: 6 }}>$<DemoCounter value={q.amt} /></div>
+                    <div style={{ marginTop: 8 }}>
+                      <DemoBadge palette={palette} variant={q.status === "paid" ? "success" : q.status === "due" ? "warn" : "neutral"} label={t(`taxes.status.${q.status}`)} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700 }}>{t("taxes.docTrackerTitle")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 120px 140px 100px", padding: "10px 12px", background: C.bg, borderRadius: 8, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.muted }}>
+                <span>{t("taxes.col.doc")}</span>
+                <span>{t("taxes.col.form")}</span>
+                <span>{t("taxes.col.received")}</span>
+                <span>{t("taxes.col.status")}</span>
+              </div>
+              {[
+                { doc: "W-2 · Marcus J.", form: "W-2", received: "Jan 28", status: "received" },
+                { doc: "1099-NEC · Sara T.", form: "1099-NEC", received: "Feb 02", status: "received" },
+                { doc: "K-1 · Park Eight", form: "K-1", received: "—", status: "pending" },
+                { doc: "1099-MISC · Ridge", form: "1099-MISC", received: "Feb 14", status: "received" },
+              ].map((d) => (
+                <div key={d.doc} style={{ display: "grid", gridTemplateColumns: "1fr 120px 140px 100px", padding: "12px 12px", borderTop: `1px solid ${C.border}`, alignItems: "center", fontSize: 13 }}>
+                  <span style={{ fontWeight: 600 }}>{d.doc}</span>
+                  <span style={{ color: C.muted, fontFamily: "ui-monospace, monospace" }}>{d.form}</span>
+                  <span style={{ color: C.muted }}>{d.received}</span>
+                  <DemoBadge palette={palette} variant={d.status === "received" ? "success" : "warn"} label={t(`taxes.docStatus.${d.status}`)} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {tab === "payroll" && (
+          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ padding: "14px 18px", borderBottom: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>{t("payroll.runTitle")}</h3>
+              <button
+                onClick={() => toast.push({ title: t("toast.payrollProcessed"), tone: "success" })}
+                style={{ padding: "8px 14px", background: C.navy, color: "white", border: "none", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer" }}
+              >
+                {t("payroll.runPayroll")}
+              </button>
+            </div>
+            <div style={{ padding: "10px 18px", background: C.bg, display: "grid", gridTemplateColumns: "1fr 120px 100px 100px 100px", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.muted }}>
+              <span>{t("payroll.col.employee")}</span>
+              <span>{t("payroll.col.role")}</span>
+              <span style={{ textAlign: "right" }}>{t("payroll.col.gross")}</span>
+              <span style={{ textAlign: "right" }}>{t("payroll.col.net")}</span>
+              <span>{t("payroll.col.status")}</span>
+            </div>
+            {[
+              { name: "Marcus Johnson", role: "Senior accountant", gross: 9200, net: 6480, status: "ready" },
+              { name: "Sara Thompson", role: "Bookkeeper", gross: 6400, net: 4710, status: "ready" },
+              { name: "Liu Wei", role: "Tax associate", gross: 7800, net: 5640, status: "draft" },
+              { name: "Faruh Bobojonov", role: "Junior accountant", gross: 5200, net: 3960, status: "ready" },
+            ].map((e) => (
+              <div key={e.name} style={{ display: "grid", gridTemplateColumns: "1fr 120px 100px 100px 100px", padding: "12px 18px", borderTop: `1px solid ${C.border}`, alignItems: "center", fontSize: 13 }}>
+                <span style={{ fontWeight: 600 }}>{e.name}</span>
+                <span style={{ color: C.muted }}>{e.role}</span>
+                <span style={{ textAlign: "right", color: C.muted }}>${e.gross.toLocaleString()}</span>
+                <span style={{ textAlign: "right", fontWeight: 700 }}>$<DemoCounter value={e.net} /></span>
+                <DemoBadge palette={palette} variant={e.status === "ready" ? "success" : "neutral"} label={t(`payroll.status.${e.status}`)} />
+              </div>
+            ))}
+          </section>
+        )}
+
+        {tab === "projects" && (
+          <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
+            {[
+              { name: "Helios Q3 Audit", client: "Helios Studios", budget: 24000, spent: 18200, progress: 76, color: C.navy },
+              { name: "Northbound 2025 Tax", client: "Northbound", budget: 38000, spent: 12400, progress: 32, color: C.gold },
+              { name: "Park Eight Bookkeeping", client: "Park Eight", budget: 12000, spent: 9800, progress: 82, color: C.green },
+              { name: "Ridge Restructure", client: "Ridge & Sons", budget: 18000, spent: 4200, progress: 22, color: "#7c3aed" },
+              { name: "Lumen Health CFO advisory", client: "Lumen Health", budget: 48000, spent: 32600, progress: 68, color: "#0891b2" },
+              { name: "Sunset Coast Annual", client: "Sunset Coast Co", budget: 22000, spent: 21000, progress: 95, color: "#be185d" },
+            ].map((p) => (
+              <article key={p.name} style={{ background: C.paper, border: `1px solid ${C.border}`, borderTop: `4px solid ${p.color}`, borderRadius: 12, padding: 16 }}>
+                <div style={{ fontSize: 11, color: C.muted, fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase" }}>{p.client}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginTop: 4 }}>{p.name}</div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, fontSize: 13 }}>
+                  <span style={{ color: C.muted }}>{t("projects.spent")}</span>
+                  <span style={{ fontWeight: 700 }}>${p.spent.toLocaleString()} / ${p.budget.toLocaleString()}</span>
+                </div>
+                <div style={{ marginTop: 8, height: 6, background: C.bg, borderRadius: 999, overflow: "hidden" }}>
+                  <div style={{ width: `${p.progress}%`, height: "100%", background: p.color, borderRadius: 999 }} />
+                </div>
+                <div style={{ fontSize: 11, color: C.muted, marginTop: 8, fontWeight: 600 }}>{p.progress}% {t("projects.complete")}</div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {tab === "settings" && (
+          <section style={{ display: "grid", gap: 18 }}>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700 }}>{t("settings.firmBasics")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {(["firmName", "ein", "address", "fiscalYear"] as const).map((f) => (
+                  <div key={f}>
+                    <label style={{ display: "block", fontSize: 10, color: C.muted, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t(`settings.fields.${f}`)}</label>
+                    <input
+                      defaultValue={t(`settings.placeholders.${f}`)}
+                      style={{ width: "100%", background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "10px 12px", fontSize: 13, color: C.ink, outline: "none", boxSizing: "border-box" }}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => toast.push({ title: t("toast.settingsSaved"), tone: "success" })}
+                style={{ marginTop: 16, padding: "10px 18px", background: C.navy, color: "white", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer" }}
+              >
+                {t("settings.save")}
+              </button>
+            </div>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700 }}>{t("settings.integrationsTitle")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
+                {[
+                  { name: "QuickBooks", emoji: "📊", on: true, desc: "settings.integrations.quickbooks" },
+                  { name: "Xero", emoji: "📒", on: false, desc: "settings.integrations.xero" },
+                  { name: "Stripe", emoji: "💳", on: true, desc: "settings.integrations.stripe" },
+                  { name: "Plaid", emoji: "🔗", on: true, desc: "settings.integrations.plaid" },
+                  { name: "Gusto", emoji: "👥", on: true, desc: "settings.integrations.gusto" },
+                  { name: "DocuSign", emoji: "✍️", on: false, desc: "settings.integrations.docusign" },
+                ].map((i) => (
+                  <div key={i.name} style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 14 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div style={{ fontSize: 22 }}>{i.emoji}</div>
+                      <DemoBadge palette={palette} variant={i.on ? "success" : "neutral"} label={t(i.on ? "settings.connected" : "settings.disconnected")} />
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 13, marginTop: 6 }}>{i.name}</div>
+                    <div style={{ color: C.muted, fontSize: 11, lineHeight: 1.5, marginTop: 4 }}>{t(i.desc)}</div>
+                    <button
+                      onClick={() => toast.push({ title: t(i.on ? "toast.disconnected" : "toast.connected", { name: i.name }), tone: i.on ? "warn" : "success" })}
+                      style={{ marginTop: 8, padding: "5px 10px", background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, fontWeight: 600, color: C.ink, cursor: "pointer" }}
+                    >
+                      {t(i.on ? "settings.disconnect" : "settings.connect")}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
         )}
       </main>

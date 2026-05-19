@@ -741,7 +741,13 @@
         "ledger": "Ledger",
         "invoices": "Invoices",
         "reports": "Reports",
-        "expenses": "Expenses"
+        "expenses": "Expenses",
+        "clients": "Clients",
+        "banking": "Banking",
+        "taxes": "Taxes",
+        "payroll": "Payroll",
+        "projects": "Projects",
+        "settings": "Settings"
       },
       "stats": {
         "revenueMTD": "Revenue MTD",
@@ -873,7 +879,13 @@
           "ledger": "Finance · Ledger",
           "invoices": "Finance · Invoices",
           "expenses": "Finance · Expenses",
-          "reports": "Finance · Reports"
+          "reports": "Finance · Reports",
+          "clients": "Workspace / Clients",
+          "banking": "Workspace / Banking",
+          "taxes": "Workspace / Taxes",
+          "payroll": "Workspace / Payroll",
+          "projects": "Workspace / Projects",
+          "settings": "Workspace / Settings"
         },
         "screen": {
           "ledger": {
@@ -895,6 +907,36 @@
             "eyebrow": "Financial reports",
             "title": "Profit & Loss",
             "subtitle": "Year-to-date performance with trend, margin, and runway."
+          },
+          "clients": {
+            "eyebrow": "Roster",
+            "title": "Clients",
+            "subtitle": "Active engagements, YTD revenue, and outstanding balances."
+          },
+          "banking": {
+            "eyebrow": "Cash",
+            "title": "Banking",
+            "subtitle": "Cash flow, account balances, and live transaction feed."
+          },
+          "taxes": {
+            "eyebrow": "Compliance",
+            "title": "Taxes",
+            "subtitle": "Estimated payments, document tracker, and deadlines."
+          },
+          "payroll": {
+            "eyebrow": "People",
+            "title": "Payroll",
+            "subtitle": "Run payroll, review withholdings, and approve net pay."
+          },
+          "projects": {
+            "eyebrow": "Engagements",
+            "title": "Projects",
+            "subtitle": "Budget vs spend across active client engagements."
+          },
+          "settings": {
+            "eyebrow": "Configuration",
+            "title": "Settings",
+            "subtitle": "Firm basics and third-party integrations."
           }
         },
         "kpi": {
@@ -985,7 +1027,236 @@
               "value": "16 mo",
               "trend": "at current burn"
             }
+          },
+          "clients": {
+            "0": {
+              "label": "Active clients",
+              "value": "42",
+              "trend": "+4 this quarter"
+            },
+            "1": {
+              "label": "AR outstanding",
+              "value": "$42,180",
+              "trend": "Within terms"
+            },
+            "2": {
+              "label": "New this month",
+              "value": "3",
+              "trend": "Strong pipeline"
+            },
+            "3": {
+              "label": "Avg engagement",
+              "value": "$18.4K",
+              "trend": "+$2.2K YoY"
+            }
+          },
+          "banking": {
+            "0": {
+              "label": "Cash on hand",
+              "value": "$581,560",
+              "trend": "+$28K this week"
+            },
+            "1": {
+              "label": "Inflows (30d)",
+              "value": "$184K",
+              "trend": "+12.4% MoM"
+            },
+            "2": {
+              "label": "Outflows (30d)",
+              "value": "$76K",
+              "trend": "Stable"
+            },
+            "3": {
+              "label": "Float",
+              "value": "0 days",
+              "trend": "Same-day settle"
+            }
+          },
+          "taxes": {
+            "0": {
+              "label": "Next deadline",
+              "value": "Jun 15",
+              "trend": "Q2 estimated"
+            },
+            "1": {
+              "label": "Paid YTD",
+              "value": "$28.4K",
+              "trend": "On track"
+            },
+            "2": {
+              "label": "Docs received",
+              "value": "84%",
+              "trend": "16% pending"
+            },
+            "3": {
+              "label": "Filings open",
+              "value": "6",
+              "trend": "2 due this month"
+            }
+          },
+          "payroll": {
+            "0": {
+              "label": "Employees",
+              "value": "12",
+              "trend": "Full-time + contract"
+            },
+            "1": {
+              "label": "This run",
+              "value": "$28,790",
+              "trend": "Net to bank"
+            },
+            "2": {
+              "label": "YTD payroll",
+              "value": "$348K",
+              "trend": "Within budget"
+            },
+            "3": {
+              "label": "Tax remit",
+              "value": "$72.4K",
+              "trend": "Automated"
+            }
+          },
+          "projects": {
+            "0": {
+              "label": "Active projects",
+              "value": "12",
+              "trend": "+2 this month"
+            },
+            "1": {
+              "label": "Budget consumed",
+              "value": "62%",
+              "trend": "Healthy"
+            },
+            "2": {
+              "label": "At-risk",
+              "value": "1",
+              "trend": "Sunset Coast 95%"
+            },
+            "3": {
+              "label": "Avg margin",
+              "value": "38%",
+              "trend": "+4 pp YoY"
+            }
+          },
+          "settings": {
+            "0": {
+              "label": "Uptime (30d)",
+              "value": "99.99%",
+              "trend": "All systems green"
+            },
+            "1": {
+              "label": "Integrations",
+              "value": "8 active",
+              "trend": "+2 this month"
+            },
+            "2": {
+              "label": "Team seats",
+              "value": "6 / 10",
+              "trend": "Room to grow"
+            },
+            "3": {
+              "label": "API calls (24h)",
+              "value": "1.2K",
+              "trend": "Within limits"
+            }
           }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…",
+        "group": "Workspace"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "payrollProcessed": "Payroll run queued",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "clientsScreen": {
+        "col": {
+          "name": "Client",
+          "industry": "Industry",
+          "ytd": "YTD revenue",
+          "outstanding": "Outstanding",
+          "status": "Status"
+        },
+        "status": {
+          "active": "Active",
+          "overdue": "Overdue",
+          "draft": "Draft"
+        }
+      },
+      "banking": {
+        "cashFlow": "Cash flow",
+        "last30": "Last 30 days",
+        "liveFeed": "Live transactions"
+      },
+      "taxes": {
+        "estPaymentsTitle": "Estimated payments",
+        "docTrackerTitle": "Document tracker",
+        "status": {
+          "paid": "Paid",
+          "due": "Due",
+          "future": "Future"
+        },
+        "col": {
+          "doc": "Document",
+          "form": "Form",
+          "received": "Received",
+          "status": "Status"
+        },
+        "docStatus": {
+          "received": "Received",
+          "pending": "Pending"
+        }
+      },
+      "payroll": {
+        "runTitle": "Payroll run · May 2025",
+        "runPayroll": "Run payroll",
+        "col": {
+          "employee": "Employee",
+          "role": "Role",
+          "gross": "Gross",
+          "net": "Net",
+          "status": "Status"
+        },
+        "status": {
+          "ready": "Ready",
+          "draft": "Draft"
+        }
+      },
+      "projects": {
+        "spent": "Spent",
+        "complete": "complete"
+      },
+      "settings": {
+        "firmBasics": "Firm basics",
+        "fields": {
+          "firmName": "Firm name",
+          "ein": "EIN",
+          "address": "Address",
+          "fiscalYear": "Fiscal year end"
+        },
+        "placeholders": {
+          "firmName": "Ledger & Lane CPAs",
+          "ein": "12-3456789",
+          "address": "1100 King St, Dushanbe",
+          "fiscalYear": "December 31"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "quickbooks": "Two-way sync with QuickBooks Online.",
+          "xero": "Connect a Xero org for unified ledger.",
+          "stripe": "Auto-import Stripe payouts as revenue.",
+          "plaid": "Bank-feed all client accounts via Plaid.",
+          "gusto": "Pull payroll runs into the ledger nightly.",
+          "docusign": "Send engagement letters and W-9s."
         }
       }
     },
