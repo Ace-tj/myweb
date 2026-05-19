@@ -8,6 +8,13 @@ import {
   IconCalendar,
   IconUser,
   IconLogin,
+  IconReceipt2,
+  IconChartBar,
+  IconSettings,
+  IconBuildingStore,
+  IconActivity,
+  IconUserPlus,
+  IconAlertTriangle,
 } from "@tabler/icons-react";
 import {
   DemoTopBar,
@@ -16,6 +23,17 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import {
+  DemoCommandPalette,
+  DemoCounter,
+  DemoChart,
+  DemoCohort,
+  DemoHeatmap,
+  DemoLiveFeed,
+  DemoToastProvider,
+  useDemoToast,
+  type PaletteItem,
+} from "@/components/demo-shell/wow";
 
 const C = {
   bg: "#0a0a0a",
@@ -36,11 +54,30 @@ const palette = {
   border: C.border,
 };
 
-type TabId = "members" | "classes" | "trainers" | "checkin";
+type TabId =
+  | "members"
+  | "classes"
+  | "trainers"
+  | "checkin"
+  | "schedule"
+  | "billing"
+  | "equipment"
+  | "leads"
+  | "analytics"
+  | "settings";
 
 export function GymDemo() {
+  return (
+    <DemoToastProvider palette={palette}>
+      <GymInner />
+    </DemoToastProvider>
+  );
+}
+
+function GymInner() {
   const t = useTranslations("demoPreview.gym");
   const [tab, setTab] = useState<TabId>("members");
+  const toast = useDemoToast();
 
   const MEMBERS = [
     { n: t("members.list.tatiana"), plan: t("members.plans.proAnnual"), days: 312, status: t("members.status.active") },
@@ -97,12 +134,28 @@ export function GymDemo() {
       .slice(0, 2)
       .join("");
 
-  const TABS: { id: TabId; label: string; Icon: typeof IconUsers }[] = [
-    { id: "members", label: t("nav.members"), Icon: IconUsers },
-    { id: "classes", label: t("nav.classes"), Icon: IconCalendar },
-    { id: "trainers", label: t("nav.trainers"), Icon: IconUser },
-    { id: "checkin", label: t("nav.checkin"), Icon: IconLogin },
+  const TABS: { id: TabId; label: string; Icon: typeof IconUsers; group: "people" | "ops" }[] = [
+    { id: "members", label: t("nav.members"), Icon: IconUsers, group: "people" },
+    { id: "trainers", label: t("nav.trainers"), Icon: IconUser, group: "people" },
+    { id: "leads", label: t("nav.leads"), Icon: IconUserPlus, group: "people" },
+    { id: "checkin", label: t("nav.checkin"), Icon: IconLogin, group: "people" },
+    { id: "classes", label: t("nav.classes"), Icon: IconCalendar, group: "ops" },
+    { id: "schedule", label: t("nav.schedule"), Icon: IconActivity, group: "ops" },
+    { id: "equipment", label: t("nav.equipment"), Icon: IconAlertTriangle, group: "ops" },
+    { id: "billing", label: t("nav.billing"), Icon: IconReceipt2, group: "ops" },
+    { id: "analytics", label: t("nav.analytics"), Icon: IconChartBar, group: "ops" },
+    { id: "settings", label: t("nav.settings"), Icon: IconSettings, group: "ops" },
   ];
+
+  const paletteItems: PaletteItem[] = TABS.map((tb) => ({
+    id: tb.id,
+    label: tb.label,
+    group: t(`nav.groups.${tb.group}`),
+    onRun: () => {
+      setTab(tb.id);
+      toast.push({ title: t("toast.navigated", { screen: tb.label }) });
+    },
+  }));
 
   const memberStatusVariant = (status: string): "success" | "warn" | "info" | "neutral" => {
     if (status === t("members.status.active")) return "success";
@@ -246,6 +299,7 @@ export function GymDemo() {
         searchPlaceholder={t("shell.searchPlaceholder")}
         userName={t("shell.userName")}
         userInitials={t("shell.userInitials")}
+        rightSlot={<DemoCommandPalette palette={palette} items={paletteItems} placeholder={t("commandPalette.placeholder")} hint="⌘K" />}
       />
 
       <div style={{ flex: 1, display: "flex" }}>
@@ -272,37 +326,44 @@ export function GymDemo() {
             </div>
           </div>
 
-          <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            {TABS.map((tabItem) => {
-              const active = tab === tabItem.id;
-              const Icon = tabItem.Icon;
-              return (
-                <button
-                  key={tabItem.id}
-                  onClick={() => setTab(tabItem.id)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    background: active ? C.neon : "transparent",
-                    color: active ? C.bg : C.ink,
-                    border: "none",
-                    padding: "10px 14px",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    fontSize: 12,
-                    textTransform: "uppercase",
-                    letterSpacing: 1,
-                    cursor: "pointer",
-                    textAlign: "left",
-                  }}
-                >
-                  <Icon style={{ width: 16, height: 16 }} stroke={2} />
-                  {tabItem.label}
-                </button>
-              );
-            })}
-          </nav>
+          {(["people", "ops"] as const).map((g) => (
+            <div key={g}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.muted, padding: "0 6px 6px" }}>
+                {t(`nav.groups.${g}`)}
+              </div>
+              <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {TABS.filter((tb) => tb.group === g).map((tabItem) => {
+                  const active = tab === tabItem.id;
+                  const Icon = tabItem.Icon;
+                  return (
+                    <button
+                      key={tabItem.id}
+                      onClick={() => setTab(tabItem.id)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        background: active ? C.neon : "transparent",
+                        color: active ? C.bg : C.ink,
+                        border: "none",
+                        padding: "8px 10px",
+                        borderRadius: 8,
+                        fontWeight: active ? 800 : 600,
+                        fontSize: 12,
+                        textTransform: "uppercase",
+                        letterSpacing: 0.8,
+                        cursor: "pointer",
+                        textAlign: "left",
+                      }}
+                    >
+                      <Icon style={{ width: 14, height: 14 }} stroke={2} />
+                      {tabItem.label}
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+          ))}
         </aside>
 
         <main style={{ flex: 1, padding: 32, maxWidth: 1400, margin: "0 auto" }}>
@@ -598,6 +659,217 @@ export function GymDemo() {
                     <IconLogin style={{ width: 14, height: 14, color: C.neon }} stroke={2} />
                   </div>
                 ))}
+              </div>
+            </section>
+          )}
+
+          {tab === "schedule" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.schedule.eyebrow")} title={t("schedule.title")} subtitle={t("schedule.subtitle")} />
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 20 }}>
+                <div style={{ fontSize: 11, color: C.muted, marginBottom: 14, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>
+                  {t("schedule.heatmapLabel")}
+                </div>
+                <DemoHeatmap palette={palette} weeks={14} seed={5} ariaLabel={t("schedule.heatmapLabel")} />
+                <p style={{ marginTop: 14, color: C.muted, fontSize: 12 }}>{t("schedule.heatmapNote")}</p>
+              </div>
+            </section>
+          )}
+
+          {tab === "billing" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.billing.eyebrow")} title={t("billing.title")} subtitle={t("billing.subtitle")} />
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+                <div style={{ padding: "12px 20px", background: C.card, display: "grid", gridTemplateColumns: "1fr 110px 110px 110px 100px", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.muted }}>
+                  <span>{t("billing.col.member")}</span>
+                  <span>{t("billing.col.plan")}</span>
+                  <span style={{ textAlign: "right" }}>{t("billing.col.mrr")}</span>
+                  <span>{t("billing.col.next")}</span>
+                  <span>{t("billing.col.status")}</span>
+                </div>
+                {[
+                  { name: "Tatiana K.", plan: "Pro · Annual", mrr: 89, next: "Jun 12", status: "paid" },
+                  { name: "Marcus J.", plan: "Lite · Monthly", mrr: 29, next: "May 28", status: "paid" },
+                  { name: "Anya R.", plan: "Pro · Quarterly", mrr: 79, next: "Jun 04", status: "due" },
+                  { name: "Daler S.", plan: "Drop-in", mrr: 12, next: "—", status: "paid" },
+                  { name: "Maya P.", plan: "Pro · Annual", mrr: 89, next: "Aug 21", status: "paid" },
+                  { name: "Sergei V.", plan: "Lite · Monthly", mrr: 29, next: "May 24", status: "failed" },
+                ].map((b) => (
+                  <div key={b.name} style={{ display: "grid", gridTemplateColumns: "1fr 110px 110px 110px 100px", padding: "12px 20px", borderTop: `1px solid ${C.border}`, alignItems: "center", fontSize: 13 }}>
+                    <span style={{ fontWeight: 600 }}>{b.name}</span>
+                    <span style={{ color: C.muted }}>{b.plan}</span>
+                    <span style={{ textAlign: "right", fontWeight: 700 }}>$<DemoCounter value={b.mrr} /></span>
+                    <span style={{ color: C.muted, fontSize: 12 }}>{b.next}</span>
+                    <DemoBadge palette={palette} variant={b.status === "paid" ? "success" : b.status === "due" ? "warn" : "danger"} label={t(`billing.status.${b.status}`)} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {tab === "equipment" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.equipment.eyebrow")} title={t("equipment.title")} subtitle={t("equipment.subtitle")} />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px,1fr))", gap: 12 }}>
+                  {[
+                    { id: "T-01", name: "Treadmill 01", status: "online" },
+                    { id: "T-02", name: "Treadmill 02", status: "online" },
+                    { id: "T-03", name: "Treadmill 03", status: "service" },
+                    { id: "R-01", name: "Rower 01", status: "online" },
+                    { id: "R-02", name: "Rower 02", status: "offline" },
+                    { id: "B-01", name: "Bike 01", status: "online" },
+                    { id: "B-02", name: "Bike 02", status: "online" },
+                    { id: "S-01", name: "Smith Rack", status: "online" },
+                    { id: "C-01", name: "Cable Tower", status: "online" },
+                    { id: "F-01", name: "Functional Rig", status: "service" },
+                  ].map((e) => (
+                    <div key={e.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderTop: `3px solid ${e.status === "online" ? C.neon : e.status === "service" ? "#fbbf24" : "#f87171"}`, borderRadius: 12, padding: 14 }}>
+                      <div style={{ fontSize: 11, color: C.muted, fontFamily: "ui-monospace, monospace", fontWeight: 700 }}>{e.id}</div>
+                      <div style={{ fontWeight: 700, fontSize: 13, marginTop: 4 }}>{e.name}</div>
+                      <div style={{ marginTop: 8 }}>
+                        <DemoBadge palette={palette} variant={e.status === "online" ? "success" : e.status === "service" ? "warn" : "danger"} label={t(`equipment.status.${e.status}`)} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <DemoLiveFeed
+                  palette={palette}
+                  liveLabel={t("equipment.liveFeed")}
+                  height={320}
+                  initial={[
+                    { id: "e1", title: "Treadmill 03 — service mode", meta: "Belt wear · 12s ago", tone: "warn" },
+                    { id: "e2", title: "Rower 02 reconnected", meta: "Network OK · 1m ago", tone: "success" },
+                    { id: "e3", title: "Functional Rig calibrated", meta: "3m ago", tone: "info" },
+                  ]}
+                  rotating={[
+                    { id: "er1", title: "Smith Rack used", meta: "Member checked in", tone: "primary" },
+                    { id: "er2", title: "Bike 01 firmware updated", meta: "v2.4.1", tone: "info" },
+                    { id: "er3", title: "Treadmill 02 hot bearing", meta: "Auto-throttle on", tone: "warn" },
+                  ]}
+                />
+              </div>
+            </section>
+          )}
+
+          {tab === "leads" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.leads.eyebrow")} title={t("leads.title")} subtitle={t("leads.subtitle")} />
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+                {(["new", "tour", "trial", "closed"] as const).map((stage, idx) => (
+                  <div key={stage} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                      <span style={{ fontSize: 11, color: C.muted, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{t(`leads.stages.${stage}`)}</span>
+                      <span style={{ background: C.neon, color: C.bg, borderRadius: 9999, padding: "2px 8px", fontSize: 10, fontWeight: 800 }}>
+                        {[8, 5, 3, 12][idx]}
+                      </span>
+                    </div>
+                    {([
+                      ["Aigerim Y.", "WhatsApp"],
+                      ["Faruh B.", "Walk-in"],
+                      ["Liu W.", "Instagram"],
+                    ] as [string, string][]).map(([name, src]) => (
+                      <div key={name} style={{ padding: 10, background: C.card, borderRadius: 8, marginBottom: 8 }}>
+                        <div style={{ fontWeight: 700, fontSize: 13 }}>{name}</div>
+                        <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{src}</div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {tab === "analytics" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.analytics.eyebrow")} title={t("analytics.title")} subtitle={t("analytics.subtitle")} />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, marginBottom: 18 }}>
+                <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+                    <h3 style={{ fontSize: 16, margin: 0, fontWeight: 800 }}>{t("analytics.mrrTitle")}</h3>
+                    <span style={{ fontSize: 11, color: C.muted }}>{t("analytics.last30")}</span>
+                  </div>
+                  <DemoChart data={[8400, 8900, 9200, 9800, 10200, 10800, 11200, 11800, 12200, 12800, 13200, 13600, 14000, 14600, 15200, 15800, 16200, 16800, 17400, 17800, 18400, 19000, 19600, 20200, 20800, 21400, 22000, 22600, 23200, 24000]} palette={palette} height={200} />
+                </div>
+                <DemoLiveFeed
+                  palette={palette}
+                  liveLabel={t("analytics.liveFeed")}
+                  height={250}
+                  initial={[
+                    { id: "a1", title: "New signup: Maya P.", meta: "Pro Annual · just now", tone: "success" },
+                    { id: "a2", title: "Class booked: HIIT", meta: "Mon 18:30 · 28s", tone: "primary" },
+                    { id: "a3", title: "Cancellation: Sergei V.", meta: "1m ago", tone: "warn" },
+                  ]}
+                  rotating={[
+                    { id: "ar1", title: "Trial converted: Faruh B.", meta: "Lite Monthly", tone: "success" },
+                    { id: "ar2", title: "PT session booked", meta: "Sara · Fri 07:00", tone: "info" },
+                    { id: "ar3", title: "Renewal: Tatiana K.", meta: "Pro Annual", tone: "success" },
+                  ]}
+                />
+              </div>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+                <h3 style={{ fontSize: 16, margin: "0 0 14px", fontWeight: 800 }}>{t("analytics.cohortTitle")}</h3>
+                <DemoCohort palette={palette} rows={6} cols={8} />
+                <p style={{ color: C.muted, fontSize: 12, marginTop: 12 }}>{t("analytics.cohortNote")}</p>
+              </div>
+            </section>
+          )}
+
+          {tab === "settings" && (
+            <section>
+              <DemoScreenHeader palette={palette} eyebrow={t("shell.screen.settings.eyebrow")} title={t("settings.title")} subtitle={t("settings.subtitle")} />
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22, marginBottom: 18 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 14px", textTransform: "uppercase", letterSpacing: 1 }}>{t("settings.basics")}</h3>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {(["gymName", "currency", "openHours", "contact"] as const).map((f) => (
+                    <div key={f}>
+                      <label style={{ display: "block", fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, marginBottom: 6 }}>
+                        {t(`settings.fields.${f}`)}
+                      </label>
+                      <input
+                        defaultValue={t(`settings.placeholders.${f}`)}
+                        style={{ width: "100%", background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: "10px 12px", fontSize: 13, color: C.ink, outline: "none", boxSizing: "border-box" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => toast.push({ title: t("toast.settingsSaved"), tone: "success" })}
+                  style={{ marginTop: 16, padding: "10px 18px", background: C.neon, color: C.bg, border: "none", borderRadius: 9999, fontWeight: 800, fontSize: 12, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}
+                >
+                  {t("settings.save")}
+                </button>
+              </div>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, margin: "0 0 14px", textTransform: "uppercase", letterSpacing: 1, display: "flex", alignItems: "center", gap: 8 }}>
+                  <IconBuildingStore size={16} stroke={2} />
+                  {t("settings.integrationsTitle")}
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
+                  {[
+                    { name: "Stripe", emoji: "💳", on: true, desc: "settings.integrations.stripe" },
+                    { name: "MindBody", emoji: "🧘", on: true, desc: "settings.integrations.mindbody" },
+                    { name: "Mailchimp", emoji: "✉️", on: false, desc: "settings.integrations.mailchimp" },
+                    { name: "Slack", emoji: "💬", on: true, desc: "settings.integrations.slack" },
+                    { name: "QuickBooks", emoji: "📊", on: false, desc: "settings.integrations.quickbooks" },
+                    { name: "Twilio", emoji: "📲", on: true, desc: "settings.integrations.twilio" },
+                  ].map((i) => (
+                    <div key={i.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 14 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <div style={{ fontSize: 22 }}>{i.emoji}</div>
+                        <DemoBadge palette={palette} variant={i.on ? "success" : "neutral"} label={t(i.on ? "settings.connected" : "settings.disconnected")} />
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: 13 }}>{i.name}</div>
+                      <div style={{ color: C.muted, fontSize: 11, lineHeight: 1.5, marginTop: 4 }}>{t(i.desc)}</div>
+                      <button
+                        onClick={() => toast.push({ title: t(i.on ? "toast.disconnected" : "toast.connected", { name: i.name }), tone: i.on ? "warn" : "success" })}
+                        style={{ marginTop: 8, padding: "5px 10px", background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, fontWeight: 700, color: C.ink, cursor: "pointer", textTransform: "uppercase", letterSpacing: 0.5 }}
+                      >
+                        {t(i.on ? "settings.disconnect" : "settings.connect")}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
           )}

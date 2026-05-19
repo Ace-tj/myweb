@@ -1624,7 +1624,17 @@
         "kpis": "Нишондиҳандаҳо",
         "classes": "Машғулиятҳо",
         "trainers": "Мураббиён",
-        "checkin": "Қайди вуруд"
+        "checkin": "Қайди вуруд",
+        "schedule": "График",
+        "billing": "Биллинг",
+        "equipment": "Таҷҳизот",
+        "leads": "Лидҳо",
+        "analytics": "Аналитика",
+        "settings": "Танзимот",
+        "groups": {
+          "people": "Одамон",
+          "ops": "Амалиёт"
+        }
       },
       "stats": {
         "activeMembers": {
@@ -1841,7 +1851,13 @@
           "members": "Узвият / Рӯйхат",
           "classes": "Амалиёт / Ҷадвал",
           "trainers": "Кадрҳо / Мураббиён",
-          "checkin": "Қабул / Дар вақти воқеӣ"
+          "checkin": "Қабул / Дар вақти воқеӣ",
+          "schedule": "Амалиёт / График",
+          "billing": "Амалиёт / Биллинг",
+          "equipment": "Амалиёт / Таҷҳизот",
+          "leads": "Одамон / Лидҳо",
+          "analytics": "Амалиёт / Аналитика",
+          "settings": "Амалиёт / Танзимот"
         },
         "statusBar": {
           "version": "v4.2.1",
@@ -1860,6 +1876,24 @@
           },
           "checkin": {
             "eyebrow": "Қабул"
+          },
+          "schedule": {
+            "eyebrow": "Пуркунӣ"
+          },
+          "billing": {
+            "eyebrow": "Даромад"
+          },
+          "equipment": {
+            "eyebrow": "Захира"
+          },
+          "leads": {
+            "eyebrow": "Воронка"
+          },
+          "analytics": {
+            "eyebrow": "Натиҷаҳо"
+          },
+          "settings": {
+            "eyebrow": "Танзим"
           }
         },
         "kpi": {
@@ -1919,6 +1953,97 @@
             "avgValue": "70 дақ",
             "avgTrend": "+4 дақ WoW"
           }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Ба экран гузаштан…"
+      },
+      "toast": {
+        "navigated": "{screen} кушода шуд",
+        "settingsSaved": "Танзимот нигоҳ дошта шуд",
+        "connected": "{name} пайваст",
+        "disconnected": "{name} канда"
+      },
+      "schedule": {
+        "title": "Графики ҳафта",
+        "subtitle": "Харитаи гармии пуркунии машғулиятҳо ва ҷойҳои PT.",
+        "heatmapLabel": "Пуркунӣ дар 14 ҳафта",
+        "heatmapNote": "Кулчаҳои сиёҳ — пуркунӣ баландтар."
+      },
+      "billing": {
+        "title": "Обуна",
+        "subtitle": "Нақшаҳои фаъол, пардохтҳои оянда ва нокомиҳо.",
+        "col": {
+          "member": "Аъзо",
+          "plan": "Нақша",
+          "mrr": "MRR",
+          "next": "Пардохти оянда",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "paid": "Пардохт",
+          "due": "Қарздор",
+          "failed": "Нокомӣ"
+        }
+      },
+      "equipment": {
+        "title": "Таҷҳизот",
+        "subtitle": "Ҳолати треадмилл, гребниҳо, велосипедҳо ва раҳмат.",
+        "status": {
+          "online": "Онлайн",
+          "service": "Хидмат",
+          "offline": "Офлайн"
+        },
+        "liveFeed": "Воқеаҳои таҷҳизот"
+      },
+      "leads": {
+        "title": "Воронка лидҳо",
+        "subtitle": "Нав, дар тур, дар тестӣ, пӯшида.",
+        "stages": {
+          "new": "Нав",
+          "tour": "Дар тур",
+          "trial": "Тестӣ",
+          "closed": "Пӯшида"
+        }
+      },
+      "analytics": {
+        "title": "Натиҷаҳо",
+        "subtitle": "Тренди MRR, когортаи нигоҳдорӣ ва воқеаҳои зинда.",
+        "mrrTitle": "MRR (30 рӯзи охирин)",
+        "last30": "30 рӯзи охирин",
+        "liveFeed": "Лентаи воқеаҳо",
+        "cohortTitle": "Когортаи нигоҳдорӣ",
+        "cohortNote": "Фоизи аъзоёне, ки дар ҳафтаи N баъд аз сабт фаъоланд."
+      },
+      "settings": {
+        "title": "Танзимот",
+        "subtitle": "Маълумоти асосии гим, биллинг ва интегратсияҳо.",
+        "basics": "Маълумоти асосӣ",
+        "fields": {
+          "gymName": "Ном",
+          "currency": "Асъор",
+          "openHours": "Соатҳои корӣ",
+          "contact": "Тамос"
+        },
+        "placeholders": {
+          "gymName": "Forge Athletic Club",
+          "currency": "USD",
+          "openHours": "06:00 — 23:00",
+          "contact": "hello@forge.gym"
+        },
+        "save": "Нигоҳ доштан",
+        "integrationsTitle": "Интегратсияҳо",
+        "connected": "Пайваст",
+        "disconnected": "Канда",
+        "connect": "Пайваст кардан",
+        "disconnect": "Кандан",
+        "integrations": {
+          "stripe": "Гирифтан барои абонемент ва PT.",
+          "mindbody": "Ҳамоҳангсозӣ бо MindBody.",
+          "mailchimp": "Бозгардондани аъзоёни хоҳида.",
+          "slack": "Огоҳнома дар #ops.",
+          "quickbooks": "Ҳисобдории шабона.",
+          "twilio": "SMS-ёдоварӣ ва қарзҳо."
         }
       }
     },

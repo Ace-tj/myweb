@@ -1624,7 +1624,17 @@
         "kpis": "KPI",
         "classes": "Занятия",
         "trainers": "Тренеры",
-        "checkin": "Чек-ин"
+        "checkin": "Чек-ин",
+        "schedule": "График",
+        "billing": "Биллинг",
+        "equipment": "Оборудование",
+        "leads": "Лиды",
+        "analytics": "Аналитика",
+        "settings": "Настройки",
+        "groups": {
+          "people": "Люди",
+          "ops": "Операции"
+        }
       },
       "stats": {
         "activeMembers": {
@@ -1841,7 +1851,13 @@
           "members": "Членство / Список",
           "classes": "Операции / Расписание",
           "trainers": "Сотрудники / Тренеры",
-          "checkin": "Стойка / Онлайн"
+          "checkin": "Стойка / Онлайн",
+          "schedule": "Операции / График",
+          "billing": "Операции / Биллинг",
+          "equipment": "Операции / Оборудование",
+          "leads": "Люди / Лиды",
+          "analytics": "Операции / Аналитика",
+          "settings": "Операции / Настройки"
         },
         "statusBar": {
           "version": "v4.2.1",
@@ -1860,6 +1876,24 @@
           },
           "checkin": {
             "eyebrow": "Стойка регистрации"
+          },
+          "schedule": {
+            "eyebrow": "Загрузка"
+          },
+          "billing": {
+            "eyebrow": "Доход"
+          },
+          "equipment": {
+            "eyebrow": "Инвентарь"
+          },
+          "leads": {
+            "eyebrow": "Воронка"
+          },
+          "analytics": {
+            "eyebrow": "Показатели"
+          },
+          "settings": {
+            "eyebrow": "Конфигурация"
           }
         },
         "kpi": {
@@ -1919,6 +1953,97 @@
             "avgValue": "70 мин",
             "avgTrend": "+4 мин за неделю"
           }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Перейти к экрану…"
+      },
+      "toast": {
+        "navigated": "Открыт {screen}",
+        "settingsSaved": "Настройки сохранены",
+        "connected": "{name} подключён",
+        "disconnected": "{name} отключён"
+      },
+      "schedule": {
+        "title": "Недельный график",
+        "subtitle": "Тепловая карта заполняемости занятий и PT-слотов.",
+        "heatmapLabel": "Загрузка за 14 недель",
+        "heatmapNote": "Тёмные клетки — выше заполняемость."
+      },
+      "billing": {
+        "title": "Подписки",
+        "subtitle": "Активные тарифы, следующие списания и сбои оплат.",
+        "col": {
+          "member": "Участник",
+          "plan": "План",
+          "mrr": "MRR",
+          "next": "След. оплата",
+          "status": "Статус"
+        },
+        "status": {
+          "paid": "Оплачено",
+          "due": "К оплате",
+          "failed": "Сбой"
+        }
+      },
+      "equipment": {
+        "title": "Оборудование",
+        "subtitle": "Статус беговых, гребных, велосипедов и рам.",
+        "status": {
+          "online": "Онлайн",
+          "service": "Обслуж.",
+          "offline": "Офлайн"
+        },
+        "liveFeed": "События оборудования"
+      },
+      "leads": {
+        "title": "Воронка лидов",
+        "subtitle": "Новые, на туре, на пробном, закрытые.",
+        "stages": {
+          "new": "Новые",
+          "tour": "На туре",
+          "trial": "Пробный",
+          "closed": "Закрытые"
+        }
+      },
+      "analytics": {
+        "title": "Показатели",
+        "subtitle": "Тренд MRR, когорта удержания и события в реальном времени.",
+        "mrrTitle": "MRR (последние 30 дней)",
+        "last30": "Последние 30 дней",
+        "liveFeed": "Лента событий",
+        "cohortTitle": "Когорта удержания",
+        "cohortNote": "Процент участников, активных в неделю N после регистрации."
+      },
+      "settings": {
+        "title": "Настройки",
+        "subtitle": "Основные данные зала, биллинг и интеграции.",
+        "basics": "Основные данные",
+        "fields": {
+          "gymName": "Название",
+          "currency": "Валюта",
+          "openHours": "Часы работы",
+          "contact": "Контакт"
+        },
+        "placeholders": {
+          "gymName": "Forge Athletic Club",
+          "currency": "USD",
+          "openHours": "06:00 — 23:00",
+          "contact": "hello@forge.gym"
+        },
+        "save": "Сохранить",
+        "integrationsTitle": "Интеграции",
+        "connected": "Подключено",
+        "disconnected": "Отключено",
+        "connect": "Подключить",
+        "disconnect": "Отключить",
+        "integrations": {
+          "stripe": "Списания за абонементы и разовые PT-сессии.",
+          "mindbody": "Синхронизация занятий и записей с MindBody.",
+          "mailchimp": "Кампании возврата для уходящих участников.",
+          "slack": "Пинги в #ops для новых записей и отмен.",
+          "quickbooks": "Бухгалтерия по ночам.",
+          "twilio": "SMS напоминания о занятиях и долгах."
         }
       }
     },

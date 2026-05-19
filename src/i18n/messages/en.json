@@ -1624,7 +1624,17 @@
         "kpis": "KPIs",
         "classes": "Classes",
         "trainers": "Trainers",
-        "checkin": "Check-in"
+        "checkin": "Check-in",
+        "schedule": "Schedule",
+        "billing": "Billing",
+        "equipment": "Equipment",
+        "leads": "Leads",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "people": "People",
+          "ops": "Operations"
+        }
       },
       "stats": {
         "activeMembers": {
@@ -1841,7 +1851,13 @@
           "members": "Membership / Roster",
           "classes": "Operations / Schedule",
           "trainers": "People / Trainers",
-          "checkin": "Front Desk / Live"
+          "checkin": "Front Desk / Live",
+          "schedule": "Operations / Schedule",
+          "billing": "Operations / Billing",
+          "equipment": "Operations / Equipment",
+          "leads": "People / Leads",
+          "analytics": "Operations / Analytics",
+          "settings": "Operations / Settings"
         },
         "statusBar": {
           "version": "v4.2.1",
@@ -1860,6 +1876,24 @@
           },
           "checkin": {
             "eyebrow": "Front desk"
+          },
+          "schedule": {
+            "eyebrow": "Capacity"
+          },
+          "billing": {
+            "eyebrow": "Revenue"
+          },
+          "equipment": {
+            "eyebrow": "Inventory"
+          },
+          "leads": {
+            "eyebrow": "Pipeline"
+          },
+          "analytics": {
+            "eyebrow": "Performance"
+          },
+          "settings": {
+            "eyebrow": "Configuration"
           }
         },
         "kpi": {
@@ -1919,6 +1953,97 @@
             "avgValue": "70 min",
             "avgTrend": "+4 min WoW"
           }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "schedule": {
+        "title": "Weekly schedule",
+        "subtitle": "Heatmap of class fill and PT slots across the week.",
+        "heatmapLabel": "14-week capacity",
+        "heatmapNote": "Darker tiles = higher fill rate."
+      },
+      "billing": {
+        "title": "Subscriptions",
+        "subtitle": "Active plans, next charges, and failed payments.",
+        "col": {
+          "member": "Member",
+          "plan": "Plan",
+          "mrr": "MRR",
+          "next": "Next charge",
+          "status": "Status"
+        },
+        "status": {
+          "paid": "Paid",
+          "due": "Due",
+          "failed": "Failed"
+        }
+      },
+      "equipment": {
+        "title": "Equipment",
+        "subtitle": "Live status of treadmills, rowers, bikes, and racks.",
+        "status": {
+          "online": "Online",
+          "service": "Service",
+          "offline": "Offline"
+        },
+        "liveFeed": "Live equipment events"
+      },
+      "leads": {
+        "title": "Lead pipeline",
+        "subtitle": "New, tour booked, trial, and closed-won.",
+        "stages": {
+          "new": "New",
+          "tour": "Tour booked",
+          "trial": "On trial",
+          "closed": "Closed won"
+        }
+      },
+      "analytics": {
+        "title": "Performance",
+        "subtitle": "MRR trend, retention cohort, and live events.",
+        "mrrTitle": "MRR (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Retention cohort",
+        "cohortNote": "Percent of members still active in week N after signup."
+      },
+      "settings": {
+        "title": "Settings",
+        "subtitle": "Gym basics, billing, and integrations.",
+        "basics": "Gym basics",
+        "fields": {
+          "gymName": "Gym name",
+          "currency": "Currency",
+          "openHours": "Open hours",
+          "contact": "Contact"
+        },
+        "placeholders": {
+          "gymName": "Forge Athletic Club",
+          "currency": "USD",
+          "openHours": "06:00 — 23:00",
+          "contact": "hello@forge.gym"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Charge memberships and one-off PT sessions.",
+          "mindbody": "Sync classes and bookings with MindBody.",
+          "mailchimp": "Win-back campaigns for at-risk members.",
+          "slack": "Get a ping in #ops for new signups and cancellations.",
+          "quickbooks": "Bookkeeping sync nightly.",
+          "twilio": "Class reminders and overdue payment SMS."
         }
       }
     },
