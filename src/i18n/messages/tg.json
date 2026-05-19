@@ -2993,7 +2993,11 @@
         "homeGoods": "Маҳсулоти хонагӣ",
         "apparel": "Либос",
         "studio": "Студия",
-        "journal": "Маҷалла"
+        "journal": "Маҷалла",
+        "groups": {
+          "storefront": "Магазин",
+          "admin": "Идора"
+        }
       },
       "search": {
         "placeholder": "Ҷустуҷӯ дар байни 2,134 маҳсулот"
@@ -3062,7 +3066,13 @@
         "catalog": "Каталог",
         "product": "Маҳсулот",
         "cart": "Сабад",
-        "orders": "Фармоишҳо"
+        "orders": "Фармоишҳо",
+        "checkout": "Пардохт",
+        "customers": "Муштариён",
+        "analytics": "Аналитика",
+        "inventory": "Анбор",
+        "promotions": "Аксияҳо",
+        "settings": "Танзимот"
       },
       "cartPage": {
         "title": "Сабади шумо",
@@ -3119,7 +3129,13 @@
           "catalog": "Мағоза / Каталог",
           "product": "Мағоза / Маҳсулот",
           "cart": "Мағоза / Сабад",
-          "orders": "Амалиёт / Фармоишҳо"
+          "orders": "Амалиёт / Фармоишҳо",
+          "checkout": "Магазин / Пардохт",
+          "customers": "Идора / Муштариён",
+          "analytics": "Идора / Аналитика",
+          "inventory": "Идора / Анбор",
+          "promotions": "Идора / Аксияҳо",
+          "settings": "Идора / Танзимот"
         },
         "screen": {
           "catalog": {
@@ -3141,6 +3157,36 @@
             "eyebrow": "Амалиёт",
             "title": "Фармоишҳо ва иҷро",
             "subtitle": "Ҷараёни фармоиш, даромад ва вақт аз пардохт то фиристодан имрӯз"
+          },
+          "checkout": {
+            "eyebrow": "Қадам ба қадам",
+            "title": "Пардохт",
+            "subtitle": "Суроға, пардохт ва тасдиқ — дар як ҷараён."
+          },
+          "customers": {
+            "eyebrow": "Одамон",
+            "title": "Муштариён",
+            "subtitle": "Сегментҳо бо LTV, фаъолият ва тамос."
+          },
+          "analytics": {
+            "eyebrow": "Натиҷаҳо",
+            "title": "Аналитика",
+            "subtitle": "Даромад, нигоҳдорӣ ва фаъолияти зинда."
+          },
+          "inventory": {
+            "eyebrow": "Захираҳо",
+            "title": "Анбор",
+            "subtitle": "Харитаи гармӣ, ҳушдорҳо ва дубораборкунӣ."
+          },
+          "promotions": {
+            "eyebrow": "Кампанияҳо",
+            "title": "Аксияҳо",
+            "subtitle": "Купонҳоро бо пешнамоиш созед ва истифодаро пайгирӣ кунед."
+          },
+          "settings": {
+            "eyebrow": "Танзим",
+            "title": "Танзимот",
+            "subtitle": "Маълумоти асосӣ, андоз ва интегратсияҳо."
           }
         },
         "kpi": {
@@ -3231,12 +3277,314 @@
               "value": "32 дақ",
               "trend": "Аз пардохт то фиристодан"
             }
+          },
+          "checkout": {
+            "avgCheckoutTime": {
+              "label": "Вақти миёнаи пардохт",
+              "value": "2:12",
+              "trend": "−18с нисбати ҳафта"
+            },
+            "successRate": {
+              "label": "Муваффақияти пардохт",
+              "value": "95,2%",
+              "trend": "+2,1 п.п. дар як моҳ"
+            },
+            "dropoffStep": {
+              "label": "Нуқтаи рафтан",
+              "value": "Пардохт",
+              "trend": "12% дар қадами 2 мераванд"
+            },
+            "applePayShare": {
+              "label": "Ҳиссаи Apple Pay",
+              "value": "52%",
+              "trend": "+24 п.п. YoY"
+            }
+          },
+          "customers": {
+            "totalActive": {
+              "label": "Муштариёни фаъол",
+              "value": "4 820",
+              "trend": "+12% дар чоряк"
+            },
+            "newThisMonth": {
+              "label": "Нав дар моҳ",
+              "value": "486",
+              "trend": "Беҳтарин моҳи сол"
+            },
+            "avgLtv": {
+              "label": "LTV миёна",
+              "value": "$362",
+              "trend": "+$28 нисбати чоряки гузашта"
+            },
+            "churn": {
+              "label": "Хуруҷ",
+              "value": "4,1%",
+              "trend": "−0,6 п.п."
+            }
+          },
+          "analytics": {
+            "revenue30d": {
+              "label": "Даромад (30 рӯз)",
+              "value": "$148,2K",
+              "trend": "+34% нисбати давра"
+            },
+            "orders30d": {
+              "label": "Фармоишҳо (30 рӯз)",
+              "value": "1 184",
+              "trend": "+22% MoM"
+            },
+            "conversion": {
+              "label": "Конверсия",
+              "value": "3,6%",
+              "trend": "+0,4 п.п."
+            },
+            "repeatRate": {
+              "label": "Такрорӣ",
+              "value": "46%",
+              "trend": "+8 п.п. YoY"
+            }
+          },
+          "inventory": {
+            "skusTotal": {
+              "label": "Ҳамаи SKU",
+              "value": "240",
+              "trend": "+12 аз апрел"
+            },
+            "unitsOnHand": {
+              "label": "Воҳид дар ҳозира",
+              "value": "11 240",
+              "trend": "Худпуркунӣ фаъол"
+            },
+            "lowStock": {
+              "label": "Захираи кам",
+              "value": "8",
+              "trend": "Фармоиш зарур аст"
+            },
+            "deadStock": {
+              "label": "Захираи мурда",
+              "value": "11",
+              "trend": "−7 дар як моҳ"
+            }
+          },
+          "promotions": {
+            "activeCampaigns": {
+              "label": "Кампанияҳои фаъол",
+              "value": "7",
+              "trend": "2 ба охир мерасанд"
+            },
+            "couponsUsed": {
+              "label": "Купонҳои истифодашуда",
+              "value": "1 420",
+              "trend": "+38% WoW"
+            },
+            "discountSpend": {
+              "label": "Хароҷот ба тахфиф",
+              "value": "$1 820",
+              "trend": "Дар буҷет"
+            },
+            "roi": {
+              "label": "ROI кампанияҳо",
+              "value": "320%",
+              "trend": "Меафзояд"
+            }
+          },
+          "settings": {
+            "uptime": {
+              "label": "Аптайм (30 рӯз)",
+              "value": "99,98%",
+              "trend": "Ҳама хуб аст"
+            },
+            "integrations": {
+              "label": "Интегратсияҳо",
+              "value": "8 фаъол",
+              "trend": "+2 дар як моҳ"
+            },
+            "teamSeats": {
+              "label": "Ҷойҳои даста",
+              "value": "6 / 10",
+              "trend": "Ҷой ҳаст"
+            },
+            "apiCalls": {
+              "label": "API дар 24с",
+              "value": "2,6K",
+              "trend": "Дар ҳудуди ҳад"
+            }
           }
         },
         "statusBar": {
           "version": "v2.4.1",
           "region": "EU-WEST",
           "buildId": "BUILD #4821"
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Ҷустуҷӯ ё гузаштан…"
+      },
+      "toast": {
+        "navigated": "{screen} кушода шуд",
+        "viewingProduct": "Маҳсулот бор мешавад…",
+        "savedToWishlist": "{name} ба рӯйхати орзу илова шуд",
+        "added": "{name} ба сабад илова шуд",
+        "paymentCaptured": "Пардохт қабул шуд",
+        "reorderPlaced": "Дубораборкунӣ барои {sku} ба қайд гирифта шуд",
+        "promotionScheduled": "{code} ба нақша гирифта шуд",
+        "settingsSaved": "Танзимот нигоҳ дошта шуд",
+        "connected": "{name} пайваст шуд",
+        "disconnected": "{name} канда шуд",
+        "messageSent": "Паём ба {name} фиристода шуд"
+      },
+      "checkout": {
+        "steps": {
+          "shipping": "Расондан",
+          "payment": "Пардохт",
+          "review": "Санҷиш",
+          "done": "Тайёр"
+        },
+        "fields": {
+          "fullName": "Ном ва насаб",
+          "email": "Email",
+          "address": "Суроға",
+          "city": "Шаҳр",
+          "postalCode": "Индекс",
+          "cardNumber": "Рақами корт",
+          "cardName": "Ном дар корт",
+          "cardExpiry": "Муҳлат",
+          "cardCvc": "CVC"
+        },
+        "placeholders": {
+          "fullName": "Айгерим Юсупова",
+          "email": "you@example.com",
+          "address": "хиёбони Рӯдакӣ 17",
+          "city": "Душанбе",
+          "postalCode": "734001",
+          "cardNumber": "4242 4242 4242 4242",
+          "cardName": "AIGERIM Y",
+          "cardExpiry": "08 / 28",
+          "cardCvc": "123"
+        },
+        "methods": {
+          "card": "Корт",
+          "applePay": "Apple Pay",
+          "paypal": "PayPal",
+          "klarna": "Klarna"
+        },
+        "back": "Қафо",
+        "next": "Пеш",
+        "placeOrder": "Фармоиш диҳед",
+        "startAnother": "Фармоиши нав",
+        "reviewTitle": "Тафтиш ва тасдиқ кунед",
+        "shipTo": "Расондан ба",
+        "payWith": "Пардохт бо",
+        "payerNote": "Гирифтан ҳангоми тасдиқ",
+        "successTitle": "Фармоиш қабул шуд",
+        "successSubtitle": "Фармоиши {id} дар роҳ аст",
+        "estDelivery": "Санаи тахминии расондан",
+        "tax": "Андоз",
+        "fastPickHint": "Гирифтан аз дафтари Душанбе ройгон",
+        "summaryTitle": "Хулосаи фармоиш"
+      },
+      "customers": {
+        "segments": {
+          "all": "Ҳама",
+          "vip": "VIP",
+          "active": "Фаъол",
+          "new": "Нав",
+          "atrisk": "Дар хатар"
+        },
+        "col": {
+          "customer": "Муштарӣ",
+          "segment": "Сегмент",
+          "orders": "Фармоиш",
+          "ltv": "LTV",
+          "activity": "Фаъолият",
+          "last": "Охирин"
+        },
+        "message": "Паём"
+      },
+      "analytics": {
+        "revenueTitle": "Даромад",
+        "last30": "30 рӯзи охирин",
+        "liveFeed": "Фаъолияти зинда",
+        "cohortTitle": "Когортаи нигоҳдорӣ",
+        "cohortNote": "Фоизи муштариёне, ки дар ҳафтаи N баргаштаанд.",
+        "heatmapTitle": "Фармоишҳо аз рӯи рӯзҳо",
+        "heatmapAria": "Харитаи гармии фармоишҳо",
+        "heatmapNote": "Кулчаҳои сиёҳ — ҳаҷми бештар."
+      },
+      "inventory": {
+        "heatTitle": "Ҳаракати захира",
+        "heatAria": "Харитаи гармии ҳаракати захира",
+        "heatNote": "Ҳар як кулча як рӯз — равшанӣ = воҳидҳои ҳаракатшуда.",
+        "liveFeed": "Ҳаракатҳои зинда",
+        "alertsTitle": "Ҳушдорҳои захираи кам",
+        "col": {
+          "sku": "SKU",
+          "product": "Маҳсулот",
+          "stock": "Дар ҳозира",
+          "reorder": "Нуқтаи фармоиш",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "ok": "Меъёр",
+          "low": "Кам",
+          "critical": "Зарурӣ"
+        },
+        "reorder": "Фармоиш"
+      },
+      "promotions": {
+        "builderTitle": "Конструктори купон",
+        "fields": {
+          "code": "Код",
+          "percent": "Тахфиф",
+          "starts": "Сар",
+          "ends": "Охир"
+        },
+        "schedule": "Нақша гирифтан",
+        "previewLabel": "Пешнамоиш",
+        "exampleCart": "Сабади мисол",
+        "afterDiscount": "Баъд аз тахфиф",
+        "campaignsTitle": "Кампанияҳои фаъол",
+        "col": {
+          "id": "ID",
+          "name": "Ном",
+          "redemptions": "Истифода",
+          "spend": "Хароҷот",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "active": "Фаъол",
+          "scheduled": "Нақшавӣ",
+          "ended": "Анҷом"
+        }
+      },
+      "settings": {
+        "storeBasics": "Маълумоти асосӣ",
+        "fields": {
+          "storeName": "Номи магазин",
+          "currency": "Асъор",
+          "timezone": "Минтақаи вақт",
+          "contactEmail": "Email тамос"
+        },
+        "placeholders": {
+          "storeName": "Maison & Moss",
+          "currency": "USD",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@maisonmoss.co"
+        },
+        "save": "Нигоҳ доштан",
+        "integrationsTitle": "Интегратсияҳо",
+        "integrationsCount": "{count} аз {total} пайвастшуда",
+        "connected": "Пайваст",
+        "disconnected": "Канда",
+        "connect": "Пайваст кардан",
+        "disconnect": "Кандан",
+        "integrations": {
+          "stripe": "Пардохтҳо аз тамоми ҷаҳон — Visa, Mastercard, Apple Pay.",
+          "shopify": "Ҳамоҳангсозии фармоишҳо ва захира.",
+          "mailchimp": "Паёмҳои оммавӣ ва бозгардондани сабадҳои партофташуда.",
+          "klaviyo": "Email ва SMS-и рафторӣ.",
+          "slack": "Огоҳнома дар #orders барои ҳар як фармоиш.",
+          "ga": "Пайгирии роҳи муштарӣ ва манбаъҳои трафик."
         }
       }
     },

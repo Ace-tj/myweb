@@ -2993,7 +2993,11 @@
         "homeGoods": "Товары для дома",
         "apparel": "Одежда",
         "studio": "Студия",
-        "journal": "Журнал"
+        "journal": "Журнал",
+        "groups": {
+          "storefront": "Витрина",
+          "admin": "Админ"
+        }
       },
       "search": {
         "placeholder": "Поиск среди 2 134 товаров"
@@ -3062,7 +3066,13 @@
         "catalog": "Каталог",
         "product": "Товар",
         "cart": "Корзина",
-        "orders": "Заказы"
+        "orders": "Заказы",
+        "checkout": "Оплата",
+        "customers": "Клиенты",
+        "analytics": "Аналитика",
+        "inventory": "Склад",
+        "promotions": "Акции",
+        "settings": "Настройки"
       },
       "cartPage": {
         "title": "Ваша корзина",
@@ -3119,7 +3129,13 @@
           "catalog": "Витрина / Каталог",
           "product": "Витрина / Товар",
           "cart": "Витрина / Корзина",
-          "orders": "Операции / Заказы"
+          "orders": "Операции / Заказы",
+          "checkout": "Витрина / Оплата",
+          "customers": "Админ / Клиенты",
+          "analytics": "Админ / Аналитика",
+          "inventory": "Админ / Склад",
+          "promotions": "Админ / Акции",
+          "settings": "Админ / Настройки"
         },
         "screen": {
           "catalog": {
@@ -3141,6 +3157,36 @@
             "eyebrow": "Операции",
             "title": "Заказы и фулфилмент",
             "subtitle": "Поток заказов за день, выручка и время от оплаты до отгрузки"
+          },
+          "checkout": {
+            "eyebrow": "Шаг за шагом",
+            "title": "Оформление заказа",
+            "subtitle": "Адрес, оплата и подтверждение — в одном потоке."
+          },
+          "customers": {
+            "eyebrow": "Люди",
+            "title": "Клиенты",
+            "subtitle": "Сегменты с LTV, активностью и связью."
+          },
+          "analytics": {
+            "eyebrow": "Показатели",
+            "title": "Аналитика",
+            "subtitle": "Доход, удержание и события в реальном времени."
+          },
+          "inventory": {
+            "eyebrow": "Запасы",
+            "title": "Склад",
+            "subtitle": "Тепловая карта, оповещения и заказы поставщикам."
+          },
+          "promotions": {
+            "eyebrow": "Кампании",
+            "title": "Акции",
+            "subtitle": "Создавайте купоны с превью и отслеживайте использование."
+          },
+          "settings": {
+            "eyebrow": "Настройка",
+            "title": "Настройки",
+            "subtitle": "Основные данные, налоги и интеграции."
           }
         },
         "kpi": {
@@ -3231,12 +3277,314 @@
               "value": "32 мин",
               "trend": "От оплаты до отгрузки"
             }
+          },
+          "checkout": {
+            "avgCheckoutTime": {
+              "label": "Среднее время оплаты",
+              "value": "2:12",
+              "trend": "−18с против недели"
+            },
+            "successRate": {
+              "label": "Успех оплат",
+              "value": "95,2%",
+              "trend": "+2,1 п.п. за месяц"
+            },
+            "dropoffStep": {
+              "label": "Точка ухода",
+              "value": "Оплата",
+              "trend": "12% уходят на шаге 2"
+            },
+            "applePayShare": {
+              "label": "Доля Apple Pay",
+              "value": "52%",
+              "trend": "+24 п.п. YoY"
+            }
+          },
+          "customers": {
+            "totalActive": {
+              "label": "Активные клиенты",
+              "value": "4 820",
+              "trend": "+12% за квартал"
+            },
+            "newThisMonth": {
+              "label": "Новых за месяц",
+              "value": "486",
+              "trend": "Рекорд года"
+            },
+            "avgLtv": {
+              "label": "Средний LTV",
+              "value": "$362",
+              "trend": "+$28 к прошлому кв."
+            },
+            "churn": {
+              "label": "Отток",
+              "value": "4,1%",
+              "trend": "−0,6 п.п."
+            }
+          },
+          "analytics": {
+            "revenue30d": {
+              "label": "Доход (30д)",
+              "value": "$148,2K",
+              "trend": "+34% к периоду"
+            },
+            "orders30d": {
+              "label": "Заказов (30д)",
+              "value": "1 184",
+              "trend": "+22% MoM"
+            },
+            "conversion": {
+              "label": "Конверсия",
+              "value": "3,6%",
+              "trend": "+0,4 п.п."
+            },
+            "repeatRate": {
+              "label": "Повторные",
+              "value": "46%",
+              "trend": "+8 п.п. YoY"
+            }
+          },
+          "inventory": {
+            "skusTotal": {
+              "label": "Всего SKU",
+              "value": "240",
+              "trend": "+12 с апреля"
+            },
+            "unitsOnHand": {
+              "label": "Единиц в наличии",
+              "value": "11 240",
+              "trend": "Авто-пополнение"
+            },
+            "lowStock": {
+              "label": "Мало остатков",
+              "value": "8",
+              "trend": "Нужен заказ"
+            },
+            "deadStock": {
+              "label": "Мертвый сток",
+              "value": "11",
+              "trend": "−7 за месяц"
+            }
+          },
+          "promotions": {
+            "activeCampaigns": {
+              "label": "Активных кампаний",
+              "value": "7",
+              "trend": "2 завершаются"
+            },
+            "couponsUsed": {
+              "label": "Куполов использовано",
+              "value": "1 420",
+              "trend": "+38% WoW"
+            },
+            "discountSpend": {
+              "label": "Расход на скидки",
+              "value": "$1 820",
+              "trend": "В рамках бюджета"
+            },
+            "roi": {
+              "label": "ROI кампаний",
+              "value": "320%",
+              "trend": "Растёт"
+            }
+          },
+          "settings": {
+            "uptime": {
+              "label": "Аптайм (30д)",
+              "value": "99,98%",
+              "trend": "Всё работает"
+            },
+            "integrations": {
+              "label": "Интеграций",
+              "value": "8 активных",
+              "trend": "+2 за месяц"
+            },
+            "teamSeats": {
+              "label": "Места команды",
+              "value": "6 / 10",
+              "trend": "Есть резерв"
+            },
+            "apiCalls": {
+              "label": "API за 24ч",
+              "value": "2,6K",
+              "trend": "В пределах лимита"
+            }
           }
         },
         "statusBar": {
           "version": "v2.4.1",
           "region": "EU-WEST",
           "buildId": "BUILD #4821"
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Найти или перейти…"
+      },
+      "toast": {
+        "navigated": "Открыт {screen}",
+        "viewingProduct": "Загрузка товара…",
+        "savedToWishlist": "{name} в избранном",
+        "added": "{name} в корзине",
+        "paymentCaptured": "Платёж принят",
+        "reorderPlaced": "Пополнение для {sku} оформлено",
+        "promotionScheduled": "{code} запланирован",
+        "settingsSaved": "Настройки сохранены",
+        "connected": "{name} подключён",
+        "disconnected": "{name} отключён",
+        "messageSent": "Сообщение отправлено {name}"
+      },
+      "checkout": {
+        "steps": {
+          "shipping": "Доставка",
+          "payment": "Оплата",
+          "review": "Проверка",
+          "done": "Готово"
+        },
+        "fields": {
+          "fullName": "Имя и фамилия",
+          "email": "Email",
+          "address": "Адрес",
+          "city": "Город",
+          "postalCode": "Индекс",
+          "cardNumber": "Номер карты",
+          "cardName": "Имя на карте",
+          "cardExpiry": "Срок",
+          "cardCvc": "CVC"
+        },
+        "placeholders": {
+          "fullName": "Айгерим Юсупова",
+          "email": "you@example.com",
+          "address": "пр. Рудаки 17",
+          "city": "Душанбе",
+          "postalCode": "734001",
+          "cardNumber": "4242 4242 4242 4242",
+          "cardName": "AIGERIM Y",
+          "cardExpiry": "08 / 28",
+          "cardCvc": "123"
+        },
+        "methods": {
+          "card": "Карта",
+          "applePay": "Apple Pay",
+          "paypal": "PayPal",
+          "klarna": "Klarna"
+        },
+        "back": "Назад",
+        "next": "Далее",
+        "placeOrder": "Оформить заказ",
+        "startAnother": "Новый заказ",
+        "reviewTitle": "Проверьте и подтвердите",
+        "shipTo": "Доставка",
+        "payWith": "Оплата",
+        "payerNote": "Списание при подтверждении",
+        "successTitle": "Заказ оформлен",
+        "successSubtitle": "Заказ {id} в пути",
+        "estDelivery": "Дата доставки",
+        "tax": "Налог",
+        "fastPickHint": "Бесплатный самовывоз из офиса в Душанбе",
+        "summaryTitle": "Сводка заказа"
+      },
+      "customers": {
+        "segments": {
+          "all": "Все",
+          "vip": "VIP",
+          "active": "Активные",
+          "new": "Новые",
+          "atrisk": "В риске"
+        },
+        "col": {
+          "customer": "Клиент",
+          "segment": "Сегмент",
+          "orders": "Заказов",
+          "ltv": "LTV",
+          "activity": "Активность",
+          "last": "Был"
+        },
+        "message": "Написать"
+      },
+      "analytics": {
+        "revenueTitle": "Доход",
+        "last30": "Последние 30 дней",
+        "liveFeed": "Лента в реальном времени",
+        "cohortTitle": "Когорта удержания",
+        "cohortNote": "Процент клиентов, вернувшихся в неделю N после первого заказа.",
+        "heatmapTitle": "Заказы по дням",
+        "heatmapAria": "Тепловая карта заказов",
+        "heatmapNote": "Тёмные клетки — выше объём."
+      },
+      "inventory": {
+        "heatTitle": "Движение склада",
+        "heatAria": "Тепловая карта движения",
+        "heatNote": "Клетка — день · яркость = единиц перемещено.",
+        "liveFeed": "Движения в реальном времени",
+        "alertsTitle": "Оповещения о низком остатке",
+        "col": {
+          "sku": "SKU",
+          "product": "Товар",
+          "stock": "Остаток",
+          "reorder": "Точка заказа",
+          "status": "Статус"
+        },
+        "status": {
+          "ok": "Норма",
+          "low": "Низкий",
+          "critical": "Критично"
+        },
+        "reorder": "Заказать"
+      },
+      "promotions": {
+        "builderTitle": "Конструктор купона",
+        "fields": {
+          "code": "Код",
+          "percent": "Скидка",
+          "starts": "Начало",
+          "ends": "Конец"
+        },
+        "schedule": "Запланировать",
+        "previewLabel": "Превью",
+        "exampleCart": "Пример корзины",
+        "afterDiscount": "После скидки",
+        "campaignsTitle": "Активные кампании",
+        "col": {
+          "id": "ID",
+          "name": "Название",
+          "redemptions": "Применений",
+          "spend": "Расход",
+          "status": "Статус"
+        },
+        "status": {
+          "active": "Активна",
+          "scheduled": "Запланирована",
+          "ended": "Завершена"
+        }
+      },
+      "settings": {
+        "storeBasics": "Основные данные",
+        "fields": {
+          "storeName": "Название магазина",
+          "currency": "Валюта",
+          "timezone": "Часовой пояс",
+          "contactEmail": "Email для связи"
+        },
+        "placeholders": {
+          "storeName": "Maison & Moss",
+          "currency": "USD",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@maisonmoss.co"
+        },
+        "save": "Сохранить",
+        "integrationsTitle": "Интеграции",
+        "integrationsCount": "{count} из {total} подключено",
+        "connected": "Подключено",
+        "disconnected": "Отключено",
+        "connect": "Подключить",
+        "disconnect": "Отключить",
+        "integrations": {
+          "stripe": "Принимайте платежи по всему миру — Visa, Mastercard, Apple Pay.",
+          "shopify": "Синхронизация заказов и остатков с витриной.",
+          "mailchimp": "Рассылки и возврат брошенных корзин.",
+          "klaviyo": "Поведенческие письма и SMS.",
+          "slack": "Уведомления в #orders на каждый заказ.",
+          "ga": "Отслеживание трафика и пути клиента."
         }
       }
     },

@@ -2993,7 +2993,11 @@
         "homeGoods": "Home goods",
         "apparel": "Apparel",
         "studio": "Studio",
-        "journal": "Journal"
+        "journal": "Journal",
+        "groups": {
+          "storefront": "Storefront",
+          "admin": "Admin"
+        }
       },
       "search": {
         "placeholder": "Search 2,134 items"
@@ -3062,7 +3066,13 @@
         "catalog": "Catalog",
         "product": "Product",
         "cart": "Cart",
-        "orders": "Orders"
+        "orders": "Orders",
+        "checkout": "Checkout",
+        "customers": "Customers",
+        "analytics": "Analytics",
+        "inventory": "Inventory",
+        "promotions": "Promotions",
+        "settings": "Settings"
       },
       "cartPage": {
         "title": "Your cart",
@@ -3119,7 +3129,13 @@
           "catalog": "Storefront / Catalog",
           "product": "Storefront / Product",
           "cart": "Storefront / Cart",
-          "orders": "Operations / Orders"
+          "orders": "Operations / Orders",
+          "checkout": "Storefront / Checkout",
+          "customers": "Admin / Customers",
+          "analytics": "Admin / Analytics",
+          "inventory": "Admin / Inventory",
+          "promotions": "Admin / Promotions",
+          "settings": "Admin / Settings"
         },
         "screen": {
           "catalog": {
@@ -3141,6 +3157,36 @@
             "eyebrow": "Operations",
             "title": "Orders & fulfillment",
             "subtitle": "Today's order flow, revenue, and time from paid to shipped"
+          },
+          "checkout": {
+            "eyebrow": "Step-by-step",
+            "title": "Checkout",
+            "subtitle": "Address, payment, and review — all in one flow."
+          },
+          "customers": {
+            "eyebrow": "People",
+            "title": "Customers",
+            "subtitle": "Segmented list with lifetime value, activity, and outreach."
+          },
+          "analytics": {
+            "eyebrow": "Performance",
+            "title": "Analytics",
+            "subtitle": "Revenue trends, retention cohorts, and live activity."
+          },
+          "inventory": {
+            "eyebrow": "Stock",
+            "title": "Inventory",
+            "subtitle": "Stock heatmap, low-stock alerts, and reorder actions."
+          },
+          "promotions": {
+            "eyebrow": "Campaigns",
+            "title": "Promotions",
+            "subtitle": "Build coupons with live preview and track redemptions."
+          },
+          "settings": {
+            "eyebrow": "Configuration",
+            "title": "Settings",
+            "subtitle": "Store basics, taxes, and third-party integrations."
           }
         },
         "kpi": {
@@ -3231,12 +3277,314 @@
               "value": "32m",
               "trend": "Paid to shipped"
             }
+          },
+          "checkout": {
+            "avgCheckoutTime": {
+              "label": "Avg checkout time",
+              "value": "2:12",
+              "trend": "Down 18s vs last week"
+            },
+            "successRate": {
+              "label": "Success rate",
+              "value": "95.2%",
+              "trend": "+2.1 pp this month"
+            },
+            "dropoffStep": {
+              "label": "Top drop-off",
+              "value": "Payment",
+              "trend": "12% abandoned at step 2"
+            },
+            "applePayShare": {
+              "label": "Apple Pay share",
+              "value": "52%",
+              "trend": "+24 pp YoY"
+            }
+          },
+          "customers": {
+            "totalActive": {
+              "label": "Active customers",
+              "value": "4,820",
+              "trend": "+12% this quarter"
+            },
+            "newThisMonth": {
+              "label": "New this month",
+              "value": "486",
+              "trend": "Best month of the year"
+            },
+            "avgLtv": {
+              "label": "Avg LTV",
+              "value": "$362",
+              "trend": "+$28 vs last quarter"
+            },
+            "churn": {
+              "label": "Churn",
+              "value": "4.1%",
+              "trend": "Down 0.6 pp"
+            }
+          },
+          "analytics": {
+            "revenue30d": {
+              "label": "Revenue (30d)",
+              "value": "$148.2K",
+              "trend": "+34% vs prior period"
+            },
+            "orders30d": {
+              "label": "Orders (30d)",
+              "value": "1,184",
+              "trend": "+22% MoM"
+            },
+            "conversion": {
+              "label": "Conversion",
+              "value": "3.6%",
+              "trend": "+0.4 pp"
+            },
+            "repeatRate": {
+              "label": "Repeat rate",
+              "value": "46%",
+              "trend": "+8 pp YoY"
+            }
+          },
+          "inventory": {
+            "skusTotal": {
+              "label": "SKUs total",
+              "value": "240",
+              "trend": "+12 since April"
+            },
+            "unitsOnHand": {
+              "label": "Units on hand",
+              "value": "11,240",
+              "trend": "Auto-replenish on"
+            },
+            "lowStock": {
+              "label": "Low stock",
+              "value": "8",
+              "trend": "Reorder suggested"
+            },
+            "deadStock": {
+              "label": "Dead stock",
+              "value": "11",
+              "trend": "Down 7 this month"
+            }
+          },
+          "promotions": {
+            "activeCampaigns": {
+              "label": "Active campaigns",
+              "value": "7",
+              "trend": "2 ending this week"
+            },
+            "couponsUsed": {
+              "label": "Coupons used",
+              "value": "1,420",
+              "trend": "+38% WoW"
+            },
+            "discountSpend": {
+              "label": "Discount spend",
+              "value": "$1,820",
+              "trend": "Within budget"
+            },
+            "roi": {
+              "label": "Campaign ROI",
+              "value": "320%",
+              "trend": "Trending up"
+            }
+          },
+          "settings": {
+            "uptime": {
+              "label": "Uptime (30d)",
+              "value": "99.98%",
+              "trend": "All systems green"
+            },
+            "integrations": {
+              "label": "Integrations",
+              "value": "8 active",
+              "trend": "+2 this month"
+            },
+            "teamSeats": {
+              "label": "Team seats",
+              "value": "6 / 10",
+              "trend": "Room to grow"
+            },
+            "apiCalls": {
+              "label": "API calls (24h)",
+              "value": "2.6K",
+              "trend": "Within limits"
+            }
           }
         },
         "statusBar": {
           "version": "v2.4.1",
           "region": "EU-WEST",
           "buildId": "BUILD #4821"
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Search or jump to…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "viewingProduct": "Loading product…",
+        "savedToWishlist": "Saved {name} to wishlist",
+        "added": "{name} added to cart",
+        "paymentCaptured": "Payment captured",
+        "reorderPlaced": "Reorder placed for {sku}",
+        "promotionScheduled": "{code} is scheduled",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected",
+        "messageSent": "Message sent to {name}"
+      },
+      "checkout": {
+        "steps": {
+          "shipping": "Shipping",
+          "payment": "Payment",
+          "review": "Review",
+          "done": "Done"
+        },
+        "fields": {
+          "fullName": "Full name",
+          "email": "Email",
+          "address": "Address",
+          "city": "City",
+          "postalCode": "Postal code",
+          "cardNumber": "Card number",
+          "cardName": "Name on card",
+          "cardExpiry": "Expiry",
+          "cardCvc": "CVC"
+        },
+        "placeholders": {
+          "fullName": "Aigerim Yusupova",
+          "email": "you@example.com",
+          "address": "17 Rudaki Ave",
+          "city": "Dushanbe",
+          "postalCode": "734001",
+          "cardNumber": "4242 4242 4242 4242",
+          "cardName": "AIGERIM Y",
+          "cardExpiry": "08 / 28",
+          "cardCvc": "123"
+        },
+        "methods": {
+          "card": "Card",
+          "applePay": "Apple Pay",
+          "paypal": "PayPal",
+          "klarna": "Klarna"
+        },
+        "back": "Back",
+        "next": "Next",
+        "placeOrder": "Place order",
+        "startAnother": "Start another",
+        "reviewTitle": "Review and confirm",
+        "shipTo": "Ship to",
+        "payWith": "Pay with",
+        "payerNote": "Charged on confirmation",
+        "successTitle": "Order placed",
+        "successSubtitle": "Order {id} is on its way",
+        "estDelivery": "Estimated delivery",
+        "tax": "Tax",
+        "fastPickHint": "Free same-day pickup at Dushanbe HQ",
+        "summaryTitle": "Order summary"
+      },
+      "customers": {
+        "segments": {
+          "all": "All",
+          "vip": "VIP",
+          "active": "Active",
+          "new": "New",
+          "atrisk": "At risk"
+        },
+        "col": {
+          "customer": "Customer",
+          "segment": "Segment",
+          "orders": "Orders",
+          "ltv": "LTV",
+          "activity": "Activity",
+          "last": "Last seen"
+        },
+        "message": "Message"
+      },
+      "analytics": {
+        "revenueTitle": "Revenue",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Retention cohort",
+        "cohortNote": "Percent of customers who returned in week N after first order.",
+        "heatmapTitle": "Orders by day",
+        "heatmapAria": "Orders heatmap",
+        "heatmapNote": "Darker tiles indicate higher order volume."
+      },
+      "inventory": {
+        "heatTitle": "Stock movement",
+        "heatAria": "Stock movement heatmap",
+        "heatNote": "Each tile is a day · color intensity = units shifted.",
+        "liveFeed": "Live stock movements",
+        "alertsTitle": "Low-stock alerts",
+        "col": {
+          "sku": "SKU",
+          "product": "Product",
+          "stock": "On hand",
+          "reorder": "Reorder at",
+          "status": "Status"
+        },
+        "status": {
+          "ok": "Healthy",
+          "low": "Low",
+          "critical": "Critical"
+        },
+        "reorder": "Reorder"
+      },
+      "promotions": {
+        "builderTitle": "Coupon builder",
+        "fields": {
+          "code": "Code",
+          "percent": "Discount",
+          "starts": "Starts",
+          "ends": "Ends"
+        },
+        "schedule": "Schedule campaign",
+        "previewLabel": "Live preview",
+        "exampleCart": "Example cart",
+        "afterDiscount": "After discount",
+        "campaignsTitle": "Active campaigns",
+        "col": {
+          "id": "ID",
+          "name": "Name",
+          "redemptions": "Uses",
+          "spend": "Spend",
+          "status": "Status"
+        },
+        "status": {
+          "active": "Active",
+          "scheduled": "Scheduled",
+          "ended": "Ended"
+        }
+      },
+      "settings": {
+        "storeBasics": "Store basics",
+        "fields": {
+          "storeName": "Store name",
+          "currency": "Currency",
+          "timezone": "Timezone",
+          "contactEmail": "Contact email"
+        },
+        "placeholders": {
+          "storeName": "Maison & Moss",
+          "currency": "USD",
+          "timezone": "Asia/Dushanbe",
+          "contactEmail": "hello@maisonmoss.co"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "integrationsCount": "{count} of {total} connected",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Capture payments globally — Visa, Mastercard, Apple Pay.",
+          "shopify": "Sync orders and inventory with your storefront.",
+          "mailchimp": "Send broadcasts and recover abandoned carts.",
+          "klaviyo": "Behavior-driven email and SMS flows.",
+          "slack": "Get a ping in #orders for each new order.",
+          "ga": "Track customer journeys and traffic sources."
         }
       }
     },
