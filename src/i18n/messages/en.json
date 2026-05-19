@@ -1269,7 +1269,21 @@
         "signIn": "Sign in",
         "booking": "Booking",
         "services": "Services",
-        "stylists": "Stylists"
+        "stylists": "Stylists",
+        "bookings": "Bookings",
+        "staff": "Staff",
+        "clients": "Clients",
+        "products": "Products",
+        "inventory": "Inventory",
+        "schedule": "Schedule",
+        "marketing": "Marketing",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "front": "Front desk",
+          "inventory": "Inventory",
+          "ops": "Operations"
+        }
       },
       "hero": {
         "eyebrow": "✿ Spring slots open",
@@ -1416,7 +1430,8 @@
         "subtitle": "Five hands you can trust with your next look — pick yours and we'll handle the rest.",
         "ratingLabel": "rating",
         "nextAvailable": "Next available",
-        "bookButton": "Book with stylist"
+        "bookButton": "Book with stylist",
+        "bookedHours": "Booked / wk"
       },
       "shell": {
         "searchPlaceholder": "Search services, stylists, clients…",
@@ -1424,8 +1439,17 @@
         "userInitials": "AV",
         "breadcrumb": {
           "booking": "Salon · Booking",
-          "services": "Salon · Service menu",
-          "stylists": "Salon · Stylist roster"
+          "services": "Front desk / Services",
+          "stylists": "Salon · Stylist roster",
+          "bookings": "Front desk / Bookings",
+          "staff": "Front desk / Staff",
+          "clients": "Front desk / Clients",
+          "products": "Inventory / Products",
+          "inventory": "Inventory / Supplies",
+          "schedule": "Operations / Schedule",
+          "marketing": "Operations / Marketing",
+          "analytics": "Operations / Analytics",
+          "settings": "Operations / Settings"
         },
         "statusBar": {
           "version": "v2.4.1",
@@ -1460,6 +1484,51 @@
           "eyebrow": "Team roster",
           "title": "Stylist roster",
           "subtitle": "Specialties, ratings and the next free slot — at a glance."
+        },
+        "bookings": {
+          "eyebrow": "Today · Saturday 22 May",
+          "title": "Booking desk",
+          "subtitle": "Build the appointment — pick a service, then a free slot."
+        },
+        "staff": {
+          "eyebrow": "Team roster",
+          "title": "Studio team",
+          "subtitle": "Specialties, ratings and the next free slot — at a glance."
+        },
+        "clients": {
+          "eyebrow": "Client book",
+          "title": "Loyal clients",
+          "subtitle": "Visit history, favourite treatments, and lifetime spend."
+        },
+        "products": {
+          "eyebrow": "Retail shelf",
+          "title": "Retail products",
+          "subtitle": "Best-sellers, take-home care, and signature lines."
+        },
+        "inventory": {
+          "eyebrow": "Back room",
+          "title": "Inventory & supplies",
+          "subtitle": "Color, tools and consumables — with one-tap reorder."
+        },
+        "schedule": {
+          "eyebrow": "Calendar",
+          "title": "Weekly schedule",
+          "subtitle": "Chair utilisation by day of the week, plus today's bookings."
+        },
+        "marketing": {
+          "eyebrow": "Growth",
+          "title": "Campaigns",
+          "subtitle": "Reactivation, seasonal pushes and channel performance."
+        },
+        "analytics": {
+          "eyebrow": "Performance",
+          "title": "Salon analytics",
+          "subtitle": "Revenue trend, retention cohort, and live activity."
+        },
+        "settings": {
+          "eyebrow": "Configuration",
+          "title": "Salon settings",
+          "subtitle": "Brand basics, payments and channel integrations."
         }
       },
       "kpi": {
@@ -1528,6 +1597,467 @@
             "value": "72%",
             "trend": "+5 pts vs. Q1"
           }
+        },
+        "bookings": {
+          "0": {
+            "label": "Appointments today",
+            "value": "24",
+            "trend": "+3 vs. yesterday"
+          },
+          "1": {
+            "label": "Repeat clients",
+            "value": "68%",
+            "trend": "+4 pts MoM"
+          },
+          "2": {
+            "label": "No-show rate",
+            "value": "3.1%",
+            "trend": "Down from 5.4%"
+          },
+          "3": {
+            "label": "Peak hour",
+            "value": "15:00",
+            "trend": "6 chairs booked"
+          }
+        },
+        "staff": {
+          "0": {
+            "label": "Stylists active",
+            "value": "5",
+            "trend": "All in today"
+          },
+          "1": {
+            "label": "Top rated",
+            "value": "Liv · 5.0",
+            "trend": "27 reviews"
+          },
+          "2": {
+            "label": "Hours booked / week",
+            "value": "182",
+            "trend": "91% utilisation"
+          },
+          "3": {
+            "label": "Rebooking rate",
+            "value": "72%",
+            "trend": "+5 pts vs. Q1"
+          }
+        },
+        "clients": {
+          "0": {
+            "label": "Active clients",
+            "value": "1,284",
+            "trend": "+58 this month"
+          },
+          "1": {
+            "label": "New clients (30d)",
+            "value": "52",
+            "trend": "+18% MoM"
+          },
+          "2": {
+            "label": "Repeat rate",
+            "value": "72%",
+            "trend": "+4 pts"
+          },
+          "3": {
+            "label": "Lifetime value",
+            "value": "$224",
+            "trend": "+12% YoY"
+          }
+        },
+        "products": {
+          "0": {
+            "label": "SKUs on shelf",
+            "value": "46",
+            "trend": "4 new"
+          },
+          "1": {
+            "label": "Retail revenue (30d)",
+            "value": "$1,520",
+            "trend": "+22% MoM"
+          },
+          "2": {
+            "label": "Attach rate",
+            "value": "36%",
+            "trend": "+5 pts"
+          },
+          "3": {
+            "label": "Low-stock alerts",
+            "value": "4",
+            "trend": "Reorder in 2d"
+          }
+        },
+        "inventory": {
+          "0": {
+            "label": "Total stock",
+            "value": "224",
+            "trend": "Healthy"
+          },
+          "1": {
+            "label": "Reorder soon",
+            "value": "5",
+            "trend": "This week"
+          },
+          "2": {
+            "label": "Out of stock",
+            "value": "1",
+            "trend": "Reorder placed"
+          },
+          "3": {
+            "label": "Suppliers",
+            "value": "8",
+            "trend": "All on time"
+          }
+        },
+        "schedule": {
+          "0": {
+            "label": "Fill rate",
+            "value": "85%",
+            "trend": "+7 pts WoW"
+          },
+          "1": {
+            "label": "Hours booked",
+            "value": "56",
+            "trend": "vs. 48 last week"
+          },
+          "2": {
+            "label": "Walk-ins",
+            "value": "15",
+            "trend": "+3 today"
+          },
+          "3": {
+            "label": "Gaps",
+            "value": "4",
+            "trend": "Available now"
+          }
+        },
+        "marketing": {
+          "0": {
+            "label": "Active campaigns",
+            "value": "3",
+            "trend": "1 launching"
+          },
+          "1": {
+            "label": "Open rate",
+            "value": "50%",
+            "trend": "+6 pts"
+          },
+          "2": {
+            "label": "Avg ROAS",
+            "value": "4.8x",
+            "trend": "+0.4 vs. Q1"
+          },
+          "3": {
+            "label": "Bookings from ads",
+            "value": "143",
+            "trend": "+62 MoM"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Revenue (30d)",
+            "value": "$15,420",
+            "trend": "+18% MoM"
+          },
+          "1": {
+            "label": "Avg ticket",
+            "value": "$74",
+            "trend": "+$5"
+          },
+          "2": {
+            "label": "Chair utilisation",
+            "value": "94%",
+            "trend": "+2 pts"
+          },
+          "3": {
+            "label": "Active clients",
+            "value": "262",
+            "trend": "+24 this month"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "serviceChosen": "Selected {name}",
+        "slotChosen": "Slot {time} held",
+        "bookingConfirmed": "Booked {name} at {time}",
+        "staffBooked": "Booking opened with {name}",
+        "reordered": "Reorder placed for {name}",
+        "channelSelected": "{channel} channel ready",
+        "campaignLaunched": "Campaign launched",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "clients": {
+        "col": {
+          "name": "Client",
+          "visits": "Visits",
+          "lastVisit": "Last visit",
+          "spend": "Spend",
+          "favorite": "Favourite",
+          "tier": "Tier"
+        },
+        "tiers": {
+          "vip": "VIP",
+          "gold": "Gold",
+          "silver": "Silver",
+          "new": "New"
+        },
+        "list": {
+          "0": {
+            "name": "Camille Dubois",
+            "lastVisit": "3 days ago",
+            "fav": "Balayage"
+          },
+          "1": {
+            "name": "Yuki Tanaka",
+            "lastVisit": "1 week ago",
+            "fav": "Gel manicure"
+          },
+          "2": {
+            "name": "Priya Rao",
+            "lastVisit": "2 weeks ago",
+            "fav": "Glow facial"
+          },
+          "3": {
+            "name": "Aigerim Y.",
+            "lastVisit": "Yesterday",
+            "fav": "Signature cut"
+          },
+          "4": {
+            "name": "Léa Martin",
+            "lastVisit": "4 days ago",
+            "fav": "Hot stone"
+          },
+          "5": {
+            "name": "Sara K.",
+            "lastVisit": "3 weeks ago",
+            "fav": "Express blowout"
+          }
+        }
+      },
+      "products": {
+        "stockLabel": "{qty} in stock",
+        "salesLabel": "Sales / mo",
+        "list": {
+          "0": {
+            "name": "Silk Repair Serum",
+            "brand": "Maison Mira"
+          },
+          "1": {
+            "name": "Curl Cream",
+            "brand": "Olaplex"
+          },
+          "2": {
+            "name": "Glow Mask",
+            "brand": "Tata Harper"
+          },
+          "3": {
+            "name": "Cuticle Oil",
+            "brand": "OPI"
+          },
+          "4": {
+            "name": "Keratin Treatment",
+            "brand": "Kérastase"
+          },
+          "5": {
+            "name": "Body Polish",
+            "brand": "Aesop"
+          }
+        }
+      },
+      "inventory": {
+        "col": {
+          "sku": "SKU",
+          "item": "Item",
+          "supplier": "Supplier",
+          "qty": "Qty / Par",
+          "status": "Status",
+          "action": "Action"
+        },
+        "status": {
+          "ok": "In stock",
+          "low": "Low",
+          "out": "Out"
+        },
+        "reorder": "Reorder",
+        "list": {
+          "0": {
+            "name": "Color · Ash Blonde 8.1",
+            "supplier": "Wella Pro"
+          },
+          "1": {
+            "name": "Color · Auburn 6.4",
+            "supplier": "Wella Pro"
+          },
+          "2": {
+            "name": "Disposable towels (pack)",
+            "supplier": "Salon Supply Co."
+          },
+          "3": {
+            "name": "Cotton pads (case)",
+            "supplier": "Bella Supplies"
+          },
+          "4": {
+            "name": "Nitrile gloves M (box)",
+            "supplier": "Bella Supplies"
+          },
+          "5": {
+            "name": "Aluminium foil 50m",
+            "supplier": "Wella Pro"
+          },
+          "6": {
+            "name": "Bleach powder · 500g",
+            "supplier": "L'Oréal Pro"
+          },
+          "7": {
+            "name": "Developer 20vol · 1L",
+            "supplier": "L'Oréal Pro"
+          }
+        }
+      },
+      "schedule": {
+        "heatmapLabel": "Chair utilisation · last 14 weeks",
+        "heatmapNote": "Darker tiles = higher fill rate.",
+        "todayTitle": "Today's appointments",
+        "appointments": {
+          "0": {
+            "client": "Camille D.",
+            "service": "Balayage · Full"
+          },
+          "1": {
+            "client": "Yuki T.",
+            "service": "Gel manicure"
+          },
+          "2": {
+            "client": "Priya R.",
+            "service": "Glow facial"
+          },
+          "3": {
+            "client": "Aigerim Y.",
+            "service": "Signature cut"
+          },
+          "4": {
+            "client": "Léa M.",
+            "service": "Hot stone"
+          },
+          "5": {
+            "client": "Sara K.",
+            "service": "Express blowout"
+          }
+        }
+      },
+      "marketing": {
+        "col": {
+          "campaign": "Campaign",
+          "channel": "Channel",
+          "sent": "Sent",
+          "opened": "Opened",
+          "booked": "Booked",
+          "status": "Status"
+        },
+        "status": {
+          "live": "Live",
+          "scheduled": "Scheduled",
+          "ended": "Ended"
+        },
+        "campaigns": {
+          "0": {
+            "name": "Spring glow promo"
+          },
+          "1": {
+            "name": "Birthday treats"
+          },
+          "2": {
+            "name": "Bridal season tease"
+          },
+          "3": {
+            "name": "Reactivation · 90d"
+          }
+        },
+        "channels": {
+          "instagram": "Instagram",
+          "email": "Email",
+          "whatsapp": "WhatsApp",
+          "sms": "SMS"
+        },
+        "newCampaign": "New campaign",
+        "placeholders": {
+          "name": "Campaign name…"
+        },
+        "launch": "Launch campaign"
+      },
+      "analytics": {
+        "revenueTitle": "Revenue (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Client retention cohort",
+        "cohortNote": "Percent of clients still returning in week N after first visit.",
+        "feed": {
+          "initial": {
+            "0": {
+              "title": "Booking: Camille D. · Balayage",
+              "meta": "Just now"
+            },
+            "1": {
+              "title": "Walk-in: Sara K. · Express blowout",
+              "meta": "32s ago"
+            },
+            "2": {
+              "title": "Review: Liv · 5 stars",
+              "meta": "1m ago"
+            }
+          },
+          "rotating": {
+            "0": {
+              "title": "Rebooking: Yuki T.",
+              "meta": "Gel manicure · Sat 14:00"
+            },
+            "1": {
+              "title": "New client: Aigerim Y.",
+              "meta": "Signature cut"
+            },
+            "2": {
+              "title": "Retail sale: Glow mask",
+              "meta": "$48"
+            },
+            "3": {
+              "title": "Cancellation: Léa M.",
+              "meta": "Refunded · 2m ago"
+            }
+          }
+        }
+      },
+      "settings": {
+        "basics": "Salon basics",
+        "fields": {
+          "salonName": "Salon name",
+          "currency": "Currency",
+          "openHours": "Open hours",
+          "contact": "Contact"
+        },
+        "placeholders": {
+          "salonName": "Maison Mira",
+          "currency": "EUR",
+          "openHours": "09:00 — 19:00",
+          "contact": "hello@maisonmira.fr"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Charge appointments and retail in one tap.",
+          "square": "POS for the front desk and tablets.",
+          "mailchimp": "Win-back and seasonal promo emails.",
+          "instagram": "Auto-post stories and lookbook posts.",
+          "whatsapp": "Booking confirmations and reminders.",
+          "google": "Two-way sync with Google Calendar."
         }
       }
     },
@@ -2576,14 +3106,27 @@
     },
     "hospital": {
       "brand": {
-        "name": "Cedar Clinic",
-        "doctor": "Dr. Hassan · Family"
+        "name": "Aurelia Health",
+        "doctor": "Dr. Lena Chen"
       },
       "nav": {
         "schedule": "Schedule",
         "activePatient": "Active patient",
         "prescriptions": "Prescriptions",
-        "labs": "Lab Results"
+        "labs": "Lab Results",
+        "appointments": "Appointments",
+        "patients": "Patients",
+        "doctors": "Doctors",
+        "lab": "Lab results",
+        "billing": "Billing",
+        "departments": "Departments",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "clinical": "Clinical",
+          "operations": "Operations",
+          "admin": "Admin"
+        }
       },
       "load": {
         "title": "Today's load",
@@ -2592,10 +3135,91 @@
         "noShows": "No-shows"
       },
       "schedule": {
-        "title": "Tuesday, May 18",
-        "subtitle": "14 appointments · 4 unsigned charts from yesterday",
+        "title": "Weekly staffing",
+        "subtitle": "Shift assignments for the care team this week.",
         "room": "Room {room}",
-        "openChart": "Open chart"
+        "openChart": "Open chart",
+        "col": {
+          "doctor": "Doctor",
+          "role": "Role"
+        },
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri",
+          "sat": "Sat",
+          "sun": "Sun"
+        },
+        "shifts": {
+          "0": {
+            "doctor": "Dr. L. Chen",
+            "role": "Internal med",
+            "mon": "07-15",
+            "tue": "07-15",
+            "wed": "off",
+            "thu": "07-15",
+            "fri": "07-15",
+            "sat": "off",
+            "sun": "off"
+          },
+          "1": {
+            "doctor": "Dr. M. Reed",
+            "role": "Cardiology",
+            "mon": "09-17",
+            "tue": "off",
+            "wed": "09-17",
+            "thu": "09-17",
+            "fri": "off",
+            "sat": "12-20",
+            "sun": "off"
+          },
+          "2": {
+            "doctor": "Dr. S. Marquez",
+            "role": "Pediatrics",
+            "mon": "08-16",
+            "tue": "08-16",
+            "wed": "08-16",
+            "thu": "off",
+            "fri": "08-16",
+            "sat": "off",
+            "sun": "off"
+          },
+          "3": {
+            "doctor": "Dr. A. Rahimov",
+            "role": "Orthopedics",
+            "mon": "off",
+            "tue": "10-18",
+            "wed": "10-18",
+            "thu": "10-18",
+            "fri": "10-18",
+            "sat": "off",
+            "sun": "off"
+          },
+          "4": {
+            "doctor": "Dr. H. Müller",
+            "role": "Dermatology",
+            "mon": "09-17",
+            "tue": "09-17",
+            "wed": "off",
+            "thu": "09-17",
+            "fri": "off",
+            "sat": "10-14",
+            "sun": "off"
+          },
+          "5": {
+            "doctor": "Dr. Y. Tanaka",
+            "role": "OB/GYN",
+            "mon": "07-19",
+            "tue": "off",
+            "wed": "07-19",
+            "thu": "off",
+            "fri": "07-19",
+            "sat": "off",
+            "sun": "12-20"
+          }
+        }
       },
       "status": {
         "waiting": "Waiting",
@@ -2622,6 +3246,49 @@
         "4": {
           "patient": "Karim S., 51",
           "reason": "Back pain · MRI review"
+        },
+        "title": "Today's appointments",
+        "subtitle": "Walk-ins, consults, and follow-ups across the floor.",
+        "openChart": "Open chart",
+        "room": "Room {room}",
+        "status": {
+          "waiting": "Waiting",
+          "inRoom": "In room",
+          "scheduled": "Scheduled"
+        },
+        "list": {
+          "0": {
+            "patient": "Maria Volkova",
+            "reason": "Annual physical"
+          },
+          "1": {
+            "patient": "James O'Brien",
+            "reason": "Post-op follow up"
+          },
+          "2": {
+            "patient": "Sayed Karimov",
+            "reason": "Migraine — recurring"
+          },
+          "3": {
+            "patient": "Priya Shah",
+            "reason": "Pediatric vaccination"
+          },
+          "4": {
+            "patient": "Daniel Park",
+            "reason": "Hypertension review"
+          },
+          "5": {
+            "patient": "Aigerim Tursunova",
+            "reason": "Pregnancy — 28w"
+          },
+          "6": {
+            "patient": "Liu Wei",
+            "reason": "Cardiology consult"
+          },
+          "7": {
+            "patient": "Elena Petrova",
+            "reason": "Dermatology — biopsy"
+          }
         }
       },
       "patient": {
@@ -2667,96 +3334,96 @@
         "title": "Recent notes"
       },
       "prescriptions": {
-        "title": "Active Prescriptions",
-        "subtitle": "Currently dispensed medications across your patient list.",
+        "title": "Active prescriptions",
+        "subtitle": "Refills, dosages, and prescriber history.",
         "col": {
           "patient": "Patient",
-          "drug": "Medication",
+          "drug": "Drug",
           "dosage": "Dosage",
           "frequency": "Frequency",
           "refills": "Refills",
-          "date": "Prescribed"
+          "date": "Issued"
         },
         "items": {
           "0": {
-            "patient": "Alex Carter",
+            "patient": "Maria Volkova",
             "drug": "Lisinopril",
             "dosage": "10 mg",
-            "frequency": "Once daily",
+            "frequency": "1× daily",
             "refills": "3",
-            "date": "May 02, 2026"
+            "date": "May 14"
           },
           "1": {
-            "patient": "Maria Nazarova",
-            "drug": "Metformin",
-            "dosage": "500 mg",
-            "frequency": "Twice daily",
-            "refills": "5",
-            "date": "Apr 28, 2026"
+            "patient": "James O'Brien",
+            "drug": "Oxycodone",
+            "dosage": "5 mg",
+            "frequency": "Q6h PRN",
+            "refills": "0",
+            "date": "May 12"
           },
           "2": {
-            "patient": "Daniel Khan",
-            "drug": "Atorvastatin",
-            "dosage": "20 mg",
-            "frequency": "At bedtime",
+            "patient": "Sayed Karimov",
+            "drug": "Sumatriptan",
+            "dosage": "50 mg",
+            "frequency": "PRN",
             "refills": "2",
-            "date": "May 04, 2026"
+            "date": "May 10"
           },
           "3": {
-            "patient": "Sophia Reyes",
-            "drug": "Amoxicillin",
+            "patient": "Daniel Park",
+            "drug": "Metformin",
             "dosage": "500 mg",
-            "frequency": "Every 8 hours",
-            "refills": "0",
-            "date": "May 12, 2026"
+            "frequency": "2× daily",
+            "refills": "5",
+            "date": "May 08"
           },
           "4": {
-            "patient": "Jamal Idris",
-            "drug": "Albuterol Inhaler",
-            "dosage": "90 mcg",
-            "frequency": "As needed",
+            "patient": "Aigerim Tursunova",
+            "drug": "Prenatal vitamin",
+            "dosage": "1 tab",
+            "frequency": "1× daily",
             "refills": "4",
-            "date": "Apr 17, 2026"
+            "date": "May 06"
           },
           "5": {
-            "patient": "Elena Petrova",
-            "drug": "Levothyroxine",
-            "dosage": "75 mcg",
-            "frequency": "Once daily",
-            "refills": "6",
-            "date": "Mar 30, 2026"
+            "patient": "Liu Wei",
+            "drug": "Apixaban",
+            "dosage": "5 mg",
+            "frequency": "2× daily",
+            "refills": "1",
+            "date": "May 05"
           },
           "6": {
-            "patient": "Noah Bennett",
-            "drug": "Omeprazole",
-            "dosage": "20 mg",
-            "frequency": "Once daily",
-            "refills": "1",
-            "date": "May 09, 2026"
+            "patient": "Elena Petrova",
+            "drug": "Tretinoin",
+            "dosage": "0.025%",
+            "frequency": "Nightly",
+            "refills": "3",
+            "date": "May 04"
           },
           "7": {
-            "patient": "Aisha Rahman",
-            "drug": "Sertraline",
-            "dosage": "50 mg",
-            "frequency": "Once daily",
-            "refills": "3",
-            "date": "May 06, 2026"
+            "patient": "Marcus Hill",
+            "drug": "Ibuprofen",
+            "dosage": "600 mg",
+            "frequency": "Q8h PRN",
+            "refills": "2",
+            "date": "May 02"
           },
           "8": {
-            "patient": "Victor Holt",
-            "drug": "Warfarin",
-            "dosage": "5 mg",
-            "frequency": "Once daily",
-            "refills": "2",
-            "date": "May 11, 2026"
+            "patient": "Priya Shah",
+            "drug": "Amoxicillin",
+            "dosage": "250 mg/5mL",
+            "frequency": "Q8h × 7d",
+            "refills": "0",
+            "date": "May 01"
           },
           "9": {
-            "patient": "Linh Tran",
-            "drug": "Ibuprofen",
-            "dosage": "400 mg",
-            "frequency": "Every 6 hours",
-            "refills": "1",
-            "date": "May 15, 2026"
+            "patient": "Daniel Park",
+            "drug": "Atorvastatin",
+            "dosage": "20 mg",
+            "frequency": "Nightly",
+            "refills": "4",
+            "date": "Apr 28"
           }
         }
       },
@@ -2847,12 +3514,56 @@
         }
       },
       "shell": {
-        "searchPlaceholder": "Search patients, charts, prescriptions...",
-        "userName": "Dr. Hassan",
-        "userInitials": "DH",
-        "version": "v3.8.2",
-        "region": "us-east-1",
-        "buildId": "build #1842"
+        "searchPlaceholder": "Search patients, charts, orders…",
+        "userName": "Dr. L. Chen",
+        "userInitials": "LC",
+        "version": "v 4.2.0",
+        "region": "us-east-1 · HIPAA",
+        "buildId": "build 2026.05.19",
+        "breadcrumb": {
+          "appointments": "Clinical / Appointments",
+          "patients": "Clinical / Patients",
+          "doctors": "Clinical / Doctors",
+          "prescriptions": "Clinical / Prescriptions",
+          "lab": "Clinical / Lab results",
+          "billing": "Operations / Billing",
+          "departments": "Operations / Departments",
+          "schedule": "Operations / Schedule",
+          "analytics": "Admin / Analytics",
+          "settings": "Admin / Settings"
+        },
+        "screen": {
+          "appointments": {
+            "eyebrow": "Today's roster"
+          },
+          "patients": {
+            "eyebrow": "Patient registry"
+          },
+          "doctors": {
+            "eyebrow": "Care team"
+          },
+          "prescriptions": {
+            "eyebrow": "Active orders"
+          },
+          "lab": {
+            "eyebrow": "Diagnostics"
+          },
+          "billing": {
+            "eyebrow": "Revenue cycle"
+          },
+          "departments": {
+            "eyebrow": "Capacity"
+          },
+          "schedule": {
+            "eyebrow": "Staffing"
+          },
+          "analytics": {
+            "eyebrow": "Performance"
+          },
+          "settings": {
+            "eyebrow": "Configuration"
+          }
+        }
       },
       "breadcrumb": {
         "schedule": "Clinical / Today",
@@ -2877,24 +3588,24 @@
       "kpi": {
         "schedule": {
           "0": {
-            "label": "Appointments today",
-            "value": "14",
-            "trend": "+2 vs avg"
+            "label": "Shifts this week",
+            "value": "50",
+            "trend": "+2 vs last"
           },
           "1": {
-            "label": "Seen / waiting",
-            "value": "4 / 2",
-            "trend": "On pace"
+            "label": "Hours on call",
+            "value": "14",
+            "trend": "balanced"
           },
           "2": {
-            "label": "No-show rate",
-            "value": "3.1%",
-            "trend": "-0.6 pts WoW"
+            "label": "Unfilled slots",
+            "value": "0",
+            "trend": "fully covered"
           },
           "3": {
-            "label": "Avg wait",
-            "value": "11 min",
-            "trend": "-2 min WoW"
+            "label": "Coverage %",
+            "value": "76%",
+            "trend": "+8 pts"
           }
         },
         "patient": {
@@ -2921,24 +3632,24 @@
         },
         "prescriptions": {
           "0": {
-            "label": "Active Rx",
+            "label": "Active scripts",
             "value": "282",
-            "trend": "+14 vs last month"
+            "trend": "+8 this week"
           },
           "1": {
-            "label": "Refills due",
+            "label": "Issued today",
             "value": "13",
-            "trend": "Next 7 days"
+            "trend": "+2 vs avg"
           },
           "2": {
-            "label": "Controlled substances",
+            "label": "Refills due",
             "value": "7",
-            "trend": "DEA logged"
+            "trend": "review queue"
           },
           "3": {
-            "label": "Errors flagged",
+            "label": "Controlled subs",
             "value": "1",
-            "trend": "Interaction check"
+            "trend": "all flagged"
           }
         },
         "labs": {
@@ -2962,6 +3673,528 @@
             "value": "76",
             "trend": "+18% vs avg"
           }
+        },
+        "appointments": {
+          "0": {
+            "label": "Today's visits",
+            "value": "14",
+            "trend": "+3 vs yesterday"
+          },
+          "1": {
+            "label": "Walk-ins",
+            "value": "6",
+            "trend": "+2 vs avg"
+          },
+          "2": {
+            "label": "No-shows",
+            "value": "2",
+            "trend": "-1 vs last wk"
+          },
+          "3": {
+            "label": "Avg wait (min)",
+            "value": "11",
+            "trend": "-4 vs last wk"
+          }
+        },
+        "patients": {
+          "0": {
+            "label": "Active patients",
+            "value": "962",
+            "trend": "+18 this month"
+          },
+          "1": {
+            "label": "New this month",
+            "value": "27",
+            "trend": "+5 vs last"
+          },
+          "2": {
+            "label": "Readmits",
+            "value": "4",
+            "trend": "-3 vs last"
+          },
+          "3": {
+            "label": "High risk",
+            "value": "12",
+            "trend": "watchlist"
+          }
+        },
+        "doctors": {
+          "0": {
+            "label": "Active doctors",
+            "value": "46",
+            "trend": "+2 this qtr"
+          },
+          "1": {
+            "label": "On call now",
+            "value": "24",
+            "trend": "across 6 depts"
+          },
+          "2": {
+            "label": "Avg rating",
+            "value": "4.9",
+            "trend": "+0.1 vs last qtr"
+          },
+          "3": {
+            "label": "Patients / doctor",
+            "value": "148",
+            "trend": "balanced"
+          }
+        },
+        "lab": {
+          "0": {
+            "label": "Tests today",
+            "value": "18",
+            "trend": "+3 vs avg"
+          },
+          "1": {
+            "label": "Abnormal flags",
+            "value": "5",
+            "trend": "needs review"
+          },
+          "2": {
+            "label": "Turnaround (min)",
+            "value": "92",
+            "trend": "-15 vs last wk"
+          },
+          "3": {
+            "label": "Pending results",
+            "value": "76",
+            "trend": "in lab"
+          }
+        },
+        "billing": {
+          "0": {
+            "label": "MTD revenue",
+            "value": "$208k",
+            "trend": "+18% vs last"
+          },
+          "1": {
+            "label": "Collection %",
+            "value": "90%",
+            "trend": "+2 pts"
+          },
+          "2": {
+            "label": "Denied claims",
+            "value": "6",
+            "trend": "appeal queue"
+          },
+          "3": {
+            "label": "Outstanding",
+            "value": "$48k",
+            "trend": "30–60 days"
+          }
+        },
+        "departments": {
+          "0": {
+            "label": "Departments",
+            "value": "14",
+            "trend": "fully staffed"
+          },
+          "1": {
+            "label": "Bed occupancy %",
+            "value": "85%",
+            "trend": "+3 vs last wk"
+          },
+          "2": {
+            "label": "Inpatients",
+            "value": "128",
+            "trend": "+10 vs avg"
+          },
+          "3": {
+            "label": "Open beds",
+            "value": "10",
+            "trend": "ER pressure"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Monthly visits",
+            "value": "304",
+            "trend": "+12% MoM"
+          },
+          "1": {
+            "label": "Patient NPS",
+            "value": "4.9",
+            "trend": "+0.1 vs last"
+          },
+          "2": {
+            "label": "Adherence %",
+            "value": "90%",
+            "trend": "+2 pts"
+          },
+          "3": {
+            "label": "Critical events",
+            "value": "5",
+            "trend": "-7 vs last"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "chartOpened": "Opened chart for {name}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "patients": {
+        "title": "Patient registry",
+        "subtitle": "Active patients with risk score and last visit.",
+        "ageLabel": "{age} y/o",
+        "risk": {
+          "low": "Low",
+          "med": "Watch",
+          "high": "High"
+        },
+        "list": {
+          "0": {
+            "name": "Maria Volkova",
+            "mrn": "MRN-008412",
+            "age": "42",
+            "condition": "Hypertension stage 1",
+            "lastVisit": "May 14",
+            "riskKey": "med"
+          },
+          "1": {
+            "name": "James O'Brien",
+            "mrn": "MRN-008217",
+            "age": "58",
+            "condition": "Post-op knee replacement",
+            "lastVisit": "May 12",
+            "riskKey": "high"
+          },
+          "2": {
+            "name": "Sayed Karimov",
+            "mrn": "MRN-008109",
+            "age": "34",
+            "condition": "Chronic migraine",
+            "lastVisit": "May 10",
+            "riskKey": "low"
+          },
+          "3": {
+            "name": "Priya Shah",
+            "mrn": "MRN-008055",
+            "age": "6",
+            "condition": "Routine pediatric care",
+            "lastVisit": "May 09",
+            "riskKey": "low"
+          },
+          "4": {
+            "name": "Daniel Park",
+            "mrn": "MRN-007992",
+            "age": "61",
+            "condition": "Type 2 diabetes",
+            "lastVisit": "May 08",
+            "riskKey": "high"
+          },
+          "5": {
+            "name": "Aigerim Tursunova",
+            "mrn": "MRN-007887",
+            "age": "29",
+            "condition": "Prenatal — 28 weeks",
+            "lastVisit": "May 06",
+            "riskKey": "med"
+          },
+          "6": {
+            "name": "Liu Wei",
+            "mrn": "MRN-007754",
+            "age": "52",
+            "condition": "Atrial fibrillation",
+            "lastVisit": "May 05",
+            "riskKey": "high"
+          },
+          "7": {
+            "name": "Elena Petrova",
+            "mrn": "MRN-007620",
+            "age": "47",
+            "condition": "Suspicious nevus — biopsy",
+            "lastVisit": "May 04",
+            "riskKey": "med"
+          },
+          "8": {
+            "name": "Marcus Hill",
+            "mrn": "MRN-007511",
+            "age": "38",
+            "condition": "Lower back pain",
+            "lastVisit": "May 02",
+            "riskKey": "low"
+          }
+        }
+      },
+      "doctors": {
+        "title": "Care team",
+        "subtitle": "Specialists, on-call status, and patient load.",
+        "onCall": "On call",
+        "offDuty": "Off duty",
+        "patientsLabel": "Patients",
+        "ratingLabel": "Rating",
+        "list": {
+          "0": {
+            "name": "Lena Chen",
+            "specialty": "Internal medicine"
+          },
+          "1": {
+            "name": "Marcus Reed",
+            "specialty": "Cardiology"
+          },
+          "2": {
+            "name": "Sofia Marquez",
+            "specialty": "Pediatrics"
+          },
+          "3": {
+            "name": "Adil Rahimov",
+            "specialty": "Orthopedics"
+          },
+          "4": {
+            "name": "Hannah Müller",
+            "specialty": "Dermatology"
+          },
+          "5": {
+            "name": "Yuki Tanaka",
+            "specialty": "OB/GYN"
+          }
+        }
+      },
+      "lab": {
+        "title": "Lab results",
+        "subtitle": "Diagnostics with abnormal flags highlighted.",
+        "col": {
+          "patient": "Patient",
+          "test": "Test",
+          "value": "Value",
+          "range": "Range",
+          "flag": "Flag",
+          "date": "Drawn"
+        },
+        "items": {
+          "0": {
+            "patient": "Daniel Park",
+            "test": "HbA1c",
+            "value": "8.4%",
+            "range": "4.0–5.6%",
+            "flag": "High",
+            "abnormal": "true",
+            "date": "May 14"
+          },
+          "1": {
+            "patient": "Maria Volkova",
+            "test": "LDL cholesterol",
+            "value": "118 mg/dL",
+            "range": "< 130",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 13"
+          },
+          "2": {
+            "patient": "Liu Wei",
+            "test": "INR",
+            "value": "3.4",
+            "range": "2.0–3.0",
+            "flag": "High",
+            "abnormal": "true",
+            "date": "May 12"
+          },
+          "3": {
+            "patient": "Sayed Karimov",
+            "test": "CBC — WBC",
+            "value": "6.8 K/µL",
+            "range": "4.0–11.0",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 10"
+          },
+          "4": {
+            "patient": "Aigerim Tursunova",
+            "test": "Glucose (fasting)",
+            "value": "94 mg/dL",
+            "range": "70–99",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 09"
+          },
+          "5": {
+            "patient": "Elena Petrova",
+            "test": "TSH",
+            "value": "0.3 mIU/L",
+            "range": "0.4–4.0",
+            "flag": "Low",
+            "abnormal": "true",
+            "date": "May 08"
+          },
+          "6": {
+            "patient": "Marcus Hill",
+            "test": "Vitamin D",
+            "value": "21 ng/mL",
+            "range": "30–100",
+            "flag": "Low",
+            "abnormal": "true",
+            "date": "May 06"
+          },
+          "7": {
+            "patient": "James O'Brien",
+            "test": "Hemoglobin",
+            "value": "14.2 g/dL",
+            "range": "13.5–17.5",
+            "flag": "Normal",
+            "abnormal": "false",
+            "date": "May 04"
+          }
+        }
+      },
+      "billing": {
+        "title": "Billing & claims",
+        "subtitle": "Outstanding charges, insurance status, and denials.",
+        "col": {
+          "patient": "Patient",
+          "service": "Service",
+          "amount": "Amount",
+          "insurance": "Insurance",
+          "status": "Status"
+        },
+        "status": {
+          "paid": "Paid",
+          "pending": "Pending",
+          "denied": "Denied"
+        },
+        "items": {
+          "0": {
+            "patient": "Maria Volkova",
+            "service": "Annual physical + labs",
+            "insurance": "BlueCross"
+          },
+          "1": {
+            "patient": "James O'Brien",
+            "service": "Post-op follow up",
+            "insurance": "Aetna"
+          },
+          "2": {
+            "patient": "Daniel Park",
+            "service": "Diabetes panel + visit",
+            "insurance": "Medicare"
+          },
+          "3": {
+            "patient": "Sayed Karimov",
+            "service": "Tele-consult",
+            "insurance": "Self-pay"
+          },
+          "4": {
+            "patient": "Priya Shah",
+            "service": "Pediatric vaccines",
+            "insurance": "United"
+          },
+          "5": {
+            "patient": "Liu Wei",
+            "service": "Cardiology consult + ECG",
+            "insurance": "BlueCross"
+          },
+          "6": {
+            "patient": "Marcus Hill",
+            "service": "Physical therapy — 4 visits",
+            "insurance": "Cigna"
+          }
+        }
+      },
+      "departments": {
+        "title": "Departments",
+        "subtitle": "Bed occupancy across the hospital.",
+        "occupied": "Occupied",
+        "full": "Full",
+        "available": "Available",
+        "heatmapLabel": "14-week occupancy",
+        "heatmapNote": "Darker tiles = higher occupancy across departments.",
+        "list": {
+          "0": {
+            "name": "Emergency",
+            "head": "Dr. R. Patel"
+          },
+          "1": {
+            "name": "Intensive Care",
+            "head": "Dr. M. Reed"
+          },
+          "2": {
+            "name": "Cardiology",
+            "head": "Dr. M. Reed"
+          },
+          "3": {
+            "name": "Pediatrics",
+            "head": "Dr. S. Marquez"
+          },
+          "4": {
+            "name": "Orthopedics",
+            "head": "Dr. A. Rahimov"
+          },
+          "5": {
+            "name": "Oncology",
+            "head": "Dr. K. Singh"
+          }
+        }
+      },
+      "analytics": {
+        "title": "Performance",
+        "subtitle": "Visit volume, retention cohort, and live events.",
+        "visitsTitle": "Patient visits (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Patient retention",
+        "cohortNote": "Percent of patients with a follow-up visit in week N after first appointment.",
+        "feed": {
+          "0": {
+            "title": "Discharge: James O'Brien",
+            "meta": "Orthopedics · just now"
+          },
+          "1": {
+            "title": "Admission: Liu Wei",
+            "meta": "Cardiology · 38s ago"
+          },
+          "2": {
+            "title": "Critical lab: Daniel Park",
+            "meta": "HbA1c 8.4% · 1m ago"
+          },
+          "3": {
+            "title": "New patient: Marcus Hill",
+            "meta": "PT referral · 2m ago"
+          },
+          "4": {
+            "title": "Surgery complete: Knee #314",
+            "meta": "Dr. Rahimov · 3m ago"
+          },
+          "5": {
+            "title": "Vaccination: Priya Shah",
+            "meta": "MMR booster · 4m ago"
+          }
+        }
+      },
+      "settings": {
+        "title": "Settings",
+        "subtitle": "Clinic basics, billing, and integrations.",
+        "basics": "Clinic basics",
+        "fields": {
+          "clinicName": "Clinic name",
+          "currency": "Currency",
+          "openHours": "Open hours",
+          "contact": "Contact"
+        },
+        "placeholders": {
+          "clinicName": "Aurelia Health",
+          "currency": "USD",
+          "openHours": "07:00 — 21:00",
+          "contact": "ops@aurelia.health"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Patient billing and copays.",
+          "epic": "EHR sync for charts and orders.",
+          "hl7": "Standard messaging between systems.",
+          "twilio": "Appointment reminders and SMS.",
+          "slack": "Critical lab and admission alerts.",
+          "dicom": "Imaging archive for radiology."
         }
       }
     },
@@ -3680,7 +4913,8 @@
         "art": "Art · Spring posters",
         "sub": "Your classes for today, in order.",
         "upcoming": "Upcoming",
-        "statusDone": "Done"
+        "statusDone": "Done",
+        "busesTitle": "Live bus tracker"
       },
       "note": {
         "title": "Note from Mrs. Petrova",
@@ -3736,7 +4970,9 @@
           "wed": "Wed",
           "thu": "Thu",
           "fri": "Fri"
-        }
+        },
+        "heatmapLabel": "14-week attendance",
+        "heatmapNote": "Darker tiles = more students present on that day."
       },
       "bus": {
         "title": "Live bus tracker",
@@ -3778,7 +5014,13 @@
         "schedule": "Portal · Schedule",
         "homework": "Portal · Homework",
         "grades": "Portal · Grades",
-        "bus": "Portal · Bus tracker"
+        "bus": "Portal · Bus tracker",
+        "dashboard": "Portal · Dashboard",
+        "students": "People · Students",
+        "teachers": "People · Teachers",
+        "parents": "People · Parents",
+        "analytics": "Admin · Analytics",
+        "settings": "Admin · Settings"
       },
       "screen": {
         "attendance": {
@@ -3805,6 +5047,36 @@
           "eyebrow": "Live · Afternoon run",
           "title": "Bus tracker",
           "subtitle": "Three active routes, 73 students riding home this afternoon."
+        },
+        "dashboard": {
+          "eyebrow": "Today · Tuesday",
+          "title": "Welcome back, Lola",
+          "subtitle": "Karim is in homeroom 5A. Bus 7 will reach Maple Avenue in 5 minutes."
+        },
+        "students": {
+          "eyebrow": "Roster · Grade 5",
+          "title": "Students",
+          "subtitle": "256 students across three homerooms. 48 on the honor roll."
+        },
+        "teachers": {
+          "eyebrow": "Faculty · Grade 5",
+          "title": "Teachers",
+          "subtitle": "19 teachers across academics, art, PE and music."
+        },
+        "parents": {
+          "eyebrow": "Channel · Messages",
+          "title": "Parent contacts",
+          "subtitle": "Two-way messaging across SMS, email and the family app."
+        },
+        "analytics": {
+          "eyebrow": "Performance",
+          "title": "School analytics",
+          "subtitle": "Attendance trends, retention cohorts and live activity."
+        },
+        "settings": {
+          "eyebrow": "Configuration",
+          "title": "Settings",
+          "subtitle": "School basics, term setup and integrations."
         }
       },
       "kpi": {
@@ -3847,53 +5119,53 @@
             "trend": "75% utilisation"
           },
           "3": {
-            "label": "Next bell in",
-            "value": "08:42",
-            "trend": "Math · Room 204"
+            "label": "Minutes left",
+            "value": "240",
+            "trend": "Until home time"
           }
         },
         "homework": {
           "0": {
-            "label": "Assignments due",
+            "label": "Assignments out",
             "value": "11",
-            "trend": "4 for Karim this week"
+            "trend": "Across 4 subjects"
           },
           "1": {
-            "label": "Completion rate",
+            "label": "Completion",
             "value": "88%",
             "trend": "vs 82% last week"
           },
           "2": {
-            "label": "Top subject",
-            "value": "Math",
-            "trend": "19 submissions · A avg"
+            "label": "Graded today",
+            "value": "19",
+            "trend": "By Mrs. Petrova"
           },
           "3": {
-            "label": "Late submissions",
+            "label": "Overdue",
             "value": "3",
-            "trend": "Reminders sent"
+            "trend": "Down from 6"
           }
         },
         "grades": {
           "0": {
-            "label": "Average grade",
-            "value": "B+",
-            "trend": "Up from B last term"
+            "label": "Class average",
+            "value": "89%",
+            "trend": "Term high"
           },
           "1": {
-            "label": "Top student",
-            "value": "Sara N.",
-            "trend": "98% term average"
+            "label": "On track",
+            "value": "98%",
+            "trend": "Of all students"
           },
           "2": {
-            "label": "Parents notified",
+            "label": "Stars earned",
             "value": "218",
-            "trend": "97% read receipts"
+            "trend": "Since term start"
           },
           "3": {
-            "label": "Report cards due",
-            "value": "May 27",
-            "trend": "9 days remaining"
+            "label": "Honor roll",
+            "value": "12",
+            "trend": "Out of 28"
           }
         },
         "bus": {
@@ -3917,6 +5189,348 @@
             "value": "2 min",
             "trend": "Bus 7 · Maple & 4th"
           }
+        },
+        "dashboard": {
+          "0": {
+            "label": "Enrolled",
+            "value": "256",
+            "trend": "+6 this term"
+          },
+          "1": {
+            "label": "Present today",
+            "value": "248 / 256",
+            "trend": "97% rate"
+          },
+          "2": {
+            "label": "On-time rate",
+            "value": "96%",
+            "trend": "Term avg 93%"
+          },
+          "3": {
+            "label": "Buses inbound",
+            "value": "3",
+            "trend": "On schedule"
+          }
+        },
+        "students": {
+          "0": {
+            "label": "Total roster",
+            "value": "256",
+            "trend": "+6 this term"
+          },
+          "1": {
+            "label": "Average GPA",
+            "value": "3.62",
+            "trend": "+0.08 vs last term"
+          },
+          "2": {
+            "label": "Honor roll",
+            "value": "48",
+            "trend": "19% of roster"
+          },
+          "3": {
+            "label": "Needs support",
+            "value": "4",
+            "trend": "Down from 10"
+          }
+        },
+        "teachers": {
+          "0": {
+            "label": "Faculty",
+            "value": "19",
+            "trend": "+1 this year"
+          },
+          "1": {
+            "label": "Classes covered",
+            "value": "26",
+            "trend": "All rooms staffed"
+          },
+          "2": {
+            "label": "Avg. rating",
+            "value": "4.8",
+            "trend": "Parent survey"
+          },
+          "3": {
+            "label": "Trainings",
+            "value": "16",
+            "trend": "Year to date"
+          }
+        },
+        "parents": {
+          "0": {
+            "label": "Active families",
+            "value": "226",
+            "trend": "88% activation"
+          },
+          "1": {
+            "label": "Messages today",
+            "value": "78",
+            "trend": "Avg 12/parent"
+          },
+          "2": {
+            "label": "Unread",
+            "value": "24",
+            "trend": "From 12 families"
+          },
+          "3": {
+            "label": "App opens",
+            "value": "62%",
+            "trend": "Daily reach"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Attendance",
+            "value": "256",
+            "trend": "97% today"
+          },
+          "1": {
+            "label": "On-time rate",
+            "value": "96%",
+            "trend": "Term high"
+          },
+          "2": {
+            "label": "Avg. GPA",
+            "value": "3.62",
+            "trend": "+0.08 vs last term"
+          },
+          "3": {
+            "label": "Family engagement",
+            "value": "89%",
+            "trend": "+5 pts"
+          }
+        }
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "attendance": "Attendance",
+        "schedule": "Schedule",
+        "homework": "Homework",
+        "grades": "Grades",
+        "students": "Students",
+        "teachers": "Teachers",
+        "parents": "Parents",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "academics": "Academics",
+          "people": "People",
+          "admin": "Admin"
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "dashboard": {
+        "greeting": "Good morning, Lola 👋",
+        "subGreeting": "Karim was checked in by Mom 3 minutes ago. Math homework is due tomorrow and Bus 7 is on schedule.",
+        "todayLabel": "Tuesday · May 19",
+        "tiles": {
+          "lessons": "Lessons today",
+          "stars": "Stars this week",
+          "streak": "Day streak",
+          "minutes": "Active min."
+        },
+        "feedLabel": "School activity",
+        "feed": {
+          "0": {
+            "title": "Karim checked in",
+            "meta": "Gate B · 08:06"
+          },
+          "1": {
+            "title": "New note from Mrs. Petrova",
+            "meta": "Field trip reminder · 2m ago"
+          },
+          "2": {
+            "title": "Bus 7 left Maple Ave",
+            "meta": "ETA School 08:18"
+          },
+          "3": {
+            "title": "Homework graded: Reading",
+            "meta": "Mrs. Karimova · A-"
+          },
+          "4": {
+            "title": "Star earned: Helping a friend",
+            "meta": "Recess · 10:35"
+          },
+          "5": {
+            "title": "Lunch menu updated",
+            "meta": "Cafeteria · today"
+          }
+        },
+        "busesTitle": "Live bus tracker"
+      },
+      "students": {
+        "roomPrefix": "Room",
+        "status": {
+          "honor": "Honor roll",
+          "active": "Active",
+          "support": "Needs support"
+        },
+        "list": {
+          "0": {
+            "name": "Karim Karimov"
+          },
+          "1": {
+            "name": "Aigerim Yusupova"
+          },
+          "2": {
+            "name": "Daler Sharipov"
+          },
+          "3": {
+            "name": "Maya Petrova"
+          },
+          "4": {
+            "name": "Faruh Bakhtiyorov"
+          },
+          "5": {
+            "name": "Liu Wei"
+          },
+          "6": {
+            "name": "Anna Rakhimova"
+          },
+          "7": {
+            "name": "Sergei Volkov"
+          }
+        }
+      },
+      "teachers": {
+        "room": "Room",
+        "classes": "Classes",
+        "rating": "Rating",
+        "list": {
+          "0": {
+            "name": "Mrs. Petrova",
+            "subject": "Homeroom · Math"
+          },
+          "1": {
+            "name": "Mr. Karimov",
+            "subject": "English · Literature"
+          },
+          "2": {
+            "name": "Mrs. Karimova",
+            "subject": "Science · Biology"
+          },
+          "3": {
+            "name": "Mr. Yusupov",
+            "subject": "Science Lab"
+          },
+          "4": {
+            "name": "Ms. Rakhimova",
+            "subject": "Art · Crafts"
+          },
+          "5": {
+            "name": "Mr. Sharipov",
+            "subject": "Physical Education"
+          }
+        }
+      },
+      "parents": {
+        "col": {
+          "parent": "Parent",
+          "child": "Student",
+          "phone": "Phone",
+          "unread": "New",
+          "lastSeen": "Last seen"
+        },
+        "list": {
+          "0": {
+            "name": "Lola Karimova",
+            "child": "Karim · 5A"
+          },
+          "1": {
+            "name": "Bakhtiyor Yusupov",
+            "child": "Aigerim · 5A"
+          },
+          "2": {
+            "name": "Nigora Sharipova",
+            "child": "Daler · 5A"
+          },
+          "3": {
+            "name": "Elena Petrova",
+            "child": "Maya · 5B"
+          },
+          "4": {
+            "name": "Rustam Bakhtiyorov",
+            "child": "Faruh · 5B"
+          },
+          "5": {
+            "name": "Olga Volkova",
+            "child": "Sergei · 5C"
+          }
+        },
+        "lastSeen": {
+          "minutes": "{n}m ago",
+          "hours": "{n}h ago",
+          "days": "{n}d ago"
+        }
+      },
+      "analytics": {
+        "chartTitle": "Attendance rate (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live school events",
+        "cohortTitle": "Retention by grade cohort",
+        "cohortNote": "Percent of students still attending in week N from term start.",
+        "events": {
+          "0": {
+            "title": "Aigerim Y. earned 3 stars",
+            "meta": "Reading group · just now"
+          },
+          "1": {
+            "title": "Bus 12 reached Cedar Grove",
+            "meta": "On schedule · 28s"
+          },
+          "2": {
+            "title": "Late arrival flagged",
+            "meta": "Daler S. · 08:34"
+          },
+          "3": {
+            "title": "Parent message replied",
+            "meta": "Mrs. Petrova → Volkova"
+          },
+          "4": {
+            "title": "Homework graded: Math",
+            "meta": "5A · class average 88%"
+          },
+          "5": {
+            "title": "Field trip RSVPs in",
+            "meta": "24 / 28 confirmed"
+          }
+        }
+      },
+      "settings": {
+        "basics": "School basics",
+        "fields": {
+          "schoolName": "School name",
+          "term": "Term",
+          "principal": "Principal",
+          "contact": "Contact email"
+        },
+        "placeholders": {
+          "schoolName": "Sunny Hills Elementary",
+          "term": "Spring 2026 · Week 9",
+          "principal": "Mr. Daler Sharipov",
+          "contact": "office@sunnyhills.tj"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "classroom": "Sync assignments and grades with Google Classroom.",
+          "classdojo": "Reward stars and share moments with families.",
+          "zoom": "Schedule virtual classes and parent-teacher meetings.",
+          "twilio": "Send absence alerts and bus updates via SMS.",
+          "stripe": "Collect lunch fees and field-trip payments.",
+          "mailchimp": "Weekly newsletter to all families."
         }
       }
     },
@@ -4531,7 +6145,18 @@
         "bookings": "Bookings",
         "tours": "Tours",
         "itinerary": "Itinerary",
-        "customers": "Customers"
+        "customers": "Customers",
+        "destinations": "Destinations",
+        "payments": "Payments",
+        "vendors": "Vendors",
+        "calendar": "Calendar",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "catalog": "Catalog",
+          "sales": "Sales",
+          "ops": "Operations"
+        }
       },
       "search": {
         "from": "From",
@@ -4568,7 +6193,8 @@
         "wakhan": {
           "title": "Wakhan Valley · 7 days",
           "from": "Khorog"
-        }
+        },
+        "newTour": "New tour"
       },
       "bookings": {
         "heading": "Recent bookings",
@@ -4678,10 +6304,16 @@
         "buildId": "BUILD #5184"
       },
       "breadcrumb": {
-        "tours": "Operations / Tours",
-        "bookings": "Operations / Bookings",
-        "itinerary": "Operations / Itinerary",
-        "customers": "Operations / Customers"
+        "tours": "Catalog / Tours",
+        "bookings": "Sales / Bookings",
+        "itinerary": "Catalog / Itinerary",
+        "customers": "Sales / Customers",
+        "destinations": "Catalog / Destinations",
+        "payments": "Sales / Payments",
+        "vendors": "Operations / Vendors",
+        "calendar": "Operations / Calendar",
+        "analytics": "Operations / Analytics",
+        "settings": "Operations / Settings"
       },
       "screen": {
         "tours": {
@@ -4703,6 +6335,36 @@
           "eyebrow": "CRM",
           "title": "Customer ledger",
           "subtitle": "Repeat travellers and lifetime value."
+        },
+        "destinations": {
+          "eyebrow": "Catalog",
+          "title": "Destinations",
+          "subtitle": "Regions, departures, and seasonality at a glance."
+        },
+        "payments": {
+          "eyebrow": "Sales",
+          "title": "Payments",
+          "subtitle": "Captured, pending, and refunded transactions."
+        },
+        "vendors": {
+          "eyebrow": "Operations",
+          "title": "Vendor network",
+          "subtitle": "Hotels, transport, guides, and catering partners."
+        },
+        "calendar": {
+          "eyebrow": "Operations",
+          "title": "Departure calendar",
+          "subtitle": "Upcoming departures and seasonal load."
+        },
+        "analytics": {
+          "eyebrow": "Performance",
+          "title": "Performance",
+          "subtitle": "Revenue trend, retention cohort, and live events."
+        },
+        "settings": {
+          "eyebrow": "Configuration",
+          "title": "Settings",
+          "subtitle": "Agency basics, license, and integrations."
         }
       },
       "kpi": {
@@ -4793,6 +6455,323 @@
             "value": "66",
             "trend": "Promoters lead detractors"
           }
+        },
+        "destinations": {
+          "0": {
+            "label": "Regions",
+            "value": "14",
+            "trend": "+2 new this year"
+          },
+          "1": {
+            "label": "Bookings YTD",
+            "value": "612",
+            "trend": "+24% vs 2025"
+          },
+          "2": {
+            "label": "Top region",
+            "value": "Samarkand",
+            "trend": "198 bookings"
+          },
+          "3": {
+            "label": "Peak fill",
+            "value": "96%",
+            "trend": "Aug high season"
+          }
+        },
+        "payments": {
+          "0": {
+            "label": "Captured (mo)",
+            "value": "$62,140",
+            "trend": "+18% vs Apr"
+          },
+          "1": {
+            "label": "Success rate",
+            "value": "95.2%",
+            "trend": "Up from 92.4%"
+          },
+          "2": {
+            "label": "Refunds",
+            "value": "2",
+            "trend": "1.4% of volume"
+          },
+          "3": {
+            "label": "Avg ticket",
+            "value": "$2,310",
+            "trend": "Up from $2,180"
+          }
+        },
+        "vendors": {
+          "0": {
+            "label": "Active vendors",
+            "value": "28",
+            "trend": "+4 this quarter"
+          },
+          "1": {
+            "label": "Avg rating",
+            "value": "4.8",
+            "trend": "Up from 4.6"
+          },
+          "2": {
+            "label": "Renewals due",
+            "value": "4",
+            "trend": "Next 30 days"
+          },
+          "3": {
+            "label": "Cities",
+            "value": "21",
+            "trend": "Across 3 countries"
+          }
+        },
+        "calendar": {
+          "0": {
+            "label": "Departures (30d)",
+            "value": "18",
+            "trend": "+5 vs prior 30d"
+          },
+          "1": {
+            "label": "Booked seats",
+            "value": "42",
+            "trend": "Avg 2.3 / departure"
+          },
+          "2": {
+            "label": "Sold-out tours",
+            "value": "5",
+            "trend": "Jul – Aug"
+          },
+          "3": {
+            "label": "Peak month",
+            "value": "August",
+            "trend": "96% capacity"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Revenue (30d)",
+            "value": "$24,800",
+            "trend": "+22% vs prior"
+          },
+          "1": {
+            "label": "Repeat rate",
+            "value": "34%",
+            "trend": "Up from 29%"
+          },
+          "2": {
+            "label": "Avg party",
+            "value": "2.4",
+            "trend": "Up from 2.1"
+          },
+          "3": {
+            "label": "NPS",
+            "value": "66",
+            "trend": "Promoters lead"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected",
+        "dayAdded": "New day added to itinerary",
+        "tourCreated": "Tour draft created",
+        "tourOpened": "Opened {name}",
+        "searchRun": "Search refreshed"
+      },
+      "destinations": {
+        "tours": "Tours",
+        "bookings": "Bookings",
+        "rating": "Rating",
+        "seasonalityTitle": "Seasonality across all regions",
+        "seasonalitySubtitle": "14-week heatmap of departures and arrivals.",
+        "seasonalityNote": "Darker tiles indicate weeks with higher departure load.",
+        "list": {
+          "pamir": {
+            "name": "Pamir Highway",
+            "country": "Tajikistan · GBAO"
+          },
+          "samarkand": {
+            "name": "Samarkand",
+            "country": "Uzbekistan"
+          },
+          "wakhan": {
+            "name": "Wakhan Valley",
+            "country": "Tajikistan · GBAO"
+          },
+          "iskanderkul": {
+            "name": "Iskanderkul",
+            "country": "Tajikistan · Sughd"
+          },
+          "fann": {
+            "name": "Fann Mountains",
+            "country": "Tajikistan · Sughd"
+          },
+          "bukhara": {
+            "name": "Bukhara",
+            "country": "Uzbekistan"
+          }
+        }
+      },
+      "payments": {
+        "cols": {
+          "ref": "Ref",
+          "booking": "Booking",
+          "customer": "Customer",
+          "method": "Method",
+          "amount": "Amount",
+          "date": "Date",
+          "status": "Status"
+        },
+        "methods": {
+          "card": "Card",
+          "transfer": "Transfer",
+          "wallet": "Wallet"
+        },
+        "status": {
+          "captured": "Captured",
+          "pending": "Pending",
+          "refunded": "Refunded"
+        },
+        "dates": {
+          "may10": "May 10",
+          "may11": "May 11",
+          "may12": "May 12",
+          "may13": "May 13",
+          "may14": "May 14",
+          "may15": "May 15",
+          "may16": "May 16",
+          "may17": "May 17",
+          "may18": "May 18"
+        }
+      },
+      "vendors": {
+        "rating": "Rating",
+        "types": {
+          "hotel": "Hotel",
+          "homestay": "Homestay",
+          "transport": "Transport",
+          "guide": "Guide",
+          "catering": "Catering"
+        },
+        "list": {
+          "karon": {
+            "name": "Karon Palace"
+          },
+          "serena": {
+            "name": "Serena Inn Khorog"
+          },
+          "pamirHotel": {
+            "name": "Pamir Hotel Murghab"
+          },
+          "yurt": {
+            "name": "Karakul Lakeside Yurt"
+          },
+          "vakhshDrv": {
+            "name": "Vakhsh Transfers"
+          },
+          "panjGuide": {
+            "name": "Panj Mountain Guides"
+          },
+          "iskandTrek": {
+            "name": "Iskanderkul Trekking"
+          },
+          "samCater": {
+            "name": "Samarkand Catering Co."
+          }
+        }
+      },
+      "calendar": {
+        "departuresTitle": "Upcoming departures",
+        "departuresSubtitle": "Confirmed group departures over the next 90 days.",
+        "seasonalityTitle": "Monthly load",
+        "seasonalitySubtitle": "Booked capacity by month across all tours.",
+        "guests": "guests",
+        "confirmed": "Confirmed",
+        "months": {
+          "jan": "Jan",
+          "feb": "Feb",
+          "mar": "Mar",
+          "apr": "Apr",
+          "may": "May",
+          "jun": "Jun",
+          "jul": "Jul",
+          "aug": "Aug",
+          "sep": "Sep",
+          "oct": "Oct",
+          "nov": "Nov",
+          "dec": "Dec"
+        }
+      },
+      "analytics": {
+        "revenueTitle": "Revenue (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Repeat-booking cohort",
+        "cohortNote": "Percent of first-time travellers who book a second tour in week N.",
+        "feed": {
+          "initial": {
+            "0": {
+              "title": "Booking confirmed: TR-7830",
+              "meta": "Samarkand · 2 pax · just now"
+            },
+            "1": {
+              "title": "Quote sent: Wakhan 7-day",
+              "meta": "Lars P. · 28s ago"
+            },
+            "2": {
+              "title": "Itinerary v3 published",
+              "meta": "Pamir Highway · 1m ago"
+            }
+          },
+          "rotating": {
+            "0": {
+              "title": "Payment captured: $1,840",
+              "meta": "Stripe · TR-7822"
+            },
+            "1": {
+              "title": "New customer: Sofia M.",
+              "meta": "Spain · WhatsApp inquiry"
+            },
+            "2": {
+              "title": "Cancellation: TR-7827",
+              "meta": "Refund issued"
+            },
+            "3": {
+              "title": "5★ review: Hiroshi T.",
+              "meta": "Pamir Highway"
+            }
+          }
+        }
+      },
+      "settings": {
+        "basics": "Agency basics",
+        "fields": {
+          "agencyName": "Agency name",
+          "currency": "Currency",
+          "contact": "Contact email",
+          "license": "License #"
+        },
+        "placeholders": {
+          "agencyName": "Silk Road Trails LLC",
+          "currency": "USD",
+          "contact": "hello@silkroadtrails.tj",
+          "license": "TJ-TOUR-04812"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "stripe": "Capture deposits and final payments.",
+          "amadeus": "GDS flight inventory and PNR sync.",
+          "whatsapp": "Customer chat and itinerary delivery.",
+          "mailchimp": "Newsletter and post-trip campaigns.",
+          "slack": "Ops alerts in #departures channel.",
+          "gmaps": "Embed routes into client itineraries."
         }
       }
     },
