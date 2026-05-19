@@ -59,7 +59,7 @@ export function ChatWidget({
         <div
           role="dialog"
           aria-label={t("title")}
-          className="anim-spring fixed bottom-24 right-5 z-50 flex h-[580px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border border-border-strong/60 bg-surface shadow-[0_30px_80px_-12px_rgba(63,38,22,0.45),_0_0_0_1px_rgba(255,255,255,0.06)_inset] ring-1 ring-black/5"
+          className="anim-spring fixed bottom-24 right-5 z-50 flex h-[580px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border border-border-strong/60 bg-surface shadow-[0_30px_80px_-12px_rgba(63,38,22,0.45),_0_0_0_1px_rgba(255,255,255,0.06)_inset] ring-1 ring-fg/5"
         >
           {/* Premium gradient header */}
           <header

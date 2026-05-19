@@ -49,7 +49,7 @@ export default async function ConsultantThreadPage({
       >
         <ArrowLeft className="size-4" /> {t("backToInbox")}
       </Link>
-      <div className="mt-4 overflow-hidden rounded-3xl border border-border-strong/60 bg-surface shadow-lg ring-1 ring-black/5">
+      <div className="mt-4 overflow-hidden rounded-3xl border border-border-strong/60 bg-surface shadow-lg ring-1 ring-fg/5">
         <header
           className="relative flex items-center justify-between px-5 py-4 text-white"
           style={{
