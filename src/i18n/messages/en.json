@@ -4806,7 +4806,18 @@
         "courses": "My Courses",
         "grades": "Gradebook",
         "gradebook": "Gradebook",
-        "schedule": "Schedule"
+        "schedule": "Schedule",
+        "students": "Students",
+        "faculty": "Faculty",
+        "admissions": "Admissions",
+        "finance": "Finance",
+        "analytics": "Analytics",
+        "settings": "Settings",
+        "groups": {
+          "academics": "Academics",
+          "people": "People",
+          "admin": "Administration"
+        }
       },
       "dashboard": {
         "welcome": "Welcome back, Dr. Hassan.",
@@ -4938,6 +4949,36 @@
             "eyebrow": "This week",
             "title": "Weekly schedule",
             "subtitle": "Your teaching week at a glance. Click any class to view roster and materials."
+          },
+          "students": {
+            "eyebrow": "Roster",
+            "title": "Students",
+            "subtitle": "Active roster with GPA and program enrollment."
+          },
+          "faculty": {
+            "eyebrow": "Faculty",
+            "title": "Faculty",
+            "subtitle": "Teaching staff with current load and department."
+          },
+          "admissions": {
+            "eyebrow": "Pipeline",
+            "title": "Admissions",
+            "subtitle": "Funnel from application to offer for Fall 2026 intake."
+          },
+          "finance": {
+            "eyebrow": "Tuition",
+            "title": "Finance",
+            "subtitle": "Tuition status by student and program — paid, due, overdue."
+          },
+          "analytics": {
+            "eyebrow": "Insights",
+            "title": "Analytics",
+            "subtitle": "Enrollment trend, retention cohort and live academic events."
+          },
+          "settings": {
+            "eyebrow": "Configure",
+            "title": "Settings",
+            "subtitle": "University basics and integrations across systems of record."
           }
         },
         "kpi": {
@@ -5029,6 +5070,188 @@
               "trend": "Three concurrent classes"
             }
           }
+        },
+        "breadcrumbs": {
+          "dashboard": "Faculty Portal · Spring 2026",
+          "courses": "Teaching · My Courses",
+          "gradebook": "Assessment · Gradebook",
+          "schedule": "This Week · Schedule",
+          "students": "People · Students",
+          "faculty": "People · Faculty",
+          "admissions": "People · Admissions",
+          "finance": "Administration · Finance",
+          "analytics": "Administration · Analytics",
+          "settings": "Administration · Settings"
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "students": {
+        "list": {
+          "0": {
+            "name": "Aslan Karimov"
+          },
+          "1": {
+            "name": "Bermet Joldoshova"
+          },
+          "2": {
+            "name": "Chen Wei"
+          },
+          "3": {
+            "name": "Diyora Nazarova"
+          },
+          "4": {
+            "name": "Erlan Sariev"
+          },
+          "5": {
+            "name": "Farida Okafor"
+          },
+          "6": {
+            "name": "Gulnoza Rahimi"
+          },
+          "7": {
+            "name": "Hamid Tursunov"
+          }
+        },
+        "programs": {
+          "cs": "BSc Computer Science",
+          "econ": "BA Economics",
+          "phil": "BA Philosophy",
+          "bio": "BSc Biology"
+        },
+        "status": {
+          "active": "Active",
+          "probation": "Probation",
+          "alumni": "Alumni"
+        }
+      },
+      "faculty": {
+        "list": {
+          "0": {
+            "name": "Dr. Mira Hassan",
+            "title": "Associate Professor"
+          },
+          "1": {
+            "name": "Prof. A. Volkov",
+            "title": "Department Chair"
+          },
+          "2": {
+            "name": "Dr. F. Okafor",
+            "title": "Senior Lecturer"
+          },
+          "3": {
+            "name": "Dr. K. Sato",
+            "title": "Assistant Professor"
+          },
+          "4": {
+            "name": "Dr. R. Ahmadi",
+            "title": "Lecturer"
+          },
+          "5": {
+            "name": "Prof. S. Lindgren",
+            "title": "Visiting Professor"
+          }
+        },
+        "dept": {
+          "cs": "Computer Science",
+          "econ": "Economics",
+          "phil": "Philosophy",
+          "bio": "Biology"
+        },
+        "hoursWeek": "h / wk"
+      },
+      "admissions": {
+        "stages": {
+          "applied": "Applied",
+          "reviewing": "Reviewing",
+          "interview": "Interview",
+          "offered": "Offered"
+        },
+        "applicants": "Top applicants",
+        "sample": {
+          "0": {
+            "name": "Alima Bek",
+            "src": "International · KZ"
+          },
+          "1": {
+            "name": "Tomás Ruiz",
+            "src": "Transfer · ES"
+          },
+          "2": {
+            "name": "Yuki Tanaka",
+            "src": "Direct · JP"
+          }
+        }
+      },
+      "finance": {
+        "col": {
+          "student": "Student",
+          "program": "Program",
+          "tuition": "Tuition",
+          "due": "Due",
+          "status": "Status"
+        },
+        "status": {
+          "paid": "Paid",
+          "due": "Due",
+          "overdue": "Overdue"
+        }
+      },
+      "analytics": {
+        "enrollTitle": "Total enrollment",
+        "last10": "Last 10 terms",
+        "liveFeed": "Live activity",
+        "cohortTitle": "Retention cohort",
+        "cohortNote": "Percent of students from each cohort still enrolled in week N.",
+        "events": {
+          "applied": "New application: Alima Bek",
+          "appliedMeta": "International · just now",
+          "graded": "Grade submitted: CS401 HW3",
+          "gradedMeta": "Dr. Hassan · 28s ago",
+          "paid": "Tuition paid: $14,800",
+          "paidMeta": "Daler S. · 1m ago",
+          "enrolled": "Course enrolled: PHIL150",
+          "enrolledMeta": "Iskandar Z. · Spring 2026",
+          "dropped": "Course dropped: ECON210",
+          "droppedMeta": "Erlan S. · refund pending",
+          "interview": "Interview scheduled",
+          "interviewMeta": "Tomás Ruiz · Fri 10:00"
+        }
+      },
+      "settings": {
+        "basics": "University basics",
+        "fields": {
+          "universityName": "University name",
+          "term": "Active term",
+          "registrar": "Registrar",
+          "contact": "Contact"
+        },
+        "placeholders": {
+          "universityName": "Westmoor University",
+          "term": "Spring 2026",
+          "registrar": "Office of the Registrar",
+          "contact": "registrar@westmoor.edu"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "canvas": "Sync courses, assignments and grades with Canvas LMS.",
+          "banner": "Student Information System for records and registration.",
+          "stripe": "Tuition payments and refunds.",
+          "zoom": "Provision class meetings and office hours.",
+          "slack": "Department channels and faculty announcements.",
+          "turnitin": "Originality checks for written assignments."
         }
       }
     }
