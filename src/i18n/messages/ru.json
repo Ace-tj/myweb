@@ -1538,7 +1538,13 @@
         "pipeline": "Воронка",
         "students": "Студенты",
         "universities": "Университеты",
-        "documents": "Документы"
+        "documents": "Документы",
+        "consulting": "Консультации",
+        "partners": "Партнёры",
+        "payments": "Платежи",
+        "visa": "Виза",
+        "analytics": "Аналитика",
+        "settings": "Настройки"
       },
       "stats": {
         "activeApplicants": "Активные заявки",
@@ -1765,7 +1771,13 @@
           "pipeline": "CRM · Воронка",
           "students": "CRM · Студенты",
           "universities": "CRM · Университеты",
-          "documents": "CRM · Документы"
+          "documents": "CRM · Документы",
+          "consulting": "Рабочая / Консультации",
+          "partners": "Рабочая / Партнёры",
+          "payments": "Рабочая / Платежи",
+          "visa": "Рабочая / Виза",
+          "analytics": "Рабочая / Аналитика",
+          "settings": "Рабочая / Настройки"
         },
         "statusBar": {
           "version": "Eastwind v4.2.1",
@@ -1793,6 +1805,36 @@
           "eyebrow": "Соответствие",
           "title": "Трекер документов",
           "subtitle": "Статус каждого файла, проходящего через посольства и партнёров"
+        },
+        "consulting": {
+          "eyebrow": "1-на-1",
+          "title": "Консультации",
+          "subtitle": "Календарь встреч и репетиций со студентами."
+        },
+        "partners": {
+          "eyebrow": "Сеть",
+          "title": "Партнёры",
+          "subtitle": "Активные партнёрства с количеством зачислений и комиссией."
+        },
+        "payments": {
+          "eyebrow": "Деньги",
+          "title": "Платежи",
+          "subtitle": "Сервисные сборы, обучение и визовые сборы."
+        },
+        "visa": {
+          "eyebrow": "Воронка",
+          "title": "Трекер виз",
+          "subtitle": "Подготовка, подача, собеседование, выдача, отъезд."
+        },
+        "analytics": {
+          "eyebrow": "Показатели",
+          "title": "Аналитика",
+          "subtitle": "Тренд выручки, конверсия и события в реальном времени."
+        },
+        "settings": {
+          "eyebrow": "Конфигурация",
+          "title": "Настройки",
+          "subtitle": "Основные данные агентства и интеграции."
         }
       },
       "kpi": {
@@ -1883,6 +1925,220 @@
             "value": "3%",
             "trend": "-2 п.п. ко 2 кварталу"
           }
+        },
+        "consulting": {
+          "0": {
+            "label": "Сессий сегодня",
+            "value": "8",
+            "trend": "Все подтверждены"
+          },
+          "1": {
+            "label": "Ср. длительность",
+            "value": "52 мин",
+            "trend": "В норме"
+          },
+          "2": {
+            "label": "Рейтинг (90д)",
+            "value": "4,9",
+            "trend": "Растёт"
+          },
+          "3": {
+            "label": "Неявки",
+            "value": "2%",
+            "trend": "Снизилось с 6%"
+          }
+        },
+        "partners": {
+          "0": {
+            "label": "Активных партнёров",
+            "value": "31",
+            "trend": "+4 за год"
+          },
+          "1": {
+            "label": "Зачислений (YTD)",
+            "value": "310",
+            "trend": "+22% MoM"
+          },
+          "2": {
+            "label": "Ср. комиссия",
+            "value": "15,2%",
+            "trend": "Стабильно"
+          },
+          "3": {
+            "label": "Горячих партнёров",
+            "value": "6",
+            "trend": "Tsinghua + SJTU"
+          }
+        },
+        "payments": {
+          "0": {
+            "label": "К получению",
+            "value": "$184K",
+            "trend": "В основном обучение"
+          },
+          "1": {
+            "label": "Получено (30д)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "2": {
+            "label": "Просрочка",
+            "value": "$8,4K",
+            "trend": "1 случай"
+          },
+          "3": {
+            "label": "Ср. чек",
+            "value": "$5,2K",
+            "trend": "+$0,6K YoY"
+          }
+        },
+        "visa": {
+          "0": {
+            "label": "В воронке",
+            "value": "34",
+            "trend": "По графику"
+          },
+          "1": {
+            "label": "Успех собес.",
+            "value": "94%",
+            "trend": "+3 п.п. YoY"
+          },
+          "2": {
+            "label": "Ср. обработка",
+            "value": "18 дней",
+            "trend": "Было 24"
+          },
+          "3": {
+            "label": "Уехали (YTD)",
+            "value": "126",
+            "trend": "Рекордный год"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Доход (30д)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "1": {
+            "label": "Конверсия",
+            "value": "32%",
+            "trend": "Запрос → Отъезд"
+          },
+          "2": {
+            "label": "Ср. цикл",
+            "value": "84 дня",
+            "trend": "Запрос → Виза"
+          },
+          "3": {
+            "label": "NPS",
+            "value": "72",
+            "trend": "Сарафан силён"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Аптайм (30д)",
+            "value": "100%",
+            "trend": "Всё в порядке"
+          },
+          "1": {
+            "label": "Интеграций",
+            "value": "6 активных",
+            "trend": "+1 за месяц"
+          },
+          "2": {
+            "label": "Места команды",
+            "value": "8 / 12",
+            "trend": "Есть резерв"
+          },
+          "3": {
+            "label": "API за 24ч",
+            "value": "880",
+            "trend": "В пределах"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Перейти к экрану…",
+        "group": "Рабочая область"
+      },
+      "toast": {
+        "navigated": "Открыт {screen}",
+        "sessionConfirmed": "Сессия с {name} подтверждена",
+        "settingsSaved": "Настройки сохранены",
+        "connected": "{name} подключён",
+        "disconnected": "{name} отключён"
+      },
+      "consulting": {
+        "mode": {
+          "inPerson": "Очно",
+          "video": "Видео"
+        },
+        "confirm": "Подтвердить"
+      },
+      "partners": {
+        "hot": "Топ",
+        "placements": "Зачисления",
+        "commission": "Комиссия"
+      },
+      "payments": {
+        "col": {
+          "student": "Студент",
+          "purpose": "Назначение",
+          "amount": "Сумма",
+          "due": "Срок",
+          "status": "Статус"
+        },
+        "status": {
+          "paid": "Оплачено",
+          "due": "К оплате",
+          "partial": "Частично",
+          "overdue": "Просрочка",
+          "scheduled": "В графике"
+        }
+      },
+      "visa": {
+        "stages": {
+          "docPrep": "Подг. док.",
+          "submitted": "Подано",
+          "interview": "Собес.",
+          "issued": "Выдана",
+          "departed": "Уехал"
+        }
+      },
+      "analytics": {
+        "revenueTitle": "Выручка (30 дней)",
+        "last30": "Последние 30 дней",
+        "liveFeed": "Лента событий"
+      },
+      "settings": {
+        "basicsTitle": "Основные данные",
+        "fields": {
+          "agencyName": "Название",
+          "contactEmail": "Email",
+          "officeAddress": "Адрес офиса",
+          "license": "Лицензия №"
+        },
+        "placeholders": {
+          "agencyName": "Silk Road Education",
+          "contactEmail": "hello@silkroad.edu",
+          "officeAddress": "пр. Рудаки 17, Душанбе",
+          "license": "TJ-EDU-2024-138"
+        },
+        "save": "Сохранить",
+        "integrationsTitle": "Интеграции",
+        "connected": "Подключено",
+        "disconnected": "Отключено",
+        "connect": "Подключить",
+        "disconnect": "Отключить",
+        "integrations": {
+          "wechat": "Общение со студентами и родителями в WeChat.",
+          "stripe": "Принимаем USD, EUR, CNY.",
+          "docusign": "Электронные подписи соглашений.",
+          "zoom": "Консультации через Zoom.",
+          "mailchimp": "Капельные кампании для запросов.",
+          "notion": "Шаблоны и чек-листы клиентам."
         }
       }
     },

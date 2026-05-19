@@ -10,6 +10,12 @@ import {
   Buildings,
   MapPin,
   Certificate,
+  ChatTeardropDots,
+  Handshake,
+  CurrencyDollar,
+  Airplane,
+  ChartPie,
+  Gear,
 } from "@phosphor-icons/react";
 import {
   DemoTopBar,
@@ -18,6 +24,15 @@ import {
   DemoScreenHeader,
   DemoBadge,
 } from "@/components/demo-shell";
+import {
+  DemoCommandPalette,
+  DemoCounter,
+  DemoChart,
+  DemoLiveFeed,
+  DemoToastProvider,
+  useDemoToast,
+  type PaletteItem,
+} from "@/components/demo-shell/wow";
 
 const C = {
   bg: "#fef9f0",
@@ -38,11 +53,30 @@ const palette = {
   border: C.border,
 };
 
-type Tab = "pipeline" | "students" | "universities" | "documents";
+type Tab =
+  | "pipeline"
+  | "students"
+  | "universities"
+  | "documents"
+  | "consulting"
+  | "partners"
+  | "payments"
+  | "visa"
+  | "analytics"
+  | "settings";
 
 export function ChinaAgencyDemo() {
+  return (
+    <DemoToastProvider palette={palette}>
+      <ChinaAgencyInner />
+    </DemoToastProvider>
+  );
+}
+
+function ChinaAgencyInner() {
   const t = useTranslations("demoPreview.china-agency");
   const [tab, setTab] = useState<Tab>("pipeline");
+  const toast = useDemoToast();
 
   const PIPELINE = [
     { id: "Inquiry", label: t("pipeline.inquiry"), count: 28 },
@@ -101,41 +135,33 @@ export function ChinaAgencyDemo() {
     }
   };
 
-  const breadcrumb =
-    tab === "pipeline"
-      ? t("shell.breadcrumb.pipeline")
-      : tab === "students"
-        ? t("shell.breadcrumb.students")
-        : tab === "universities"
-          ? t("shell.breadcrumb.universities")
-          : t("shell.breadcrumb.documents");
+  const breadcrumb = t(`shell.breadcrumb.${tab}`);
+  const screenEyebrow = t(`screen.${tab}.eyebrow`);
+  const screenTitle = t(`screen.${tab}.title`);
+  const screenSubtitle = t(`screen.${tab}.subtitle`);
 
-  const screenEyebrow =
-    tab === "pipeline"
-      ? t("screen.pipeline.eyebrow")
-      : tab === "students"
-        ? t("screen.students.eyebrow")
-        : tab === "universities"
-          ? t("screen.universities.eyebrow")
-          : t("screen.documents.eyebrow");
+  const NAV_ITEMS: { id: Tab; label: string }[] = [
+    { id: "pipeline", label: t("nav.pipeline") },
+    { id: "students", label: t("nav.students") },
+    { id: "universities", label: t("nav.universities") },
+    { id: "documents", label: t("nav.documents") },
+    { id: "consulting", label: t("nav.consulting") },
+    { id: "partners", label: t("nav.partners") },
+    { id: "payments", label: t("nav.payments") },
+    { id: "visa", label: t("nav.visa") },
+    { id: "analytics", label: t("nav.analytics") },
+    { id: "settings", label: t("nav.settings") },
+  ];
 
-  const screenTitle =
-    tab === "pipeline"
-      ? t("screen.pipeline.title")
-      : tab === "students"
-        ? t("screen.students.title")
-        : tab === "universities"
-          ? t("screen.universities.title")
-          : t("screen.documents.title");
-
-  const screenSubtitle =
-    tab === "pipeline"
-      ? t("screen.pipeline.subtitle")
-      : tab === "students"
-        ? t("screen.students.subtitle")
-        : tab === "universities"
-          ? t("screen.universities.subtitle")
-          : t("screen.documents.subtitle");
+  const paletteItems: PaletteItem[] = NAV_ITEMS.map((n) => ({
+    id: n.id,
+    label: n.label,
+    group: t("commandPalette.group"),
+    onRun: () => {
+      setTab(n.id);
+      toast.push({ title: t("toast.navigated", { screen: n.label }) });
+    },
+  }));
 
   const kpiItems: { label: string; value: string; trend: string; spark: number[] }[] =
     tab === "pipeline"
@@ -159,12 +185,19 @@ export function ChinaAgencyDemo() {
               { label: t("kpi.universities.2.label"), value: t("kpi.universities.2.value"), trend: t("kpi.universities.2.trend"), spark: [74, 76, 78, 80, 82, 84, 85, 86] },
               { label: t("kpi.universities.3.label"), value: t("kpi.universities.3.value"), trend: t("kpi.universities.3.trend"), spark: [18, 22, 26, 30, 34, 38, 42, 47] },
             ]
-          : [
+          : tab === "documents"
+          ? [
               { label: t("kpi.documents.0.label"), value: t("kpi.documents.0.value"), trend: t("kpi.documents.0.trend"), spark: [44, 48, 52, 56, 58, 62, 64, 68] },
               { label: t("kpi.documents.1.label"), value: t("kpi.documents.1.value"), trend: t("kpi.documents.1.trend"), spark: [6, 8, 9, 11, 12, 14, 16, 18] },
               { label: t("kpi.documents.2.label"), value: t("kpi.documents.2.value"), trend: t("kpi.documents.2.trend"), spark: [12, 11, 10, 9, 8, 8, 7, 7] },
               { label: t("kpi.documents.3.label"), value: t("kpi.documents.3.value"), trend: t("kpi.documents.3.trend"), spark: [8, 7, 6, 6, 5, 4, 4, 3] },
-            ];
+            ]
+          : (["0", "1", "2", "3"] as const).map((i) => ({
+              label: t(`kpi.${tab}.${i}.label`),
+              value: t(`kpi.${tab}.${i}.value`),
+              trend: t(`kpi.${tab}.${i}.trend`),
+              spark: [40, 44, 48, 52, 56, 60, 64, 68].map((n) => n + (Number(i) * 9)),
+            }));
 
   return (
     <div
@@ -198,6 +231,7 @@ export function ChinaAgencyDemo() {
         searchPlaceholder={t("shell.searchPlaceholder")}
         userName={t("shell.userName")}
         userInitials={t("shell.userInitials")}
+        rightSlot={<DemoCommandPalette palette={palette} items={paletteItems} placeholder={t("commandPalette.placeholder")} hint="⌘K" />}
       />
 
       <div
@@ -209,32 +243,29 @@ export function ChinaAgencyDemo() {
           gap: 8,
         }}
       >
-        {[
-          { id: "pipeline" as const, label: t("nav.pipeline") },
-          { id: "students" as const, label: t("nav.students") },
-          { id: "universities" as const, label: t("nav.universities") },
-          { id: "documents" as const, label: t("nav.documents") },
-        ].map((tItem) => {
-          const active = tab === tItem.id;
-          return (
-            <button
-              key={tItem.id}
-              onClick={() => setTab(tItem.id)}
-              style={{
-                background: active ? C.red : "transparent",
-                color: active ? "white" : C.muted,
-                border: "none",
-                padding: "8px 18px",
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              {tItem.label}
-            </button>
-          );
-        })}
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {NAV_ITEMS.map((tItem) => {
+            const active = tab === tItem.id;
+            return (
+              <button
+                key={tItem.id}
+                onClick={() => setTab(tItem.id)}
+                style={{
+                  background: active ? C.red : "transparent",
+                  color: active ? "white" : C.muted,
+                  border: "none",
+                  padding: "7px 14px",
+                  borderRadius: 8,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {tItem.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <main style={{ flex: 1, padding: 32, maxWidth: 1400, margin: "0 auto", width: "100%" }}>
@@ -458,6 +489,200 @@ export function ChinaAgencyDemo() {
                   </div>
                 );
               })}
+            </div>
+          </section>
+        )}
+
+        {tab === "consulting" && (
+          <section style={{ display: "grid", gap: 18 }}>
+            {[
+              { date: "Mon · May 22", time: "10:00 — 11:00", student: "Liu Wei", topic: "HSK 5 prep + Tsinghua applications", mode: "in-person" },
+              { date: "Mon · May 22", time: "14:30 — 15:30", student: "Faruh Bobojonov", topic: "Visa interview rehearsal", mode: "video" },
+              { date: "Tue · May 23", time: "11:00 — 12:00", student: "Nodira Salimova", topic: "Scholarship essays review", mode: "video" },
+              { date: "Tue · May 23", time: "16:00 — 17:00", student: "Daler Karimov", topic: "Career-track selection", mode: "in-person" },
+              { date: "Wed · May 24", time: "09:30 — 10:30", student: "Aigerim Yusupova", topic: "PSC enrollment walkthrough", mode: "video" },
+              { date: "Wed · May 24", time: "13:00 — 14:00", student: "Helena Marsh", topic: "Document checklist review", mode: "in-person" },
+            ].map((s, i) => (
+              <article key={i} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 18, display: "grid", gridTemplateColumns: "160px 1fr auto auto", gap: 16, alignItems: "center" }}>
+                <div>
+                  <div style={{ fontFamily: "Georgia, serif", fontSize: 14, fontWeight: 700 }}>{s.date}</div>
+                  <div style={{ color: C.muted, fontSize: 12 }}>{s.time}</div>
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700 }}>{s.student}</div>
+                  <div style={{ color: C.muted, fontSize: 12, marginTop: 2 }}>{s.topic}</div>
+                </div>
+                <DemoBadge palette={palette} variant={s.mode === "in-person" ? "info" : "success"} label={t(`consulting.mode.${s.mode === "in-person" ? "inPerson" : "video"}`)} />
+                <button
+                  onClick={() => toast.push({ title: t("toast.sessionConfirmed", { name: s.student }), tone: "success" })}
+                  style={{ padding: "6px 12px", background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12, fontWeight: 700, color: C.red, cursor: "pointer" }}
+                >
+                  {t("consulting.confirm")}
+                </button>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {tab === "partners" && (
+          <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
+            {[
+              { name: "Tsinghua University", city: "Beijing", placements: 84, commission: 18, hot: true },
+              { name: "Fudan University", city: "Shanghai", placements: 62, commission: 16, hot: false },
+              { name: "Zhejiang University", city: "Hangzhou", placements: 48, commission: 14, hot: false },
+              { name: "Shanghai Jiao Tong", city: "Shanghai", placements: 56, commission: 17, hot: true },
+              { name: "Wuhan University", city: "Wuhan", placements: 32, commission: 12, hot: false },
+              { name: "Nanjing University", city: "Nanjing", placements: 28, commission: 13, hot: false },
+            ].map((p) => (
+              <article key={p.name} style={{ background: C.paper, border: `1px solid ${C.border}`, borderTop: p.hot ? `4px solid ${C.red}` : `4px solid ${C.gold}`, borderRadius: 12, padding: 16 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <div style={{ fontFamily: "Georgia, serif", fontSize: 16, fontWeight: 700 }}>{p.name}</div>
+                    <div style={{ color: C.muted, fontSize: 12, marginTop: 2 }}>📍 {p.city}</div>
+                  </div>
+                  {p.hot && <DemoBadge palette={palette} variant="danger" label={t("partners.hot")} />}
+                </div>
+                <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div style={{ background: C.bg, padding: 10, borderRadius: 8 }}>
+                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>{t("partners.placements")}</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, marginTop: 2 }}><DemoCounter value={p.placements} /></div>
+                  </div>
+                  <div style={{ background: C.bg, padding: 10, borderRadius: 8 }}>
+                    <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700 }}>{t("partners.commission")}</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, marginTop: 2 }}>{p.commission}%</div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {tab === "payments" && (
+          <section style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ padding: "12px 18px", background: C.bg, display: "grid", gridTemplateColumns: "1fr 140px 100px 120px 100px", fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.muted }}>
+              <span>{t("payments.col.student")}</span>
+              <span>{t("payments.col.purpose")}</span>
+              <span style={{ textAlign: "right" }}>{t("payments.col.amount")}</span>
+              <span>{t("payments.col.due")}</span>
+              <span>{t("payments.col.status")}</span>
+            </div>
+            {[
+              { student: "Liu Wei", purpose: "Service fee", amount: 1800, due: "May 24", status: "paid" },
+              { student: "Faruh B.", purpose: "Tuition Tsinghua", amount: 12400, due: "Jun 04", status: "partial" },
+              { student: "Nodira S.", purpose: "Service fee", amount: 1800, due: "May 26", status: "due" },
+              { student: "Daler K.", purpose: "Visa fee + insurance", amount: 480, due: "May 22", status: "paid" },
+              { student: "Aigerim Y.", purpose: "Tuition Fudan", amount: 10800, due: "Jun 12", status: "scheduled" },
+              { student: "Helena M.", purpose: "Service fee + housing", amount: 4200, due: "May 30", status: "overdue" },
+            ].map((p) => (
+              <div key={p.student} style={{ display: "grid", gridTemplateColumns: "1fr 140px 100px 120px 100px", padding: "12px 18px", borderTop: `1px solid ${C.border}`, alignItems: "center", fontSize: 13 }}>
+                <span style={{ fontWeight: 600 }}>{p.student}</span>
+                <span style={{ color: C.muted }}>{p.purpose}</span>
+                <span style={{ textAlign: "right", fontWeight: 700 }}>$<DemoCounter value={p.amount} /></span>
+                <span style={{ color: C.muted, fontSize: 12 }}>{p.due}</span>
+                <DemoBadge palette={palette} variant={p.status === "paid" ? "success" : p.status === "overdue" ? "danger" : p.status === "partial" ? "warn" : "info"} label={t(`payments.status.${p.status}`)} />
+              </div>
+            ))}
+          </section>
+        )}
+
+        {tab === "visa" && (
+          <section style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }}>
+            {(["docPrep", "submitted", "interview", "issued", "departed"] as const).map((stage, idx) => (
+              <div key={stage} style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                  <span style={{ fontSize: 10, color: C.muted, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{t(`visa.stages.${stage}`)}</span>
+                  <span style={{ background: C.red, color: "white", padding: "2px 8px", borderRadius: 9999, fontSize: 10, fontWeight: 800 }}>{[8, 5, 3, 6, 12][idx]}</span>
+                </div>
+                {([
+                  ["Liu Wei", "May 18"],
+                  ["Nodira S.", "May 16"],
+                ] as [string, string][]).map(([name, date]) => (
+                  <div key={name} style={{ padding: 10, background: C.bg, borderRadius: 8, marginBottom: 6, fontSize: 12 }}>
+                    <div style={{ fontWeight: 700 }}>{name}</div>
+                    <div style={{ color: C.muted, marginTop: 2, fontSize: 11 }}>{date}</div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </section>
+        )}
+
+        {tab === "analytics" && (
+          <section style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18 }}>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, fontFamily: "Georgia, serif" }}>{t("analytics.revenueTitle")}</h3>
+                <span style={{ fontSize: 12, color: C.muted }}>{t("analytics.last30")}</span>
+              </div>
+              <DemoChart data={[1200, 1400, 1600, 1900, 2200, 2600, 2900, 3200, 3600, 4000, 4400, 4900, 5300, 5800, 6200, 6800, 7200, 7800, 8400, 9000, 9600, 10200, 10800, 11400, 12000, 12600, 13200, 13800, 14400, 15200]} palette={palette} height={200} />
+            </div>
+            <DemoLiveFeed
+              palette={palette}
+              liveLabel={t("analytics.liveFeed")}
+              height={250}
+              initial={[
+                { id: "a1", title: "Visa issued · Liu Wei", meta: "Tsinghua · just now", tone: "success" },
+                { id: "a2", title: "New inquiry · Karimov family", meta: "Dushanbe · 12s ago", tone: "info" },
+                { id: "a3", title: "Tuition paid · $12,400", meta: "Faruh B. · 1m ago", tone: "success" },
+              ]}
+              rotating={[
+                { id: "ar1", title: "Offer received · Fudan", meta: "Aigerim Y.", tone: "success" },
+                { id: "ar2", title: "Doc uploaded · transcript", meta: "Nodira S.", tone: "info" },
+                { id: "ar3", title: "Consulting session done", meta: "Daler K.", tone: "primary" },
+              ]}
+            />
+          </section>
+        )}
+
+        {tab === "settings" && (
+          <section style={{ display: "grid", gap: 18 }}>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700, fontFamily: "Georgia, serif" }}>{t("settings.basicsTitle")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {(["agencyName", "contactEmail", "officeAddress", "license"] as const).map((f) => (
+                  <div key={f}>
+                    <label style={{ display: "block", fontSize: 10, color: C.muted, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>{t(`settings.fields.${f}`)}</label>
+                    <input
+                      defaultValue={t(`settings.placeholders.${f}`)}
+                      style={{ width: "100%", background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "10px 12px", fontSize: 13, color: C.ink, outline: "none", boxSizing: "border-box" }}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => toast.push({ title: t("toast.settingsSaved"), tone: "success" })}
+                style={{ marginTop: 16, padding: "10px 18px", background: C.red, color: "white", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer" }}
+              >
+                {t("settings.save")}
+              </button>
+            </div>
+            <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 14, padding: 22 }}>
+              <h3 style={{ margin: "0 0 14px", fontSize: 16, fontWeight: 700, fontFamily: "Georgia, serif" }}>{t("settings.integrationsTitle")}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
+                {[
+                  { name: "WeChat", emoji: "💬", on: true, desc: "settings.integrations.wechat" },
+                  { name: "Stripe", emoji: "💳", on: true, desc: "settings.integrations.stripe" },
+                  { name: "DocuSign", emoji: "✍️", on: true, desc: "settings.integrations.docusign" },
+                  { name: "Zoom", emoji: "🎥", on: true, desc: "settings.integrations.zoom" },
+                  { name: "Mailchimp", emoji: "✉️", on: false, desc: "settings.integrations.mailchimp" },
+                  { name: "Notion", emoji: "📝", on: false, desc: "settings.integrations.notion" },
+                ].map((i) => (
+                  <div key={i.name} style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 14 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div style={{ fontSize: 22 }}>{i.emoji}</div>
+                      <DemoBadge palette={palette} variant={i.on ? "success" : "neutral"} label={t(i.on ? "settings.connected" : "settings.disconnected")} />
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 13, marginTop: 6 }}>{i.name}</div>
+                    <div style={{ color: C.muted, fontSize: 11, lineHeight: 1.5, marginTop: 4 }}>{t(i.desc)}</div>
+                    <button
+                      onClick={() => toast.push({ title: t(i.on ? "toast.disconnected" : "toast.connected", { name: i.name }), tone: i.on ? "warn" : "success" })}
+                      style={{ marginTop: 8, padding: "5px 10px", background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, fontWeight: 600, color: C.ink, cursor: "pointer" }}
+                    >
+                      {t(i.on ? "settings.disconnect" : "settings.connect")}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         )}

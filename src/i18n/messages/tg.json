@@ -1538,7 +1538,13 @@
         "pipeline": "Раванд",
         "students": "Донишҷӯён",
         "universities": "Донишгоҳҳо",
-        "documents": "Ҳуҷҷатҳо"
+        "documents": "Ҳуҷҷатҳо",
+        "consulting": "Машварат",
+        "partners": "Шарикон",
+        "payments": "Пардохт",
+        "visa": "Виза",
+        "analytics": "Аналитика",
+        "settings": "Танзимот"
       },
       "stats": {
         "activeApplicants": "Довталабони фаъол",
@@ -1765,7 +1771,13 @@
           "pipeline": "CRM · Зинаҳо",
           "students": "CRM · Донишҷӯён",
           "universities": "CRM · Донишгоҳҳо",
-          "documents": "CRM · Ҳуҷҷатҳо"
+          "documents": "CRM · Ҳуҷҷатҳо",
+          "consulting": "Корӣ / Машварат",
+          "partners": "Корӣ / Шарикон",
+          "payments": "Корӣ / Пардохт",
+          "visa": "Корӣ / Виза",
+          "analytics": "Корӣ / Аналитика",
+          "settings": "Корӣ / Танзимот"
         },
         "statusBar": {
           "version": "Eastwind v4.2.1",
@@ -1793,6 +1805,36 @@
           "eyebrow": "Мутобиқат",
           "title": "Пайгирии ҳуҷҷатҳо",
           "subtitle": "Ҳолати ҳар як файле, ки тавассути сафоратхонаҳо ва шарикон ҷараён дорад"
+        },
+        "consulting": {
+          "eyebrow": "1-ба-1",
+          "title": "Машваратҳо",
+          "subtitle": "Календари вохӯриҳо ва машқҳо бо донишҷӯён."
+        },
+        "partners": {
+          "eyebrow": "Шабака",
+          "title": "Шарикон",
+          "subtitle": "Шарикии фаъол бо шумораи қабул ва комиссия."
+        },
+        "payments": {
+          "eyebrow": "Маблағ",
+          "title": "Пардохт",
+          "subtitle": "Хидмат, таҳсил ва визавӣ."
+        },
+        "visa": {
+          "eyebrow": "Воронка",
+          "title": "Пайгирии виза",
+          "subtitle": "Тайёрӣ, супоридан, мусоҳиба, додан, рафтан."
+        },
+        "analytics": {
+          "eyebrow": "Натиҷаҳо",
+          "title": "Аналитика",
+          "subtitle": "Тренди даромад, конверсия ва фаъолияти зинда."
+        },
+        "settings": {
+          "eyebrow": "Танзим",
+          "title": "Танзимот",
+          "subtitle": "Маълумоти асосии агентӣ ва интегратсияҳо."
         }
       },
       "kpi": {
@@ -1883,6 +1925,220 @@
             "value": "3%",
             "trend": "-2 фоиз нисбат ба Q2"
           }
+        },
+        "consulting": {
+          "0": {
+            "label": "Машварат имрӯз",
+            "value": "8",
+            "trend": "Ҳама тасдиқ шуданд"
+          },
+          "1": {
+            "label": "Давомнокӣ",
+            "value": "52 дақ",
+            "trend": "Дар меъёр"
+          },
+          "2": {
+            "label": "Рейтинг (90 рӯз)",
+            "value": "4,9",
+            "trend": "Меафзояд"
+          },
+          "3": {
+            "label": "Нонаёшӣ",
+            "value": "2%",
+            "trend": "Аз 6% паст"
+          }
+        },
+        "partners": {
+          "0": {
+            "label": "Шарикони фаъол",
+            "value": "31",
+            "trend": "+4 дар сол"
+          },
+          "1": {
+            "label": "Қабулҳо (YTD)",
+            "value": "310",
+            "trend": "+22% MoM"
+          },
+          "2": {
+            "label": "Комиссияи миёна",
+            "value": "15,2%",
+            "trend": "Устувор"
+          },
+          "3": {
+            "label": "Шарикони фаъол",
+            "value": "6",
+            "trend": "Tsinghua + SJTU"
+          }
+        },
+        "payments": {
+          "0": {
+            "label": "Қарзҳо",
+            "value": "$184K",
+            "trend": "Асосан таҳсил"
+          },
+          "1": {
+            "label": "Гирифташуда (30 рӯз)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "2": {
+            "label": "Гузашта",
+            "value": "$8,4K",
+            "trend": "1 ҳолат"
+          },
+          "3": {
+            "label": "Чеки миёна",
+            "value": "$5,2K",
+            "trend": "+$0,6K YoY"
+          }
+        },
+        "visa": {
+          "0": {
+            "label": "Дар воронка",
+            "value": "34",
+            "trend": "Дар вақт"
+          },
+          "1": {
+            "label": "Муваффақият",
+            "value": "94%",
+            "trend": "+3 п.п. YoY"
+          },
+          "2": {
+            "label": "Коркард",
+            "value": "18 рӯз",
+            "trend": "Аз 24 кам"
+          },
+          "3": {
+            "label": "Рафтанд (YTD)",
+            "value": "126",
+            "trend": "Соли рекордӣ"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Даромад (30 рӯз)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "1": {
+            "label": "Конверсия",
+            "value": "32%",
+            "trend": "Дархост → Рафт"
+          },
+          "2": {
+            "label": "Давраи миёна",
+            "value": "84 рӯз",
+            "trend": "Дархост → Виза"
+          },
+          "3": {
+            "label": "NPS",
+            "value": "72",
+            "trend": "Аз даҳон ба даҳон"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Аптайм (30 рӯз)",
+            "value": "100%",
+            "trend": "Ҳама хуб"
+          },
+          "1": {
+            "label": "Интегратсияҳо",
+            "value": "6 фаъол",
+            "trend": "+1 дар моҳ"
+          },
+          "2": {
+            "label": "Ҷойҳои даста",
+            "value": "8 / 12",
+            "trend": "Ҷой ҳаст"
+          },
+          "3": {
+            "label": "API дар 24с",
+            "value": "880",
+            "trend": "Дар ҳудуд"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Ба экран гузаштан…",
+        "group": "Соҳаи корӣ"
+      },
+      "toast": {
+        "navigated": "{screen} кушода шуд",
+        "sessionConfirmed": "Машварат бо {name} тасдиқ шуд",
+        "settingsSaved": "Танзимот нигоҳ дошта шуд",
+        "connected": "{name} пайваст",
+        "disconnected": "{name} канда"
+      },
+      "consulting": {
+        "mode": {
+          "inPerson": "Шахсан",
+          "video": "Видео"
+        },
+        "confirm": "Тасдиқ кардан"
+      },
+      "partners": {
+        "hot": "Топ",
+        "placements": "Қабулҳо",
+        "commission": "Комиссия"
+      },
+      "payments": {
+        "col": {
+          "student": "Донишҷӯ",
+          "purpose": "Мақсад",
+          "amount": "Маблағ",
+          "due": "Мӯҳлат",
+          "status": "Ҳолат"
+        },
+        "status": {
+          "paid": "Пардохт",
+          "due": "Қарздор",
+          "partial": "Қисман",
+          "overdue": "Гузашта",
+          "scheduled": "Нақшавӣ"
+        }
+      },
+      "visa": {
+        "stages": {
+          "docPrep": "Ҳуҷҷат тайёр",
+          "submitted": "Супорида",
+          "interview": "Мусоҳиба",
+          "issued": "Додашуда",
+          "departed": "Рафт"
+        }
+      },
+      "analytics": {
+        "revenueTitle": "Даромад (30 рӯз)",
+        "last30": "30 рӯзи охирин",
+        "liveFeed": "Лентаи воқеаҳо"
+      },
+      "settings": {
+        "basicsTitle": "Маълумоти асосӣ",
+        "fields": {
+          "agencyName": "Номи агентӣ",
+          "contactEmail": "Email",
+          "officeAddress": "Суроғаи дафтар",
+          "license": "№ литсензия"
+        },
+        "placeholders": {
+          "agencyName": "Silk Road Education",
+          "contactEmail": "hello@silkroad.edu",
+          "officeAddress": "хиёбони Рӯдакӣ 17, Душанбе",
+          "license": "TJ-EDU-2024-138"
+        },
+        "save": "Нигоҳ доштан",
+        "integrationsTitle": "Интегратсияҳо",
+        "connected": "Пайваст",
+        "disconnected": "Канда",
+        "connect": "Пайваст кардан",
+        "disconnect": "Кандан",
+        "integrations": {
+          "wechat": "Сӯҳбат бо донишҷӯён ва волидайн дар WeChat.",
+          "stripe": "Пардохт дар USD, EUR, CNY.",
+          "docusign": "Имзои электронии шартномаҳо.",
+          "zoom": "Машварат тавассути Zoom.",
+          "mailchimp": "Капкорӣ ва бозгардондан.",
+          "notion": "Қолабҳо ва рӯйхатҳо барои муштариён."
         }
       }
     },

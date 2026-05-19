@@ -1538,7 +1538,13 @@
         "pipeline": "Pipeline",
         "students": "Students",
         "universities": "Universities",
-        "documents": "Documents"
+        "documents": "Documents",
+        "consulting": "Consulting",
+        "partners": "Partners",
+        "payments": "Payments",
+        "visa": "Visa",
+        "analytics": "Analytics",
+        "settings": "Settings"
       },
       "stats": {
         "activeApplicants": "Active applicants",
@@ -1765,7 +1771,13 @@
           "pipeline": "CRM · Pipeline",
           "students": "CRM · Students",
           "universities": "CRM · Universities",
-          "documents": "CRM · Documents"
+          "documents": "CRM · Documents",
+          "consulting": "Workspace / Consulting",
+          "partners": "Workspace / Partners",
+          "payments": "Workspace / Payments",
+          "visa": "Workspace / Visa",
+          "analytics": "Workspace / Analytics",
+          "settings": "Workspace / Settings"
         },
         "statusBar": {
           "version": "Eastwind v4.2.1",
@@ -1793,6 +1805,36 @@
           "eyebrow": "Compliance",
           "title": "Document tracker",
           "subtitle": "Status of every file flowing through embassies and partners"
+        },
+        "consulting": {
+          "eyebrow": "1-on-1",
+          "title": "Consulting sessions",
+          "subtitle": "Today's calendar of student meetings and rehearsals."
+        },
+        "partners": {
+          "eyebrow": "Network",
+          "title": "University partners",
+          "subtitle": "Active partnerships with placement counts and commission rates."
+        },
+        "payments": {
+          "eyebrow": "Money",
+          "title": "Payments",
+          "subtitle": "Service fees, tuition installments, and visa fees."
+        },
+        "visa": {
+          "eyebrow": "Pipeline",
+          "title": "Visa tracker",
+          "subtitle": "Document prep, submission, interview, issued, and departed."
+        },
+        "analytics": {
+          "eyebrow": "Performance",
+          "title": "Analytics",
+          "subtitle": "Revenue trend, conversion, and live activity."
+        },
+        "settings": {
+          "eyebrow": "Configuration",
+          "title": "Settings",
+          "subtitle": "Agency basics and partner integrations."
         }
       },
       "kpi": {
@@ -1883,6 +1925,220 @@
             "value": "3%",
             "trend": "-2 pts vs Q2"
           }
+        },
+        "consulting": {
+          "0": {
+            "label": "Sessions today",
+            "value": "8",
+            "trend": "All confirmed"
+          },
+          "1": {
+            "label": "Avg duration",
+            "value": "52 min",
+            "trend": "On target"
+          },
+          "2": {
+            "label": "Rating (90d)",
+            "value": "4.9",
+            "trend": "Trending up"
+          },
+          "3": {
+            "label": "No-shows",
+            "value": "2%",
+            "trend": "Down from 6%"
+          }
+        },
+        "partners": {
+          "0": {
+            "label": "Active partners",
+            "value": "31",
+            "trend": "+4 this year"
+          },
+          "1": {
+            "label": "Placements (YTD)",
+            "value": "310",
+            "trend": "+22% MoM"
+          },
+          "2": {
+            "label": "Avg commission",
+            "value": "15.2%",
+            "trend": "Stable"
+          },
+          "3": {
+            "label": "Hot partners",
+            "value": "6",
+            "trend": "Tsinghua + SJTU"
+          }
+        },
+        "payments": {
+          "0": {
+            "label": "Outstanding",
+            "value": "$184K",
+            "trend": "Mostly tuition"
+          },
+          "1": {
+            "label": "Collected (30d)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "2": {
+            "label": "Overdue",
+            "value": "$8.4K",
+            "trend": "1 case · escalated"
+          },
+          "3": {
+            "label": "Avg ticket",
+            "value": "$5.2K",
+            "trend": "+$0.6K YoY"
+          }
+        },
+        "visa": {
+          "0": {
+            "label": "In pipeline",
+            "value": "34",
+            "trend": "All on schedule"
+          },
+          "1": {
+            "label": "Interview pass",
+            "value": "94%",
+            "trend": "+3 pp YoY"
+          },
+          "2": {
+            "label": "Avg processing",
+            "value": "18 days",
+            "trend": "Down from 24"
+          },
+          "3": {
+            "label": "Departed (YTD)",
+            "value": "126",
+            "trend": "Record year"
+          }
+        },
+        "analytics": {
+          "0": {
+            "label": "Revenue (30d)",
+            "value": "$96K",
+            "trend": "+18% MoM"
+          },
+          "1": {
+            "label": "Conversion",
+            "value": "32%",
+            "trend": "Inquiry → Departed"
+          },
+          "2": {
+            "label": "Avg cycle",
+            "value": "84 days",
+            "trend": "Inquiry → Visa"
+          },
+          "3": {
+            "label": "NPS",
+            "value": "72",
+            "trend": "Word of mouth strong"
+          }
+        },
+        "settings": {
+          "0": {
+            "label": "Uptime (30d)",
+            "value": "100%",
+            "trend": "All green"
+          },
+          "1": {
+            "label": "Integrations",
+            "value": "6 active",
+            "trend": "+1 this month"
+          },
+          "2": {
+            "label": "Team seats",
+            "value": "8 / 12",
+            "trend": "Room to grow"
+          },
+          "3": {
+            "label": "API calls (24h)",
+            "value": "880",
+            "trend": "Within limits"
+          }
+        }
+      },
+      "commandPalette": {
+        "placeholder": "Jump to a screen…",
+        "group": "Workspace"
+      },
+      "toast": {
+        "navigated": "Opened {screen}",
+        "sessionConfirmed": "Session confirmed with {name}",
+        "settingsSaved": "Settings saved",
+        "connected": "{name} connected",
+        "disconnected": "{name} disconnected"
+      },
+      "consulting": {
+        "mode": {
+          "inPerson": "In-person",
+          "video": "Video"
+        },
+        "confirm": "Confirm"
+      },
+      "partners": {
+        "hot": "Hot",
+        "placements": "Placements",
+        "commission": "Commission"
+      },
+      "payments": {
+        "col": {
+          "student": "Student",
+          "purpose": "Purpose",
+          "amount": "Amount",
+          "due": "Due",
+          "status": "Status"
+        },
+        "status": {
+          "paid": "Paid",
+          "due": "Due",
+          "partial": "Partial",
+          "overdue": "Overdue",
+          "scheduled": "Scheduled"
+        }
+      },
+      "visa": {
+        "stages": {
+          "docPrep": "Doc prep",
+          "submitted": "Submitted",
+          "interview": "Interview",
+          "issued": "Issued",
+          "departed": "Departed"
+        }
+      },
+      "analytics": {
+        "revenueTitle": "Revenue (last 30 days)",
+        "last30": "Last 30 days",
+        "liveFeed": "Live activity"
+      },
+      "settings": {
+        "basicsTitle": "Agency basics",
+        "fields": {
+          "agencyName": "Agency name",
+          "contactEmail": "Contact email",
+          "officeAddress": "Office address",
+          "license": "License #"
+        },
+        "placeholders": {
+          "agencyName": "Silk Road Education",
+          "contactEmail": "hello@silkroad.edu",
+          "officeAddress": "Rudaki Ave 17, Dushanbe",
+          "license": "TJ-EDU-2024-138"
+        },
+        "save": "Save changes",
+        "integrationsTitle": "Integrations",
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "integrations": {
+          "wechat": "Chat with students and parents on WeChat.",
+          "stripe": "Take service fees in USD, EUR, CNY.",
+          "docusign": "Send and sign service agreements digitally.",
+          "zoom": "1-on-1 consulting via Zoom meetings.",
+          "mailchimp": "Drip campaigns for inquiries and waitlists.",
+          "notion": "Share doc templates and checklists with clients."
         }
       }
     },
