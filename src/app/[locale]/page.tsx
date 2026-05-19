@@ -71,22 +71,47 @@ export default async function HomePage({
   return (
     <>
       {/* ============== GRADIENT HERO ============== */}
-      <section className="grad-ember relative overflow-hidden text-white">
+      <section
+        className="relative overflow-hidden text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, #F76D3C 0%, #E04E2C 45%, #B33C1F 100%)",
+        }}
+      >
+        {/* Depth vignette — adds richness so the hero doesn't feel flat */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 50% 110%, rgba(35, 23, 18, 0.55) 0%, transparent 55%), radial-gradient(80% 60% at 10% -20%, rgba(255, 200, 130, 0.30) 0%, transparent 60%)",
+          }}
+        />
+        {/* Subtle grid texture */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
         {/* Decorative orbs (forge embers) */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
-            className="absolute -right-32 -top-40 size-[520px] rounded-full opacity-40 anim-float"
+            className="absolute -right-32 -top-40 size-[520px] rounded-full opacity-30 anim-float"
             style={{ background: "radial-gradient(circle, white 0%, transparent 60%)" }}
           />
           <div
-            className="absolute -bottom-48 -left-40 size-[560px] rounded-full opacity-30 anim-float"
+            className="absolute -bottom-48 -left-40 size-[560px] rounded-full opacity-25 anim-float"
             style={{
-              background: "radial-gradient(circle, white 0%, transparent 60%)",
+              background: "radial-gradient(circle, #FFD9A8 0%, transparent 60%)",
               animationDelay: "1.2s",
             }}
           />
           <div
-            className="absolute left-1/2 top-1/3 size-[340px] -translate-x-1/2 rounded-full opacity-20"
+            className="absolute left-1/2 top-1/3 size-[340px] -translate-x-1/2 rounded-full opacity-15"
             style={{ background: "radial-gradient(circle, white 0%, transparent 70%)" }}
           />
         </div>
@@ -148,23 +173,23 @@ export default async function HomePage({
 
             {/* Floating demo collage */}
             <div className="anim-fade-up delay-3 relative lg:col-span-5">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {featured.slice(0, 4).map((d, i) => (
                   <div
                     key={d.slug}
-                    className={`group relative overflow-hidden rounded-2xl bg-white/12 p-5 backdrop-blur-sm transition hover:bg-white/20 ${
-                      i % 2 === 1 ? "mt-6" : ""
+                    className={`glass group relative overflow-hidden rounded-2xl p-5 ${
+                      i % 2 === 1 ? "mt-8" : ""
                     }`}
                   >
                     <div
                       aria-hidden
-                      className="size-9 rounded-xl shadow-lg"
+                      className="size-10 rounded-xl shadow-[0_10px_24px_-6px_rgba(0,0,0,0.35)] ring-1 ring-white/30"
                       style={{ background: d.thumbnail_color }}
                     />
-                    <div className="mt-4 font-mono text-[10px] uppercase tracking-widest text-white/70">
+                    <div className="mt-5 font-mono text-[10px] uppercase tracking-widest text-white/75">
                       {d.category}
                     </div>
-                    <div className="mt-1 font-display text-base font-extrabold text-white">
+                    <div className="mt-1 font-display text-base font-extrabold leading-tight text-white">
                       {d.title}
                     </div>
                   </div>

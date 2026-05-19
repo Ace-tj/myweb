@@ -70,41 +70,52 @@ export function ChatThread({
     startTransition(async () => {
       const res = await sendMessageAction(conversationId, text);
       if (!res.ok && res.error) {
-        // Restore draft if it failed; keep simple alert for prototype.
         setDraft(text);
       }
     });
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-surface">
       <div
         ref={scrollRef}
-        className="flex-1 space-y-3 overflow-y-auto p-4"
+        className="flex-1 space-y-2.5 overflow-y-auto px-4 py-5"
         aria-live="polite"
+        style={{
+          backgroundImage:
+            "radial-gradient(600px 300px at 110% -10%, rgb(224 78 44 / 0.05), transparent 60%), radial-gradient(500px 280px at -10% 120%, rgb(193 137 49 / 0.05), transparent 60%)",
+        }}
       >
         {messages.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted">
-            {t("emptyCustomer")}
-          </p>
+          <div className="flex h-full flex-col items-center justify-center gap-2 py-8 text-center">
+            <p className="text-sm font-medium text-muted">
+              {t("emptyCustomer")}
+            </p>
+          </div>
         )}
-        {messages.map((m) => {
+        {messages.map((m, idx) => {
           const mine = m.sender_id === myUserId;
+          const prev = messages[idx - 1];
+          const grouped = prev && prev.sender_id === m.sender_id;
           return (
             <div
               key={m.id}
-              className={`flex ${mine ? "justify-end" : "justify-start"}`}
+              className={`flex ${mine ? "justify-end" : "justify-start"} ${
+                grouped ? "mt-1" : "mt-3"
+              }`}
             >
               <div
-                className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
+                className={`max-w-[78%] px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
                   mine
-                    ? "rounded-br-md bg-primary text-primary-fg"
-                    : "rounded-bl-md bg-surface-2 text-fg"
+                    ? "rounded-2xl rounded-br-md bg-gradient-to-br from-[#F76D3C] to-[#E04E2C] text-white"
+                    : "rounded-2xl rounded-bl-md border border-border bg-bg text-fg"
                 }`}
               >
-                {m.body}
+                <div className="whitespace-pre-wrap break-words">{m.body}</div>
                 <div
-                  className={`mt-1 text-[10px] ${mine ? "text-primary-fg/70" : "text-muted"}`}
+                  className={`mt-1 text-[10px] font-medium ${
+                    mine ? "text-white/75" : "text-subtle"
+                  }`}
                 >
                   {new Date(m.created_at).toLocaleTimeString([], {
                     hour: "2-digit",
@@ -119,25 +130,34 @@ export function ChatThread({
 
       <form
         onSubmit={onSubmit}
-        className="flex items-end gap-2 border-t border-border bg-surface p-3"
+        className="relative flex items-end gap-2 border-t border-border bg-surface px-3 py-3"
       >
-        <textarea
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              (e.currentTarget.form as HTMLFormElement).requestSubmit();
-            }
-          }}
-          rows={1}
-          placeholder={placeholder ?? t("placeholder")}
-          className="min-h-[40px] max-h-32 flex-1 resize-none rounded-xl border border-border bg-bg px-3 py-2 text-sm text-fg placeholder:text-subtle focus:border-primary focus:outline-none"
-        />
+        <div className="flex-1 rounded-2xl border border-border bg-bg shadow-sm transition focus-within:border-primary focus-within:shadow-[0_0_0_3px_rgb(224_78_44_/_0.18)]">
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                (e.currentTarget.form as HTMLFormElement).requestSubmit();
+              }
+            }}
+            rows={1}
+            placeholder={placeholder ?? t("placeholder")}
+            className="block w-full resize-none rounded-2xl bg-transparent px-3.5 py-2.5 text-sm text-fg placeholder:text-subtle focus:outline-none"
+            style={{ minHeight: 42, maxHeight: 128 }}
+          />
+        </div>
         <button
           type="submit"
           disabled={sending || !draft.trim()}
-          className="inline-flex size-10 items-center justify-center rounded-full bg-primary text-primary-fg transition hover:bg-primary-hover disabled:opacity-60"
+          className="inline-flex size-11 shrink-0 items-center justify-center rounded-full text-white shadow-[0_8px_20px_-6px_rgba(224,78,44,0.55)] transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+          style={{
+            background: sending || !draft.trim()
+              ? "rgb(var(--surface-2))"
+              : "linear-gradient(135deg, #F76D3C 0%, #E04E2C 100%)",
+            color: sending || !draft.trim() ? "rgb(var(--subtle))" : undefined,
+          }}
           aria-label={t("send")}
         >
           {sending ? (

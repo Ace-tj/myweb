@@ -223,9 +223,55 @@ h1, h2, h3, h4 {
 /* Card lift on hover */
 .lift {
   transition: transform var(--dur-base) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft),
+              border-color var(--dur-base) var(--ease-out-soft);
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgb(var(--border-strong) / 0.6);
+}
+
+/* Glass — translucent surface for layered hero cards */
+.glass {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 12px 32px -8px rgba(0, 0, 0, 0.25);
+  transition: transform var(--dur-base) var(--ease-out-soft),
+              background var(--dur-base) var(--ease-out-soft);
+}
+.glass:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Card with primary glow on hover */
+.card-glow {
+  position: relative;
+  transition: transform var(--dur-base) var(--ease-out-soft),
               box-shadow var(--dur-base) var(--ease-out-soft);
 }
-.lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgb(var(--primary) / 0.0), rgb(var(--primary) / 0.0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  transition: background var(--dur-base) var(--ease-out-soft);
+  pointer-events: none;
+}
+.card-glow:hover::after {
+  background: linear-gradient(135deg, rgb(var(--primary) / 0.55), rgb(var(--accent) / 0.45));
+}
 
 .press { transition: transform var(--dur-fast) var(--ease-out-soft); }
 .press:active { transform: scale(0.97); }
